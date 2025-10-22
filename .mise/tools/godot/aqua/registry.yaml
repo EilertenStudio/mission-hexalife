@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/aquaproj/aqua/main/json-schema/registry.json
+packages:
+  - type: http
+    repo_owner: godotengine
+    repo_name: godot
+    files:
+      - name: godot
+        src: Godot_v{{.Version}}-stable_{{.OS}}{{.Arch}}.exe
+    overrides:
+      # --------------------------------------------------------------------------------
+      - goos: windows
+        # Supported architecture:
+        # - x86_64
+        # - Introduce {{.Arch}} variable to support multi-architecture
+        url: https://downloads.godotengine.org/?version={{.Version}}&flavor=stable&slug=win64.exe.zip&platform=windows.64
+        format: zip
+        # -----------
+        files:
+          - name: godot
+            src: Godot_v{{.Version}}-stable_win64.exe
+      # --------------------------------------------------------------------------------
+      - goos: linux
+        # Supported architecture:
+        # - x86_64
+        # - Introduce {{.Arch}} variable to support multi-architecture
+        url: https://downloads.godotengine.org/?version=4.5.1&flavor=stable&slug=linux.x86_64.zip&platform=linux.64
+        format: zip
+        # -----------
+        files:
+          - name: godot
+            src: Godot_v4.5.1-stable_linux.x86_64

@@ -1,0 +1,19 @@
+[tools]
+aqua = 'latest'
+gradle = "latest"
+
+[env]
+AQUA_LOG_LEVEL='debug'
+AQUA_DISABLE_POLICY='true'
+
+[vars]
+godot_exec = 'aqua exec -- godot'
+
+[tasks."setup:aqua"]
+hide = true
+run = 'aqua install'
+description = "Download and install Aqua tools"
+
+[tasks."godot:editor"]
+run = '{{vars.godot_exec}} -e'
+description = "Open Godot Editor and load the project"
