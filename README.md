@@ -56,7 +56,7 @@ Every bug report, feature suggestion or line of code heps to improve the experie
 Fell free to drop a feedback or join directly in the development process from our Discord server.
 
 <a href="https://discord.gg/qq2xXPNPxg" target="_blank">
-   <img src="https://images.icon-icons.com/3132/PNG/512/discord_social_network_communication_interaction_message_icon_192260.png"alt="Discord" title="Discord" width="50xp">
+   <img src="https://images.icon-icons.com/3132/PNG/512/discord_social_network_communication_interaction_message_icon_192260.png" alt="Discord" title="Discord" width="50xp">
 </a>
 
 
