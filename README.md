@@ -1,7 +1,7 @@
 Mission Hexalife
 ---
 
-## A investigative interactive-novel game
+## An investigative interactive-novel game
 Mission HeXalife is an open-collaborative, interactive-novel game with investigation mechanics.
 
 ## 📖 Introduction
@@ -50,8 +50,6 @@ Each contributor has the transversal role of **Creative Contributor**.
 ---
 ## 🤝 Contributing
 We believe in open-collaboration! This project is an entirely open-collaborative effort with our community. 
-
-Every bug report, feature suggestion or line of code heps to improve the experience of all.
 
 Fell free to drop a feedback or join directly in the development process from our Discord server.
 
