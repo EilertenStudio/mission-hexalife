@@ -37,13 +37,13 @@ Thanks to [orlandoo](https://orlandoo.itch.io/) who create the [Portfolio Builde
 
 Thanks to our **Community Collaborators**:
 
-| Contributor                                     | Main Role                                                        | Additional Role   |
-|:------------------------------------------------|:-----------------------------------------------------------------|-------------------|
-| [JervNorsk](https://linktr.ee/jervnorsk)        | Creator & Lead Architect                                         |                   |
-| [Feona](https://www.twitch.tv/grumpywolverine)  | Associate Director                                               |                   |
-| [Chinni2D](https://www.instagram.com/chinni2d/) | Concept Artist / Environment and Character Designer, Illustrator |                   |
-| [Raino98](https://linktr.ee/raino98)            | Graphic Designer, Project Coordinator                            | Community Manager |
-| [Skaiira](https://skaiira.carrd.co)             | Graphic Designer                                                 |                   |
+|                                                      Contributor                                                       | Main Role                                                        | Additional Role     |
+|:----------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------|:--------------------|
+|    [<img src="./docs/assets/contributors/jervnorsk-pfp.png" width=30px><br/>JervNorsk](https://linktr.ee/jervnorsk)    | Creator & Lead Architect                                         | Community Director  |
+|   [<img src="./docs/assets/contributors/feona-pfp.png" width=30px><br/>Feona](https://www.twitch.tv/grumpywolverine)   | Associate Director                                               |                     |
+| [<img src="./docs/assets/contributors/chinni2d-pfp.png" width=30px><br/>Chinni2D](https://www.instagram.com/chinni2d/) | Concept Artist / Environment and Character Designer, Illustrator |                     |
+|       [<img src="./docs/assets/contributors/raino98-pfp.png" width=30px><br/>Raino98](https://linktr.ee/raino98)       | Graphic Designer, Project Coordinator                            | Community Manager   |
+|       [<img src="./docs/assets/contributors/skaiira-pfp.png" width=30px><br/>Skaiira](https://skaiira.carrd.co)        | Graphic Designer                                                 |                     |
 
 Each contributor has the transversal role of **Creative Contributor**.
 
