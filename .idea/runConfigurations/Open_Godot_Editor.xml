@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Open Godot Editor" type="MiseTomlTaskRunConfigurationType" factoryName="MiseTomlTask">
+    <mise configEnvironment="" taskName="godot:editor" workingDirectory="$PROJECT_DIR$">
+      <envs />
+    </mise>
+    <method v="2" />
+  </configuration>
+</component>
