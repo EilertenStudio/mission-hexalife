@@ -11,7 +11,13 @@ config_version=5
 [application]
 
 config/name="Mission HeXalife"
+run/main_scene="uid://kdccbf5bebq4"
 config/features=PackedStringArray("4.5", "GL Compatibility")
+
+[display]
+
+window/size/viewport_width=1236
+window/size/viewport_height=859
 
 [rendering]
 
