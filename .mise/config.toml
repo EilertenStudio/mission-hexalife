@@ -13,7 +13,3 @@ godot_exec = 'aqua exec -- godot'
 hide = true
 run = 'aqua install'
 description = "Download and install Aqua tools"
-
-[tasks."godot:editor"]
-run = '{{vars.godot_exec}} -e'
-description = "Open Godot Editor and load the project"
