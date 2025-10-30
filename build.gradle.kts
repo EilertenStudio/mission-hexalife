@@ -25,6 +25,15 @@ idea {
     }
 }
 
+sourceSets {
+    create("docs") {
+        resources.srcDir(projectDir.resolve("docs"))
+    }
+    create("godot") {
+        resources.srcDir(projectDir.resolve("src/main/godot"))
+    }
+}
+
 godot {
     // ---------Setup-----------------
 
