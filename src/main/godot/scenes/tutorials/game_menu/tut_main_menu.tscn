@@ -1,0 +1,221 @@
+[gd_scene load_steps=14 format=3 uid="uid://samsg515xm4t"]
+
+[ext_resource type="Texture2D" uid="uid://b2xw6phad3nyv" path="res://assets/concepts/cryogenic-room.png" id="1_axr6d"]
+[ext_resource type="Script" uid="uid://b2oqekyr4ccre" path="res://scenes/tutorials/game_menu/tut_main_menu.gd" id="1_fs3f8"]
+[ext_resource type="Texture2D" uid="uid://dijwxpv0mbldj" path="res://assets/brand/mission_hexalife-brand-name.png" id="2_fs3f8"]
+[ext_resource type="AudioStream" uid="uid://djjat5c351bhe" path="res://assets/sounds/freesounds/josepres/829414__josefpres__piano-loops-192-octave-down-short-loop-120-bpm.wav" id="4_aehdj"]
+[ext_resource type="Script" uid="uid://b4ypxdlkg2gtb" path="res://scenes/tutorials/game_menu/audo_control.gd" id="5_xl6y5"]
+[ext_resource type="Script" uid="uid://y67v74lnsegd" path="res://scenes/tutorials/game_menu/fullscreen_control.gd" id="6_d7wjj"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aehdj"]
+texture = ExtResource("1_axr6d")
+modulate_color = Color(0.74558026, 0.7455802, 0.7455802, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nee8d"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_axr6d"]
+bg_color = Color(0.8840858, 0.39601663, 0.70821476, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fs3f8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_axr6d"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_aehdj"]
+color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_xl6y5"]
+color = Color(0.88765216, 0.74809444, 1, 1)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fs3f8")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_aehdj")
+autoplay = true
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_aehdj")
+
+[node name="Logo" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -336.0
+offset_top = -38.0
+offset_right = 387.0
+offset_bottom = 413.0
+grow_horizontal = 2
+texture = ExtResource("2_fs3f8")
+
+[node name="ButtonGroups" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -181.0
+offset_top = 23.50003
+offset_right = 420.0
+offset_bottom = 339.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.76000243, 0.76000243)
+theme_override_constants/separation = 19
+
+[node name="Button" type="Button" parent="ButtonGroups"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_nee8d")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_axr6d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fs3f8")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_axr6d")
+text = "Start Game"
+
+[node name="Button2" type="Button" parent="ButtonGroups"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_nee8d")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_axr6d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fs3f8")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_axr6d")
+text = "Options"
+
+[node name="Button3" type="Button" parent="ButtonGroups"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_nee8d")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_axr6d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fs3f8")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_axr6d")
+text = "Exit"
+
+[node name="Options" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -521.0
+offset_top = -292.0
+offset_right = 141.008
+offset_bottom = 67.01608
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5996785, 1.618312)
+
+[node name="Label" type="Label" parent="Options"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 35
+text = "Options"
+horizontal_alignment = 1
+
+[node name="Button4" type="Button" parent="Options"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_nee8d")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_axr6d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fs3f8")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_axr6d")
+text = "Back"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Options"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.4653
+offset_top = -55.922478
+offset_right = 161.26337
+offset_bottom = 58.042557
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Options/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Options/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Music Audio"
+
+[node name="AudoControl" type="HSlider" parent="Options/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/slider = SubResource("StyleBoxLine_aehdj")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_xl6y5")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_xl6y5")
+max_value = 1.0
+step = 0.05
+value = 1.0
+script = ExtResource("5_xl6y5")
+audio_bus_name = "Master"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Options/VBoxContainer"]
+layout_mode = 2
+
+[node name="FullscreenControl" type="CheckButton" parent="Options/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fullscreen"
+script = ExtResource("6_d7wjj")
+
+[connection signal="pressed" from="ButtonGroups/Button" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="ButtonGroups/Button2" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="ButtonGroups/Button3" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Options/Button4" to="." method="_on_options_back_pressed"]
+[connection signal="value_changed" from="Options/VBoxContainer/HBoxContainer/AudoControl" to="Options/VBoxContainer/HBoxContainer/AudoControl" method="_on_value_changed"]
+[connection signal="toggled" from="Options/VBoxContainer/HBoxContainer2/FullscreenControl" to="Options/VBoxContainer/HBoxContainer2/FullscreenControl" method="_on_toggled"]
