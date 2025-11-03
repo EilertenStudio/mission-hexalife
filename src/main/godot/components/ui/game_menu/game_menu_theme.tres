@@ -1,4 +1,6 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://jjscm7nea5nh"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://jjscm7nea5nh"]
+
+[ext_resource type="FontFile" uid="uid://cf4b1y7qae05j" path="res://assets/fonts/Minecraft.ttf" id="1_i6pre"]
 
 [sub_resource type="FontFile" id="FontFile_k7rkp"]
 cache/0/16/0/ascent = 0.0
@@ -24,6 +26,7 @@ border_width_left = 2
 border_color = Color(1, 1, 1, 1)
 
 [resource]
+default_font = ExtResource("1_i6pre")
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/colors/font_hover_color = Color(0, 0, 0, 1)
 Button/colors/font_hover_pressed_color = Color(0.00999999, 1, 0.9505001, 1)
