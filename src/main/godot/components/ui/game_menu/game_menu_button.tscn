@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://df848eo5uwric"]
+
+[ext_resource type="Theme" uid="uid://jjscm7nea5nh" path="res://components/ui/game_menu/game_menu_theme.tres" id="1_fnr5x"]
+[ext_resource type="Script" uid="uid://dc514bbwrukcg" path="res://components/ui/game_menu/game_menu_button.gd" id="1_swhab"]
+
+[node name="GameMenuButton" type="Button"]
+custom_minimum_size = Vector2(0, 40)
+theme = ExtResource("1_fnr5x")
+action_mode = 0
+text = "GameMenuButton"
+alignment = 0
+script = ExtResource("1_swhab")
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="renamed" from="." to="." method="_on_renamed"]
+[connection signal="toggled" from="." to="." method="_on_toggled"]

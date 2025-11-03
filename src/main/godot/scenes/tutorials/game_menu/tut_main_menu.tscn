@@ -67,7 +67,6 @@ grow_horizontal = 2
 texture = ExtResource("2_fs3f8")
 
 [node name="ButtonGroups" type="VBoxContainer" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -126,6 +125,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_axr6d")
 text = "Exit"
 
 [node name="Options" type="Panel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

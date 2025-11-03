@@ -11,11 +11,23 @@ config_version=5
 [application]
 
 config/name="Mission HeXalife"
-run/main_scene="uid://kdccbf5bebq4"
+run/main_scene="uid://ba1xryj2avcaf"
 config/features=PackedStringArray("4.5", "GL Compatibility")
+run/size/viewport_height=720
+run/size/viewport_width=1280
+
+[audio]
+
+buses/default_bus_layout="res://settings/audio_bus_config.tres"
+
+[autoload]
+
+GameMenuManager="*res://components/ui/game_menu/game_menu_manager.gd"
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 
 [rendering]

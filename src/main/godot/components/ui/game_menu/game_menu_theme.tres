@@ -1,0 +1,38 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://jjscm7nea5nh"]
+
+[sub_resource type="FontFile" id="FontFile_k7rkp"]
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n1q62"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d63k7"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4r82v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5magj"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n1q62"]
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 2
+border_color = Color(1, 1, 1, 1)
+
+[resource]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_pressed_color = Color(0.00999999, 1, 0.9505001, 1)
+Button/colors/font_pressed_color = Color(0, 0, 0, 1)
+Button/fonts/font = SubResource("FontFile_k7rkp")
+Button/styles/focus = SubResource("StyleBoxEmpty_n1q62")
+Button/styles/hover = SubResource("StyleBoxFlat_d63k7")
+Button/styles/normal = SubResource("StyleBoxEmpty_4r82v")
+Button/styles/pressed = SubResource("StyleBoxFlat_5magj")
+HBoxContainer/constants/separation = 22
+VSeparator/constants/separation = 2
+VSeparator/styles/separator = SubResource("StyleBoxFlat_n1q62")
