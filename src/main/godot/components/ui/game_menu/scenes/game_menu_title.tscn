@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://cvjrt1rf541xw"]
+
+[ext_resource type="Script" uid="uid://ct5dv6stf6w81" path="res://components/ui/game_menu/scenes/game_menu_title.gd" id="1_qdih5"]
+[ext_resource type="Theme" uid="uid://jjscm7nea5nh" path="res://components/ui/game_menu/game_menu_theme.tres" id="2_bwj6m"]
+[ext_resource type="PackedScene" uid="uid://df848eo5uwric" path="res://components/ui/game_menu/game_menu_button.tscn" id="3_x8mnp"]
+
+[sub_resource type="Theme" id="Theme_bwj6m"]
+
+[node name="GameMenuTitle" type="HBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
+offset_right = 256.0
+offset_bottom = 172.0
+theme = ExtResource("2_bwj6m")
+script = ExtResource("1_qdih5")
+
+[node name="Stroke" type="ColorRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+theme = SubResource("Theme_bwj6m")
+
+[node name="Stroke2" type="VSeparator" parent="."]
+layout_mode = 2
+theme = ExtResource("2_bwj6m")
+
+[node name="ButtonGroup" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme = ExtResource("2_bwj6m")
+
+[node name="CONTINUE GAME" parent="ButtonGroup" instance=ExtResource("3_x8mnp")]
+layout_mode = 2
+text = "CONTINUE GAME"
+
+[node name="NEW GAME" parent="ButtonGroup" instance=ExtResource("3_x8mnp")]
+layout_mode = 2
+text = "NEW GAME"
+
+[node name="OPTIONS" parent="ButtonGroup" instance=ExtResource("3_x8mnp")]
+layout_mode = 2
+toggle_mode = true
+text = "OPTIONS"
+
+[node name="CREDITS" parent="ButtonGroup" instance=ExtResource("3_x8mnp")]
+layout_mode = 2
+text = "CREDITS"
