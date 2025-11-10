@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://bbx35uib844kh"]
+
+[ext_resource type="PackedScene" uid="uid://0hdimnamma40" path="res://features/rooms/main_room.blend" id="1_kmaq2"]
+[ext_resource type="Script" uid="uid://opgulgeq6wg8" path="res://features/rooms/main_room_camera.gd" id="2_52sws"]
+
+[sub_resource type="Environment" id="Environment_52sws"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_w0rtr"]
+
+[sub_resource type="Compositor" id="Compositor_ouqbf"]
+
+[node name="MainRoom" instance=ExtResource("1_kmaq2")]
+
+[node name="PlayerPoV" parent="Player/Skeleton3D/spine_006" index="0"]
+script = ExtResource("2_52sws")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="2"]
+environment = SubResource("Environment_52sws")
+camera_attributes = SubResource("CameraAttributesPractical_w0rtr")
+compositor = SubResource("Compositor_ouqbf")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="3"]
+transform = Transform3D(0.5952566, 0.7274522, -0.34129572, 0.56763244, -0.08005446, 0.81938076, 0.5687381, -0.6814724, -0.46057847, 0, 0, 0)

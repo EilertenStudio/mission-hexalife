@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://us8vt5sotkhs"
-path="res://.godot/imported/cryogenic-room.blend-ca1a1467362e85518de00599d046bc4a.scn"
+uid="uid://v7nple2xmoso"
+path="res://.godot/imported/cryogenic-capsule-v1.blend-39b5699cb3525400d42ef44ead9471f3.scn"
 
 [deps]
 
-source_file="res://assets/concepts/cryogenic-room.blend"
-dest_files=["res://.godot/imported/cryogenic-room.blend-ca1a1467362e85518de00599d046bc4a.scn"]
+source_file="res://components/rooms/cryogenic-room/props/cryogenic-capsule-v1.blend"
+dest_files=["res://.godot/imported/cryogenic-capsule-v1.blend-39b5699cb3525400d42ef44ead9471f3.scn"]
 
 [params]
 

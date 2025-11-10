@@ -1,11 +1,12 @@
 [gd_scene load_steps=14 format=3 uid="uid://samsg515xm4t"]
 
-[ext_resource type="Texture2D" uid="uid://b2xw6phad3nyv" path="res://assets/concepts/cryogenic-room.png" id="1_axr6d"]
-[ext_resource type="Script" uid="uid://b2oqekyr4ccre" path="res://scenes/tutorials/game_menu/tut_main_menu.gd" id="1_fs3f8"]
+[ext_resource type="Texture2D" uid="uid://b2xw6phad3nyv" path="res://components/rooms/cryogenic-room/references/cryogenic-room.png" id="1_axr6d"]
+[ext_resource type="Script" uid="uid://b2oqekyr4ccre" path="res://tests/tutorials/game_menu/tut_main_menu.gd" id="1_fs3f8"]
 [ext_resource type="Texture2D" uid="uid://dijwxpv0mbldj" path="res://assets/brand/mission_hexalife-brand-name.png" id="2_fs3f8"]
 [ext_resource type="AudioStream" uid="uid://djjat5c351bhe" path="res://assets/sounds/freesounds/josepres/829414__josefpres__piano-loops-192-octave-down-short-loop-120-bpm.wav" id="4_aehdj"]
-[ext_resource type="Script" uid="uid://b4ypxdlkg2gtb" path="res://scenes/tutorials/game_menu/audo_control.gd" id="5_xl6y5"]
-[ext_resource type="Script" uid="uid://y67v74lnsegd" path="res://scenes/tutorials/game_menu/fullscreen_control.gd" id="6_d7wjj"]
+[ext_resource type="Script" uid="uid://b4ypxdlkg2gtb" path="res://tests/tutorials/game_menu/audo_control.gd" id="5_xl6y5"]
+[ext_resource type="Script" uid="uid://y67v74lnsegd" path="res://tests/tutorials/game_menu/fullscreen_control.gd" id="6_d7wjj"]
+
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aehdj"]
 texture = ExtResource("1_axr6d")

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2xw6phad3nyv"
-path="res://.godot/imported/cryogenic-room.png-f9dcfe03c82c0216e365d05deaa4a6cd.ctex"
+uid="uid://cvb3cqkwk3jyt"
+path="res://.godot/imported/cryogenic-room-wb.png-bcba5932ac1e19304e4c5514761bf6e5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/concepts/cryogenic-room.png"
-dest_files=["res://.godot/imported/cryogenic-room.png-f9dcfe03c82c0216e365d05deaa4a6cd.ctex"]
+source_file="res://components/rooms/cryogenic-room/references/cryogenic-room-wb.png"
+dest_files=["res://.godot/imported/cryogenic-room-wb.png-bcba5932ac1e19304e4c5514761bf6e5.ctex"]
 
 [params]
 
