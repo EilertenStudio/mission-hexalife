@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfragnhjcpdtw"]
+
+[ext_resource type="PackedScene" uid="uid://d03w3d34asopj" path="res://components/characters/player/player.blend" id="1_5jxfx"]
+
+[node name="Player" instance=ExtResource("1_5jxfx")]
+
+[node name="HLP-player-pov" parent="RIG-player/Skeleton3D/spine_006" index="0"]
+fov = 105.0

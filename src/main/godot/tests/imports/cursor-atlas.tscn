@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://db0n43qtrwvuv"]
+
+[ext_resource type="Texture2D" uid="uid://m2rbf5mamfs3" path="res://tests/imports/cursor-atlas-v1.svg" id="1_x152i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_guapb"]
+atlas = ExtResource("1_x152i")
+region = Rect2(368, 152, 576, 936)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Puntatore" type="Sprite2D" parent="."]
+position = Vector2(174, 153)
+texture = ExtResource("1_x152i")
+region_enabled = true
+region_rect = Rect2(368, 176, 168, 176)
+
+[node name="Puntatori" type="Sprite2D" parent="."]
+position = Vector2(1999, 995)
+texture = SubResource("AtlasTexture_guapb")
+
+[node name="Puntatori2" type="Sprite2D" parent="."]
+position = Vector2(3043, 885)
+texture = SubResource("AtlasTexture_guapb")
+region_enabled = true
+region_rect = Rect2(0, 0, 168, 200)
+
+[node name="Puntatori3" type="Sprite2D" parent="."]
+position = Vector2(3032, 1124)
+texture = SubResource("AtlasTexture_guapb")
+region_enabled = true
+region_rect = Rect2(0, 200, 168, 200)

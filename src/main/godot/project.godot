@@ -30,6 +30,16 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "pink",
+"res://components/": "orange",
+"res://features/": "blue",
+"res://settings/": "gray",
+"res://tests/": "teal"
+}
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

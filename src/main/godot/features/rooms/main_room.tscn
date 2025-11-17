@@ -1,23 +1,27 @@
-[gd_scene load_steps=6 format=3 uid="uid://bbx35uib844kh"]
+[gd_scene load_steps=4 format=3 uid="uid://bbx35uib844kh"]
 
-[ext_resource type="PackedScene" uid="uid://0hdimnamma40" path="res://features/rooms/main_room.blend" id="1_kmaq2"]
-[ext_resource type="Script" uid="uid://opgulgeq6wg8" path="res://features/rooms/main_room_camera.gd" id="2_52sws"]
+[ext_resource type="PackedScene" uid="uid://dfragnhjcpdtw" path="res://components/characters/player/player.tscn" id="1_kmaq2"]
+[ext_resource type="PackedScene" uid="uid://d4k7mu2mwkkcl" path="res://components/rooms/cryogenic-room/cryogenic-room-v1.blend" id="2_w0rtr"]
 
 [sub_resource type="Environment" id="Environment_52sws"]
+background_color = Color(0.93951726, 0.47192585, 0.748102, 1)
+ambient_light_source = 1
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_w0rtr"]
+[node name="MainRoom" type="Node3D"]
 
-[sub_resource type="Compositor" id="Compositor_ouqbf"]
+[node name="CryogenicRoomV1" parent="." instance=ExtResource("2_w0rtr")]
 
-[node name="MainRoom" instance=ExtResource("1_kmaq2")]
+[node name="Player" parent="." instance=ExtResource("1_kmaq2")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 4.5)
 
-[node name="PlayerPoV" parent="Player/Skeleton3D/spine_006" index="0"]
-script = ExtResource("2_52sws")
+[node name="HLP-player-pov" parent="Player/RIG-player/Skeleton3D/spine_006" index="0"]
+current = true
+fov = 75.3
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="2"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_52sws")
-camera_attributes = SubResource("CameraAttributesPractical_w0rtr")
-compositor = SubResource("Compositor_ouqbf")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="3"]
-transform = Transform3D(0.5952566, 0.7274522, -0.34129572, 0.56763244, -0.08005446, 0.81938076, 0.5687381, -0.6814724, -0.46057847, 0, 0, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.9106837, -0.386436, -0.14602196, 0, -0.3534748, 0.93544406, -0.41310433, -0.85189366, -0.32190374, 3.5527137e-14, 0, 0)
+
+[editable path="Player"]
