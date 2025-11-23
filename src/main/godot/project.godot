@@ -22,7 +22,7 @@ buses/default_bus_layout="res://settings/audio_bus_config.tres"
 
 [autoload]
 
-GameMenuManager="*res://components/ui/game_menu/game_menu_manager.gd"
+GameMenuManager="*res://components/menus/game_menu/game_menu_manager.gd"
 
 [display]
 

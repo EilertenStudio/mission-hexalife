@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://covjvtab5kgu1"]
+
+[ext_resource type="Texture2D" uid="uid://6o6poeckreyl" path="res://components/icons/github/assets/icon-github-white.svg" id="1_36bai"]
+
+[node name="IconGithub" type="TextureRect"]
+offset_right = 100.0
+offset_bottom = 100.0
+texture = ExtResource("1_36bai")
