@@ -9,7 +9,7 @@
 // ============================================================================================================= //
 
 === rm_cryogenic_room(-> continue) ===
-# LOCATION
+________________________________________________________________________________________________________________
 Cryogenic Room
 
 : Al centro della stanza ci sono disposte 4 capsule criogeniche
@@ -23,7 +23,7 @@ Cryogenic Room
 // ============================================================================================================= //
 
 === ev_ship_emergency(-> continue) ===
-# EVENT
+________________________________________________________________________________________________________________
 Nave in emergenza
 
 : Luci rosse di emergenza ad intermittenza, animazione lenta
@@ -37,20 +37,23 @@ Nave in emergenza
 
 === ch_1 ===
 - (location)
-    ___________________________________________________________________________________________________________
+    # LOCATION
     -> rm_cryogenic_room(-> event)
 - (event)
-    ___________________________________________________________________________________________________________
-    -> ev_ship_emergency(-> content)
-- (content)
-    ___________________________________________________________________________________________________________
+    # EVENT
+    -> ev_ship_emergency(-> context)
+- (context)
+    # CONTEXT
+    ________________________________________________________________________________________________________________
     : Ti svegli in preda alla confusione dopo aver passato non sai quanto tempo nella capsula criogenica
     : Vedi altre 3 capsule criogeniche, sono aperte e vuote
-    : Sei da solo
-    ___________________________________________________________________________________________________________
-    + [Accedi al terminale]
-    + [Inspeziona le altre capsule]
-    + [Attraversa la porta a sinistra]
+    : Sei da solo nella stanza
+    ________________________________________________________________________________________________________________
+    -> actions
+- (actions)
+    * [Accedi al terminale] -> actions
+    + [Inspeziona le altre capsule] -> actions
+    + [Attraversa la porta a sinistra] -> actions
 
 
 
