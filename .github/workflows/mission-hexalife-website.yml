@@ -66,11 +66,9 @@ jobs:
         run: |
           mise -v run website core build
 
-      - name: Upload artifacts
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: mission-hexalife-website
           path: ./build/html
 
   deploy:
