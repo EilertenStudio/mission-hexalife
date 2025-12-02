@@ -1,6 +1,6 @@
 'use client';
 
-import {useSearchParams} from "next/navigation";
+import {redirect, useSearchParams} from "next/navigation";
 import GamePage from "@/app/game/page";
 import StoryPage from "@/app/story/page";
 
@@ -19,5 +19,5 @@ export default function MainPage() {
       return <StoryPage />
   }
 
-  return <>Bad Request</>;
+  redirect("https://eilertenstudio.itch.io/mission-hexalife");
 }
