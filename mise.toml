@@ -1,10 +1,27 @@
+[tools]
+#act = "latest"
+#gh = "latest"
+#gradle = "latest"
+#java = "openjdk-21.0.2"
+
+# -----------------------------------------------------------------------------
 [tasks."setup"]
+description = "Download and install a local version of requirement executables to make the project portable"
 depends = [
     "setup:aqua"
 ]
-description = "Download and install a local version of requirement executables to make the project portable"
 
-[tasks."godot:editor"]
-dir = "{{cwd}}/src/main/godot"
-run = '{{vars.godot_exec}} -e'
-description = "Open Godot Editor and load the project"
+# -----------------------------------------------------------------------------
+[tasks."website"]
+description = "Access to website service"
+dir = "{{cwd}}/services/website"
+run = "mise r website:{{arg(var=true, default='tasks')}}"
+
+#[tasks."engine:editor"]
+#dir = "{{cwd}}/src/main/godot"
+#run = '{{vars.godot_exec}} -e'
+#description = "Open Godot Editor and load the project"
+
+#[tasks."edit:core"]
+#dir = "{{cwd}}/services/core"
+#run = "mise r blender:core:{{arg(var=true, default='tasks')}}"

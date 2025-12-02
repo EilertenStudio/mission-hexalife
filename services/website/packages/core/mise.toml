@@ -1,0 +1,47 @@
+[tools]
+npm = "11.6.0"
+node = "22"
+
+# -----------------------------------------------------------------------------
+[tasks.'website:core:tasks']
+depends = [
+    'mise:tasks website:core {{cwd}}'
+]
+hide = true
+quiet = true
+
+[tasks."website:core:setup"]
+description = "Setup the package"
+run = [
+  "npm i"
+]
+
+# -----------------------------------------------------------------------------
+[tasks."website:core:build"]
+description = "Build package"
+#depends = [
+#    "website:core:setup"
+#]
+run = "npm run build"
+
+[tasks."website:core:dev"]
+description = "Start dev server of package"
+depends = [
+  "website:core:setup"
+]
+run = "npm run dev"
+
+# -----------------------------------------------------------------------------
+[tasks.'website:core:workflow']
+description = "Access to GitHub Actions workflow of the package"
+dir = "{{cwd}}/../../../.."
+run = [
+  'act -W .github/workflows/mission-hexalife-website.yml {{arg(var=true, default="")}}'
+]
+
+[tasks.'website:core:workflow:validate']
+description = "Validate GitHub Actions workflow of the package"
+depends = [
+  'website:core:workflow --dryrun'
+]
+
