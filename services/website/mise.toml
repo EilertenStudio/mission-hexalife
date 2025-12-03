@@ -6,22 +6,11 @@ act = "latest"
 npm = "11.6.0"
 node = "22"
 
-
 # -----------------------------------------------------------------------------
-#[tasks.'website:tasks']
-#depends = [
-#    'mise:tasks website {{cwd}}'
-#]
-#hide = true
-#quiet = true
+[tasks."setup"]
+description = "Setup project workspace"
+run = "npm i"
 
-# -----------------------------------------------------------------------------
-#[tasks."website:core"]
-#description = "Access to core package"
-#dir = "{{cwd}}/packages/core"
-#run = "mise r website:core:{{arg(var=true, default='tasks')}}"
-
-# -----------------------------------------------------------------------------
 [tasks."build"]
 description = "Build project artifacts"
 run = "npm run build"

@@ -1,7 +1,7 @@
 [tools]
-"aqua:godotengine/godot" = "4.5"
-"github:BurntSushi/ripgrep" = "latest"
-"github:inkle/ink" = "1.1.1"
+#"aqua:godotengine/godot" = "4.5"
+#"github:BurntSushi/ripgrep" = "latest"
+#"github:inkle/ink" = "1.1.1"
 #act = "latest"
 #gh = "latest"
 #gradle = "latest"
