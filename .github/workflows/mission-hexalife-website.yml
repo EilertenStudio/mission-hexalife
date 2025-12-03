@@ -58,21 +58,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.yaml') }}-
 
-      - name: Setup workspace
-        run: |
-          mise -v run website core setup
-
       - name: Run build
         run: |
-          mise -v run website core build
+          mise -v run //services/website:build
         env:
           PAGES_BASE_PATH: ${{ steps.setup_pages.outputs.base_path }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./services/website/packages/core/build/html
-#          path: ./services/website/packages/core/out
+          path: ./services/website/build/html
 
   deploy:
     runs-on: ubuntu-latest

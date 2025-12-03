@@ -1,31 +1,17 @@
+experimental_monorepo_root = true
+
 [settings]
 auto_install = true
 #trace = true
 
 # -----------------------------------------------------------------------------
-[tasks."mise:tasks"]
-run = [
-    'echo ----------------------------------------',
-    'echo $ mise r {{arg(i=0)}} task',
-    'echo $ mise r {{arg(i=0)}} task:sub-task',
-    'echo ----------------------------------------',
-    'mise -C {{arg(i=1)}} t --no-header'
-]
-hide = true
-quiet = true
-
-# -----------------------------------------------------------------------------
-#[tools]
-#aqua = 'latest'
-
-#[env]
-#AQUA_LOG_LEVEL='debug'
-#AQUA_DISABLE_POLICY='true'
-#
-#[vars]
-#godot_exec = 'aqua exec -- godot'
-#
-#[tasks."setup:aqua"]
+#[tasks."mise:tasks"]
+#run = [
+#    'echo ----------------------------------------',
+#    'echo $ mise r {{arg(i=0)}} task',
+#    'echo $ mise r {{arg(i=0)}} task:sub-task',
+#    'echo ----------------------------------------',
+#    'mise -C {{arg(i=1)}} t --no-header'
+#]
 #hide = true
-#run = 'aqua install'
-#description = "Download and install Aqua tools"
+#quiet = true

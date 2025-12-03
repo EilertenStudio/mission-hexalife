@@ -1,0 +1,14 @@
+[tools]
+aqua = 'latest'
+
+[env]
+AQUA_LOG_LEVEL='debug'
+AQUA_DISABLE_POLICY='true'
+
+[vars]
+godot_exec = 'aqua exec -- godot'
+
+[tasks."mise:registry:aqua:setup"]
+hide = true
+run = 'aqua install'
+description = "Download and install Aqua tools"
