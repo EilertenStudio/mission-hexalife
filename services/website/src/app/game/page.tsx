@@ -1,13 +1,19 @@
 'use client'
 
 import "./page.css"
+import {addBasePath} from "next/dist/client/add-base-path";
 
 export interface GamePageProps {
-  branch: string,
+  branch: string;
+  debug: boolean;
 }
 
 export default function GamePage(p: GamePageProps) {
+  const sourceLink = addBasePath(`/blob/game/${p.branch}/index.html`);
   return (
-    <iframe src={`/blob/game/${p.branch}/index.html`}/>
+    <div className={"w-full h-full"}>
+      {p.debug ? (<p>{sourceLink}</p>) : null}
+      <iframe src={sourceLink}/>
+    </div>
   );
 }
