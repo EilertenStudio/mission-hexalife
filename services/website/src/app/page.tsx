@@ -12,11 +12,9 @@ export default function MainPage() {
 
   switch (type) {
     case "game":
-      // redirect("/game?" + searchParams.toString());
-      return <GamePage />
+      return <GamePage branch={searchParams.get("branch") || 'SNAPSHOT'}/>
     case "story":
-      // redirect("/story?" + searchParams.toString());
-      return <StoryPage />
+      return <StoryPage branch={searchParams.get("branch") || 'SNAPSHOT'}/>
   }
 
   redirect("https://eilertenstudio.itch.io/mission-hexalife");

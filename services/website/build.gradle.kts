@@ -5,7 +5,9 @@ plugins {
 idea {
   module {
     sourceDirs.addAll(arrayOf(
-      file("src"),
+      file("src")
+    ))
+    resourceDirs.addAll(arrayOf(
       file("public")
     ))
   }

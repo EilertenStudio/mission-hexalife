@@ -1,18 +1,13 @@
 'use client'
 
-import {redirect, useSearchParams} from "next/navigation";
+import './page.css'
 
-export default function StoryPage() {
-  const searchParams = new URLSearchParams(useSearchParams());
+export interface StoryPageProps {
+  branch: string,
+}
 
-  const branch = searchParams.get("branch");
-  searchParams.delete("branch");
-
-  if (branch) {
-    redirect(`/story/blob/${branch}/index.html`)
-  } else {
-    redirect(`/story/blob/no-build`)
-  }
-
-  return <></>;
+export default function StoryPage(p: StoryPageProps) {
+  return (
+    <iframe src={`/blob/story/${p.branch}/index.html`}/>
+  );
 }

@@ -22,6 +22,11 @@ description = "Start server"
 run = "npm run dev"
 
 # -----------------------------------------------------------------------------
+[tasks."storybook:start"]
+description = "Start storybook"
+run = "npm run storybook"
+
+# -----------------------------------------------------------------------------
 [tasks.'github:workflow']
 description = "Access to GitHub Actions workflow of the package"
 dir = "{{cwd}}"
