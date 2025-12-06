@@ -5,7 +5,7 @@ import {addBasePath} from 'next/dist/client/add-base-path';
 
 export interface StoryPageProps {
   branch: string;
-  debug: boolean;
+  debug?: boolean;
 }
 
 export default function StoryPage(p: StoryPageProps) {
