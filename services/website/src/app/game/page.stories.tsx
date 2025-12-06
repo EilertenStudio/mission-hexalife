@@ -15,7 +15,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    branch: "SNAPSHOT",
-    // branch: "v0.0.2-alpha",
+    version: "next",
   }
 };
