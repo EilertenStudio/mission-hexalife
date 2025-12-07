@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://btfk8360kky62"]
+
+[ext_resource type="Texture2D" uid="uid://b15kqq45l0j6d" path="res://components/icons/discord/assets/icon-discord-white.svg" id="1_l8p8f"]
+
+[node name="IconDiscord" type="TextureRect"]
+offset_right = 100.0
+offset_bottom = 100.0
+texture = ExtResource("1_l8p8f")

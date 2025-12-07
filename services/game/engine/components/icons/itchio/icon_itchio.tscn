@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cnh31od46fggr"]
-
-[ext_resource type="Texture2D" uid="uid://d1nb8pw5orhvu" path="res://components/icons/itchio/assets/icon-itchio-white.svg" id="1_467ah"]
-
-[node name="IconItchio" type="TextureRect"]
-offset_right = 100.0
-offset_bottom = 100.0
-texture = ExtResource("1_467ah")

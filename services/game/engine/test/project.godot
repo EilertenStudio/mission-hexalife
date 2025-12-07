@@ -1,0 +1,46 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Mission HeXalife [TEST]"
+run/main_scene="uid://yhpa4jtr4hfl"
+config/features=PackedStringArray("4.5", "GL Compatibility")
+run/size/viewport_height=720
+run/size/viewport_width=1280
+
+[audio]
+
+buses/default_bus_layout="res://settings/audio_bus_config.tres"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray()
+
+[file_customization]
+
+folder_colors={
+"res://assets/": "pink",
+"res://components/": "orange",
+"res://features/": "blue",
+"res://settings/": "gray",
+"res://tests/": "teal"
+}
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

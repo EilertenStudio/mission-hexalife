@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://df848eo5uwric"]
+
+[ext_resource type="Theme" uid="uid://dq5r1pewwfy7y" path="res://components/menus/game_menu/game_menu_theme.tres" id="1_fnr5x"]
+[ext_resource type="Script" uid="uid://dc514bbwrukcg" path="res://components/menus/game_menu/game_menu_button.gd" id="1_swhab"]
+
+[sub_resource type="Gradient" id="Gradient_8cihh"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3wo8u"]
+gradient = SubResource("Gradient_8cihh")
+width = 20
+
+[node name="GameMenuButton" type="Button"]
+custom_minimum_size = Vector2(0, 31)
+offset_right = 176.0
+offset_bottom = 40.0
+theme = ExtResource("1_fnr5x")
+theme_type_variation = &"GameMenuButton"
+action_mode = 0
+text = "GameMenuButton"
+icon = SubResource("GradientTexture1D_3wo8u")
+alignment = 0
+script = ExtResource("1_swhab")
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="renamed" from="." to="." method="_on_renamed"]
+[connection signal="toggled" from="." to="." method="_on_toggled"]

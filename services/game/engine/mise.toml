@@ -1,6 +1,6 @@
 [tools]
 # -----------------------------------------------------------------------------
-"aqua:godotengine/godot" = "4.5"
+"aqua:godotengine/godot" = "4.5.1"
 
 # -----------------------------------------------------------------------------
 [tasks."setup"]
@@ -11,19 +11,43 @@ run = [
 
 [tasks."build"]
 description = "Build project artifacts"
+dir = "./main_v2"
 run = [
   "mise exec -- godot --headless --verbose --export-debug Web {{cwd}}/services/game/build/engine/next/index.html"
 ]
+depends_post = [
+  "publish"
+]
 
-#[tasks."publish"]
-#description = "Publish project artifacts"
-#run = [
-#  "cp -r {{cwd}}/services/game/build/engine/next {{cwd}}/services/website/public/blob/game/next/index.html"
-#]
+[tasks."publish"]
+description = "Publish project artifacts"
+run = [
+  "rm -rf {{cwd}}/services/website/public/blob/game/next/index.html || exit 0",
+  "cp -r {{cwd}}/services/game/build/engine/next {{cwd}}/services/website/public/blob/game/next/index.html"
+]
+run_windows = [
+  'IF EXIST {{cwd}}\services\website\public\blob\game\next (RD /S /Q {{cwd}}\services\website\public\blob\game\next)',
+  'XCOPY {{cwd}}\services\game\build\engine\next {{cwd}}\services\website\public\blob\game\next\ /E /I'
+]
 
 # -----------------------------------------------------------------------------
-[tasks."editor:start"]
-description = "Run engine editor"
+[tasks."editor:main:v1"]
+description = "Run main engine editor"
+dir = "./main_v1"
+run = [
+  "mise exec -- godot --editor"
+]
+
+[tasks."editor:main:v2"]
+description = "Run main engine editor"
+dir = "./main_v2"
+run = [
+  "mise exec -- godot --editor"
+]
+
+[tasks."editor:test"]
+description = "Run test engine editor"
+dir = "./test"
 run = [
   "mise exec -- godot --editor"
 ]
