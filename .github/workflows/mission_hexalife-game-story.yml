@@ -1,15 +1,13 @@
 name: 'Mission HeXalife - Game Story'
 
 on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-  # Runs on pushes targeting the main branch
-  push:
-    branches:
-      - "main"
-    paths:
-      - "services/game/story/**"
+  # Allows you to run this workflow from another workflow
+  workflow_call:
+    inputs:
+      version:
+        description: "Artifact tag version"
+        type: string
+        required: true
 
 env:
   MISE_EXPERIMENTAL: true
@@ -17,38 +15,20 @@ env:
   SERVICE_GAME_DIR: "services/game"
   SERVICE_WEBSITE_DIR: "services/website"
   # ---------------------------------------------------------------------------
-  ENGINE_VERSION: "next"
-  ENGINE_SRC_DIR: "services/game/engine"
-  ENGINE_BUILD_DIR: "services/game/build/engine"
-  ENGINE_DEPLOY_BASE_DIR: "services/website/public/blob/game"
-  ENGINE_ARTIFACT_NAME: "mission_hexalife-game-engine-next"
-  # ---------------------------------------------------------------------------
-  STORY_VERSION: "next"
-  STORY_SRC_DIR: "services/game/story"
-  STORY_BUILD_DIR: "services/game/build/story"
-  STORY_DEPLOY_BASE_DIR: "services/website/public/blob/story"
-  STORY_ARTIFACT_NAME: "mission_hexalife-game-story-next"
+  PACKAGE_SRC_DIR: "services/game/story"
+  PACKAGE_BUILD_DIR: "services/game/build/story"
+  PACKAGE_DEPLOY_BASE_DIR: "services/website/public/blob/story"
+  PACKAGE_ARTIFACT_NAME: "mission_hexalife-game-story"
+  PACKAGE_VERSION: "${{inputs.version}}"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: barichello/godot-ci:4.3
-    outputs:
-      engine_changes: ${{ steps.changes.outputs.engine_changes }}
-      story_changes: ${{ steps.changes.outputs.story_changes }}
     steps:
-      - name: Setup container
-        run: |
-          apt update
-          apt install -y \
-            curl \
-            git
-
       - name: Checkout workspace
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          lfs: true
 
       - name: Install Mise
         uses: jdx/mise-action@v2
@@ -57,98 +37,56 @@ jobs:
 
       - name: Setup workspace
         run: |
-          mise -v run //${{env.SERVICE_GAME_DIR}}:setup
-
-      - name: Detect path changes
-        id: changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            engine_changes:
-              - '${{env.ENGINE_SRC_DIR}}/**'
-            story_changes:
-              - '${{env.STORY_SRC_DIR}}/**'
-
-      - name: Run engine build
-        if: steps.changes.outputs.engine_changes == 'true'
-        run: |
-          mise -v run //${{env.SERVICE_GAME_DIR}}/engine:build version=${{env.ENGINE_VERSION}}
-
-      - name: Upload engine artifact
-        if: steps.changes.outputs.engine_changes == 'true'
-        uses: actions/upload-artifact@v5
-        with:
-          path: "${{env.ENGINE_BUILD_DIR}}"
-          name: "${{env.ENGINE_ARTIFACT_NAME}}"
+          mise -v run //${{env.PACKAGE_SRC_DIR}}:setup
 
       - name: Run story build
-        if: steps.changes.outputs.story_changes == 'true'
+        timeout-minutes: 1
         run: |
-          mise -v run //${{env.SERVICE_GAME_DIR}}/story:build version=${{env.STORY_VERSION}}
+          mkdir -p ${{env.PACKAGE_BUILD_DIR}}/${{env.PACKAGE_VERSION}}
+          mise -v run //${{env.PACKAGE_SRC_DIR}}:build version=${{env.PACKAGE_VERSION}}
 
       - name: Upload story artifact
-        if: steps.changes.outputs.story_changes == 'true'
         uses: actions/upload-artifact@v5
         with:
-          path: "${{env.STORY_BUILD_DIR}}"
-          name: "${{env.STORY_ARTIFACT_NAME}}"
-#
-#  deploy:
-#    runs-on: ubuntu-latest
-#    needs: build
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#        with:
-#          persist-credentials: true
-#
-#      - name: Download engine artifact
-#        if: needs.build.outputs.engine_changes == 'true'
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: "${{env.ENGINE_ARTIFACT_NAME}}"
-#          path: ${{env.ENGINE_BUILD_DIR}}
-#
-#      - name: Copy engine artifact to website static content
-#        if: needs.build.outputs.engine_changes == 'true'
-#        run: |
-#          if [ ! -d "${{env.ENGINE_DEPLOY_BASE_DIR}}" ]; then
-#            mkdir -p "${{env.ENGINE_DEPLOY_BASE_DIR}}"
-#          fi
-#          if [ -d "${{env.ENGINE_DEPLOY_BASE_DIR}}/${{env.ENGINE_VERSION}}" ]; then
-#            rm -rf "${{env.ENGINE_DEPLOY_DEPLOY_DIR}}/${{env.ENGINE_VERSION}}"
-#          fi
-#          cp -r "${{env.ENGINE_BUILD_DIR}} "${{env.ENGINE_DEPLOY_BASE_DIR}}/${{env.ENGINE_VERSION}}"
-#
-#      - name: Download story artifact
-#        if: needs.build.outputs.story_changes == 'true'
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: "${{env.STORY_ARTIFACT_NAME}}"
-#          path: /tmp/mission_hexalife/story/${{env.STORY_VERSION}}
-#
-#      - name: Copy story artifact to website static content
-#        if: needs.build.outputs.story_changes == 'true'
-#        run: |
-#          if [ ! -d "${{env.STORY_DEPLOY_BASE_DIR}}" ]; then
-#            mkdir -p "${{env.STORY_DEPLOY_BASE_DIR}}"
-#          fi
-#          if [ -d "${{env.STORY_DEPLOY_BASE_DIR}}/${{env.STORY_VERSION}}" ]; then
-#            rm -rf "${{env.STORY_DEPLOY_DEPLOY_DIR}}/${{env.STORY_VERSION}}"
-#          fi
-#          cp -r "${{env.STORY_BUILD_DIR}} "${{env.STORY_DEPLOY_BASE_DIR}}/${{env.STORY_VERSION}}"
-#
-#      - name: Commit and push changes to ${{github.base_ref}}
-#        env:
-#          COMMIT_MSG: "Deploy game artifacts from workflow run ${{ github.run_id }}"
-#        run: |
-#          git config user.name "github-actions[bot]"
-#          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-#          git add -A .
-#          # Only commit if there are staged changes
-#          if git diff --staged --quiet; then
-#            echo "No changes to commit"
-#          else
-#            git commit -m "$COMMIT_MSG"
-#            git push origin HEAD:main
-#          fi
+          name: "${{env.PACKAGE_ARTIFACT_NAME}}-${{env.PACKAGE_VERSION}}"
+          path: "${{env.PACKAGE_BUILD_DIR}}"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Download story artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: "${{env.PACKAGE_ARTIFACT_NAME}}-${{env.PACKAGE_VERSION}}"
+          path: "${{env.PACKAGE_BUILD_DIR}}"
+
+      - name: Copy story artifact to website static content
+        run: |
+          if [ ! -d "${{env.PACKAGE_DEPLOY_BASE_DIR}}" ]; then
+            mkdir -p "${{env.PACKAGE_DEPLOY_BASE_DIR}}"
+          fi
+          if [ -d "${{env.PACKAGE_DEPLOY_BASE_DIR}}/${{env.PACKAGE_VERSION}}" ]; then
+            rm -rf "${{env.PACKAGE_DEPLOY_DEPLOY_DIR}}/${{env.PACKAGE_VERSION}}"
+          fi
+          cp -r "${{env.PACKAGE_BUILD_DIR}}" "${{env.PACKAGE_DEPLOY_BASE_DIR}}/${{env.PACKAGE_VERSION}}"
+
+      - name: Commit and push changes to ${{github.base_ref}}
+        env:
+          COMMIT_MSG: "Deploy game artifacts from workflow run ${{ github.run_id }}"
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A .
+          # Only commit if there are staged changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "$COMMIT_MSG"
+            git push origin HEAD:main
+          fi

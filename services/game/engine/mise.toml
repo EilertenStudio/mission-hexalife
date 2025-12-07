@@ -11,7 +11,7 @@ run = [
 
 [tasks."build"]
 description = "Build project artifacts"
-dir = "./main_v2"
+dir = "./main_v1"
 run = [
   "mise exec -- godot --headless --verbose --export-debug Web {{cwd}}/services/game/build/engine/next/index.html"
 ]

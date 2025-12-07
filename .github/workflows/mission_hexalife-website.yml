@@ -4,6 +4,11 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+  # Allows you to run this workflow from an event trigger from another source
+  repository_dispatch:
+    types:
+      - game-updated
+
   # Runs on pushes targeting the main branch
   push:
     branches:

@@ -22,14 +22,21 @@ description = "Build project artifacts"
 
 # -----------------------------------------------------------------------------
 [tasks.'github:workflow']
-description = "Access to GitHub Actions workflow of the package"
-dir = "{{cwd}}"
+description = "Access to GitHub Actions workflow"
 run = [
-  'act -W .github/workflows/mission-hexalife-game-story.yml {{arg(var=true, default="")}}'
+  'gh workflow'
 ]
 
-[tasks.'github:workflow:validate']
-description = "Validate GitHub Actions workflow of the package"
-depends = [
-  'github:workflow --dryrun'
+[tasks.'github:workflow:run:local']
+description = "Execute to GitHub Actions workflow of the package (LOCAL CONTAINER)"
+dir = "{{cwd}}"
+run = [
+  'act -W .github/workflows/mission_hexalife-game-story.yml'
+]
+
+[tasks.'github:workflow:run:remote']
+description = "Execute to GitHub Actions workflow of the package (REMOTE)"
+dir = "{{cwd}}"
+run = [
+  "gh workflow run mission_hexalife-game-story.yml"
 ]
