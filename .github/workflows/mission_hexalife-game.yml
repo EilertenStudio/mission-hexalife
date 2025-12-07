@@ -23,19 +23,38 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      engine_changes: ${{ steps.changes.outputs.engine_changes }}
-      story_changes: ${{ steps.changes.outputs.story_changes }}
-      game_version: ${{ env.SERVICE_GAME_VERSION }}
+      # -----------------------------------------------------------------------
+      SERVICE_GAME_VERSION: ${{ steps.vars.outputs.SERVICE_GAME_VERSION }}
+      # -----------------------------------------------------------------------
+      ENGINE_CHANGES: ${{ steps.changes.outputs.engine_changes }}
+      STORY_CHANGES: ${{ steps.changes.outputs.story_changes }}
     steps:
+      - name: Set ENV variables as Job Outputs
+        id: vars
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const env = process.env;
+            
+            const variablesToExport = [
+              'SERVICE_GAME_VERSION',
+            ];
+
+            for (const key of variablesToExport) {
+              if (env[key]) {
+                core.setOutput(key, env[key]);
+              }
+            }
+            
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Detect path changes
         id: changes
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-setup@v3
         with:
-          filters: |
+          setups: |
             engine_changes:
               - '${{ env.SERVICE_GAME_ENGINE_DIR }}/**'
             story_changes:
@@ -44,14 +63,14 @@ jobs:
   engine:
     uses: ./.github/workflows/mission_hexalife-game-engine.yml
     needs: setup
-    if: ${{ github.event_name == 'workflow_dispatch' || needs.filter.outputs.engine_changes == 'true' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.setup.outputs.ENGINE_CHANGES == 'true' }}
     with:
       version: ${{ needs.setup.outputs.game_version }}
 
   story:
     uses: ./.github/workflows/mission_hexalife-game-story.yml
     needs: setup
-    if: ${{ github.event_name == 'workflow_dispatch' || needs.filter.outputs.story_changes == 'true' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.setup.outputs.STORY_CHANGES == 'true' }}
     with:
       version: ${{ needs.setup.outputs.game_version }}
 

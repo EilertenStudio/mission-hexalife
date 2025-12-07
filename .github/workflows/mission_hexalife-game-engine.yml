@@ -17,13 +17,40 @@ env:
   SERVICE_GAME_DIR: "services/game"
   SERVICE_WEBSITE_DIR: "services/website"
   # ---------------------------------------------------------------------------
-  ENGINE_SRC_DIR: "services/game/engine"
-  ENGINE_BUILD_DIR: "services/game/build/engine"
-  ENGINE_DEPLOY_BASE_DIR: "services/website/public/blob/game"
-  ENGINE_ARTIFACT_NAME: "mission_hexalife-game-engine"
-  ENGINE_VERSION: "${{inputs.version}}"
+  PACKAGE_SRC_DIR: "services/game/engine"
+  PACKAGE_BUILD_DIR: "services/game/build/engine"
+  PACKAGE_DEPLOY_BASE_DIR: "services/website/public/blob/game"
+  PACKAGE_ARTIFACT_NAME: "mission_hexalife-game-engine"
+  PACKAGE_VERSION: "${{inputs.version}}"
 
 jobs:
+  jobs:
+    setup:
+      runs-on: ubuntu-latest
+      outputs:
+        PACKAGE_BUILD_DIR: ${{ steps.vars.outputs.PACKAGE_BUILD_DIR }}
+        PACKAGE_ARTIFACT_NAME: ${{ steps.vars.outputs.PACKAGE_ARTIFACT_NAME }}
+        PACKAGE_VERSION: ${{ steps.vars.outputs.PACKAGE_VERSION }}
+      steps:
+        - name: Set ENV variables as Job Outputs
+          id: vars
+          uses: actions/github-script@v8
+          with:
+            script: |
+              const env = process.env;
+
+              const variablesToExport = [
+                'PACKAGE_BUILD_DIR',
+                'PACKAGE_ARTIFACT_NAME',
+                'PACKAGE_VERSION',
+              ];
+
+              for (const key of variablesToExport) {
+                if (env[key]) {
+                  core.setOutput(key, env[key]);
+                }
+              }
+
   build:
     runs-on: ubuntu-24.04
     container:
@@ -32,13 +59,10 @@ jobs:
       - name: Setup container
         run: |
           # Godot configuration
-          set -x
-          #echo ${whoami}
-          #if [ $(whoami) != 'root' ]; then
+          if [ $(ls ~/) != '/root' ]; then
             mkdir -v -p ~/.local/share/godot/export_templates/
             mv /root/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable ~/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable
-          #fi
-          #set +x
+          fi
           
           # Install missing packages
           apt update
@@ -58,19 +82,19 @@ jobs:
 
       - name: Setup workspace
         run: |
-          mise -v run //${{env.ENGINE_SRC_DIR}}:setup
+          mise -v run //${{env.PACKAGE_SRC_DIR}}:setup
 
       - name: Run engine build
         timeout-minutes: 1
         run: |
-          mkdir -p ${{env.ENGINE_BUILD_DIR}}/${{env.ENGINE_VERSION}}
-          mise -v run //${{env.ENGINE_SRC_DIR}}:build version=${{env.ENGINE_VERSION}}
+          mkdir -p ${{env.PACKAGE_BUILD_DIR}}/${{env.PACKAGE_VERSION}}
+          mise -v run //${{env.PACKAGE_SRC_DIR}}:build version=${{env.PACKAGE_VERSION}}
 
       - name: Upload engine artifact
         uses: actions/upload-artifact@v5
         with:
-          name: "${{env.PACKAGE_ARTIFACT_NAME}}-${{env.PACKAGE_VERSION}}"
-          path: "${{env.PACKAGE_BUILD_DIR}}"
+          name: "${{needs.setup.outputs.PACKAGE_ARTIFACT_NAME}}-${{needs.setup.outputs.PACKAGE_VERSION}}"
+          path: "${{needs.setup.outputs.PACKAGE_BUILD_DIR}}"
 
   deploy:
     runs-on: ubuntu-latest
@@ -84,8 +108,8 @@ jobs:
       - name: Download engine artifact
         uses: actions/download-artifact@v4
         with:
-          name: "${{env.PACKAGE_ARTIFACT_NAME}}-${{env.PACKAGE_VERSION}}"
-          path: "${{env.PACKAGE_BUILD_DIR}}"
+          name: "${{needs.setup.outputs.PACKAGE_ARTIFACT_NAME}}-${{needs.setup.outputs.PACKAGE_VERSION}}"
+          path: "${{needs.setup.outputs.PACKAGE_BUILD_DIR}}"
 
       - name: Copy engine artifact to website static content
         run: |
