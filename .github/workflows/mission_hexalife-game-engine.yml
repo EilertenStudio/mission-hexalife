@@ -1,15 +1,13 @@
 name: 'Mission HeXalife - Game Engine'
 
 on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-  # Runs on pushes targeting the main branch
-  push:
-    branches:
-      - "main"
-    paths:
-      - "services/game/engine/**"
+  # Allows you to run this workflow from another workflow
+  workflow_call:
+    inputs:
+      version:
+        description: "Artifact tag version"
+        type: string
+        required: true
 
 env:
   MISE_EXPERIMENTAL: true
@@ -22,8 +20,8 @@ env:
   ENGINE_SRC_DIR: "services/game/engine"
   ENGINE_BUILD_DIR: "services/game/build/engine"
   ENGINE_DEPLOY_BASE_DIR: "services/website/public/blob/game"
-  ENGINE_ARTIFACT_NAME: "mission_hexalife-game-engine-next"
-  ENGINE_VERSION: "next"
+  ENGINE_ARTIFACT_NAME: "mission_hexalife-game-engine"
+  ENGINE_VERSION: "${{inputs.version}}"
 
 jobs:
   build:
@@ -63,14 +61,13 @@ jobs:
         timeout-minutes: 1
         run: |
           mkdir -p ${{env.ENGINE_BUILD_DIR}}/${{env.ENGINE_VERSION}}
-          mise -v run //${{env.ENGINE_SRC_DIR}}:build
-          # version=${{env.ENGINE_VERSION}}
+          mise -v run //${{env.ENGINE_SRC_DIR}}:build version=${{env.ENGINE_VERSION}}
 
       - name: Upload engine artifact
         uses: actions/upload-artifact@v5
         with:
-          path: "${{env.ENGINE_BUILD_DIR}}"
-          name: "${{env.ENGINE_ARTIFACT_NAME}}"
+          name: "${{env.PACKAGE_ARTIFACT_NAME}}-${{env.PACKAGE_VERSION}}"
+          path: "${{env.PACKAGE_BUILD_DIR}}"
 
   deploy:
     runs-on: ubuntu-latest
@@ -84,18 +81,18 @@ jobs:
       - name: Download engine artifact
         uses: actions/download-artifact@v4
         with:
-          name: "${{env.ENGINE_ARTIFACT_NAME}}"
-          path: "${{env.ENGINE_BUILD_DIR}}"
+          name: "${{env.PACKAGE_ARTIFACT_NAME}}-${{env.PACKAGE_VERSION}}"
+          path: "${{env.PACKAGE_BUILD_DIR}}"
 
       - name: Copy engine artifact to website static content
         run: |
-          if [ ! -d "${{env.ENGINE_DEPLOY_BASE_DIR}}" ]; then
-            mkdir -p "${{env.ENGINE_DEPLOY_BASE_DIR}}"
+          if [ ! -d "${{env.PACKAGE_DEPLOY_BASE_DIR}}" ]; then
+            mkdir -p "${{env.PACKAGE_DEPLOY_BASE_DIR}}"
           fi
-          if [ -d "${{env.ENGINE_DEPLOY_BASE_DIR}}/${{env.ENGINE_VERSION}}" ]; then
-            rm -rf "${{env.ENGINE_DEPLOY_DEPLOY_DIR}}/${{env.ENGINE_VERSION}}"
+          if [ -d "${{env.PACKAGE_DEPLOY_BASE_DIR}}/${{env.PACKAGE_VERSION}}" ]; then
+            rm -rf "${{env.PACKAGE_DEPLOY_DEPLOY_DIR}}/${{env.PACKAGE_VERSION}}"
           fi
-          cp -r "${{env.ENGINE_BUILD_DIR}}" "${{env.ENGINE_DEPLOY_BASE_DIR}}/${{env.ENGINE_VERSION}}"
+          cp -r "${{env.PACKAGE_BUILD_DIR}}" "${{env.PACKAGE_DEPLOY_BASE_DIR}}/${{env.PACKAGE_VERSION}}"
 
       - name: Commit and push changes to ${{github.base_ref}}
         env:
@@ -111,8 +108,3 @@ jobs:
             git commit -m "$COMMIT_MSG"
             git push origin HEAD:main
           fi
-
-      - name: "Run service website workflow"
-        run: |
-          echo "$GH_TOKEN" | gh auth login --with-token
-          gh workflow run mission_hexalife-website.yml

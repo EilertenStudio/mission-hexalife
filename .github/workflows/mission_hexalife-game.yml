@@ -1,0 +1,65 @@
+name: 'Mission HeXalife - Game'
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+  # Runs on pushes targeting the main branch
+  push:
+    branches:
+      - "main"
+    paths:
+      - "services/game/**"
+
+env:
+  # ---------------------------------------------------------------------------
+  SERVICE_GAME_VERSION: "next"
+  SERVICE_GAME_ENGINE_DIR: "services/game/engine"
+  SERVICE_GAME_STORY_DIR: "services/game/story"
+  # ---------------------------------------------------------------------------
+  SERVICE_WEBSITE_DIR: "services/website"
+
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+    outputs:
+      changes_a: ${{ steps.changes.outputs.changes_a }}
+      changes_c: ${{ steps.changes.outputs.changes_c }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect path changes
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            engine_changes:
+              - '${{ env.SERVICE_GAME_ENGINE_DIR }}/**'
+            story_changes:
+              - '${{ env.SERVICE_GAME_STORY_DIR }}/**'
+
+  engine:
+    uses: ./.github/workflows/mission_hexalife-game-engine.yml
+    needs: filter
+    if: ${{ needs.filter.outputs.engine_changes == 'true' }}
+    with:
+      version: ${{env.SERVICE_GAME_VERSION}}
+
+  story:
+    uses: ./.github/workflows/mission_hexalife-game-story.yml
+    needs: filter
+    if: ${{ needs.filter.outputs.story_changes == 'true' }}
+    with:
+      version: ${{env.SERVICE_GAME_VERSION}}
+
+
+  update:
+    runs-on: ubuntu-latest
+    needs: [engine, story]
+    steps:
+      - name: "Run service website workflow"
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          event-type: game-updated
