@@ -32,10 +32,12 @@ jobs:
       - name: Setup container
         run: |
           # Godot configuration
-          if [  $(whoami) != 'root' ]; then
+          set -x
+          if [ $(whoami) != 'root' ]; then
             mkdir -v -p ~/.local/share/godot/export_templates/
             mv /root/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable ~/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable
           fi
+          set +x
           
           # Install missing packages
           apt update
