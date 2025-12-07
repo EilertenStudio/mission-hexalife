@@ -18,3 +18,18 @@ description = "Build project artifacts"
 #run = [
 #  "cp -r {{cwd}}/services/game/build/engine/next {{cwd}}/services/website/public/blob/game/next/index.html"
 #]
+
+
+# -----------------------------------------------------------------------------
+[tasks.'github:workflow']
+description = "Access to GitHub Actions workflow of the package"
+dir = "{{cwd}}"
+run = [
+  'act -W .github/workflows/mission-hexalife-game-story.yml {{arg(var=true, default="")}}'
+]
+
+[tasks.'github:workflow:validate']
+description = "Validate GitHub Actions workflow of the package"
+depends = [
+  'github:workflow --dryrun'
+]

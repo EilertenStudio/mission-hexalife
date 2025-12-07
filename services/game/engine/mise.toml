@@ -33,3 +33,18 @@ description = "Run engine editor"
 run = [
   "mise exec -- godot --editor"
 ]
+
+
+# -----------------------------------------------------------------------------
+[tasks.'github:workflow']
+description = "Access to GitHub Actions workflow of the package"
+dir = "{{cwd}}"
+run = [
+  'act -W .github/workflows/mission-hexalife-game-engine.yml {{arg(var=true, default="")}}'
+]
+
+[tasks.'github:workflow:validate']
+description = "Validate GitHub Actions workflow of the package"
+depends = [
+  'github:workflow --dryrun'
+]
