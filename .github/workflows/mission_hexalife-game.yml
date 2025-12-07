@@ -22,9 +22,10 @@ env:
 jobs:
   filter:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     outputs:
-      engine_changes: ${{ steps.changes.outputs.engine_changes || github.event_name == 'workflow_dispatch' }}
-      story_changes: ${{ steps.changes.outputs.story_changes || github.event_name == 'workflow_dispatch' }}
+      engine_changes: ${{ steps.changes.outputs.engine_changes }}
+      story_changes: ${{ steps.changes.outputs.story_changes }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,14 +44,14 @@ jobs:
   engine:
     uses: ./.github/workflows/mission_hexalife-game-engine.yml
     needs: filter
-    if: ${{ needs.filter.outputs.engine_changes == 'true' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.filter.outputs.engine_changes == 'true' }}
     with:
       version: ${{vars.SERVICE_GAME_VERSION}}
 
   story:
     uses: ./.github/workflows/mission_hexalife-game-story.yml
     needs: filter
-    if: ${{ needs.filter.outputs.story_changes == 'true' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.filter.outputs.story_changes == 'true' }}
     with:
       version: ${{vars.SERVICE_GAME_VERSION}}
 
