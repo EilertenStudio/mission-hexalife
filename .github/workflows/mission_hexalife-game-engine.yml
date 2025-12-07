@@ -33,11 +33,12 @@ jobs:
         run: |
           # Godot configuration
           set -x
-          if [ $(whoami) != 'root' ]; then
+          #echo ${whoami}
+          #if [ $(whoami) != 'root' ]; then
             mkdir -v -p ~/.local/share/godot/export_templates/
             mv /root/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable ~/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable
-          fi
-          set +x
+          #fi
+          #set +x
           
           # Install missing packages
           apt update
