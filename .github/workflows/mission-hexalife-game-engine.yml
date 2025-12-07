@@ -9,7 +9,7 @@ on:
     branches:
       - "main"
     paths:
-      - "services/game/engine/"
+      - "services/game/engine/**"
 
 env:
   MISE_EXPERIMENTAL: true
@@ -48,8 +48,11 @@ jobs:
       - name: Setup workspace
         run: |
           mise -v run //${{env.ENGINE_SRC_DIR}}:setup
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
 
       - name: Run engine build
+        timeout-minutes: 1
         run: |
           mise -v run //${{env.ENGINE_SRC_DIR}}:build 
           # version=${{env.ENGINE_VERSION}}

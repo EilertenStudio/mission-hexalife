@@ -9,7 +9,7 @@ on:
     branches:
       - "main"
     paths:
-      - "services/game/story/"
+      - "services/game/story/**"
 
 env:
   MISE_EXPERIMENTAL: true
