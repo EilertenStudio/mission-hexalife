@@ -12,7 +12,6 @@ run = "npm i"
 description = "Build project artifacts"
 run = "npm run build"
 
-
 # -----------------------------------------------------------------------------
 [tasks."server:start"]
 description = "Start server"
@@ -25,16 +24,21 @@ run = "npm run storybook"
 
 # -----------------------------------------------------------------------------
 [tasks.'github:workflow']
-description = "Access to GitHub Actions workflow of the package"
+description = "Access to GitHub Actions workflow"
+run = [
+  'gh workflow'
+]
+
+[tasks.'github:workflow:run:local']
+description = "Execute to GitHub Actions workflow of the package (LOCAL CONTAINER)"
 dir = "{{cwd}}"
 run = [
-  'act -W .github/workflows/mission-hexalife-website.yml {{arg(var=true, default="")}}'
+  'act -W .github/workflows/mission_hexalife-website.yml'
 ]
 
-[tasks.'github:workflow:validate']
-description = "Validate GitHub Actions workflow of the package"
-depends = [
-  'github:workflow --dryrun'
+[tasks.'github:workflow:run:remote']
+description = "Execute to GitHub Actions workflow of the package (REMOTE)"
+dir = "{{cwd}}"
+run = [
+  "gh workflow run mission_hexalife-website.yml"
 ]
-
-

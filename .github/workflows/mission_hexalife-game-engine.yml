@@ -34,8 +34,10 @@ jobs:
       - name: Setup container
         run: |
           # Godot configuration
-          mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable ~/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable
+          if [  $(whoami) != 'root' ]; then
+            mkdir -v -p ~/.local/share/godot/export_templates/
+            mv /root/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable ~/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable
+          fi
           
           # Install missing packages
           apt update
@@ -109,3 +111,8 @@ jobs:
             git commit -m "$COMMIT_MSG"
             git push origin HEAD:main
           fi
+
+      - name: "Run service website workflow"
+        run: |
+          echo "$GH_TOKEN" | gh auth login --with-token
+          gh workflow run mission_hexalife-website.yml
