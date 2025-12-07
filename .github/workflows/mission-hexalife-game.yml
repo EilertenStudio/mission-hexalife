@@ -42,7 +42,8 @@ jobs:
         run: |
           apt update
           apt install -y \
-            curl
+            curl \
+            git
 
       - name: Checkout workspace
         uses: actions/checkout@v4
