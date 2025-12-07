@@ -14,6 +14,8 @@ on:
 env:
   MISE_EXPERIMENTAL: true
   # ---------------------------------------------------------------------------
+  GODOT_VERSION: 4.5.1
+  # ---------------------------------------------------------------------------
   SERVICE_GAME_DIR: "services/game"
   SERVICE_WEBSITE_DIR: "services/website"
   # ---------------------------------------------------------------------------
@@ -36,6 +38,9 @@ jobs:
           apt install -y \
             curl \
             nodejs
+          
+          # Godot configuration
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
 
       - name: Checkout workspace
         uses: actions/checkout@v4
