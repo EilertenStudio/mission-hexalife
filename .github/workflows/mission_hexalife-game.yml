@@ -22,7 +22,7 @@ env:
 jobs:
   filter:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'push' }}
     outputs:
       engine_changes: ${{ steps.changes.outputs.engine_changes }}
       story_changes: ${{ steps.changes.outputs.story_changes }}
