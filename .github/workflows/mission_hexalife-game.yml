@@ -74,7 +74,7 @@ jobs:
     with:
       version: ${{ needs.setup.outputs.game_version }}
 
-  update:
+  deploy:
     runs-on: ubuntu-latest
     needs: [engine, story]
     steps:

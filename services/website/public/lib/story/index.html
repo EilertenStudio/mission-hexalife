@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>mission-hexalife-v3</title>
+    <title>web</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -25,14 +25,20 @@
 
         <div id="story" class="container">
             <div class="header">
-                <h1>mission-hexalife-v3</h1>
+                <h1>Mission HeXalife</h1>
                 <h2 class="byline"></h2>
             </div>
         </div>
     </div>
 
     <script src="ink.js"></script>
-    <script src="mission-hexalife-v3.js"></script>
-    <script src="main.js"></script>
+    <script src="runtime.js"></script>
+    <script>
+      fetchStory('/blob/story/next/story.json', (storyContent) => {
+        loadStory(storyContent);
+      });
+    </script>
+    <script>
+    </script>
 </body>
 </html>

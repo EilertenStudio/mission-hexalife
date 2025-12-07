@@ -1,6 +1,6 @@
 [tools]
 # -----------------------------------------------------------------------------
-#"aqua:godotengine/godot" = "4.5"
+"github:inkle/ink" = "1.1.1"
 
 # -----------------------------------------------------------------------------
 [tasks."setup"]
@@ -9,16 +9,28 @@ description = "Setup project workspace"
 
 [tasks."build"]
 description = "Build project artifacts"
-#run = [
-#  "mise exec -- godot --editor --export-debug Web {{cwd}}/services/game/build/engine/next/index.html"
-#]
+run = [
+  "mkdir -p {{cwd}}/services/game/build/story/next",
+  "mise exec -- inklecate -o {{cwd}}/services/game/build/story/next/story.json {{cwd}}/services/game/story/mission-hexalife-v3.ink"
+]
+run_windows = [
+  'IF NOT EXIST {{cwd}}\services\game\build\story\next (mkdir {{cwd}}\services\game\build\story\next)',
+  'mise -v exec -- inklecate -o {{cwd}}\services\game\build\story\next\story.json {{cwd}}\services\game\story\mission-hexalife-v3.ink'
+]
+depends_post = [
+  "publish"
+]
 
-#[tasks."publish"]
-#description = "Publish project artifacts"
-#run = [
-#  "cp -r {{cwd}}/services/game/build/engine/next {{cwd}}/services/website/public/blob/game/next/index.html"
-#]
-
+[tasks."publish"]
+description = "Publish project artifacts"
+run = [
+  "rm -rf {{cwd}}/services/website/public/blob/story/next || exit 0",
+  "cp -r {{cwd}}/services/game/build/story/next {{cwd}}/services/website/public/blob/story/next"
+]
+run_windows = [
+  'IF EXIST {{cwd}}\services\website\public\blob\story\next (RD /S /Q {{cwd}}\services\website\public\blob\story\next)',
+  'XCOPY {{cwd}}\services\game\build\story\next {{cwd}}\services\website\public\blob\story\next /E /I'
+]
 
 # -----------------------------------------------------------------------------
 [tasks.'github:workflow']

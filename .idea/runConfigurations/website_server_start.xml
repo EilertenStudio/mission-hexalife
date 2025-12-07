@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="website:server:start" type="MiseTomlTaskRunConfigurationType" factoryName="MiseTomlTask">
+    <mise configEnvironment="" taskName="//services/website:server:start" workingDirectory="$PROJECT_DIR$" taskParams="">
+      <envs />
+    </mise>
+    <method v="2" />
+  </configuration>
+</component>

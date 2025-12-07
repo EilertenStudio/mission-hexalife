@@ -1,4 +1,4 @@
-(function(storyContent) {
+function loadStory(storyContent) {
 
     // Create ink story from the content using inkjs
     var story = new inkjs.Story(storyContent);
@@ -436,4 +436,21 @@
         });
     }
 
-})(storyContent);
+};
+
+
+async function fetchStory(jsonFileUrl, closure) {
+  try {
+    const response = await fetch(jsonFileUrl);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    // console.log(result);
+
+    closure.call(this, result);
+  } catch (error) {
+    console.error(error.message);
+  }
+};

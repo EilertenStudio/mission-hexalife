@@ -13,7 +13,12 @@ run = [
 description = "Build project artifacts"
 dir = "./main_v2"
 run = [
+  "mkdir -p {{cwd}}/services/game/build/story/next",
   "mise exec -- godot --headless --verbose --export-debug Web {{cwd}}/services/game/build/engine/next/index.html"
+]
+run_windows = [
+  'IF NOT EXIST {{cwd}}\services\game\build\engine\next (mkdir {{cwd}}\services\game\build\engine\next)',
+  'mise exec -- godot --headless --verbose --export-debug Web {{cwd}}\services\game\build\engine\next\index.html'
 ]
 depends_post = [
   "publish"
@@ -22,8 +27,8 @@ depends_post = [
 [tasks."publish"]
 description = "Publish project artifacts"
 run = [
-  "rm -rf {{cwd}}/services/website/public/blob/game/next/index.html || exit 0",
-  "cp -r {{cwd}}/services/game/build/engine/next {{cwd}}/services/website/public/blob/game/next/index.html"
+  "rm -rf {{cwd}}/services/website/public/blob/game/next || exit 0",
+  "cp -r {{cwd}}/services/game/build/engine/next {{cwd}}/services/website/public/blob/game/next"
 ]
 run_windows = [
   'IF EXIST {{cwd}}\services\website\public\blob\game\next (RD /S /Q {{cwd}}\services\website\public\blob\game\next)',
