@@ -23,8 +23,8 @@ jobs:
   filter:
     runs-on: ubuntu-latest
     outputs:
-      changes_a: ${{ steps.changes.outputs.changes_a }}
-      changes_c: ${{ steps.changes.outputs.changes_c }}
+      changes_a: ${{ steps.changes.outputs.engine_changes }}
+      changes_c: ${{ steps.changes.outputs.story_changes }}
     steps:
       - uses: actions/checkout@v4
         with:
