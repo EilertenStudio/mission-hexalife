@@ -12,7 +12,7 @@ run = [
 [tasks."build"]
 description = "Build project artifacts"
 run = [
-  "mise exec -- godot --editor --export-debug Web {{cwd}}/build/engine/next/index.html"
+  "mise exec -- godot --editor --export-debug Web {{cwd}}/services/game/build/engine/next/index.html"
 ]
 
 #[tasks."publish"]

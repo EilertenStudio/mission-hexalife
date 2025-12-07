@@ -63,7 +63,7 @@ jobs:
       - name: Run engine build
         if: steps.changes.outputs.engine_changes == 'true'
         run: |
-          mise -v run //${{env.SERVICE_GAME_DIR}}:engine:build version=${{env.ENGINE_VERSION}}
+          mise -v run //${{env.SERVICE_GAME_DIR}}/engine:build version=${{env.ENGINE_VERSION}}
 
       - name: Upload engine artifact
         if: steps.changes.outputs.engine_changes == 'true'
@@ -75,7 +75,7 @@ jobs:
       - name: Run story build
         if: steps.changes.outputs.story_changes == 'true'
         run: |
-          mise -v run //${{env.SERVICE_GAME_DIR}}:story:build version=${{env.STORY_VERSION}}
+          mise -v run //${{env.SERVICE_GAME_DIR}}/story:build version=${{env.STORY_VERSION}}
 
       - name: Upload story artifact
         if: steps.changes.outputs.story_changes == 'true'
