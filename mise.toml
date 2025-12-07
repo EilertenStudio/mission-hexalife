@@ -1,3 +1,9 @@
+experimental_monorepo_root = true
+
+[settings]
+auto_install = true
+#trace = true
+
 [tools]
 #"aqua:godotengine/godot" = "4.5"
 #"github:BurntSushi/ripgrep" = "latest"
