@@ -24,35 +24,35 @@ env:
   PACKAGE_VERSION: "${{inputs.version}}"
 
 jobs:
-  jobs:
-    setup:
-      runs-on: ubuntu-latest
-      outputs:
-        PACKAGE_BUILD_DIR: ${{ steps.vars.outputs.PACKAGE_BUILD_DIR }}
-        PACKAGE_ARTIFACT_NAME: ${{ steps.vars.outputs.PACKAGE_ARTIFACT_NAME }}
-        PACKAGE_VERSION: ${{ steps.vars.outputs.PACKAGE_VERSION }}
-      steps:
-        - name: Set ENV variables as Job Outputs
-          id: vars
-          uses: actions/github-script@v8
-          with:
-            script: |
-              const env = process.env;
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      PACKAGE_BUILD_DIR: ${{ steps.vars.outputs.PACKAGE_BUILD_DIR }}
+      PACKAGE_ARTIFACT_NAME: ${{ steps.vars.outputs.PACKAGE_ARTIFACT_NAME }}
+      PACKAGE_VERSION: ${{ steps.vars.outputs.PACKAGE_VERSION }}
+    steps:
+      - name: Set ENV variables as Job Outputs
+        id: vars
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const env = process.env;
 
-              const variablesToExport = [
-                'PACKAGE_BUILD_DIR',
-                'PACKAGE_ARTIFACT_NAME',
-                'PACKAGE_VERSION',
-              ];
+            const variablesToExport = [
+              'PACKAGE_BUILD_DIR',
+              'PACKAGE_ARTIFACT_NAME',
+              'PACKAGE_VERSION',
+            ];
 
-              for (const key of variablesToExport) {
-                if (env[key]) {
-                  core.setOutput(key, env[key]);
-                }
+            for (const key of variablesToExport) {
+              if (env[key]) {
+                core.setOutput(key, env[key]);
               }
+            }
 
   build:
     runs-on: ubuntu-24.04
+    needs: setup
     container:
       image: barichello/godot-ci:4.5.1
     steps:
