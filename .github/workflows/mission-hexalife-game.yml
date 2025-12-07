@@ -38,6 +38,12 @@ jobs:
       engine_changes: ${{ steps.changes.outputs.engine_changes }}
       story_changes: ${{ steps.changes.outputs.story_changes }}
     steps:
+      - name: Setup container
+        run: |
+          apt update
+          apt install -y \
+            curl
+
       - name: Checkout workspace
         uses: actions/checkout@v4
         with:
