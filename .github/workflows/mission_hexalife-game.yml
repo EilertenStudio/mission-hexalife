@@ -20,19 +20,6 @@ env:
   SERVICE_WEBSITE_DIR: "services/website"
 
 jobs:
-  check_trigger:
-    runs-on: ubuntu-latest
-    outputs:
-
-    steps:
-      - name: "Check push"
-        if: ${{ github.event_name == 'push' && github.event_name == 'push' }}
-        run: echo "Il workflow è stato avviato da un push."
-
-      - name: Eseguito solo se il trigger è un dispatch manuale
-        if: ${{  }}
-        run: echo "Il workflow è stato avviato manualmente."
-
   filter:
     runs-on: ubuntu-latest
     outputs:
