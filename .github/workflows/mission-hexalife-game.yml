@@ -17,16 +17,16 @@ env:
   SERVICE_WEBSITE_DIR: "services/website"
   # ---------------------------------------------------------------------------
   ENGINE_VERSION: "next"
-  ENGINE_SRC_DIR: "${{env.SERVICE_GAME_DIR}}/engine"
-  ENGINE_BUILD_DIR: "${{env.SERVICE_GAME_DIR}}/build/engine"
-  ENGINE_DEPLOY_BASE_DIR: "${{env.SERVICE_WEBSITE_DIR}}/public/blob/game"
-  ENGINE_ARTIFACT_NAME: "mission_hexalife-game-engine-${{env.ENGINE_VERSION}}"
+  ENGINE_SRC_DIR: "services/game/engine"
+  ENGINE_BUILD_DIR: "services/game/build/engine"
+  ENGINE_DEPLOY_BASE_DIR: "services/website/public/blob/game"
+  ENGINE_ARTIFACT_NAME: "mission_hexalife-game-engine-next"
   # ---------------------------------------------------------------------------
   STORY_VERSION: "next"
-  STORY_SRC_DIR: "${{env.SERVICE_DIR}}/story"
-  STORY_BUILD_DIR: "${{env.SERVICE_DIR}}/build/story"
-  STORY_DEPLOY_BASE_DIR: "${{env.SERVICE_WEBSITE_DIR}}/public/blob/story"
-  STORY_ARTIFACT_NAME: "mission_hexalife-game-story-${{env.STORY_VERSION}}"
+  STORY_SRC_DIR: "services/game/story"
+  STORY_BUILD_DIR: "services/game/build/story"
+  STORY_DEPLOY_BASE_DIR: "services/website/public/blob/story"
+  STORY_ARTIFACT_NAME: "mission_hexalife-game-story-next"
 
 jobs:
   build:
