@@ -1,4 +1,4 @@
-name: 'Mission HeXalife - Game'
+name: 'Mission HeXalife - Game Engine'
 
 on:
   # Allows you to run this workflow manually from the Actions tab
@@ -38,7 +38,7 @@ jobs:
       - name: Checkout workspace
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          lfs: true
 
       - name: Install Mise
         uses: jdx/mise-action@v2
@@ -51,7 +51,8 @@ jobs:
 
       - name: Run engine build
         run: |
-          mise -v run //${{env.ENGINE_SRC_DIR}}:build version=${{env.ENGINE_VERSION}}
+          mise -v run //${{env.ENGINE_SRC_DIR}}:build 
+          # version=${{env.ENGINE_VERSION}}
 
       - name: Upload engine artifact
         uses: actions/upload-artifact@v5
