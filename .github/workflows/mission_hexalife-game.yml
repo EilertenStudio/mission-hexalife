@@ -52,9 +52,9 @@ jobs:
 
       - name: Detect path changes
         id: changes
-        uses: dorny/paths-setup@v3
+        uses: dorny/paths-filter@v3
         with:
-          setups: |
+          filters: |
             engine_changes:
               - '${{ env.SERVICE_GAME_ENGINE_DIR }}/**'
             story_changes:
