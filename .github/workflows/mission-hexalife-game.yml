@@ -60,29 +60,29 @@ jobs:
             story_changes:
               - '${{env.STORY_SRC_DIR}}/**'
 
-#      - name: Run engine build
-#        if: steps.changes.outputs.engine_changes == 'true
-#        run: |
-#          mise -v run //${{env.SERVICE_GAME_DIR}}:engine:build version=${{env.ENGINE_VERSION}}
-#
-#      - name: Upload engine artifact
-#        if: steps.changes.outputs.engine_changes == 'true
-#        uses: actions/upload-artifact@v5
-#        with:
-#          path: "${{env.ENGINE_BUILD_DIR}}"
-#          name: "${{env.ENGINE_ARTIFACT_NAME}}"
-#
-#      - name: Run story build
-#        if: steps.changes.outputs.story_changes == 'true
-#        run: |
-#          mise -v run //${{env.SERVICE_GAME_DIR}}:story:build version=${{env.STORY_VERSION}}
-#
-#      - name: Upload story artifact
-#        if: steps.changes.outputs.story_changes == 'true
-#        uses: actions/upload-artifact@v5
-#        with:
-#          path: "${{env.STORY_BUILD_DIR}}"
-#          name: "${{env.STORY_ARTIFACT_NAME}}"
+      - name: Run engine build
+        if: steps.changes.outputs.engine_changes == 'true'
+        run: |
+          mise -v run //${{env.SERVICE_GAME_DIR}}:engine:build version=${{env.ENGINE_VERSION}}
+
+      - name: Upload engine artifact
+        if: steps.changes.outputs.engine_changes == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          path: "${{env.ENGINE_BUILD_DIR}}"
+          name: "${{env.ENGINE_ARTIFACT_NAME}}"
+
+      - name: Run story build
+        if: steps.changes.outputs.story_changes == 'true'
+        run: |
+          mise -v run //${{env.SERVICE_GAME_DIR}}:story:build version=${{env.STORY_VERSION}}
+
+      - name: Upload story artifact
+        if: steps.changes.outputs.story_changes == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          path: "${{env.STORY_BUILD_DIR}}"
+          name: "${{env.STORY_ARTIFACT_NAME}}"
 #
 #  deploy:
 #    runs-on: ubuntu-latest
@@ -94,14 +94,14 @@ jobs:
 #          persist-credentials: true
 #
 #      - name: Download engine artifact
-#        if: needs.build.outputs.engine_changes == 'true
+#        if: needs.build.outputs.engine_changes == 'true'
 #        uses: actions/download-artifact@v4
 #        with:
 #          name: "${{env.ENGINE_ARTIFACT_NAME}}"
 #          path: ${{env.ENGINE_BUILD_DIR}}
 #
 #      - name: Copy engine artifact to website static content
-#        if: needs.build.outputs.engine_changes == 'true
+#        if: needs.build.outputs.engine_changes == 'true'
 #        run: |
 #          if [ ! -d "${{env.ENGINE_DEPLOY_BASE_DIR}}" ]; then
 #            mkdir -p "${{env.ENGINE_DEPLOY_BASE_DIR}}"
@@ -112,14 +112,14 @@ jobs:
 #          cp -r "${{env.ENGINE_BUILD_DIR}} "${{env.ENGINE_DEPLOY_BASE_DIR}}/${{env.ENGINE_VERSION}}"
 #
 #      - name: Download story artifact
-#        if: needs.build.outputs.story_changes == 'true
+#        if: needs.build.outputs.story_changes == 'true'
 #        uses: actions/download-artifact@v4
 #        with:
 #          name: "${{env.STORY_ARTIFACT_NAME}}"
 #          path: /tmp/mission_hexalife/story/${{env.STORY_VERSION}}
 #
 #      - name: Copy story artifact to website static content
-#        if: needs.build.outputs.story_changes == 'true
+#        if: needs.build.outputs.story_changes == 'true'
 #        run: |
 #          if [ ! -d "${{env.STORY_DEPLOY_BASE_DIR}}" ]; then
 #            mkdir -p "${{env.STORY_DEPLOY_BASE_DIR}}"
