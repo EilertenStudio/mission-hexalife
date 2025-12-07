@@ -20,11 +20,12 @@ env:
   SERVICE_WEBSITE_DIR: "services/website"
 
 jobs:
-  filter:
+  setup:
     runs-on: ubuntu-latest
     outputs:
       engine_changes: ${{ steps.changes.outputs.engine_changes }}
       story_changes: ${{ steps.changes.outputs.story_changes }}
+      game_version: ${{ env.SERVICE_GAME_VERSION }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,18 +43,17 @@ jobs:
 
   engine:
     uses: ./.github/workflows/mission_hexalife-game-engine.yml
-    needs: filter
+    needs: setup
     if: ${{ github.event_name == 'workflow_dispatch' || needs.filter.outputs.engine_changes == 'true' }}
     with:
-      version: ${{vars.SERVICE_GAME_VERSION}}
+      version: ${{ needs.setup.outputs.game_version }}
 
   story:
     uses: ./.github/workflows/mission_hexalife-game-story.yml
-    needs: filter
+    needs: setup
     if: ${{ github.event_name == 'workflow_dispatch' || needs.filter.outputs.story_changes == 'true' }}
     with:
-      version: ${{vars.SERVICE_GAME_VERSION}}
-
+      version: ${{ needs.setup.outputs.game_version }}
 
   update:
     runs-on: ubuntu-latest
