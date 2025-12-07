@@ -48,8 +48,6 @@ jobs:
       - name: Setup workspace
         run: |
           mise -v run //${{env.ENGINE_SRC_DIR}}:setup
-          mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
 
       - name: Run engine build
         timeout-minutes: 1
