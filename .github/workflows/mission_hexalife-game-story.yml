@@ -1,13 +1,15 @@
 name: 'Mission HeXalife - Game Story'
 
 on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
   # Allows you to run this workflow from another workflow
-  workflow_call:
-    inputs:
-      version:
-        description: "Artifact tag version"
-        type: string
-        required: true
+#  workflow_call:
+#    inputs:
+#      version:
+#        description: "Artifact tag version"
+#        type: string
 
 env:
   MISE_EXPERIMENTAL: true
@@ -19,7 +21,7 @@ env:
   PACKAGE_BUILD_DIR: "services/game/build/story"
   PACKAGE_DEPLOY_BASE_DIR: "services/website/public/blob/story"
   PACKAGE_ARTIFACT_NAME: "mission_hexalife-game-story"
-  PACKAGE_VERSION: "${{inputs.version}}"
+  PACKAGE_VERSION: "${{inputs.version || 'next' }}"
 
 jobs:
   setup:
@@ -52,10 +54,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     steps:
-      - run: |
-          echo : ${{ env.PACKAGE_VERSION }}
-          echo : ${{ needs.setup.outputs.PACKAGE_VERSION }}
-
       - name: Checkout workspace
         uses: actions/checkout@v4
         with:

@@ -1,13 +1,15 @@
 name: 'Mission HeXalife - Game Engine'
 
 on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
   # Allows you to run this workflow from another workflow
-  workflow_call:
-    inputs:
-      version:
-        description: "Artifact tag version"
-        type: string
-        required: true
+#  workflow_call:
+#    inputs:
+#      version:
+#        description: "Artifact tag version"
+#        type: string
 
 env:
   MISE_EXPERIMENTAL: true
@@ -21,7 +23,7 @@ env:
   PACKAGE_BUILD_DIR: "services/game/build/engine"
   PACKAGE_DEPLOY_BASE_DIR: "services/website/public/blob/game"
   PACKAGE_ARTIFACT_NAME: "mission_hexalife-game-engine"
-  PACKAGE_VERSION: "${{inputs.version}}"
+  PACKAGE_VERSION: "${{inputs.version || 'next' }}"
 
 jobs:
   setup:
@@ -59,7 +61,7 @@ jobs:
       - name: Setup container
         run: |
           # Godot configuration
-          if [ $(ls ~/) != '/root' ]; then
+          if [ "$HOME" != '/root' ]; then
             mkdir -v -p ~/.local/share/godot/export_templates/
             mv /root/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable ~/.local/share/godot/export_templates/${{env.GODOT_VERSION}}.stable
           fi
