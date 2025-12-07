@@ -34,7 +34,8 @@
     <script src="ink.js"></script>
     <script src="runtime.js"></script>
     <script>
-      fetchStory('/blob/story/next/story.json', (storyContent) => {
+      const searchParams = new URLSearchParams(window.location.search)
+      fetchStory(searchParams.get("story"), (storyContent) => {
         loadStory(storyContent);
       });
     </script>

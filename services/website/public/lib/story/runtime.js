@@ -440,8 +440,9 @@ function loadStory(storyContent) {
 
 
 async function fetchStory(jsonFileUrl, closure) {
+  var url = jsonFileUrl;
   try {
-    const response = await fetch(jsonFileUrl);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }

@@ -3,7 +3,6 @@
 import './page.css'
 
 import {addBasePath} from "next/dist/client/add-base-path";
-import {useEffect, useState} from "react";
 
 export interface StoryPageProps {
   version: string;
@@ -11,18 +10,15 @@ export interface StoryPageProps {
 }
 
 export default function StoryPage(p: StoryPageProps) {
-  // const sourceLink = addBasePath(`/blob/story/${p.version}/index.html`);
+  const sourceParams = new URLSearchParams();
   const sourceLink = addBasePath(`/lib/story/index.html`);
 
-  const [isClient, setIsClient] = useState(false)
+  sourceParams.append("story", addBasePath(`/blob/story/${p.version}/story.json`))
 
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
   return (
     <div className={"w-full h-full"}>
       {p.debug ? (<p className={"w-fit"}>{sourceLink}</p>) : null}
-      <iframe src={sourceLink}/>
+      <iframe src={`${sourceLink}?${sourceParams.toString()}`}/>
     </div>
   );
 }

@@ -4,11 +4,12 @@ plugins {
 
 idea {
   module {
-    sourceDirs.addAll(arrayOf(
-      file("src")
-    ))
+//    sourceDirs.addAll(arrayOf(
+//      file("src")
+//    ))
     resourceDirs.addAll(arrayOf(
-      file("public")
+      file("src"),
+      file("public"),
     ))
   }
 }
