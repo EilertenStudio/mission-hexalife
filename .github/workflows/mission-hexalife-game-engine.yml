@@ -14,7 +14,7 @@ on:
 env:
   MISE_EXPERIMENTAL: true
   # ---------------------------------------------------------------------------
-  GODOT_FROM_VERSION: 4.5
+  GODOT_FROM_VERSION: 4.5.1
   GODOT_TO_VERSION: 4.5.1
   # ---------------------------------------------------------------------------
   SERVICE_GAME_DIR: "services/game"
@@ -41,6 +41,7 @@ jobs:
             nodejs
           
           # Godot configuration
+          ls -lah /root/.local/share/godot/export_templates/ 
           mv /root/.local/share/godot/export_templates/${{env.GODOT_FROM_VERSION}}.stable ~/.local/share/godot/export_templates/${{env.GODOT_TO_VERSION}}.stable
 
       - name: Checkout workspace
