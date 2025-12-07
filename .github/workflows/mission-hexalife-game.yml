@@ -63,6 +63,9 @@ jobs:
       - name: Run engine build
         if: steps.changes.outputs.engine_changes == 'true'
         run: |
+          export DISPLAY=:99
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+          mycommand
           mise -v run //${{env.SERVICE_GAME_DIR}}/engine:build version=${{env.ENGINE_VERSION}}
 
       - name: Upload engine artifact
