@@ -72,7 +72,8 @@ jobs:
         timeout-minutes: 1
         run: |
           mkdir -p ${{env.PACKAGE_BUILD_DIR}}/${{env.PACKAGE_VERSION}}
-          mise -v run //${{env.PACKAGE_SRC_DIR}}:build version=${{env.PACKAGE_VERSION}}
+          mise -v run //${{env.PACKAGE_SRC_DIR}}:build 
+          #version=${{env.PACKAGE_VERSION}}
 
       - name: Upload story artifact
         uses: actions/upload-artifact@v5
