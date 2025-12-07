@@ -13,28 +13,8 @@ description = "Build project artifacts"
 #  "mise exec -- godot --editor --export-debug Web {{cwd}}/services/game/build/engine/next/index.html"
 #]
 
-#[tasks."deploy"]
-#description = "Build project artifacts"
+#[tasks."publish"]
+#description = "Publish project artifacts"
 #run = [
 #  "cp -r {{cwd}}/services/game/build/engine/next {{cwd}}/services/website/public/blob/game/next/index.html"
 #]
-
-# -----------------------------------------------------------------------------
-[tasks."editor:start"]
-description = "Run engine editor"
-#run = "mise exec -- godot --editor"
-
-
-# -----------------------------------------------------------------------------
-[tasks.'github:workflow']
-description = "Access to GitHub Actions workflow of the package"
-dir = "{{cwd}}"
-run = [
-  'act -W .github/workflows/mission-hexalife-game.yml {{arg(var=true, default="")}}'
-]
-
-[tasks.'github:workflow:validate']
-description = "Validate GitHub Actions workflow of the package"
-depends = [
-  'github:workflow --dryrun'
-]

@@ -1,34 +1,31 @@
 [tools]
 # -----------------------------------------------------------------------------
-npm = "11.6.0"
-node = "22"
 
 # -----------------------------------------------------------------------------
 [tasks."setup"]
 description = "Setup project workspace"
-run = "npm i"
+run = [
+  "mise //services/game/...:setup",
+]
 
 [tasks."build"]
 description = "Build project artifacts"
-run = "npm run build"
+run = [
+  "mise //services/game/...:build"
+]
 
-
-# -----------------------------------------------------------------------------
-[tasks."server:start"]
-description = "Start server"
-run = "npm run dev"
-
-# -----------------------------------------------------------------------------
-[tasks."storybook:start"]
-description = "Start storybook"
-run = "npm run storybook"
+[tasks."publish"]
+description = "Deploy project artifacts"
+run = [
+  "mise //services/game/...:publish"
+]
 
 # -----------------------------------------------------------------------------
 [tasks.'github:workflow']
 description = "Access to GitHub Actions workflow of the package"
 dir = "{{cwd}}"
 run = [
-  'act -W .github/workflows/mission-hexalife-website.yml {{arg(var=true, default="")}}'
+  'act -W .github/workflows/mission-hexalife-game.yml {{arg(var=true, default="")}}'
 ]
 
 [tasks.'github:workflow:validate']
@@ -36,5 +33,3 @@ description = "Validate GitHub Actions workflow of the package"
 depends = [
   'github:workflow --dryrun'
 ]
-
-

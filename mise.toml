@@ -5,6 +5,9 @@ auto_install = true
 #trace = true
 
 [tools]
+act = "latest"
+#gh = "latest"
+
 #"aqua:godotengine/godot" = "4.5"
 #"github:BurntSushi/ripgrep" = "latest"
 #"github:inkle/ink" = "1.1.1"
