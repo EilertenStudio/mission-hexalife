@@ -93,7 +93,7 @@ jobs:
           if [ -d "${{env.ENGINE_DEPLOY_BASE_DIR}}/${{env.ENGINE_VERSION}}" ]; then
             rm -rf "${{env.ENGINE_DEPLOY_DEPLOY_DIR}}/${{env.ENGINE_VERSION}}"
           fi
-          cp -r "${{env.ENGINE_BUILD_DIR}} "${{env.ENGINE_DEPLOY_BASE_DIR}}/${{env.ENGINE_VERSION}}"
+          cp -r "${{env.ENGINE_BUILD_DIR}}" "${{env.ENGINE_DEPLOY_BASE_DIR}}/${{env.ENGINE_VERSION}}"
 
       - name: Commit and push changes to ${{github.base_ref}}
         env:
