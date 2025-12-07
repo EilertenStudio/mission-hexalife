@@ -45,14 +45,14 @@ jobs:
     needs: filter
     if: ${{ needs.filter.outputs.engine_changes == 'true' }}
     with:
-      version: ${{env.SERVICE_GAME_VERSION}}
+      version: ${{vars.SERVICE_GAME_VERSION}}
 
   story:
     uses: ./.github/workflows/mission_hexalife-game-story.yml
     needs: filter
     if: ${{ needs.filter.outputs.story_changes == 'true' }}
     with:
-      version: ${{env.SERVICE_GAME_VERSION}}
+      version: ${{vars.SERVICE_GAME_VERSION}}
 
 
   update:
