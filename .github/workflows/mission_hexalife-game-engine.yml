@@ -123,7 +123,7 @@ jobs:
           if [ -d "${{env.PACKAGE_DEPLOY_BASE_DIR}}/${{env.PACKAGE_VERSION}}" ]; then
             rm -rf "${{env.PACKAGE_DEPLOY_BASE_DIR}}/${{env.PACKAGE_VERSION}}"
           fi
-          cp -r "${{env.PACKAGE_BUILD_DIR}}" "${{env.PACKAGE_DEPLOY_BASE_DIR}}/${{env.PACKAGE_VERSION}}"
+          cp -r "${{env.PACKAGE_BUILD_DIR}}" "${{env.PACKAGE_DEPLOY_BASE_DIR}}/"
 
       - name: Commit and push changes to ${{github.base_ref}}
         env:
