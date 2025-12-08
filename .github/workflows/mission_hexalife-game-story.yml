@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       PACKAGE_BUILD_DIR: ${{ steps.vars.outputs.PACKAGE_BUILD_DIR }}
-      PACKAGE_DEPLOY_DIR: ${{ seps.vars.outputs.PACKAGE_DEPLOY_DIR }}
+      PACKAGE_DEPLOY_DIR: ${{ steps.vars.outputs.PACKAGE_DEPLOY_DIR }}
       PACKAGE_ARTIFACT_NAME: ${{ steps.vars.outputs.PACKAGE_ARTIFACT_NAME }}
       PACKAGE_VERSION: ${{ steps.vars.outputs.PACKAGE_VERSION }}
     steps:
