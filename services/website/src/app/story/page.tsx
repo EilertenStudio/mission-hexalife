@@ -10,10 +10,11 @@ export interface StoryPageProps {
 }
 
 export default function StoryPage(p: StoryPageProps) {
+  const version = p.version || "next";
   const sourceParams = new URLSearchParams();
   const sourceLink = addBasePath(`/lib/story/index.html`);
 
-  sourceParams.append("story", addBasePath(`/blob/story/${p.version}/story.json`))
+  sourceParams.append("story", addBasePath(`/blob/story/${version}/story.json`))
 
   return (
     <div className={"w-full h-full"}>
