@@ -114,14 +114,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          git status
-          
           if [ -d "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}" ]; then
             git add -f "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}"
           fi
           if [ -d "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}" ]; then
             git add -f "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}"
           fi
+          
+          git status
           
           # Only commit if there are staged changes
           if git diff --staged --quiet; then
