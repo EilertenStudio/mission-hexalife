@@ -120,7 +120,7 @@ jobs:
             mkdir -p "${{env.PACKAGE_DEPLOY_BASE_DIR}}"
           fi
           if [ -d "${{env.PACKAGE_DEPLOY_BASE_DIR}}/${{env.PACKAGE_VERSION}}" ]; then
-            rm -rf "${{env.PACKAGE_DEPLOY_DEPLOY_DIR}}/${{env.PACKAGE_VERSION}}"
+            rm -rf "${{env.PACKAGE_DEPLOY_BASE_DIR}}/${{env.PACKAGE_VERSION}}"
           fi
           cp -r "${{env.PACKAGE_BUILD_DIR}}" "${{env.PACKAGE_DEPLOY_BASE_DIR}}/${{env.PACKAGE_VERSION}}"
 

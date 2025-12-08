@@ -11,11 +11,11 @@ description = "Setup project workspace"
 description = "Build project artifacts"
 run = [
   "mkdir -p {{cwd}}/services/game/build/story/next",
-  "mise exec -- inklecate -o {{cwd}}/services/game/build/story/next/story.json {{cwd}}/services/game/story/mission-hexalife-v3.ink"
+  "mise exec -- inklecate -o {{cwd}}/services/game/build/story/next/story.json {{cwd}}/services/game/story/mission-hexalife.ink"
 ]
 run_windows = [
   'IF NOT EXIST {{cwd}}\services\game\build\story\next (mkdir {{cwd}}\services\game\build\story\next)',
-  'mise exec -- inklecate -o {{cwd}}\services\game\build\story\next\story.json {{cwd}}\services\game\story\mission-hexalife-v3.ink'
+  'mise exec -- inklecate -o {{cwd}}\services\game\build\story\next\story.json {{cwd}}\services\game\story\mission-hexalife.ink'
 ]
 depends_post = [
   "publish"
