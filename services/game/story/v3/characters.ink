@@ -2,12 +2,12 @@
 //                                                   CHARACTERS                                                  //
 // ============================================================================================================= //
 
-== ch_environment ==
-    [ Environment ] : <>
-    -> DONE
-
 == ch_unknown ==
     [ ????? ] : <>
+    -> DONE
+
+== ch_environment ==
+    [ Environment ] : <>
     -> DONE
 
 == ch_player ==
@@ -16,4 +16,8 @@
     
 == ch_doctor ==
     [ Doctor ] : <>
+    -> DONE
+    
+== ch_captain ==
+    [ Captain ] : <>
     -> DONE

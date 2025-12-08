@@ -48,17 +48,17 @@ INCLUDE v3/utils.ink
             * [ Attraversa la porta a sinistra ]
                 -> rm_cryogenic_room.door_sx_locked(-> ch_player, -> spend_time)
                 
-            * -> 
-                <- print.narration
-                
-                <- ch_environment
-                    Le luci si spegnono per qualche secondo facendo piombare tutto nel buio
-                    
-                -> sh_1.ph_2
+            * -> sh_1.ph_2
                     
     = ph_2
         - (context)
+            <- print.narration
+            
+            <- ch_environment
+                Le luci si spegnono per qualche secondo facendo piombare tutto nel buio
+            
             <- print.event(-> ev_ship.normal)
+            
             // <- print.narration
             
             // <- ch_player
@@ -93,7 +93,7 @@ INCLUDE v3/utils.ink
                 "Vedo che sei sveglio! E gia' riesci a camminare! Senza di te non possiamo risolvere il problema mio caro Ingeniere" 
             
             // IPOTESI: 
-            // ! Lo stato di criogenizzazione non causa problemi se il processo di congelamento/scongelamento e' veloce.
+            // ! Lo stato di criogenizzazione non causa problemi di memoria il processo di congelamento/scongelamento e' veloce.
             
             // DERIVATO:
             // > Aiuterebbe il giocatore a immedesimarsi di piu'
@@ -108,10 +108,12 @@ INCLUDE v3/utils.ink
                 <> "Ora controllero' il tuo stato di salute, cerca di non muoverti."
     
         - (talk)
-            <- print.actions
+            {talk <= 3: 
+                <- print.actions
+                <- ch_player
+                    Senti il silenzio che piomba su tutto il ponte mentre il MEDICO ti controlla.
+            }
             
-            <- ch_player
-                Senti il silenzio che piomba su tutto il ponte mentre il MEDICO ti controlla.
     
             * [ Chiedi per quanto tempo sei stato criogenizzato ]
                 <- ch_player
@@ -153,9 +155,19 @@ INCLUDE v3/utils.ink
                 
                 <- ch_player
                     Seguendo il filo logico capisci che la situazione e' grave.
-                    -> sh_2.ph_2
+                    -> talk
+            
+            * -> sh_2.ph_2
         
         = ph_2
+            - (context)
+                <- print.narration
+                
+                Improvvisamente l'OloNav del MEDICO receve una chiama dal CAPITANO.
+                
+                <- ch_captain
+                    TBD
+                    \- Spiega che parlando con ARTEMIS 
             
                     
 //                 Il MEDICO ti spiega la situazione:
