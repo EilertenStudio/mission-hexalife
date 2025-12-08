@@ -15,7 +15,7 @@ run = [
 ]
 run_windows = [
   'IF NOT EXIST {{cwd}}\services\game\build\story\next (mkdir {{cwd}}\services\game\build\story\next)',
-  'mise -v exec -- inklecate -o {{cwd}}\services\game\build\story\next\story.json {{cwd}}\services\game\story\mission-hexalife-v3.ink'
+  'mise exec -- inklecate -o {{cwd}}\services\game\build\story\next\story.json {{cwd}}\services\game\story\mission-hexalife-v3.ink'
 ]
 depends_post = [
   "publish"
