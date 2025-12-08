@@ -1,14 +1,30 @@
-INCLUDE v3/metadata.ink
-INCLUDE v3/rooms.ink
-INCLUDE v3/events.ink
-INCLUDE v3/props.ink
-INCLUDE v3/characters.ink
-INCLUDE v3/utils.ink
+INCLUDE lib/metadata.ink
+INCLUDE lib/rooms.ink
+INCLUDE lib/events.ink
+INCLUDE lib/props.ink
+INCLUDE lib/characters.ink
+INCLUDE lib/utils.ink
 
 // ============================================================================================================= //
-//                                                       START                                                   //
+//                                                   METADATA                                                    //
 // ============================================================================================================= //
-<- story_metadata
+<- print.separator
+
+Titolo: Mission HeXalife
+
+Versione: 0.0.4
+
+Autori:
+    \- JervNorsk
+    \- GrumpyWolverine
+    \- Chinni2D
+    \- Raino98
+
+<- print.separator
+
+Introduzione:
+
+    In un futuro distopico...
 
 + [ Svegliati ]
     -> sh_1.ph_1
