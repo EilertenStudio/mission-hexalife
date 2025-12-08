@@ -3,6 +3,7 @@
 import './page.css'
 
 import {addBasePath} from "next/dist/client/add-base-path";
+import {useSearchParams} from "next/navigation";
 
 export interface StoryPageProps {
   version: string;
@@ -10,8 +11,12 @@ export interface StoryPageProps {
 }
 
 export default function StoryPage(p: StoryPageProps) {
-  const version = p.version || "next";
-  const sourceParams = new URLSearchParams();
+  const searchParams = useSearchParams();
+
+  const version = p.version || searchParams.get("version") || "next";
+  const debug = p.debug || searchParams.has("debug");
+
+  const sourceParams = new URLSearchParams(useSearchParams());
   const sourceLink = addBasePath(`/lib/story/index.html`);
 
   sourceParams.append("story", addBasePath(`/blob/story/${version}/story.json`))
