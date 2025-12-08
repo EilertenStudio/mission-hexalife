@@ -97,14 +97,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: "${{needs.engine.outputs.PACKAGE_ARTIFACT_NAME}}-${{needs.engine.outputs.PACKAGE_VERSION}}"
-          path: "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}"
+          path: "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}"
         if: github.event_name == 'workflow_dispatch' || needs.setup.outputs.ENGINE_CHANGES == 'true'
 
       - name: Download game story artifact
         uses: actions/download-artifact@v4
         with:
           name: "${{needs.story.outputs.PACKAGE_ARTIFACT_NAME}}-${{needs.story.outputs.PACKAGE_VERSION}}"
-          path: "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}"
+          path: "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}"
         if: github.event_name == 'workflow_dispatch' || needs.setup.outputs.STORY_CHANGES == 'true'
 
       - name: Commit and push changes to ${{github.base_ref}}
