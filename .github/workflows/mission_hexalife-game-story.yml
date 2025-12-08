@@ -11,10 +11,14 @@ on:
         description: "Artifact tag version"
         type: string
     outputs:
-      PACKAGE_BUILD_DIR: ${{ jobs.setup.outputs.PACKAGE_BUILD_DIR }}
-      PACKAGE_DEPLOY_DIR: ${{ jobs.setup.outputs.PACKAGE_BUILD_DIR }}
-      PACKAGE_ARTIFACT_NAME: ${{ jobs.setup.outputs.PACKAGE_ARTIFACT_NAME }}
-      PACKAGE_VERSION: ${{ jobs.setup.outputs.PACKAGE_VERSION }}
+      PACKAGE_BUILD_DIR:
+        value: ${{ jobs.setup.outputs.PACKAGE_BUILD_DIR }}
+      PACKAGE_DEPLOY_DIR:
+        value: ${{ jobs.setup.outputs.PACKAGE_DEPLOY_DIR }}
+      PACKAGE_ARTIFACT_NAME:
+        value: ${{ jobs.setup.outputs.PACKAGE_ARTIFACT_NAME }}
+      PACKAGE_VERSION:
+        value: ${{ jobs.setup.outputs.PACKAGE_VERSION }}
 
 env:
   MISE_EXPERIMENTAL: true
