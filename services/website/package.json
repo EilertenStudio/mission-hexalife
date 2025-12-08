@@ -15,7 +15,7 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.0",
     "inkjs": "^2.3.2",
-    "next": "15.5.3",
+    "next": "^15.5.7",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "three": "^0.181.2"
