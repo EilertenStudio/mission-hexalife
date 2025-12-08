@@ -123,7 +123,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [engine, story]
+    needs: [ publish ]
     steps:
       - name: "Run service website workflow"
         uses: peter-evans/repository-dispatch@v4
