@@ -87,11 +87,15 @@ jobs:
 
       - name: Clean deployment folders
         run: |
-          if [ -d "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}" ]; then
-            rm -rf "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}"
+          if [ ${{needs.engine.outcome != 'success' }}; then
+            if [ -d "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}" ]; then
+              rm -rf "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}"
+            fi
           fi
-          if [ -d "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}" ]; then
-            rm -rf "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}"
+          if [ ${{needs.story.outcome != 'success' }}; then
+            if [ -d "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}" ]; then
+              rm -rf "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}"
+            fi
           fi
 
       - name: Download game engine artifact
