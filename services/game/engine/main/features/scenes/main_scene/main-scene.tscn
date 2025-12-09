@@ -14,3 +14,10 @@ script = ExtResource("1_55hj4")
 
 [node name="TitleScene" parent="." instance=ExtResource("8_53s44")]
 layout_mode = 1
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 689.0
+offset_right = 184.0
+offset_bottom = 712.0

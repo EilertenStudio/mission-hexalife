@@ -1,9 +1,11 @@
 class_name SceneMain
 extends Control
 
-func _ready():
-	pass
+@onready var version: Label = $Version
 
+func _ready():
+	version.text = ProjectSettings.get_setting("application/config/version")
+	pass
 
 	#title_menu.connect(
 		#"options_menu_visibility_changed",
