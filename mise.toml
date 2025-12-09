@@ -5,16 +5,18 @@ auto_install = true
 #trace = true
 
 [tools]
-act = "latest"
+# -----------------------------------------------------------------------------
 gh = "latest"
+act = "latest"
+# -----------------------------------------------------------------------------
+java = "openjdk-21.0.2"
+gradle = "latest"
 
 #"aqua:godotengine/godot" = "4.5"
 #"github:BurntSushi/ripgrep" = "latest"
 #"github:inkle/ink" = "1.1.1"
 #act = "latest"
 #gh = "latest"
-#gradle = "latest"
-#java = "openjdk-21.0.2"
 
 # -----------------------------------------------------------------------------
 #[tasks."setup"]
