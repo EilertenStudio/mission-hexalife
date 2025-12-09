@@ -86,28 +86,28 @@ jobs:
           persist-credentials: true
 
       - name: Clean engine deployment folders
-        if: needs.engine.outcome == 'success'
+        if: needs.engine.result != 'skipped' && needs.engine.outcome == 'success'
         run: |
           if [ -d "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}" ]; then
             rm -rf "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}"
           fi
 
       - name: Clean story deployment folders
-        if: needs.story.outcome == 'success'
+        if: needs.story.result != 'skipped' && needs.story.outcome == 'success'
         run: |
           if [ -d "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}" ]; then
             rm -rf "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}"
           fi
 
       - name: Download game engine artifact
-        if: needs.engine.outcome == 'success'
+        if: needs.engine.result != 'skipped' && needs.engine.outcome == 'success'
         uses: actions/download-artifact@v4
         with:
           name: "${{needs.engine.outputs.PACKAGE_ARTIFACT_NAME}}-${{needs.engine.outputs.PACKAGE_VERSION}}"
           path: "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}"
 
       - name: Download game story artifact
-        if: needs.story.outcome == 'success'
+        if: needs.story.result != 'skipped' && needs.story.outcome == 'success'
         uses: actions/download-artifact@v4
         with:
           name: "${{needs.story.outputs.PACKAGE_ARTIFACT_NAME}}-${{needs.story.outputs.PACKAGE_VERSION}}"
@@ -119,14 +119,14 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Add engine deployments changes
-        if: needs.engine.outcome == 'success'
+        if: needs.engine.result != 'skipped' && needs.engine.outcome == 'success'
         run: |
           if [ -d "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}" ]; then
             git add -f "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}"
           fi
 
       - name: Add story deployments changes
-        if: needs.story.outcome == 'success'
+        if: needs.story.result != 'skipped' && needs.story.outcome == 'success'
         run: |
           if [ -d "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}" ]; then
             git add -f "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}"
