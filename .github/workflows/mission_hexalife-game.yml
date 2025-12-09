@@ -119,11 +119,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          if [ -d "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}" ]; then
-            git add -f "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}"
+          if [ ${{needs.engine.outcome != 'success' }}; then
+            if [ -d "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}" ]; then
+              git add -f "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.engine.outputs.PACKAGE_VERSION}}"
+            fi
           fi
-          if [ -d "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}" ]; then
-            git add -f "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}"
+          if [ ${{needs.story.outcome != 'success' }}; then
+            if [ -d "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}" ]; then
+              git add -f "${{needs.story.outputs.PACKAGE_DEPLOY_DIR}}/${{needs.story.outputs.PACKAGE_VERSION}}"
+            fi
           fi
           
           git status
