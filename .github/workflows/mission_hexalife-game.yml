@@ -100,14 +100,14 @@ jobs:
           fi
 
       - name: Download game engine artifact
-        if: github.event_name == 'workflow_dispatch' || needs.setup.outputs.ENGINE_CHANGES == 'true'
+        if: needs.engine.outcome == 'success'
         uses: actions/download-artifact@v4
         with:
           name: "${{needs.engine.outputs.PACKAGE_ARTIFACT_NAME}}-${{needs.engine.outputs.PACKAGE_VERSION}}"
           path: "${{needs.engine.outputs.PACKAGE_DEPLOY_DIR}}"
 
       - name: Download game story artifact
-        if: github.event_name == 'workflow_dispatch' || needs.setup.outputs.STORY_CHANGES == 'true'
+        if: needs.story.outcome == 'success'
         uses: actions/download-artifact@v4
         with:
           name: "${{needs.story.outputs.PACKAGE_ARTIFACT_NAME}}-${{needs.story.outputs.PACKAGE_VERSION}}"
