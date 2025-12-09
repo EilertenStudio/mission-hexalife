@@ -79,20 +79,6 @@ jobs:
     needs: [ engine, story ]
     if: always()
     steps:
-      - name: Check required steps
-        run: |
-          echo "${{ needs.engine }}"
-          echo "${{ needs.story }}"
-          echo ""
-          echo "--------------------------------------------"
-          echo ""
-          echo "${{ needs.engine.result }}"
-          echo ""
-          echo "--------------------------------------------"
-          echo ""
-          echo "${{ needs.story.result }}"
-          
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -163,7 +149,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [ publish ]
+    if: always() && needs.publish.result == 'success'
     steps:
+      - name: Check required steps
+        run: |
+          echo "${{ needs.engine }}"
+          echo "${{ needs.story }}"
+          echo ""
+          echo "--------------------------------------------"
+          echo ""
+          echo "${{ needs.engine.result }}"
+          echo ""
+          echo "--------------------------------------------"
+          echo ""
+          echo "${{ needs.story.result }}"
       - name: "Run service website workflow"
         uses: peter-evans/repository-dispatch@v4
         with:
