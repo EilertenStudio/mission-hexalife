@@ -36,13 +36,6 @@ run_windows = [
 ]
 
 # -----------------------------------------------------------------------------
-[tasks."cli"]
-description = "Access to engine CLI"
-dir = "./main"
-run = [
-  "mise exec -- godot --headless --help"
-]
-
 [tasks."editor:run"]
 description = "Run main engine editor"
 dir = "./main"
