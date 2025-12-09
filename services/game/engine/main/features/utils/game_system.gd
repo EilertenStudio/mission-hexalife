@@ -1,8 +1,6 @@
 class_name GameSystem
 extends Object
 
-
-
 static func log(node: Node, ...args: Array):
 	# Rebuild context path
 	#var path = ""

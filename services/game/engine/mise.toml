@@ -11,7 +11,7 @@ run = [
 
 [tasks."build"]
 description = "Build project artifacts"
-dir = "./main_v2"
+dir = "./main"
 run = [
   "mkdir -p {{cwd}}/services/game/build/story/next",
   "mise exec -- godot --headless --verbose --export-debug Web {{cwd}}/services/game/build/engine/next/index.html"
@@ -36,21 +36,21 @@ run_windows = [
 ]
 
 # -----------------------------------------------------------------------------
-[tasks."editor:main:v1"]
+[tasks."cli"]
+description = "Access to engine CLI"
+dir = "./main"
+run = [
+  "mise exec -- godot --headless --help"
+]
+
+[tasks."editor:run"]
 description = "Run main engine editor"
-dir = "./main_v1"
+dir = "./main"
 run = [
   "mise exec -- godot --editor"
 ]
 
-[tasks."editor:main:v2"]
-description = "Run main engine editor"
-dir = "./main_v2"
-run = [
-  "mise exec -- godot --editor"
-]
-
-[tasks."editor:test"]
+[tasks."editor:run:test"]
 description = "Run test engine editor"
 dir = "./test"
 run = [
