@@ -79,6 +79,22 @@ jobs:
     needs: [ engine, story ]
     if: always()
     steps:
+      - name: Check required steps
+        run: |
+          echo "${{ needs.engine }}"
+          echo "${{ needs.story }}"
+          echo ""
+          echo "--------------------------------------------"
+          echo ""
+          echo "${{ needs.engine.result }}"
+          echo "${{ needs.engine.outcome }}"
+          echo ""
+          echo "--------------------------------------------"
+          echo ""
+          echo "${{ needs.story.result }}"
+          echo "${{ needs.story.outcome }}"
+          
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
