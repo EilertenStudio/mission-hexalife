@@ -210,7 +210,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_niea6")
 }
 autoplay = "intro"
-speed_scale = 4.0
+speed_scale = 3.0
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
 layout_mode = 1
@@ -220,7 +220,7 @@ scale = Vector2(0.6666653, 0.6666653)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 stream = ExtResource("1_lpngp")
-speed_scale = 4.0
+speed_scale = 3.0
 autoplay = true
 
 [node name="LogoContainer" type="TextureRect" parent="."]
