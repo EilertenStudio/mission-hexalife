@@ -1,12 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://b8ddnckcwmp4"]
+[gd_scene load_steps=15 format=3 uid="uid://b8ddnckcwmp4"]
 
 [ext_resource type="Script" uid="uid://2ofxk2cmq1xb" path="res://features/scenes/title_scene/title_scene.gd" id="1_4lypr"]
-[ext_resource type="VideoStream" path="res://features/scenes/title_scene/concepts/test_finale_video.ogv" id="1_lpngp"]
+[ext_resource type="VideoStream" uid="uid://t4ut164kfti2" path="res://features/scenes/title_scene/concepts/test_finale_video.ogv" id="1_lpngp"]
 [ext_resource type="PackedScene" uid="uid://d3xxxj8j6vaox" path="res://components/logo/logo_title.tscn" id="2_lpngp"]
 [ext_resource type="PackedScene" uid="uid://btrlk72p3nqxq" path="res://components/menus/pause_menu/pause_menu.tscn" id="2_m61qj"]
 [ext_resource type="PackedScene" uid="uid://covjvtab5kgu1" path="res://components/icons/github/icon_github.tscn" id="4_niea6"]
 [ext_resource type="PackedScene" uid="uid://btfk8360kky62" path="res://components/icons/discord/icon_discord.tscn" id="5_24pta"]
 [ext_resource type="PackedScene" uid="uid://cnh31od46fggr" path="res://components/icons/itchio/icon_itchio.tscn" id="6_4lypr"]
+[ext_resource type="Theme" uid="uid://dq5r1pewwfy7y" path="res://components/menus/game_menu/game_menu_theme.tres" id="8_ja7c0"]
+[ext_resource type="PackedScene" uid="uid://df848eo5uwric" path="res://components/menus/game_menu/game_menu_button.tscn" id="9_cjqem"]
 
 [sub_resource type="Animation" id="Animation_m0s1u"]
 length = 0.001
@@ -208,6 +210,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_niea6")
 }
 autoplay = "intro"
+speed_scale = 4.0
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
 layout_mode = 1
@@ -217,6 +220,7 @@ scale = Vector2(0.6666653, 0.6666653)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 stream = ExtResource("1_lpngp")
+speed_scale = 4.0
 autoplay = true
 
 [node name="LogoContainer" type="TextureRect" parent="."]
@@ -285,11 +289,84 @@ layout_mode = 1
 [node name="Reference" parent="LayerContainer/MenuLayer" index="0"]
 visible = false
 
-[node name="OptionMenu" parent="LayerContainer/MenuLayer/MenuContainer" index="1"]
+[node name="GameplayMenu" parent="LayerContainer/MenuLayer/MenuContainer" index="2"]
+offset_right = 877.0
+
+[node name="TBD 1" parent="LayerContainer/MenuLayer/MenuContainer/GameplayMenu/MarginContainer/ButtonGroup" index="0"]
+visible = false
+alignment = 2
+
+[node name="TBD 2" parent="LayerContainer/MenuLayer/MenuContainer/GameplayMenu/MarginContainer/ButtonGroup" index="1"]
 visible = false
 
-[node name="GameplayMenu" parent="LayerContainer/MenuLayer/MenuContainer" index="2"]
+[node name="TBD 3" parent="LayerContainer/MenuLayer/MenuContainer/GameplayMenu/MarginContainer/ButtonGroup" index="2"]
 visible = false
+
+[node name="TBD 4" parent="LayerContainer/MenuLayer/MenuContainer/GameplayMenu/MarginContainer/ButtonGroup" index="3"]
+visible = false
+
+[node name="Label" type="Label" parent="LayerContainer/MenuLayer/MenuContainer/GameplayMenu/MarginContainer/ButtonGroup" index="4"]
+visible = false
+layout_mode = 2
+theme = ExtResource("8_ja7c0")
+text = "Filtro CRT"
+
+[node name="TBD 5" parent="LayerContainer/MenuLayer/MenuContainer/GameplayMenu/MarginContainer/ButtonGroup/Label" instance=ExtResource("9_cjqem")]
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -94.0
+offset_top = -15.5
+offset_right = 0.0
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "TBD 1"
+alignment = 2
+
+[node name="CheckBox" type="CheckBox" parent="LayerContainer/MenuLayer/MenuContainer/GameplayMenu/MarginContainer/ButtonGroup/Label"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -13.5
+offset_right = -16.0
+offset_bottom = 10.5
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("8_ja7c0")
+
+[node name="Label2" type="Label" parent="LayerContainer/MenuLayer/MenuContainer/GameplayMenu/MarginContainer/ButtonGroup" index="5"]
+visible = false
+layout_mode = 2
+theme = ExtResource("8_ja7c0")
+text = "Font Size"
+
+[node name="TBD 5" parent="LayerContainer/MenuLayer/MenuContainer/GameplayMenu/MarginContainer/ButtonGroup/Label2" instance=ExtResource("9_cjqem")]
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -94.0
+offset_top = -15.5
+offset_right = 0.0
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "TBD 1"
+alignment = 2
 
 [connection signal="gui_input" from="IconContainer/IconGithub" to="." method="_on_icon_github_gui_input"]
 [connection signal="gui_input" from="IconContainer/IconItchio" to="." method="_on_icon_itchio_gui_input"]

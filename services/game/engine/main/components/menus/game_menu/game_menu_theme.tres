@@ -1,6 +1,8 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dq5r1pewwfy7y"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dq5r1pewwfy7y"]
 
 [ext_resource type="FontFile" uid="uid://cw6rgjojx1goc" path="res://assets/fonts/PANNETJE.TTF" id="1_7a635"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cx1ol"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f0dfh"]
 content_margin_bottom = 2.0
@@ -22,6 +24,9 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7a635"]
+content_margin_left = 19.0
+
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_7a635"]
 color = Color(1, 1, 1, 1)
 grow_begin = 0.0
@@ -31,6 +36,7 @@ vertical = true
 
 [resource]
 default_font = ExtResource("1_7a635")
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_cx1ol")
 GameMenuButton/base_type = &"Button"
 GameMenuButton/colors/font_focus_color = Color(0, 0, 0, 1)
 GameMenuButton/colors/font_hover_color = Color(0, 0, 0, 1)
@@ -46,6 +52,8 @@ GameMenuButton/styles/hover_pressed = SubResource("StyleBoxTexture_cx1ol")
 GameMenuButton/styles/menu_showed = SubResource("StyleBoxFlat_7a635")
 GameMenuButton/styles/normal = SubResource("StyleBoxEmpty_f0dfh")
 GameMenuButton/styles/pressed = SubResource("StyleBoxEmpty_f0dfh")
+Label/font_sizes/font_size = 25
+Label/styles/normal = SubResource("StyleBoxEmpty_7a635")
 MarginContainer/constants/margin_top = 23
 VBoxContainer/constants/separation = 0
 VSeparator/constants/separation = 0

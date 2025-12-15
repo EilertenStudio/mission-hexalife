@@ -21,3 +21,4 @@ offset_left = 8.0
 offset_top = 689.0
 offset_right = 184.0
 offset_bottom = 712.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)

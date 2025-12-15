@@ -4,7 +4,7 @@ extends Control
 @onready var version: Label = $Version
 
 func _ready():
-	version.text = ProjectSettings.get_setting("application/config/version")
+	version.text = "v"+ProjectSettings.get_setting("application/config/version")
 	pass
 
 	#title_menu.connect(
