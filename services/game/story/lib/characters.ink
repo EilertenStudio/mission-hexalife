@@ -21,3 +21,7 @@
 == ch_captain ==
     [ Captain ] : <>
     -> DONE
+    
+== ch_biologist ==
+    [ Biologist ] : <>
+    -> DONE

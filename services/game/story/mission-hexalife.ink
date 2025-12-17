@@ -27,13 +27,13 @@ Introduzione:
     In un futuro distopico...
 
 + [ Svegliati ]
-    -> sh_1.ph_1
+    -> sh_player_waking.ph_1
 
 // ============================================================================================================= //
 //                                                   STORYBOARD                                                  //
 // ============================================================================================================= //
 
-== sh_1 ==
+== sh_player_waking ==
     
     = ph_1
         - (context)
@@ -64,7 +64,7 @@ Introduzione:
             * [ Attraversa la porta a sinistra ]
                 -> rm_cryogenic_room.door_sx_locked(-> ch_player, -> spend_time)
                 
-            * -> sh_1.ph_2
+            * -> sh_player_waking.ph_2
                     
     = ph_2
         - (context)
@@ -87,9 +87,9 @@ Introduzione:
                 Puoi interagire con la stanza
                 
             * [ Attraversa la porta a sinistra ]
-                -> rm_cryogenic_room.door_sx_walk(-> ch_player, -> sh_2.ph_1)
+                -> rm_cryogenic_room.door_sx_walk(-> ch_player, -> sh_doctor_encounter.ph_1)
             
-== sh_2 ==
+== sh_doctor_encounter ==
     
     // Prova di dialogo
     = ph_1
@@ -152,7 +152,6 @@ Introduzione:
                 
                 <- ch_doctor
                     "Si, le capsule hanno avuto un malfunzionamento, in particolare la tua. Abbiamo seguito il protocollo di emergenza con le nostre capacita' e siamo riusciti ad aggirare il blocco del computer di bordo ."
-                    <> 
                     -> talk
                 
             * [ Chiedi che cosa ha causato il problema ]
@@ -173,46 +172,85 @@ Introduzione:
                     Seguendo il filo logico capisci che la situazione e' grave.
                     -> talk
             
-            * -> sh_2.ph_2
+            * -> sh_doctor_encounter.ph_2
         
-        = ph_2
-            - (context)
-                <- print.narration
-                
-                Improvvisamente l'OloNav del MEDICO receve una chiama dal CAPITANO.
-                
-                <- ch_captain
-                    TBD
-                    \- Spiega che parlando con ARTEMIS 
+    = ph_2
+        - (context)
+            <- print.narration
             
-                    
-//                 Il MEDICO ti spiega la situazione:
-//                 \ - Scopri che la nave ha attivato automaticamente il protocollo di emergenza che coinvolge il risveglio delle capsule
-//                 \ - Scopri che le capsule si sono aperte gradualmente per un malfunzionamento del sistema
-//                 -> talk
-//             * $ Chiedi cosa ha attivato il protocollo di emergenza
-//                 Il MEDICO ti spiega la causa:
-//                 \ - Scopri che una specie di fungo alieno sta invadendo velocemente l'astronave
-//                 \ - Scopri che il fungo ha la capacita' di assorbire energia elettrica
-//                 -> talk
-//             * ->
-//                 Il MEDICO finisce di analizzare il tuo stato di salute:
-//                 \ - Scopri che la memoria dell personaggio giocante dovrebbe essere intatta
-//                 \ - Il personaggio giocante esce dallo stato di confusione
-//                 -> DONE
-//                 // -> ch_1.sh_2_ph_2
-
-// = sh_2_ph_2
-//     - (context)
-//         <- print.separator
-
-//         Improvvisamente l'OloNav del MEDICO riceve una chiamata dal CAPITANO
-//         \ - Ti viene assegnata la missione di recuperare il tuo equipaggiamento
-//         \ - Ti viene assegnata la missione di indagare sullo stato della stanza dei macchinari
-
-//     - (talk)
-//         <- print.separator
+            <- ch_doctor
+                Finisce la visita e ti guarda con aria sollevata.
+            
+            <- ch_doctor
+                "Ok sembra tutto apposto. Relativamente intendo. Essere risvegliato cosi' lentamente e' stato motivo di preoccuppazione, poteva succedere di tutto. Letteralmente. Ictus, necrosi, paralisi muscolare, perdita della vista, cambi di identita' o della capacita' cognitiva. Beh diciamo che un sintomo ce l'hai: sembra che tu abbia una leggera commozione celebrale; ma ti passera' presto."
+            
+            <- ch_player
+                Annuisci 
+                    -> sh_captain_encounter.ph_1
+                
+== sh_captain_encounter ==
+                
+    = ph_1
+        - (context)
+            <- print.narration
+            <- ch_doctor
+                L'OloNav sulla sua tempia suona. 
+                \- Risponde toccando il dispositivo.
+                \- Appare un piccolo ologramma del capitano davanti a lui
+            
+            <- ch_captain
+                Si guarda intorno e ti da l'attenzione
+                \- Ti saluta rinquorato che stai bene
+                \- Spiega che hanno identificato la causa del malfunzionamento: un fungo alieno sta invadendo la nave
+                \- Chiede all'INGEGNERE di raggiungere immediatamente la sala macchine e di aggiornarsi con il BIOLOGO
         
-        
-        
+        - (talk)
+            <- print.actions
+            
+            \- TBD
+            
+            * [ Accetti l'incarico ]
+                <- ch_player
+                    Accetti l'incarico e ti dirigi verso la sala macchine
+                    -> sh_player_mission_1.ph_1
+   
+== sh_player_mission_1 ==
+   = ph_1
+        - (context)
+            <- print.location(-> rm_engine_room)
+            <- print.narration
+            
+            <- ch_player
+                Apri la porta della sala macchine e il calore dei motori ti inonda.
+                
+            <- ch_biologist
+                Attira la tua attenzione
+                \- Spiega che dalle analisi fatte il fungo riesce ad assorbire energia e a velocizzare la propria espansione
+                \- Ti assegna l'incarico di spegnere il primo reattore e di bloccare tutti gli afflussi di energia sulla zona interessata dall'invasione del fungo
+                \- Ti spiega che per interagire con i macchinari e' necessario usare il MultiTool ???
+                \- Ti spiega che per interagire con i macchinari e' necessario usare il Terminale della stanza ???
+                
+            
+         - (actions)
+            <- print.actions
+            
+            \- TBD
+            
+            * [ Interagisci con il pannello di controllo dei reattori ] 
+                -> sh_player_mission_1.ph_2
+                
+    = ph_2
+        - (context)
+            <- print.puzzle
+                \- Introduzione alla meccanica dei puzzle ???
+                \- Il BIOLOGO analizza la situazione e chiama il capitano all'OloNav per richiedere l'autorizzazione per lo spegnimento del primo reattore
+                \- Svolgimento del puzzle da parte del giocatore
+            
+            <- print.narration
+                
+            <- ch_biologist
+                Chiama il capitano sull'OloNav 
+                \- Spiega che dopo questa operazione il sistema ha poca energia per funzionare e mantenere i sistemi vitali della nave operativi
+                \- Spiega che il giocatore deve manovrare l'energia elettrica sulle porte per garantirne l'accesso
+            
 -> END
