@@ -26,8 +26,11 @@ Introduzione:
 
     In un futuro distopico...
 
-+ [ Svegliati ]
++ [ Atto 1 \| Risveglio \| Scena 1 ]
     -> sh_player_waking.ph_1
+
++ [ Atto 1 \| Risveglio \| Scena 2 ]
+    -> sh_doctor_encounter.ph_1
 
 // ============================================================================================================= //
 //                                                   STORYBOARD                                                  //
@@ -36,6 +39,7 @@ Introduzione:
 == sh_player_waking ==
     
     = ph_1
+        # CLEAR
         - (context)
             <- print.location(-> rm_cryogenic_room)
             <- print.event(-> ev_ship.emergency)
@@ -43,15 +47,19 @@ Introduzione:
     
             <- ch_player
                 Ti svegli dopo aver passato non sai quanto tempo nella capsula criogenica
-                \ - Vedi altre 3 capsule criogeniche aperte e vuote
-                \ - Sei da solo nella stanza
-                \ - Sei in uno stato di confusione
-    
+                
         - (spend_time)
             {spend_time <= 3: 
                 <- print.actions
                 <- ch_player
                     Puoi interagire con la stanza
+                    \- Sei da solo nella stanza
+                    \- Sei in uno stato di confusione
+                    \- Vedi lo schermo di un terminale che brilla di una luce rossa
+                    \- Vedi altre 3 capsule criogeniche aperte e vuote
+                    \- Vedi una porta chiusa sulla parete di sinistra, <>
+                    {spend_time <= 3: c'e' una spia rossa sulla parte alta a destra }
+                    {spend_time > 3: c'e' una spia verde sulla parte alta a destra }
             }
                 
         
