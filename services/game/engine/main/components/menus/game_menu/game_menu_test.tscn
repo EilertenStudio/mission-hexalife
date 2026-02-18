@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b686k4l62d8wy"]
+[gd_scene format=3 uid="uid://b686k4l62d8wy"]
 
 [ext_resource type="PackedScene" uid="uid://bfdfjt6llue3w" path="res://components/menus/game_menu/game_menu.tscn" id="1_6j0n4"]
 [ext_resource type="Texture2D" uid="uid://hlsswdwc0iiq" path="res://features/scenes/title_scene/concepts/Screenshot 2025-11-09 221635 1.png" id="1_crs3q"]
 [ext_resource type="PackedScene" uid="uid://df848eo5uwric" path="res://components/menus/game_menu/game_menu_button.tscn" id="3_pi88o"]
+
 
 [node name="GameMenuTest" type="Control"]
 layout_mode = 3

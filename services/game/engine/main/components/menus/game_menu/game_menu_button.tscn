@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://df848eo5uwric"]
+[gd_scene format=3 uid="uid://df848eo5uwric"]
 
 [ext_resource type="Theme" uid="uid://dq5r1pewwfy7y" path="res://components/menus/game_menu/game_menu_theme.tres" id="1_fnr5x"]
 [ext_resource type="Script" uid="uid://dc514bbwrukcg" path="res://components/menus/game_menu/game_menu_button.gd" id="1_swhab"]
@@ -11,8 +11,8 @@ metadata/_snap_enabled = true
 gradient = SubResource("Gradient_8cihh")
 width = 20
 
-[node name="GameMenuButton" type="Button"]
-custom_minimum_size = Vector2(0, 31)
+[node name="GameMenuButton" type="Button" unique_id=202287495]
+custom_minimum_size = Vector2(0, 30)
 offset_right = 176.0
 offset_bottom = 40.0
 theme = ExtResource("1_fnr5x")

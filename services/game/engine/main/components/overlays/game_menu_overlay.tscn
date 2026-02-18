@@ -1,0 +1,170 @@
+[gd_scene format=3 uid="uid://btrlk72p3nqxq"]
+
+[ext_resource type="Script" uid="uid://ct7wkp8u1g0e1" path="res://components/overlays/game_menu_overlay.tscn.gd" id="1_2abye"]
+[ext_resource type="Texture2D" uid="uid://cyb11gh5k4nvo" path="res://components/menus/game_menu/game_menu_background.png" id="1_3khnl"]
+[ext_resource type="AnimationLibrary" uid="uid://1c37dxtwo5oe" path="res://components/overlays/game_menu_overlay_animations.res" id="2_bfvls"]
+[ext_resource type="PackedScene" uid="uid://d3xxxj8j6vaox" path="res://components/logo/logo_title.tscn" id="3_vm3yr"]
+[ext_resource type="PackedScene" uid="uid://covjvtab5kgu1" path="res://components/icons/github/icon_github.tscn" id="4_8fij5"]
+[ext_resource type="PackedScene" uid="uid://cnh31od46fggr" path="res://components/icons/itchio/icon_itchio.tscn" id="5_2abye"]
+[ext_resource type="PackedScene" uid="uid://btfk8360kky62" path="res://components/icons/discord/icon_discord.tscn" id="6_vmvrm"]
+[ext_resource type="PackedScene" uid="uid://cds80akr06bpl" path="res://components/menus/main_menu.tscn" id="7_bfvls"]
+[ext_resource type="PackedScene" uid="uid://cxyyfg34c2t0n" path="res://components/menus/option_menu.tscn" id="8_vm3yr"]
+[ext_resource type="PackedScene" uid="uid://p5wce246x2n3" path="res://components/menus/option_gameplay_menu.tscn" id="9_8fij5"]
+
+[sub_resource type="Gradient" id="Gradient_niea6"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5jnro"]
+gradient = SubResource("Gradient_niea6")
+
+[node name="GameMenuOverlay" type="Control" unique_id=1978468807]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2abye")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1404625502]
+libraries/ = ExtResource("2_bfvls")
+speed_scale = 3.0
+
+[node name="Background" type="TextureRect" parent="." unique_id=777182419]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+texture = ExtResource("1_3khnl")
+metadata/_edit_lock_ = true
+
+[node name="LogoContainer" type="TextureRect" parent="." unique_id=918579472]
+clip_children = 1
+layout_mode = 0
+offset_left = 859.0
+offset_top = 24.0
+offset_right = 1661.9579
+offset_bottom = 299.0
+scale = Vector2(0.50264686, 0.50264686)
+texture = SubResource("GradientTexture2D_5jnro")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="LogoTitle" parent="LogoContainer" unique_id=1381031977 instance=ExtResource("3_vm3yr")]
+layout_mode = 1
+offset_right = 803.0
+offset_bottom = 275.0
+
+[node name="IconContainer" type="Control" parent="." unique_id=2104981174]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="IconGithub" parent="IconContainer" unique_id=1685133720 instance=ExtResource("4_8fij5")]
+layout_mode = 0
+offset_left = 1197.0
+offset_top = 509.0
+offset_right = 1250.0
+offset_bottom = 562.0
+mouse_default_cursor_shape = 2
+expand_mode = 1
+
+[node name="IconItchio" parent="IconContainer" unique_id=903567393 instance=ExtResource("5_2abye")]
+layout_mode = 0
+offset_left = 1197.0
+offset_top = 583.0
+offset_right = 1250.0
+offset_bottom = 636.0
+mouse_default_cursor_shape = 2
+expand_mode = 1
+
+[node name="IconDiscord" parent="IconContainer" unique_id=151934198 instance=ExtResource("6_vmvrm")]
+layout_mode = 0
+offset_left = 1197.0
+offset_top = 650.0
+offset_right = 1250.0
+offset_bottom = 703.0
+mouse_default_cursor_shape = 2
+expand_mode = 1
+
+[node name="MenuBackground" type="TextureRect" parent="." unique_id=565055275]
+visible = false
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+texture = ExtResource("1_3khnl")
+metadata/_edit_lock_ = true
+
+[node name="MenuContainer" type="MarginContainer" parent="." unique_id=397561339]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -240.0
+offset_right = -128.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuContainer" unique_id=289483540]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MainMenu" parent="MenuContainer/HBoxContainer" unique_id=740117825 instance=ExtResource("7_bfvls")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+size_flags_horizontal = 1
+
+[node name="Header" parent="MenuContainer/HBoxContainer/MainMenu" index="0" unique_id=1576686395]
+visible = false
+
+[node name="ItemList" parent="MenuContainer/HBoxContainer/MainMenu/ItemContainer" parent_id_path=PackedInt32Array(740117825, 1620650634) index="0" unique_id=943405768]
+size_flags_vertical = 0
+
+[node name="OPTIONS" parent="MenuContainer/HBoxContainer/MainMenu/ItemContainer/ItemList" index="2" unique_id=1126061584 node_paths=PackedStringArray("submenu")]
+submenu = NodePath("../../../../OptionMenu")
+
+[node name="OptionMenu" parent="MenuContainer/HBoxContainer" unique_id=917008146 instance=ExtResource("8_vm3yr")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+size_flags_horizontal = 1
+submenu_mode = true
+
+[node name="ItemList" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer" parent_id_path=PackedInt32Array(917008146, 1620650634) index="0" unique_id=943405768]
+size_flags_vertical = 0
+
+[node name="GAMEPLAY" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" index="0" unique_id=345834730 node_paths=PackedStringArray("submenu")]
+submenu = NodePath("../../../../OptionGameplayMenu")
+
+[node name="OptionGameplayMenu" parent="MenuContainer/HBoxContainer" unique_id=587281300 instance=ExtResource("9_8fij5")]
+layout_mode = 2
+submenu_mode = true
+
+[node name="Header" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer" parent_id_path=PackedInt32Array(587281300, 1649184532) index="0" unique_id=1576686395]
+visible = true
+
+[node name="FiltroCtr_SlideIncremental" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(587281300, 1649184532, 943405768) index="0" unique_id=58625706]
+theme_override_constants/margin_right = 20
+
+[node name="HBoxContainer4" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer/ItemContainer/ItemList/FiltroCtr_SlideIncremental/FieldContainer/SlideIncremental/HLine_MID" parent_id_path=PackedInt32Array(587281300, 58625706, 1743263589) index="3" unique_id=853757129]
+theme_override_constants/separation = 18
+
+[node name="HLine_Selector" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer/ItemContainer/ItemList/FiltroCtr_SlideIncremental/FieldContainer/SlideIncremental/HLine_MID" parent_id_path=PackedInt32Array(587281300, 58625706, 1743263589) index="4" unique_id=266778800]
+offset_left = 111.000015
+offset_right = 131.00002
+
+[connection signal="gui_input" from="IconContainer/IconGithub" to="." method="_on_icon_github_gui_input"]
+[connection signal="gui_input" from="IconContainer/IconItchio" to="." method="_on_icon_itchio_gui_input"]
+[connection signal="gui_input" from="IconContainer/IconDiscord" to="." method="_on_icon_discord_gui_input"]
+[connection signal="submenu_toggled" from="MenuContainer/HBoxContainer/MainMenu" to="." method="_on_main_menu_submenu_toggled"]
+
+[editable path="MenuContainer/HBoxContainer/MainMenu"]
+[editable path="MenuContainer/HBoxContainer/OptionMenu"]
+[editable path="MenuContainer/HBoxContainer/OptionGameplayMenu"]
+[editable path="MenuContainer/HBoxContainer/OptionGameplayMenu/KeyContainer"]
+[editable path="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer"]
+[editable path="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer/ItemContainer/ItemList/FiltroCtr_SlideIncremental"]

@@ -1,18 +1,10 @@
 extends Control
 
-@onready var game_menu_overlay_background: TextureRect = $GameMenuOverlay/Background
+@onready var background: TextureRect = $MenuBackground
 
 func _on_main_menu_submenu_toggled(button: GameMenuButton, submenu: GameMenu, is_toggled: bool) -> void:
 	GameSystem.log(self, "Catch submenu toggled [%s] for `%s` from `%s` " % [is_toggled, submenu.name, button.name.to_pascal_case()])
-	show_game_menu_overlay_background(is_toggled)
-
-func show_game_menu_overlay_background(is_toggled):
-	if is_toggled:
-		game_menu_overlay_background.visible = true
-	else:
-		game_menu_overlay_background.visible = false
-	pass
-
+	background.visible = is_toggled
 
 func _on_icon_github_gui_input(event: InputEvent) -> void:
 	GameSystem.log(self, "Catch GUI input `%s`" % event.get_class())

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://csjdctnibsq81"]
+
+[ext_resource type="Script" uid="uid://2oplb46y6usk" path="res://features/logging/log_manager.gd" id="1_xaeyf"]
+
+[node name="LogManager" type="Node"]
+script = ExtResource("1_xaeyf")

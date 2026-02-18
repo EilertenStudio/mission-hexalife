@@ -1,33 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfdfjt6llue3w"]
+[gd_scene format=3 uid="uid://bfdfjt6llue3w"]
 
 [ext_resource type="Theme" uid="uid://dq5r1pewwfy7y" path="res://components/menus/game_menu/game_menu_theme.tres" id="1_3a1xn"]
 [ext_resource type="Script" uid="uid://buxkw82qfu70w" path="res://components/menus/game_menu/game_menu.gd" id="2_xq47i"]
 
-[node name="GameMenu" type="Control"]
+[node name="GameMenu" type="HBoxContainer" unique_id=959656627]
 clip_contents = true
-layout_mode = 3
-anchors_preset = 0
-offset_right = 192.0
-offset_bottom = 192.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("1_3a1xn")
+theme_override_constants/separation = 0
 script = ExtResource("2_xq47i")
 
-[node name="VSeparator" type="VSeparator" parent="."]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-grow_vertical = 2
-theme = ExtResource("1_3a1xn")
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 4.0
-offset_bottom = 155.0
-grow_horizontal = 2
-
-[node name="ButtonGroup" type="VBoxContainer" parent="MarginContainer"]
+[node name="Header" type="VSeparator" parent="." unique_id=1576686395]
+custom_minimum_size = Vector2(4, 0)
 layout_mode = 2
-size_flags_vertical = 0
+theme = ExtResource("1_3a1xn")
+metadata/_edit_lock_ = true
+
+[node name="ItemContainer" type="MarginContainer" parent="." unique_id=1620650634]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 16
+metadata/_edit_lock_ = true
+
+[node name="ItemList" type="VBoxContainer" parent="ItemContainer" unique_id=943405768]
+layout_mode = 2
+metadata/_edit_lock_ = true
