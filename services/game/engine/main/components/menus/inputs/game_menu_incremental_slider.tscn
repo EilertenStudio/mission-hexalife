@@ -1,0 +1,281 @@
+[gd_scene format=3 uid="uid://bjl3rn52sj5bo"]
+
+[ext_resource type="Script" uid="uid://c6y0wvwjsxrta" path="res://components/menus/inputs/game_menu_incremental_slider.gd" id="1_r48se"]
+[ext_resource type="Theme" uid="uid://dq5r1pewwfy7y" path="res://components/menus/game_menu/game_menu_theme.tres" id="2_u1odk"]
+[ext_resource type="Script" uid="uid://3jm0b33fasfg" path="res://components/ui/h_box_normalized_container.gd" id="3_ngv77"]
+[ext_resource type="Texture2D" uid="uid://c8efo6q8hluwi" path="res://components/ui/mhx-ui-slider_incremental-grabber.svg" id="4_1r0lb"]
+[ext_resource type="Texture2D" uid="uid://daxoqy7ouq1wr" path="res://components/ui/mhx-ui-slider_incremental-tick.svg" id="5_lav3a"]
+[ext_resource type="Texture2D" uid="uid://w8p1cccelysb" path="res://components/ui/mhx-ui-slider_incremental-slider-center.svg" id="6_3ubpd"]
+[ext_resource type="Texture2D" uid="uid://bdqlr7ffg0mih" path="res://components/ui/mhx-ui-slider_incremental-slider-side.svg" id="7_t6caf"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_slimo"]
+color = Color(1, 1, 1, 1)
+grow_begin = 0.0
+grow_end = -6.0
+thickness = 4
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_xiq7w"]
+color = Color(1, 1, 1, 1)
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 4
+vertical = true
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_xsdwh"]
+color = Color(0.39607844, 0.85490197, 0.69803923, 1)
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 4
+vertical = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7jm4m"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_b77fr"]
+content_margin_left = 10.0
+color = Color(1, 1, 1, 1)
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 4
+vertical = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b77fr"]
+atlas = ExtResource("5_lav3a")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j3y0t"]
+texture = ExtResource("6_3ubpd")
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j3y0t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_scs2p"]
+
+[node name="GameMenuIncrementalSlider" type="MarginContainer" unique_id=868563259]
+custom_minimum_size = Vector2(0, 32)
+offset_right = 320.0
+offset_bottom = 30.0
+theme_override_constants/margin_top = 0
+script = ExtResource("1_r48se")
+
+[node name="V1" type="MarginContainer" parent="." unique_id=241173159]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_right = 8
+
+[node name="FieldContainer" type="HBoxContainer" parent="V1" unique_id=1783916532]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 7
+
+[node name="Label" type="Label" parent="V1/FieldContainer" unique_id=58625706]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_font_sizes/font_size = 20
+text = "100"
+vertical_alignment = 1
+
+[node name="SlideIncremental" type="HBoxContainer" parent="V1/FieldContainer" unique_id=352960165]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = -4
+
+[node name="VLine_START" type="VSeparator" parent="V1/FieldContainer/SlideIncremental" unique_id=2108702131]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+metadata/_edit_lock_ = true
+
+[node name="HLine_MID" type="HSeparator" parent="V1/FieldContainer/SlideIncremental" unique_id=1743263589]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/separator = SubResource("StyleBoxLine_slimo")
+metadata/_edit_lock_ = true
+
+[node name="HLine_Steps" type="HBoxContainer" parent="V1/FieldContainer/SlideIncremental/HLine_MID" unique_id=853757129]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+script = ExtResource("3_ngv77")
+
+[node name="VLine_Step_1" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=2132917869]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xiq7w")
+metadata/_edit_lock_ = true
+
+[node name="VLine_Step_2" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=381815492]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xsdwh")
+metadata/_edit_lock_ = true
+
+[node name="VLine_Step_3" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=1144377988]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xsdwh")
+metadata/_edit_lock_ = true
+
+[node name="VLine_Step_4" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=926440590]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xsdwh")
+metadata/_edit_lock_ = true
+
+[node name="VLine_Step_5" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=1560174404]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xsdwh")
+metadata/_edit_lock_ = true
+
+[node name="VLine_Step_6" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=1976643727]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xsdwh")
+metadata/_edit_lock_ = true
+
+[node name="VLine_Step_7" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=934784990]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xsdwh")
+metadata/_edit_lock_ = true
+
+[node name="VLine_Step_8" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=605441425]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xsdwh")
+metadata/_edit_lock_ = true
+
+[node name="VLine_Step_9" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=196549708]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xsdwh")
+metadata/_edit_lock_ = true
+
+[node name="VLine_Step_10" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=38271831]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xsdwh")
+metadata/_edit_lock_ = true
+
+[node name="VLine_Step_11" type="VSeparator" parent="V1/FieldContainer/SlideIncremental/HLine_MID/HLine_Steps" unique_id=8245336]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_xiq7w")
+metadata/_edit_lock_ = true
+
+[node name="HLine_Selector" type="Panel" parent="V1/FieldContainer/SlideIncremental/HLine_MID" unique_id=266778800]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 122.000015
+offset_top = -14.000003
+offset_right = 142.00002
+offset_bottom = 5.999997
+grow_vertical = 2
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_7jm4m")
+
+[node name="VLine_START2" type="VSeparator" parent="V1/FieldContainer/SlideIncremental" unique_id=1004383071]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_styles/separator = SubResource("StyleBoxLine_b77fr")
+metadata/_edit_lock_ = true
+
+[node name="V2" type="MarginContainer" parent="." unique_id=1872027743]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Value" type="MarginContainer" parent="V2" unique_id=1790180464]
+layout_mode = 2
+theme_override_constants/margin_left = -11
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Label" type="Label" parent="V2/Value" unique_id=1929453635]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme = ExtResource("2_u1odk")
+theme_override_font_sizes/font_size = 20
+text = "0"
+vertical_alignment = 1
+
+[node name="Slider" type="MarginContainer" parent="V2" unique_id=361368616]
+layout_mode = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 0
+
+[node name="SliderSide" type="MarginContainer" parent="V2/Slider" unique_id=1957419159]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 0
+
+[node name="TextureRect" type="TextureRect" parent="V2/Slider/SliderSide" unique_id=351054269]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("7_t6caf")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="V2/Slider/SliderSide" unique_id=1989271843]
+layout_mode = 2
+size_flags_horizontal = 8
+texture = ExtResource("7_t6caf")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="SliderCenter" type="MarginContainer" parent="V2/Slider" unique_id=722326575]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HSlider" type="HSlider" parent="V2/Slider/SliderCenter" unique_id=223391639]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_constants/center_grabber = 1
+theme_override_constants/grabber_offset = 0
+theme_override_constants/tick_offset = 0
+theme_override_icons/grabber = ExtResource("4_1r0lb")
+theme_override_icons/grabber_highlight = ExtResource("4_1r0lb")
+theme_override_icons/grabber_disabled = ExtResource("4_1r0lb")
+theme_override_icons/tick = SubResource("AtlasTexture_b77fr")
+theme_override_styles/slider = SubResource("StyleBoxTexture_j3y0t")
+theme_override_styles/grabber_area = SubResource("StyleBoxEmpty_j3y0t")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxEmpty_scs2p")
+step = 10.0
+rounded = true
+scrollable = false
+tick_count = 11
+ticks_position = 3
+
+[connection signal="value_changed" from="V2/Slider/SliderCenter/HSlider" to="." method="_on_slider_value_changed"]

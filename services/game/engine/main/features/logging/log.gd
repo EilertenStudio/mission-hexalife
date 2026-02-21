@@ -9,6 +9,11 @@ enum Level {
 	TRACE,
 }
 
+static var log_level_root := Level.TRACE:
+	set(value):
+		Log.info(Log, "Set logging level to %s" % Log.Level.keys()[value])
+		log_level_root = value
+
 static func error(handler: Variant, message: String):
 	_log(Level.ERROR, handler, message)
 
@@ -28,7 +33,7 @@ static func trace(handler: Variant, message: String):
 
 
 static func _log(level: Level, handler: Variant, message: String):
-	if (level > LogManager.log_level_root) and (handler is not LogManager):
+	if log_level_root and (level > log_level_root): # and (handler is not LogManager):
 		return
 	
 	var category := "Unknown"

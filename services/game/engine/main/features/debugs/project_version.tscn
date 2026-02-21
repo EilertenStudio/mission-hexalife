@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://5yoyc0sceqjg"]
+
+[ext_resource type="Script" uid="uid://cs2p0qsbxq21m" path="res://features/debugs/project_version.gd" id="1_st1x1"]
+
+[node name="ProjectVersion" type="Label" unique_id=838290403]
+offset_left = 8.0
+offset_top = 689.0
+offset_right = 184.0
+offset_bottom = 712.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+script = ExtResource("1_st1x1")

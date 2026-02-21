@@ -4,30 +4,23 @@
 [ext_resource type="PackedScene" uid="uid://df848eo5uwric" path="res://components/menus/game_menu/game_menu_button.tscn" id="3_wmuto"]
 
 [node name="OptionMenu" unique_id=587281300 instance=ExtResource("2_7sllr")]
-size_flags_horizontal = 3
 
-[node name="GAMEPLAY" parent="MarginContainer/ButtonGroup" parent_id_path=PackedInt32Array(943405768) index="0" unique_id=345834730 instance=ExtResource("3_wmuto")]
-custom_minimum_size = Vector2(0, 30)
+[node name="GAMEPLAY" parent="ItemContainer/ItemList" parent_id_path=PackedInt32Array(943405768) index="0" unique_id=345834730 instance=ExtResource("3_wmuto")]
 layout_mode = 2
-toggle_mode = true
 text = "GAMEPLAY"
 
-[node name="DISPLAY" parent="MarginContainer/ButtonGroup" parent_id_path=PackedInt32Array(943405768) index="1" unique_id=1816815252 instance=ExtResource("3_wmuto")]
-custom_minimum_size = Vector2(0, 30)
+[node name="DISPLAY" parent="ItemContainer/ItemList" parent_id_path=PackedInt32Array(943405768) index="1" unique_id=1816815252 instance=ExtResource("3_wmuto")]
 layout_mode = 2
 text = "DISPLAY"
 
-[node name="AUDIO" parent="MarginContainer/ButtonGroup" parent_id_path=PackedInt32Array(943405768) index="2" unique_id=305294946 instance=ExtResource("3_wmuto")]
-custom_minimum_size = Vector2(0, 30)
+[node name="AUDIO" parent="ItemContainer/ItemList" parent_id_path=PackedInt32Array(943405768) index="2" unique_id=305294946 instance=ExtResource("3_wmuto")]
 layout_mode = 2
 text = "AUDIO"
 
-[node name="CONTROLS" parent="MarginContainer/ButtonGroup" parent_id_path=PackedInt32Array(943405768) index="3" unique_id=10925749 instance=ExtResource("3_wmuto")]
-custom_minimum_size = Vector2(0, 30)
+[node name="CONTROLS" parent="ItemContainer/ItemList" parent_id_path=PackedInt32Array(943405768) index="3" unique_id=10925749 instance=ExtResource("3_wmuto")]
 layout_mode = 2
 text = "CONTROLS"
 
-[node name="LANGUAGE" parent="MarginContainer/ButtonGroup" parent_id_path=PackedInt32Array(943405768) index="4" unique_id=1845744904 instance=ExtResource("3_wmuto")]
-custom_minimum_size = Vector2(0, 30)
+[node name="LANGUAGE" parent="ItemContainer/ItemList" parent_id_path=PackedInt32Array(943405768) index="4" unique_id=1845744904 instance=ExtResource("3_wmuto")]
 layout_mode = 2
 text = "LANGUAGE"

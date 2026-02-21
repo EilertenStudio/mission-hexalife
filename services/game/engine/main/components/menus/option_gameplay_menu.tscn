@@ -2,8 +2,10 @@
 
 [ext_resource type="Theme" uid="uid://dq5r1pewwfy7y" path="res://components/menus/game_menu/game_menu_theme.tres" id="1_slimo"]
 [ext_resource type="PackedScene" uid="uid://bfdfjt6llue3w" path="res://components/menus/game_menu/game_menu.tscn" id="1_wnog5"]
-[ext_resource type="Script" uid="uid://buxkw82qfu70w" path="res://components/menus/game_menu/game_menu.gd" id="2_wnog5"]
-[ext_resource type="PackedScene" uid="uid://bjl3rn52sj5bo" path="res://components/menus/inputs/game_menu_slide_incremental.tscn" id="4_wnog5"]
+[ext_resource type="Script" uid="uid://dpre73swfblvy" path="res://components/menus/option_gameplay_menu.gd" id="2_wnog5"]
+[ext_resource type="PackedScene" uid="uid://dbg2qaxymgjp4" path="res://components/menus/game_menu/game_menu_label.tscn" id="4_nbc6y"]
+[ext_resource type="PackedScene" uid="uid://bjl3rn52sj5bo" path="res://components/menus/inputs/game_menu_incremental_slider.tscn" id="4_wnog5"]
+[ext_resource type="PackedScene" uid="uid://bol6m0psm8hkx" path="res://components/menus/game_menu/game_menu_checkbox.tscn" id="6_nv5dg"]
 
 [node name="OptionGameplayMenu" type="HBoxContainer" unique_id=1809366528]
 clip_contents = true
@@ -18,42 +20,31 @@ script = ExtResource("2_wnog5")
 [node name="KeyContainer" parent="." unique_id=959656627 instance=ExtResource("1_wnog5")]
 layout_mode = 2
 
-[node name="CtrFilter" type="Label" parent="KeyContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(959656627, 943405768) index="0" unique_id=1283480673]
+[node name="FontSize" parent="KeyContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(959656627, 943405768) index="0" unique_id=764068037 instance=ExtResource("4_nbc6y")]
 layout_mode = 2
-theme = ExtResource("1_slimo")
-text = "CTR Filter"
-
-[node name="FontSize" type="Label" parent="KeyContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(959656627, 943405768) index="1" unique_id=725810939]
-layout_mode = 2
-theme = ExtResource("1_slimo")
 text = "Font Size"
+
+[node name="CrtFilter" parent="KeyContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(959656627, 943405768) index="1" unique_id=803798969 instance=ExtResource("4_nbc6y")]
+layout_mode = 2
+text = "Crt Filter"
 
 [node name="ValueContainer" parent="." unique_id=1649184532 instance=ExtResource("1_wnog5")]
 layout_mode = 2
 
-[node name="FontSize_SlideIncremental" parent="ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="0" unique_id=58625706 instance=ExtResource("4_wnog5")]
+[node name="Header" parent="ValueContainer" index="0" unique_id=1576686395]
 visible = false
+
+[node name="FontSize_IncrementalSlider" parent="ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="0" unique_id=1505437615 instance=ExtResource("4_wnog5")]
 layout_mode = 2
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_right = 4
+theme_override_constants/margin_right = 12
+min_value = 8
+max_value = 32
+step = 4
+value = 24
 
-[node name="FontSize_SlideIncremental2" parent="ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="1" unique_id=868563259 instance=ExtResource("4_wnog5")]
-visible = false
+[node name="CrtFilter_CheckBox" parent="ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="1" unique_id=1236601689 instance=ExtResource("6_nv5dg")]
 layout_mode = 2
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_right = 4
-
-[node name="GameMenuSlideIncremental" parent="ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="2" unique_id=1505437615 instance=ExtResource("4_wnog5")]
-layout_mode = 2
-theme_override_constants/margin_left = -2
-theme_override_constants/margin_right = 14
-
-[node name="HLine_Steps" parent="ValueContainer/ItemContainer/ItemList/GameMenuSlideIncremental/FieldContainer/SlideIncremental/HLine_MID" parent_id_path=PackedInt32Array(1505437615, 1743263589) index="0" unique_id=853757129]
-theme_override_constants/separation = 19
-
-[node name="HLine_Selector" parent="ValueContainer/ItemContainer/ItemList/GameMenuSlideIncremental/FieldContainer/SlideIncremental/HLine_MID" parent_id_path=PackedInt32Array(1505437615, 1743263589) index="1" unique_id=266778800]
-offset_left = 117.000015
-offset_right = 137.00002
+theme_override_constants/margin_left = 50
 
 [node name="Header" type="VSeparator" parent="." unique_id=89225404]
 custom_minimum_size = Vector2(4, 0)
@@ -61,8 +52,8 @@ layout_mode = 2
 theme = ExtResource("1_slimo")
 metadata/_edit_lock_ = true
 
+[connection signal="value_changed" from="ValueContainer/ItemContainer/ItemList/FontSize_IncrementalSlider" to="." method="_on_font_size_incremental_slider_value_changed"]
+[connection signal="toggled" from="ValueContainer/ItemContainer/ItemList/CrtFilter_CheckBox" to="." method="_on_ctr_filter_check_box_toggled"]
+
 [editable path="KeyContainer"]
 [editable path="ValueContainer"]
-[editable path="ValueContainer/ItemContainer/ItemList/FontSize_SlideIncremental"]
-[editable path="ValueContainer/ItemContainer/ItemList/FontSize_SlideIncremental2"]
-[editable path="ValueContainer/ItemContainer/ItemList/GameMenuSlideIncremental"]

@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bol6m0psm8hkx"]
+
+[ext_resource type="Theme" uid="uid://dq5r1pewwfy7y" path="res://components/menus/game_menu/game_menu_theme.tres" id="1_3lr88"]
+[ext_resource type="Script" uid="uid://dkfldcx7yp44f" path="res://components/menus/game_menu/game_menu_checkbox.gd" id="1_asr0j"]
+[ext_resource type="Texture2D" uid="uid://cc630drm0wrx2" path="res://components/ui/mhx-ui-checkbox-selected.svg" id="2_asr0j"]
+[ext_resource type="Texture2D" uid="uid://carjgd85j8uu1" path="res://components/ui/mhx-ui-checkbox-not-selected.svg" id="3_yllha"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3lr88"]
+texture = ExtResource("3_yllha")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_asr0j"]
+texture = ExtResource("2_asr0j")
+
+[node name="GameMenuCheckBox" type="MarginContainer" unique_id=570097679]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 32.0
+offset_bottom = 32.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_asr0j")
+
+[node name="CheckBox" type="CheckBox" parent="." unique_id=1236601689]
+visible = false
+layout_mode = 2
+theme = ExtResource("1_3lr88")
+icon_alignment = 1
+
+[node name="Button" type="Button" parent="." unique_id=52024616]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_3lr88")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_asr0j")
+theme_override_styles/hover = SubResource("StyleBoxTexture_3lr88")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_asr0j")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_3lr88")
+theme_override_styles/focus = SubResource("StyleBoxTexture_3lr88")
+toggle_mode = true
+
+[connection signal="toggled" from="Button" to="." method="_on_button_toggled"]

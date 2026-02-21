@@ -10,11 +10,14 @@
 [ext_resource type="PackedScene" uid="uid://cds80akr06bpl" path="res://components/menus/main_menu.tscn" id="7_bfvls"]
 [ext_resource type="PackedScene" uid="uid://cxyyfg34c2t0n" path="res://components/menus/option_menu.tscn" id="8_vm3yr"]
 [ext_resource type="PackedScene" uid="uid://p5wce246x2n3" path="res://components/menus/option_gameplay_menu.tscn" id="9_8fij5"]
+[ext_resource type="Theme" uid="uid://dhggltmpgex84" path="res://features/gameplay/gameplay_theme.tres" id="11_vmvrm"]
 
 [sub_resource type="Gradient" id="Gradient_niea6"]
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_5jnro"]
 gradient = SubResource("Gradient_niea6")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vmvrm"]
 
 [node name="GameMenuOverlay" type="Control" unique_id=1978468807]
 clip_contents = true
@@ -122,10 +125,8 @@ size_flags_horizontal = 1
 [node name="Header" parent="MenuContainer/HBoxContainer/MainMenu" index="0" unique_id=1576686395]
 visible = false
 
-[node name="ItemList" parent="MenuContainer/HBoxContainer/MainMenu/ItemContainer" parent_id_path=PackedInt32Array(740117825, 1620650634) index="0" unique_id=943405768]
-size_flags_vertical = 0
-
-[node name="OPTIONS" parent="MenuContainer/HBoxContainer/MainMenu/ItemContainer/ItemList" index="2" unique_id=1126061584 node_paths=PackedStringArray("submenu")]
+[node name="OPTIONS" parent="MenuContainer/HBoxContainer/MainMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(740117825, 943405768) index="2" unique_id=1126061584 node_paths=PackedStringArray("submenu")]
+toggle_mode = true
 submenu = NodePath("../../../../OptionMenu")
 
 [node name="OptionMenu" parent="MenuContainer/HBoxContainer" unique_id=917008146 instance=ExtResource("8_vm3yr")]
@@ -134,28 +135,37 @@ layout_mode = 2
 size_flags_horizontal = 1
 submenu_mode = true
 
-[node name="ItemList" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer" parent_id_path=PackedInt32Array(917008146, 1620650634) index="0" unique_id=943405768]
-size_flags_vertical = 0
-
-[node name="GAMEPLAY" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" index="0" unique_id=345834730 node_paths=PackedStringArray("submenu")]
+[node name="GAMEPLAY" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="0" unique_id=345834730 node_paths=PackedStringArray("submenu")]
+toggle_mode = true
 submenu = NodePath("../../../../OptionGameplayMenu")
 
 [node name="OptionGameplayMenu" parent="MenuContainer/HBoxContainer" unique_id=587281300 instance=ExtResource("9_8fij5")]
+visible = false
 layout_mode = 2
 submenu_mode = true
 
-[node name="Header" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer" parent_id_path=PackedInt32Array(587281300, 1649184532) index="0" unique_id=1576686395]
-visible = true
+[node name="CanvasLayer" type="CanvasLayer" parent="MenuContainer/HBoxContainer/OptionGameplayMenu" unique_id=182524501]
 
-[node name="FiltroCtr_SlideIncremental" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(587281300, 1649184532, 943405768) index="0" unique_id=58625706]
-theme_override_constants/margin_right = 20
+[node name="FontSize_Test" type="Panel" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/CanvasLayer" unique_id=1909180733]
+offset_left = 512.0
+offset_top = 320.0
+offset_right = 1152.0
+offset_bottom = 448.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vmvrm")
 
-[node name="HBoxContainer4" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer/ItemContainer/ItemList/FiltroCtr_SlideIncremental/FieldContainer/SlideIncremental/HLine_MID" parent_id_path=PackedInt32Array(587281300, 58625706, 1743263589) index="3" unique_id=853757129]
-theme_override_constants/separation = 18
-
-[node name="HLine_Selector" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer/ItemContainer/ItemList/FiltroCtr_SlideIncremental/FieldContainer/SlideIncremental/HLine_MID" parent_id_path=PackedInt32Array(587281300, 58625706, 1743263589) index="4" unique_id=266778800]
-offset_left = 111.000015
-offset_right = 131.00002
+[node name="Text" type="Label" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/CanvasLayer/FontSize_Test" unique_id=1068434641]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_vmvrm")
+text = "LORUS UPPA LORUS UPPA LORUS UPPA"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_lock_ = true
 
 [connection signal="gui_input" from="IconContainer/IconGithub" to="." method="_on_icon_github_gui_input"]
 [connection signal="gui_input" from="IconContainer/IconItchio" to="." method="_on_icon_itchio_gui_input"]
@@ -164,7 +174,3 @@ offset_right = 131.00002
 
 [editable path="MenuContainer/HBoxContainer/MainMenu"]
 [editable path="MenuContainer/HBoxContainer/OptionMenu"]
-[editable path="MenuContainer/HBoxContainer/OptionGameplayMenu"]
-[editable path="MenuContainer/HBoxContainer/OptionGameplayMenu/KeyContainer"]
-[editable path="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer"]
-[editable path="MenuContainer/HBoxContainer/OptionGameplayMenu/ValueContainer/ItemContainer/ItemList/FiltroCtr_SlideIncremental"]

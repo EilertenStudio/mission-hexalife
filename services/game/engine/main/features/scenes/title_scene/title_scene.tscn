@@ -24,10 +24,3 @@ autoplay = true
 
 [node name="GameMenuOverlay" parent="." unique_id=1978468807 instance=ExtResource("2_m61qj")]
 layout_mode = 1
-
-[connection signal="submenu_toggled" from="GameMenuOverlay/MenuContainer/HBoxContainer/MainMenu" to="." method="_on_main_menu_submenu_toggled"]
-
-[editable path="GameMenuOverlay"]
-[editable path="GameMenuOverlay/MenuContainer/HBoxContainer/MainMenu"]
-[editable path="GameMenuOverlay/MenuContainer/HBoxContainer/OptionMenu"]
-[editable path="GameMenuOverlay/MenuContainer/HBoxContainer/OptionGameplayMenu"]

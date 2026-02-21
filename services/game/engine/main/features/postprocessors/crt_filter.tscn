@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://c7sjrxq1kgv4y"]
+
+[ext_resource type="Script" uid="uid://dwglvfoqt1cyr" path="res://features/postprocessors/crt_filter.gd" id="1_4xb5p"]
+[ext_resource type="Shader" uid="uid://bmqqnlsdp7vmn" path="res://features/postprocessors/crt_filter.gdshader" id="2_odeyf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_at6oi"]
+shader = ExtResource("2_odeyf")
+
+[sub_resource type="QuadMesh" id="QuadMesh_4xb5p"]
+size = Vector2(1280, 720)
+center_offset = Vector3(640, 360, 0)
+
+[node name="CrtFilter" type="Control" unique_id=1384223404]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_4xb5p")
+
+[node name="Screen" type="MeshInstance2D" parent="." unique_id=1408483347]
+material = SubResource("ShaderMaterial_at6oi")
+position = Vector2(-332456.03, -94856)
+scale = Vector2(520.5, 264.5)
+mesh = SubResource("QuadMesh_4xb5p")

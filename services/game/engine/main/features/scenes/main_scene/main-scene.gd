@@ -1,10 +1,10 @@
 class_name SceneMain
 extends Control
 
-@onready var version: Label = $Version
+#@onready var version: Label = $Version
 
 func _ready():
-	version.text = "v"+ProjectSettings.get_setting("application/config/version")
+	LoadingManager.load_resources()
 	pass
 
 	#title_menu.connect(

@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://ba1xryj2avcaf"]
 
 [ext_resource type="Script" uid="uid://wwfiy175bgyj" path="res://features/scenes/main_scene/main-scene.gd" id="1_55hj4"]
-[ext_resource type="PackedScene" uid="uid://csjdctnibsq81" path="res://features/logging/log_manager.tscn" id="3_0b30t"]
+[ext_resource type="PackedScene" uid="uid://c7sjrxq1kgv4y" path="res://features/postprocessors/crt_filter.tscn" id="3_0b30t"]
+[ext_resource type="PackedScene" uid="uid://5yoyc0sceqjg" path="res://features/debugs/project_version.tscn" id="3_rxy18"]
 [ext_resource type="PackedScene" uid="uid://b8ddnckcwmp4" path="res://features/scenes/title_scene/title_scene.tscn" id="8_53s44"]
 
 [node name="MainScene" type="Control" unique_id=1959146252]
@@ -13,16 +14,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_55hj4")
 
-[node name="TitleScene" parent="." unique_id=775307614 instance=ExtResource("8_53s44")]
-layout_mode = 1
+[node name="GameSceneLayer" type="CanvasLayer" parent="." unique_id=1715075723]
 
-[node name="Version" type="Label" parent="." unique_id=111335439]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 689.0
-offset_right = 184.0
-offset_bottom = 712.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+[node name="TitleScene" parent="GameSceneLayer" unique_id=775307614 instance=ExtResource("8_53s44")]
 
-[node name="LogManager" parent="Version" unique_id=1128849229 instance=ExtResource("3_0b30t")]
-log_level = 5
+[node name="GameDebugLayer" type="CanvasLayer" parent="." unique_id=1330816901]
+layer = 200
+
+[node name="ProjectVersion" parent="GameDebugLayer" unique_id=838290403 instance=ExtResource("3_rxy18")]
+text = "v0.0.3-alpha.14"
+
+[node name="PostProcessorLayer" type="CanvasLayer" parent="." unique_id=1317983695]
+layer = 300
+
+[node name="CrtFilter" parent="PostProcessorLayer" unique_id=1384223404 instance=ExtResource("3_0b30t")]
