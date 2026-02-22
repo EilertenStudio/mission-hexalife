@@ -23,7 +23,7 @@ on:
 env:
   MISE_EXPERIMENTAL: true
   # ---------------------------------------------------------------------------
-  GODOT_VERSION: 4.6
+  GODOT_VERSION: 4.6.1
   # ---------------------------------------------------------------------------
   SERVICE_GAME_DIR: "services/game"
   SERVICE_WEBSITE_DIR: "services/website"
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: setup
     container:
-      image: barichello/godot-ci:4.6
+      image: barichello/godot-ci:4.6.1
     steps:
       - name: Setup container
         run: |
