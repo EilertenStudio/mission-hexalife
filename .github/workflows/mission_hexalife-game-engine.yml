@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: setup
     container:
-      image: barichello/godot-ci:${{env.GODOT_VERSION}}
+      image: barichello/godot-ci:4.6
     steps:
       - name: Setup container
         run: |
