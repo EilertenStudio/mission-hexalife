@@ -4,20 +4,28 @@ extends GameMenu
 @onready var crt_filter_check_box: GameMenuCheckBox = $ValueContainer/ItemContainer/ItemList/CrtFilter_CheckBox
 
 func _ready():
+	Log.trace(self, "Ready")
 	super._ready()
 	
 	_on_fullscreen_settings_fetch()
-	SettingsManager.display.fullscreen_changed.connect(_on_fullscreen_settings_fetch)
+	#SettingsManager.display.fullscreen_changed.connect(_on_fullscreen_settings_fetch)
 	
 	_on_crt_filter_settings_fetch()
-	SettingsManager.display.crt_filter_changed.connect(_on_crt_filter_settings_fetch)
+	#SettingsManager.display.crt_filter_changed.connect(_on_crt_filter_settings_fetch)
+	
+	SettingsManager.loaded.connect(_on_settings_load)
+
+func _on_settings_load():
+	Log.info(self, "Settings fetch")
+	_on_fullscreen_settings_fetch()
+	_on_crt_filter_settings_fetch()
 	
 func _on_fullscreen_settings_fetch():
+	Log.event(self, "Fullscreen fetch -> (%s)" % SettingsManager.display.fullscreen_get())
 	if OS.has_feature("web"):
-		Log.debug(self, "Fullscreen is disabled")
+		Log.warn(self, "Fullscreen is disabled")
 		fullscreen_check_box.button.disabled = true
 	else:
-		Log.debug(self, "Fullscreen fetch -> (%s)" % SettingsManager.display.fullscreen_get())
 		fullscreen_check_box.button.set_pressed_no_signal(SettingsManager.display.fullscreen_get())
 
 func _on_fullscreen_check_box_toggled(enabled: bool) -> void:
@@ -25,7 +33,7 @@ func _on_fullscreen_check_box_toggled(enabled: bool) -> void:
 	SettingsManager.display.fullscreen_set(enabled)
 
 func _on_crt_filter_settings_fetch():
-	Log.debug(self, "CRT Filter fetch -> (%s)" % SettingsManager.display.crt_filter_get())
+	Log.event(self, "CRT Filter fetch -> (%s)" % SettingsManager.display.crt_filter_get())
 	crt_filter_check_box.button.set_pressed_no_signal(SettingsManager.display.crt_filter_get())
 
 func _on_crt_filter_check_box_toggled(enabled: bool) -> void:

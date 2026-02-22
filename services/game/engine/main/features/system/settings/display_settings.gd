@@ -41,7 +41,8 @@ func crt_filter_set(enabled: bool, save := true, emit := true):
 		crt_filter_get_node().visible = enabled
 	
 	if emit:
-		crt_filter_changed.emit(enabled)
+		#Log.trace(self, "%s" % crt_filter_changed.get_connections())
+		crt_filter_changed.emit()
 	
 #endregion
 
