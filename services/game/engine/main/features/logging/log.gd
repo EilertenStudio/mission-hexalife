@@ -59,9 +59,9 @@ static func _log(level: Level, handler: Variant, message: String):
 		Level.WARN:
 			color = "#edd132"
 		Level.INFO:
-			color = "#32c1ed"
-		Level.DEBUG:
 			color = "#7ab32b"
+		Level.DEBUG:
+			color = "#32c1ed"
 		Level.EVENT:
 			color = "#e68e37"
 		Level.TRACE:

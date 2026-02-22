@@ -5,7 +5,8 @@
 [ext_resource type="Script" uid="uid://dpre73swfblvy" path="res://components/menus/option_gameplay_menu.gd" id="2_wnog5"]
 [ext_resource type="PackedScene" uid="uid://dbg2qaxymgjp4" path="res://components/menus/game_menu/game_menu_label.tscn" id="4_nbc6y"]
 [ext_resource type="PackedScene" uid="uid://bjl3rn52sj5bo" path="res://components/menus/inputs/game_menu_incremental_slider.tscn" id="4_wnog5"]
-[ext_resource type="PackedScene" uid="uid://bol6m0psm8hkx" path="res://components/menus/game_menu/game_menu_checkbox.tscn" id="6_nv5dg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nbc6y"]
 
 [node name="OptionGameplayMenu" type="HBoxContainer" unique_id=1809366528]
 clip_contents = true
@@ -24,15 +25,11 @@ layout_mode = 2
 layout_mode = 2
 text = "Font Size"
 
-[node name="CrtFilter" parent="KeyContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(959656627, 943405768) index="1" unique_id=803798969 instance=ExtResource("4_nbc6y")]
-layout_mode = 2
-text = "Crt Filter"
-
 [node name="ValueContainer" parent="." unique_id=1649184532 instance=ExtResource("1_wnog5")]
 layout_mode = 2
 
 [node name="Header" parent="ValueContainer" index="0" unique_id=1576686395]
-visible = false
+theme_override_styles/separator = SubResource("StyleBoxEmpty_nbc6y")
 
 [node name="FontSize_IncrementalSlider" parent="ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="0" unique_id=1505437615 instance=ExtResource("4_wnog5")]
 layout_mode = 2
@@ -42,10 +39,6 @@ max_value = 32
 step = 4
 value = 24
 
-[node name="CrtFilter_CheckBox" parent="ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="1" unique_id=1236601689 instance=ExtResource("6_nv5dg")]
-layout_mode = 2
-theme_override_constants/margin_left = 50
-
 [node name="Header" type="VSeparator" parent="." unique_id=89225404]
 custom_minimum_size = Vector2(4, 0)
 layout_mode = 2
@@ -53,7 +46,6 @@ theme = ExtResource("1_slimo")
 metadata/_edit_lock_ = true
 
 [connection signal="value_changed" from="ValueContainer/ItemContainer/ItemList/FontSize_IncrementalSlider" to="." method="_on_font_size_incremental_slider_value_changed"]
-[connection signal="toggled" from="ValueContainer/ItemContainer/ItemList/CrtFilter_CheckBox" to="." method="_on_ctr_filter_check_box_toggled"]
 
 [editable path="KeyContainer"]
 [editable path="ValueContainer"]

@@ -3,12 +3,14 @@ extends Node
 static var gameplay := {}
 static var gameplay_theme: Theme = preload("res://features/gameplay/gameplay_theme.tres")
 
-signal loaded()
+static var display := {}
 
-func load():
+signal loaded()
+func   load():
 	Log.info(self, "Loading configurations")
 	# TODO: load from file
 	gameplay_crt_filter_enabled_set(true)
+	
 	loaded.emit()
 
 
@@ -26,6 +28,20 @@ static func gameplay_font_size_set(value: int):
 	var theme = gameplay_theme
 	
 	theme.set_font_size("font_size", "Label", value)
+#endregion
+
+#region Display_Fullscreen
+func display_fullscreen_enabled_get() -> bool:
+	return gameplay.get_or_add("fullscreen", false)
+	
+func display_fullscreen_enabled_set(enabled: bool):
+	gameplay.set("fullscreen", enabled)
+	
+	if enabled:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	
 #endregion
 
 #region Gameplay_CrtFilter

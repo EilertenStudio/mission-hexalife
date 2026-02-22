@@ -14,7 +14,7 @@ func _ready():
 	pass
 
 func _on_button_event(event_name: String, event_args: Array) -> void:
-	#GameSystem.log(self, "Receive button event %s: %s" % [event_name, event_args])
+	Log.event(self, "Receive button event %s: %s" % [event_name, event_args])
 	
 	match event_name:
 		"submenu_toggled":

@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cxyyfg34c2t0n" path="res://components/menus/option_menu.tscn" id="8_vm3yr"]
 [ext_resource type="PackedScene" uid="uid://p5wce246x2n3" path="res://components/menus/option_gameplay_menu.tscn" id="9_8fij5"]
 [ext_resource type="Theme" uid="uid://dhggltmpgex84" path="res://features/gameplay/gameplay_theme.tres" id="11_vmvrm"]
+[ext_resource type="PackedScene" uid="uid://73qe6ppjg0n0" path="res://components/menus/option_display_menu.tscn" id="12_jcbjo"]
 
 [sub_resource type="Gradient" id="Gradient_niea6"]
 
@@ -139,6 +140,10 @@ submenu_mode = true
 toggle_mode = true
 submenu = NodePath("../../../../OptionGameplayMenu")
 
+[node name="DISPLAY" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="1" unique_id=1816815252 node_paths=PackedStringArray("submenu")]
+toggle_mode = true
+submenu = NodePath("../../../../OptionDisplayMenu")
+
 [node name="OptionGameplayMenu" parent="MenuContainer/HBoxContainer" unique_id=587281300 instance=ExtResource("9_8fij5")]
 visible = false
 layout_mode = 2
@@ -166,6 +171,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 metadata/_edit_lock_ = true
+
+[node name="OptionDisplayMenu" parent="MenuContainer/HBoxContainer" unique_id=1809366528 instance=ExtResource("12_jcbjo")]
+layout_mode = 2
+submenu_mode = true
 
 [connection signal="gui_input" from="IconContainer/IconGithub" to="." method="_on_icon_github_gui_input"]
 [connection signal="gui_input" from="IconContainer/IconItchio" to="." method="_on_icon_itchio_gui_input"]

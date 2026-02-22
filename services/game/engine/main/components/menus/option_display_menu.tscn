@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://73qe6ppjg0n0"]
+
+[ext_resource type="Theme" uid="uid://dq5r1pewwfy7y" path="res://components/menus/game_menu/game_menu_theme.tres" id="1_7773s"]
+[ext_resource type="Script" uid="uid://bokgi5uyx2csl" path="res://components/menus/option_display_menu.tscn.gd" id="2_7773s"]
+[ext_resource type="PackedScene" uid="uid://bfdfjt6llue3w" path="res://components/menus/game_menu/game_menu.tscn" id="3_jwhea"]
+[ext_resource type="PackedScene" uid="uid://dbg2qaxymgjp4" path="res://components/menus/game_menu/game_menu_label.tscn" id="4_pa0mu"]
+[ext_resource type="PackedScene" uid="uid://bol6m0psm8hkx" path="res://components/menus/game_menu/game_menu_checkbox.tscn" id="6_1d3at"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uyvcx"]
+
+[node name="OptionDisplayMenu" type="HBoxContainer" unique_id=1809366528]
+clip_contents = true
+offset_right = 640.0
+offset_bottom = 128.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_7773s")
+theme_override_constants/separation = 0
+script = ExtResource("2_7773s")
+
+[node name="KeyContainer" parent="." unique_id=959656627 instance=ExtResource("3_jwhea")]
+layout_mode = 2
+
+[node name="Fullscreen" parent="KeyContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(959656627, 943405768) index="0" unique_id=764068037 instance=ExtResource("4_pa0mu")]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="CrtFilter" parent="KeyContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(959656627, 943405768) index="1" unique_id=803798969 instance=ExtResource("4_pa0mu")]
+layout_mode = 2
+text = "Crt Filter"
+
+[node name="ValueContainer" parent="." unique_id=1649184532 instance=ExtResource("3_jwhea")]
+layout_mode = 2
+
+[node name="Header" parent="ValueContainer" index="0" unique_id=1576686395]
+theme_override_styles/separator = SubResource("StyleBoxEmpty_uyvcx")
+
+[node name="Fullscreen_CheckBox" parent="ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="0" unique_id=1236601689 instance=ExtResource("6_1d3at")]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+
+[node name="CrtFilter_CheckBox" parent="ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="1" unique_id=570097679 instance=ExtResource("6_1d3at")]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+
+[node name="Header" type="VSeparator" parent="." unique_id=89225404]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+theme = ExtResource("1_7773s")
+metadata/_edit_lock_ = true
+
+[connection signal="toggled" from="ValueContainer/ItemContainer/ItemList/Fullscreen_CheckBox" to="." method="_on_fullscreen_check_box_toggled"]
+[connection signal="toggled" from="ValueContainer/ItemContainer/ItemList/CrtFilter_CheckBox" to="." method="_on_crt_filter_check_box_toggled"]
+
+[editable path="KeyContainer"]
+[editable path="ValueContainer"]

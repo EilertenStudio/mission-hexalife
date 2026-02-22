@@ -3,9 +3,9 @@ render_mode unshaded, skip_vertex_transform;
 
 uniform sampler2D screen_texture: hint_screen_texture, filter_linear_mipmap;
 
-const float magnify = 1.0;
-const float curvature = 10.0;
-const float scanlines_height = 180.0;
+const float magnify = 1.005;
+const float curvature = 15.0;
+const float scanlines_height = 180.0 * 2.0;
 const float vignette = 0.2;
 
 void fragment() {
@@ -32,7 +32,7 @@ void fragment() {
 	COLOR = vec4(screen_color, 1.0);
 	
 	vec3 vignette_mask = vec3(length(pow(abs(centered_uv), vec2(4.0)) / 2.0));
-	screen_color -= vignette_mask * vignette;
+	//screen_color -= vignette_mask * vignette;
 	COLOR = vec4(screen_color, 1.0);
 	
 	//COLOR = vec4(1.0);

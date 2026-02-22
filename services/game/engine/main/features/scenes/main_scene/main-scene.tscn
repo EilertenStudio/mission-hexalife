@@ -22,7 +22,7 @@ script = ExtResource("1_55hj4")
 layer = 200
 
 [node name="ProjectVersion" parent="GameDebugLayer" unique_id=838290403 instance=ExtResource("3_rxy18")]
-text = "v0.0.3-alpha.14"
+text = "v0.0.3-alpha.15"
 
 [node name="PostProcessorLayer" type="CanvasLayer" parent="." unique_id=1317983695]
 layer = 300
