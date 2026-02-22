@@ -2,8 +2,8 @@ class_name DisplaySettings
 extends Node
 
 func load():
-	fullscreen_set(fullscreen_get(), false, false)
-	crt_filter_set(crt_filter_get(), false, false)
+	fullscreen_set(fullscreen_get(), false, true)
+	crt_filter_set(crt_filter_get(), false, true)
 
 #region fullscreen
 signal fullscreen_changed(enabled: bool)
@@ -31,7 +31,7 @@ func fullscreen_set(enabled: bool, save := true, emit := true):
 signal crt_filter_changed(enabled: bool)
 
 func crt_filter_get() -> bool:
-	return SettingsManager.feature_get(name.to_snake_case(), "crt_filter", false)
+	return SettingsManager.feature_get(name.to_snake_case(), "crt_filter", true)
 
 func crt_filter_set(enabled: bool, save := true, emit := true):
 	Log.debug(self, "CRT Filter changed -> (%s)" % enabled)

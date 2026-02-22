@@ -5,7 +5,6 @@ extends Control
 
 func _ready():
 	LoadingManager.load_resources()
-	pass
 
 	#title_menu.connect(
 		#"options_menu_visibility_changed",

@@ -12,11 +12,12 @@ func save():
 
 signal loaded()
 func   load():
-	Log.info(self, "Load configurations")
 	var error = config.load(SETTINGS_PATH)
 	if error != OK:
-		Log.error(self, "Loading settings failed -> (%s)" % Error.ERR_FILE_NO_PERMISSION)
+		Log.error(self, "Loading configurations failed -> (ERROR_CODE: %s)" % Error.ERR_FILE_NO_PERMISSION)
 		return
+	else:
+		Log.info(self, "Load configurations -> \n%s" % config.encode_to_text())
 		
 	gameplay.load()
 	display.load()
