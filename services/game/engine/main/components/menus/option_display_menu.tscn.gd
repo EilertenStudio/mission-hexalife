@@ -1,23 +1,29 @@
 extends GameMenu
 
+@onready var fullscreen_check_box: GameMenuCheckBox = $ValueContainer/ItemContainer/ItemList/Fullscreen_CheckBox
 @onready var crt_filter_check_box: GameMenuCheckBox = $ValueContainer/ItemContainer/ItemList/CrtFilter_CheckBox
 
 func _ready():
 	super._ready()
-	SettingsManager.loaded.connect(_do_setup)
+	SettingsManager.loaded.connect(_do_settings_fetch)
 	
-func _do_setup():
-	Log.debug(self, "Setup menu")
-	crt_filter_check_box.pressed = SettingsManager.gameplay_crt_filter_enabled_get()
+func _do_settings_fetch():
+	Log.info(self, "Settings fetch")
+	
+	if OS.has_feature("web"):
+		Log.debug(self, "Fullscreen is disabled")
+		fullscreen_check_box.button.disabled = true
+	else:
+		Log.debug(self, "Fullscreen fetch -> (%s)" % SettingsManager.display.fullscreen_get())
+		fullscreen_check_box.button.set_pressed_no_signal(SettingsManager.display.fullscreen_get())
+		
+	Log.debug(self, "CRT Filter fetch -> (%s)" % SettingsManager.display.crt_filter_get())
+	crt_filter_check_box.button.set_pressed_no_signal(SettingsManager.display.crt_filter_get())
 
 func _on_fullscreen_check_box_toggled(enabled: bool) -> void:
-	Log.event(self, "Fullscreen changed -> %s" % JSON.stringify({
-		'enabled': enabled
-	}))
-	SettingsManager.display_fullscreen_enabled_set(enabled)
+	Log.event(self, "Fullscreen checkbox changed -> (%s)" % enabled)
+	SettingsManager.display.fullscreen_set(enabled)
 
-func _on_crt_filter_check_box_toggled(toggled_one: bool) -> void:
-	Log.event(self, "CRT Filter changed -> %s" % JSON.stringify({
-		'enabled': toggled_one
-	}))
-	SettingsManager.gameplay_crt_filter_enabled_set(toggled_one)
+func _on_crt_filter_check_box_toggled(enabled: bool) -> void:
+	Log.event(self, "CRT Filter changed -> %s" % enabled)
+	SettingsManager.display.crt_filter_set(enabled)

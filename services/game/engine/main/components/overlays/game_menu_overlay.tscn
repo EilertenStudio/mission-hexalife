@@ -10,15 +10,12 @@
 [ext_resource type="PackedScene" uid="uid://cds80akr06bpl" path="res://components/menus/main_menu.tscn" id="7_bfvls"]
 [ext_resource type="PackedScene" uid="uid://cxyyfg34c2t0n" path="res://components/menus/option_menu.tscn" id="8_vm3yr"]
 [ext_resource type="PackedScene" uid="uid://p5wce246x2n3" path="res://components/menus/option_gameplay_menu.tscn" id="9_8fij5"]
-[ext_resource type="Theme" uid="uid://dhggltmpgex84" path="res://features/gameplay/gameplay_theme.tres" id="11_vmvrm"]
 [ext_resource type="PackedScene" uid="uid://73qe6ppjg0n0" path="res://components/menus/option_display_menu.tscn" id="12_jcbjo"]
 
 [sub_resource type="Gradient" id="Gradient_niea6"]
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_5jnro"]
 gradient = SubResource("Gradient_niea6")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vmvrm"]
 
 [node name="GameMenuOverlay" type="Control" unique_id=1978468807]
 clip_contents = true
@@ -114,7 +111,6 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MenuContainer" unique_id=289483540]
-clip_contents = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
@@ -130,6 +126,9 @@ visible = false
 toggle_mode = true
 submenu = NodePath("../../../../OptionMenu")
 
+[node name="QUIT" parent="MenuContainer/HBoxContainer/MainMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(740117825, 943405768) index="4" unique_id=1048027091]
+visible = true
+
 [node name="OptionMenu" parent="MenuContainer/HBoxContainer" unique_id=917008146 instance=ExtResource("8_vm3yr")]
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
@@ -144,35 +143,22 @@ submenu = NodePath("../../../../OptionGameplayMenu")
 toggle_mode = true
 submenu = NodePath("../../../../OptionDisplayMenu")
 
-[node name="OptionGameplayMenu" parent="MenuContainer/HBoxContainer" unique_id=587281300 instance=ExtResource("9_8fij5")]
+[node name="AUDIO" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="2" unique_id=305294946]
 visible = false
+
+[node name="CONTROLS" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="3" unique_id=10925749]
+visible = false
+
+[node name="LANGUAGE" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="4" unique_id=1845744904]
+visible = false
+
+[node name="OptionGameplayMenu" parent="MenuContainer/HBoxContainer" unique_id=587281300 instance=ExtResource("9_8fij5")]
 layout_mode = 2
+size_flags_horizontal = 3
 submenu_mode = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="MenuContainer/HBoxContainer/OptionGameplayMenu" unique_id=182524501]
-
-[node name="FontSize_Test" type="Panel" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/CanvasLayer" unique_id=1909180733]
-offset_left = 512.0
-offset_top = 320.0
-offset_right = 1152.0
-offset_bottom = 448.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_vmvrm")
-
-[node name="Text" type="Label" parent="MenuContainer/HBoxContainer/OptionGameplayMenu/CanvasLayer/FontSize_Test" unique_id=1068434641]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("11_vmvrm")
-text = "LORUS UPPA LORUS UPPA LORUS UPPA"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_lock_ = true
-
 [node name="OptionDisplayMenu" parent="MenuContainer/HBoxContainer" unique_id=1809366528 instance=ExtResource("12_jcbjo")]
+visible = false
 layout_mode = 2
 submenu_mode = true
 
@@ -180,6 +166,7 @@ submenu_mode = true
 [connection signal="gui_input" from="IconContainer/IconItchio" to="." method="_on_icon_itchio_gui_input"]
 [connection signal="gui_input" from="IconContainer/IconDiscord" to="." method="_on_icon_discord_gui_input"]
 [connection signal="submenu_toggled" from="MenuContainer/HBoxContainer/MainMenu" to="." method="_on_main_menu_submenu_toggled"]
+[connection signal="pressed" from="MenuContainer/HBoxContainer/MainMenu/ItemContainer/ItemList/QUIT" to="." method="_on_quit_pressed"]
 
 [editable path="MenuContainer/HBoxContainer/MainMenu"]
 [editable path="MenuContainer/HBoxContainer/OptionMenu"]

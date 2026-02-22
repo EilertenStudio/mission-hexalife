@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func _do_register():
 	Log.debug(self, "SettingManager ready")
-	SettingsManager.gameplay_crt_filter_node_set(self)
+	SettingsManager.display.crt_filter_set_node(self)
 
 func _do_update():
 	_do_mesh_init()

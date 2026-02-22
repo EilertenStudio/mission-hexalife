@@ -33,19 +33,20 @@ extends MarginContainer
 signal value_changed(value: float)
 
 func _ready():
-	if self.slider: _do_slider_update()
+	if self.slider: 
+		_do_slider_update()
+		_do_label_update()
+		slider.value_changed.connect(_on_slider_value_changed)
 
 func _on_slider_value_changed(new_value: float):
-	Log.event(self, "Slider value changed -> %s" % JSON.stringify({
-		'value': new_value
-	}))
-	_do_label_update(new_value)
+	Log.event(self, "Slider value changed -> (%s)" % new_value)
+	_do_label_update()
 	
 	value_changed.emit(new_value)
 
-func _do_label_update(to_value: float):
+func _do_label_update():
 	Log.event(self, "Label update")
-	self.label.text = str(to_value).pad_decimals(0)
+	self.label.text = str(self.slider.value).pad_decimals(0)
 
 func _do_slider_update():
 	Log.event(self, "Slider update")
@@ -54,3 +55,4 @@ func _do_slider_update():
 	self.slider.step = self.step
 	self.slider.tick_count = round((self.max_value - self.min_value) / float(self.step)) + 1
 	self.slider.value = self.value
+	#self.slider.set_value_no_signal(self.value)

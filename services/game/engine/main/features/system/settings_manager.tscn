@@ -1,10 +1,6 @@
-[gd_scene format=3 uid="uid://bvd6o0aire3br"]
+[gd_scene format=3 uid="uid://cefuscw2bx0uk"]
 
 [ext_resource type="Script" uid="uid://ds51xgpvx61go" path="res://features/system/settings_manager.gd" id="1_007jr"]
 
-[sub_resource type="Theme" id="Theme_007jr"]
-Label/font_sizes/font_size = 28
-
 [node name="SettingManager" type="Node" unique_id=1746445993]
 script = ExtResource("1_007jr")
-gameplay_theme = SubResource("Theme_007jr")

@@ -11,6 +11,17 @@ texture = ExtResource("3_yllha")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_asr0j"]
 texture = ExtResource("2_asr0j")
 
+[sub_resource type="DPITexture" id="DPITexture_asr0j"]
+_source = "<svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">
+<path d=\"M32 16L16 32L0 16L16 0L32 16ZM4.09277 16.1602L15.8398 27.9072L27.9072 15.8389L16.1611 4.09277L4.09277 16.1602Z\" fill=\"white\"/>
+</svg>
+"
+base_scale = 0.8
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yllha"]
+texture = SubResource("DPITexture_asr0j")
+modulate_color = Color(0.46, 0.46, 0.46, 1)
+
 [node name="GameMenuCheckBox" type="MarginContainer" unique_id=570097679]
 custom_minimum_size = Vector2(32, 32)
 offset_right = 32.0
@@ -36,8 +47,6 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_3lr88")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_asr0j")
 theme_override_styles/hover = SubResource("StyleBoxTexture_3lr88")
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_asr0j")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_3lr88")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_yllha")
 theme_override_styles/focus = SubResource("StyleBoxTexture_3lr88")
 toggle_mode = true
-
-[connection signal="toggled" from="Button" to="." method="_on_button_toggled"]

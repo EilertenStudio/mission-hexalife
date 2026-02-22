@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Mission HeXalife"
-config/version="0.0.3-alpha.16"
+config/version="0.0.3-alpha.17"
 run/main_scene="uid://ba1xryj2avcaf"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://dijwxpv0mbldj"
@@ -28,9 +28,11 @@ buses/default_bus_layout="res://settings/audio_bus_config.tres"
 
 [autoload]
 
+EngineManager="*uid://bc2oppla4bcac"
+InputManager="*uid://caoycmajsho2k"
 SettingsManager="*uid://ds51xgpvx61go"
-GameMenuManager="*res://components/menus/game_menu/game_menu_manager.gd"
 LoadingManager="*uid://daifpwdyrrpqs"
+GameMenuManager="*res://components/menus/game_menu/game_menu_manager.gd"
 
 [display]
 

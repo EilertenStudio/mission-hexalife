@@ -10,6 +10,9 @@ var pressed := false:
 		pressed = value
 		self._do_button_update()
 
+func _ready() -> void:
+	button.toggled.connect(_on_button_toggled)
+
 signal toggled(toggled_one: bool)
 
 func _on_button_toggled(toggled_on: bool) -> void:

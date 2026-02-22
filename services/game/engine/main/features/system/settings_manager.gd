@@ -1,70 +1,35 @@
 extends Node
 
-static var gameplay := {}
-static var gameplay_theme: Theme = preload("res://features/gameplay/gameplay_theme.tres")
+const SETTINGS_PATH = "user://settings.cfg"
+var config = ConfigFile.new()
 
-static var display := {}
+var gameplay := GameplaySettings.new()
+var display := DisplaySettings.new()
+
+func save():
+	Log.info(self, "Save configurations -> \n%s" % config.encode_to_text())
+	config.save(SETTINGS_PATH)
 
 signal loaded()
 func   load():
-	Log.info(self, "Loading configurations")
-	# TODO: load from file
-	gameplay_crt_filter_enabled_set(true)
-	
+	Log.info(self, "Load configurations")
+	var error = config.load(SETTINGS_PATH)
+	if error != OK:
+		Log.error(self, "Loading settings failed -> (%s)" % Error.ERR_FILE_NO_PERMISSION)
+		return
+		
+	gameplay.load()
+	display.load()
+		
 	loaded.emit()
-
-
+	
 # TODO: SettingManager ready -> Component setup
 # TODO: LoadingManager ready -> SettingsManager load -> Component update
 # TODO: SettingManager hold data -> Option Menu Inputs send / receive updates
 
-#region Gameplay_FontSize
-static func gameplay_font_size_set(value: int):
-	Log.info(SettingsManager, "Gameplay Font Size changed -> %s" % JSON.stringify(
-		{
-			'font_size': value
-		}
-	))
-	var theme = gameplay_theme
-	
-	theme.set_font_size("font_size", "Label", value)
-#endregion
+func feature_get(section: String, key: String, default: Variant = null) -> Variant:
+	return config.get_value(section, key, default)
 
-#region Display_Fullscreen
-func display_fullscreen_enabled_get() -> bool:
-	return gameplay.get_or_add("fullscreen", false)
-	
-func display_fullscreen_enabled_set(enabled: bool):
-	gameplay.set("fullscreen", enabled)
-	
-	if enabled:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-	
-#endregion
-
-#region Gameplay_CrtFilter
-static func gameplay_crt_filter_node_has() -> bool:
-	return gameplay.has("crt_filter_node")
-
-static func gameplay_crt_filter_node_get() -> CrtFilter:
-	return gameplay.get("crt_filter_node", null)
-
-static func gameplay_crt_filter_node_set(node: CrtFilter):
-	Log.info(SettingsManager, "Gameplay CRT Filter [Node] changed -> (%s)" % node)
-	gameplay.set("crt_filter_node", node)
-
-static func gameplay_crt_filter_enabled_has() -> bool:
-	return gameplay.has("crt_filter_enabled")
-
-static func gameplay_crt_filter_enabled_get() -> bool:
-	return gameplay.get("crt_filter_enabled", false)
-
-static func gameplay_crt_filter_enabled_set(value: bool):
-	Log.info(SettingsManager, "Gameplay CRT Filter [Enabled] changed -> (%s)" % value)
-	gameplay.set("crt_filter_enabled", value)
-	if gameplay_crt_filter_node_has():
-		gameplay_crt_filter_node_get().visible = value
-
-#endregion
+func feature_set(section: String, key: String, value: Variant, save := true):
+	config.set_value(section, key, value)
+	if save: save()

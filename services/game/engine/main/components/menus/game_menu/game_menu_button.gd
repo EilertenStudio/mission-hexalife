@@ -3,6 +3,8 @@
 class_name GameMenuButton
 extends Button
 
+func _init() -> void:
+	Log.log_level_set(self, Log.Level.INFO)
 
 func _ready() -> void:
 	#if grab_focus:
@@ -18,12 +20,12 @@ func _notification(what: int) -> void:
 #region Property
 # -----------------------------------------------------------------------------
 func update_text() -> void:
-	GameSystem.log(self, "Update text")
+	Log.debug(self, "Update text")
 	self.text = name
 	#self.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	pass
 func update_from_theme() -> void:
-	GameSystem.log(self, "Update from theme")
+	Log.debug(self, "Update from theme")
 	self.custom_minimum_size = Vector2(
 		get_theme_constant("minimum_size_x"),
 		get_theme_constant("minimum_size_y")
@@ -67,19 +69,19 @@ func _on_renamed() -> void:
 	pass
 # -----------------------------------------------------------------------------
 func _on_pressed() -> void:
-	#GameSystem.log(self, "Get PRESSED event")
+	#Log.debug(self, "Get PRESSED event")
 	pass
 	
 func _on_button_up() -> void:
-	#GameSystem.log(self, "Get BUTTON_UP event")
+	#Log.debug(self, "Get BUTTON_UP event")
 	pass
 	
 func _on_button_down() -> void:
-	#GameSystem.log(self, "Get BUTTON_DOWN event")
+	#Log.debug(self, "Get BUTTON_DOWN event")
 	pass
 	
 func _on_toggled(value: bool) -> void:
-	#GameSystem.log(self, "Get TOGGLED event [%s]" % value)
+	#Log.debug(self, "Get TOGGLED event [%s]" % value)
 	toggle_submenu(value)
 	pass
 # -----------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bjl3rn52sj5bo"]
 
-[ext_resource type="Script" uid="uid://c6y0wvwjsxrta" path="res://components/menus/inputs/game_menu_incremental_slider.gd" id="1_r48se"]
+[ext_resource type="Script" uid="uid://c6y0wvwjsxrta" path="res://components/menus/game_menu/game_menu_incremental_slider.gd" id="1_r48se"]
 [ext_resource type="Theme" uid="uid://dq5r1pewwfy7y" path="res://components/menus/game_menu/game_menu_theme.tres" id="2_u1odk"]
 [ext_resource type="Script" uid="uid://3jm0b33fasfg" path="res://components/ui/h_box_normalized_container.gd" id="3_ngv77"]
 [ext_resource type="Texture2D" uid="uid://c8efo6q8hluwi" path="res://components/ui/mhx-ui-slider_incremental-grabber.svg" id="4_1r0lb"]
@@ -277,5 +277,3 @@ rounded = true
 scrollable = false
 tick_count = 11
 ticks_position = 3
-
-[connection signal="value_changed" from="V2/Slider/SliderCenter/HSlider" to="." method="_on_slider_value_changed"]

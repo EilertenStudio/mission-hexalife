@@ -4,34 +4,68 @@
 [ext_resource type="PackedScene" uid="uid://bfdfjt6llue3w" path="res://components/menus/game_menu/game_menu.tscn" id="1_wnog5"]
 [ext_resource type="Script" uid="uid://dpre73swfblvy" path="res://components/menus/option_gameplay_menu.gd" id="2_wnog5"]
 [ext_resource type="PackedScene" uid="uid://dbg2qaxymgjp4" path="res://components/menus/game_menu/game_menu_label.tscn" id="4_nbc6y"]
-[ext_resource type="PackedScene" uid="uid://bjl3rn52sj5bo" path="res://components/menus/inputs/game_menu_incremental_slider.tscn" id="4_wnog5"]
+[ext_resource type="PackedScene" uid="uid://bjl3rn52sj5bo" path="res://components/menus/game_menu/game_menu_incremental_slider.tscn" id="4_wnog5"]
+[ext_resource type="Theme" uid="uid://dhggltmpgex84" path="res://features/system/settings/gameplay_theme.tres" id="6_nv5dg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_noca5"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nbc6y"]
 
-[node name="OptionGameplayMenu" type="HBoxContainer" unique_id=1809366528]
-clip_contents = true
+[node name="OptionGameplayMenu" type="MarginContainer" unique_id=688548992]
 offset_right = 640.0
 offset_bottom = 128.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = -128
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("2_wnog5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2049392773]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="FontSize_Example" type="Panel" parent="VBoxContainer" unique_id=1955977684]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_noca5")
+
+[node name="Text" type="Label" parent="VBoxContainer/FontSize_Example" unique_id=223769726]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_nv5dg")
+text = "LORUS UPPA LORUS UPPA 
+LORUS UPPA"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="FieldContainers" type="HBoxContainer" parent="VBoxContainer" unique_id=1809366528]
+clip_contents = true
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("1_slimo")
 theme_override_constants/separation = 0
-script = ExtResource("2_wnog5")
 
-[node name="KeyContainer" parent="." unique_id=959656627 instance=ExtResource("1_wnog5")]
+[node name="KeyContainer" parent="VBoxContainer/FieldContainers" unique_id=959656627 instance=ExtResource("1_wnog5")]
 layout_mode = 2
 
-[node name="FontSize" parent="KeyContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(959656627, 943405768) index="0" unique_id=764068037 instance=ExtResource("4_nbc6y")]
+[node name="FontSize" parent="VBoxContainer/FieldContainers/KeyContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(959656627, 943405768) index="0" unique_id=764068037 instance=ExtResource("4_nbc6y")]
 layout_mode = 2
 text = "Font Size"
 
-[node name="ValueContainer" parent="." unique_id=1649184532 instance=ExtResource("1_wnog5")]
+[node name="ValueContainer" parent="VBoxContainer/FieldContainers" unique_id=1649184532 instance=ExtResource("1_wnog5")]
 layout_mode = 2
 
-[node name="Header" parent="ValueContainer" index="0" unique_id=1576686395]
+[node name="Header" parent="VBoxContainer/FieldContainers/ValueContainer" index="0" unique_id=1576686395]
 theme_override_styles/separator = SubResource("StyleBoxEmpty_nbc6y")
 
-[node name="FontSize_IncrementalSlider" parent="ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="0" unique_id=1505437615 instance=ExtResource("4_wnog5")]
+[node name="FontSize_IncrementalSlider" parent="VBoxContainer/FieldContainers/ValueContainer/ItemContainer/ItemList" parent_id_path=PackedInt32Array(1649184532, 943405768) index="0" unique_id=1505437615 instance=ExtResource("4_wnog5")]
 layout_mode = 2
 theme_override_constants/margin_right = 12
 min_value = 8
@@ -39,13 +73,13 @@ max_value = 32
 step = 4
 value = 24
 
-[node name="Header" type="VSeparator" parent="." unique_id=89225404]
+[node name="Header" type="VSeparator" parent="VBoxContainer/FieldContainers" unique_id=89225404]
 custom_minimum_size = Vector2(4, 0)
 layout_mode = 2
 theme = ExtResource("1_slimo")
 metadata/_edit_lock_ = true
 
-[connection signal="value_changed" from="ValueContainer/ItemContainer/ItemList/FontSize_IncrementalSlider" to="." method="_on_font_size_incremental_slider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/FieldContainers/ValueContainer/ItemContainer/ItemList/FontSize_IncrementalSlider" to="." method="_on_font_size_incremental_slider_value_changed"]
 
-[editable path="KeyContainer"]
-[editable path="ValueContainer"]
+[editable path="VBoxContainer/FieldContainers/KeyContainer"]
+[editable path="VBoxContainer/FieldContainers/ValueContainer"]
