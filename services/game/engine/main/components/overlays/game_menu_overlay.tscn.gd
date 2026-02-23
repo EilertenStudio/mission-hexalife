@@ -1,7 +1,7 @@
 extends Control
 
 @onready var background: TextureRect = $MenuOverlay/MenuBackground
-@onready var quit: GameMenuButton = $MenuOverlay/MenuContainer/HBoxContainer/MainMenu/ItemContainer/ItemList/QUIT
+@onready var quit: GameMenuButton = $MenuOverlay/MenuContainer/MainMenu/ItemContainer/ItemList/QUIT
 
 func _ready() -> void:
 	if OS.has_feature("web"):
