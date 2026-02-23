@@ -6,8 +6,10 @@ extends Control
 
 @export_tool_button("Update") var update = _do_update
 
+func _init() -> void:
+	SettingsManager.ready.connect(_do_register)
+
 func _ready() -> void:
-	SettingsManager.ready.emit(_do_register())
 	self._do_update()
 
 func _do_register():

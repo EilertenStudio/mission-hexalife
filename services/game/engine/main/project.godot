@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Mission HeXalife"
-config/version="0.0.3-alpha.17"
+config/version="0.0.3-alpha.18"
 run/main_scene="uid://ba1xryj2avcaf"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://dijwxpv0mbldj"

@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://lxs871cqvv64"]
+
+[ext_resource type="FontFile" uid="uid://cw6rgjojx1goc" path="res://assets/fonts/PANNETJE.TTF" id="1_pinyb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cx1ol"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f0dfh"]
+content_margin_bottom = 2.0
+
+[sub_resource type="Gradient" id="Gradient_7a635"]
+colors = PackedColorArray(0.23529412, 0.85882354, 0.62352943, 1, 0.23219998, 0.86, 0.6193434, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f0dfh"]
+gradient = SubResource("Gradient_7a635")
+metadata/_snap_enabled = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cx1ol"]
+content_margin_bottom = 2.0
+texture = SubResource("GradientTexture2D_f0dfh")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7a635"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7a635"]
+content_margin_left = 19.0
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_7a635"]
+color = Color(1, 1, 1, 1)
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 4
+vertical = true
+
+[sub_resource type="Theme" id="Theme_tlajc"]
+default_font = ExtResource("1_pinyb")
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_cx1ol")
+GameMenuButton/base_type = &"Button"
+GameMenuButton/colors/font_focus_color = Color(0, 0, 0, 1)
+GameMenuButton/colors/font_hover_color = Color(0, 0, 0, 1)
+GameMenuButton/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+GameMenuButton/constants/icon_max_width = 15
+GameMenuButton/constants/minimum_size_x = 0
+GameMenuButton/constants/minimum_size_y = 30
+GameMenuButton/font_sizes/font_size = 24
+GameMenuButton/styles/disabled = SubResource("StyleBoxEmpty_f0dfh")
+GameMenuButton/styles/focus = SubResource("StyleBoxTexture_cx1ol")
+GameMenuButton/styles/hover = SubResource("StyleBoxTexture_cx1ol")
+GameMenuButton/styles/hover_pressed = SubResource("StyleBoxTexture_cx1ol")
+GameMenuButton/styles/menu_showed = SubResource("StyleBoxFlat_7a635")
+GameMenuButton/styles/normal = SubResource("StyleBoxEmpty_f0dfh")
+GameMenuButton/styles/pressed = SubResource("StyleBoxEmpty_f0dfh")
+Label/font_sizes/font_size = 24
+Label/styles/normal = SubResource("StyleBoxEmpty_7a635")
+MarginContainer/constants/margin_top = 23
+VBoxContainer/constants/separation = 0
+VSeparator/constants/separation = 0
+VSeparator/styles/separator = SubResource("StyleBoxLine_7a635")
+
+[sub_resource type="LabelSettings" id="LabelSettings_hhle5"]
+
+[sub_resource type="Theme" id="Theme_03fjs"]
+Label/font_sizes/font_size = 14
+
+[node name="CreditCategory" type="VBoxContainer" unique_id=40881266]
+theme = SubResource("Theme_tlajc")
+metadata/_edit_lock_ = true
+
+[node name="Title" type="Label" parent="." unique_id=317113487]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Category"
+label_settings = SubResource("LabelSettings_hhle5")
+metadata/_edit_lock_ = true
+
+[node name="ActorContainer" type="MarginContainer" parent="." unique_id=715644614]
+layout_mode = 2
+theme_override_constants/margin_left = 13
+theme_override_constants/margin_top = 0
+metadata/_edit_lock_ = true
+
+[node name="ActorList" type="VBoxContainer" parent="ActorContainer" unique_id=1310870481]
+layout_mode = 2
+theme = SubResource("Theme_03fjs")
+metadata/_edit_lock_ = true

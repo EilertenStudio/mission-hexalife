@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cds80akr06bpl" path="res://components/menus/main_menu.tscn" id="7_bfvls"]
 [ext_resource type="PackedScene" uid="uid://cxyyfg34c2t0n" path="res://components/menus/option_menu.tscn" id="8_vm3yr"]
 [ext_resource type="PackedScene" uid="uid://p5wce246x2n3" path="res://components/menus/option_gameplay_menu.tscn" id="9_8fij5"]
+[ext_resource type="PackedScene" uid="uid://bwc7widqqgrbn" path="res://components/overlays/game_credit_overlay.tscn" id="12_80mi2"]
 [ext_resource type="PackedScene" uid="uid://73qe6ppjg0n0" path="res://components/menus/option_display_menu.tscn" id="12_jcbjo"]
 
 [sub_resource type="Gradient" id="Gradient_niea6"]
@@ -91,82 +92,99 @@ offset_bottom = 703.0
 mouse_default_cursor_shape = 2
 expand_mode = 1
 
-[node name="MenuBackground" type="TextureRect" parent="." unique_id=565055275]
-visible = false
+[node name="MenuOverlay" type="Control" parent="." unique_id=102116649]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuBackground" type="TextureRect" parent="MenuOverlay" unique_id=565055275]
 layout_mode = 0
 offset_right = 1280.0
 offset_bottom = 720.0
 texture = ExtResource("1_3khnl")
 metadata/_edit_lock_ = true
 
-[node name="MenuContainer" type="MarginContainer" parent="." unique_id=397561339]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -240.0
-offset_right = -128.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MenuContainer" unique_id=289483540]
-layout_mode = 2
+[node name="MenuContainer" type="HBoxContainer" parent="MenuOverlay" unique_id=289483540]
+layout_mode = 0
+offset_top = 480.0
+offset_right = 1160.0
+offset_bottom = 720.0
+size_flags_vertical = 8
 theme_override_constants/separation = 0
 
-[node name="MainMenu" parent="MenuContainer/HBoxContainer" unique_id=740117825 instance=ExtResource("7_bfvls")]
-custom_minimum_size = Vector2(256, 0)
+[node name="MainMenu" parent="MenuOverlay/MenuContainer" unique_id=740117825 instance=ExtResource("7_bfvls")]
+custom_minimum_size = Vector2(241, 0)
 layout_mode = 2
 size_flags_horizontal = 1
 
-[node name="Header" parent="MenuContainer/HBoxContainer/MainMenu" index="0" unique_id=1576686395]
+[node name="Header" parent="MenuOverlay/MenuContainer/MainMenu" index="0" unique_id=1576686395]
 visible = false
 
-[node name="OPTIONS" parent="MenuContainer/HBoxContainer/MainMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(740117825, 943405768) index="2" unique_id=1126061584 node_paths=PackedStringArray("submenu")]
+[node name="OPTIONS" parent="MenuOverlay/MenuContainer/MainMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(740117825, 943405768) index="2" unique_id=1126061584 node_paths=PackedStringArray("submenu")]
 toggle_mode = true
 submenu = NodePath("../../../../OptionMenu")
 
-[node name="QUIT" parent="MenuContainer/HBoxContainer/MainMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(740117825, 943405768) index="4" unique_id=1048027091]
+[node name="CREDITS" parent="MenuOverlay/MenuContainer/MainMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(740117825, 943405768) index="3" unique_id=1332007304 node_paths=PackedStringArray("submenu")]
+toggle_mode = true
+submenu = NodePath("../../../../../../CreditOverlay")
+
+[node name="QUIT" parent="MenuOverlay/MenuContainer/MainMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(740117825, 943405768) index="4" unique_id=1048027091]
 visible = true
 
-[node name="OptionMenu" parent="MenuContainer/HBoxContainer" unique_id=917008146 instance=ExtResource("8_vm3yr")]
-custom_minimum_size = Vector2(256, 0)
+[node name="OptionMenu" parent="MenuOverlay/MenuContainer" unique_id=917008146 instance=ExtResource("8_vm3yr")]
+visible = false
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 size_flags_horizontal = 1
 submenu_mode = true
 
-[node name="GAMEPLAY" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="0" unique_id=345834730 node_paths=PackedStringArray("submenu")]
+[node name="GAMEPLAY" parent="MenuOverlay/MenuContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="0" unique_id=345834730 node_paths=PackedStringArray("submenu")]
 toggle_mode = true
 submenu = NodePath("../../../../OptionGameplayMenu")
 
-[node name="DISPLAY" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="1" unique_id=1816815252 node_paths=PackedStringArray("submenu")]
+[node name="DISPLAY" parent="MenuOverlay/MenuContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="1" unique_id=1816815252 node_paths=PackedStringArray("submenu")]
 toggle_mode = true
 submenu = NodePath("../../../../OptionDisplayMenu")
 
-[node name="AUDIO" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="2" unique_id=305294946]
+[node name="AUDIO" parent="MenuOverlay/MenuContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="2" unique_id=305294946]
 visible = false
 
-[node name="CONTROLS" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="3" unique_id=10925749]
+[node name="CONTROLS" parent="MenuOverlay/MenuContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="3" unique_id=10925749]
 visible = false
 
-[node name="LANGUAGE" parent="MenuContainer/HBoxContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="4" unique_id=1845744904]
+[node name="LANGUAGE" parent="MenuOverlay/MenuContainer/OptionMenu/ItemContainer/ItemList" parent_id_path=PackedInt32Array(917008146, 943405768) index="4" unique_id=1845744904]
 visible = false
 
-[node name="OptionGameplayMenu" parent="MenuContainer/HBoxContainer" unique_id=587281300 instance=ExtResource("9_8fij5")]
+[node name="OptionGameplayMenu" parent="MenuOverlay/MenuContainer" unique_id=587281300 instance=ExtResource("9_8fij5")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 submenu_mode = true
 
-[node name="OptionDisplayMenu" parent="MenuContainer/HBoxContainer" unique_id=1809366528 instance=ExtResource("12_jcbjo")]
+[node name="OptionDisplayMenu" parent="MenuOverlay/MenuContainer" unique_id=1809366528 instance=ExtResource("12_jcbjo")]
 visible = false
 layout_mode = 2
+submenu_mode = true
+
+[node name="CreditOverlay" parent="." unique_id=1465675928 instance=ExtResource("12_80mi2")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1280.0
+offset_bottom = 440.0
+grow_horizontal = 1
+grow_vertical = 1
 submenu_mode = true
 
 [connection signal="gui_input" from="IconContainer/IconGithub" to="." method="_on_icon_github_gui_input"]
 [connection signal="gui_input" from="IconContainer/IconItchio" to="." method="_on_icon_itchio_gui_input"]
 [connection signal="gui_input" from="IconContainer/IconDiscord" to="." method="_on_icon_discord_gui_input"]
-[connection signal="submenu_toggled" from="MenuContainer/HBoxContainer/MainMenu" to="." method="_on_main_menu_submenu_toggled"]
-[connection signal="pressed" from="MenuContainer/HBoxContainer/MainMenu/ItemContainer/ItemList/QUIT" to="." method="_on_quit_pressed"]
+[connection signal="submenu_toggled" from="MenuOverlay/MenuContainer/MainMenu" to="." method="_on_main_menu_submenu_toggled"]
+[connection signal="pressed" from="MenuOverlay/MenuContainer/MainMenu/ItemContainer/ItemList/QUIT" to="." method="_on_quit_pressed"]
 
-[editable path="MenuContainer/HBoxContainer/MainMenu"]
-[editable path="MenuContainer/HBoxContainer/OptionMenu"]
+[editable path="MenuOverlay/MenuContainer/MainMenu"]
+[editable path="MenuOverlay/MenuContainer/OptionMenu"]

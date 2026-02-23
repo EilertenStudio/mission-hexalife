@@ -1,0 +1,191 @@
+[gd_scene format=3 uid="uid://bwc7widqqgrbn"]
+
+[ext_resource type="Theme" uid="uid://dq5r1pewwfy7y" path="res://components/menus/game_menu/game_menu_theme.tres" id="1_hhle5"]
+[ext_resource type="Script" uid="uid://buxkw82qfu70w" path="res://components/menus/game_menu/game_menu.gd" id="2_f827x"]
+[ext_resource type="PackedScene" uid="uid://lxs871cqvv64" path="res://components/ui/credits/credit_category.tscn" id="3_f827x"]
+
+[sub_resource type="Gradient" id="Gradient_hhle5"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f827x"]
+gradient = SubResource("Gradient_hhle5")
+
+[node name="GameCreditOverlay" type="Control" unique_id=1514559090]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_hhle5")
+script = ExtResource("2_f827x")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=838808418]
+visible = false
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+texture = SubResource("GradientTexture1D_f827x")
+
+[node name="Team" type="VBoxContainer" parent="." unique_id=333450053]
+visible = false
+layout_mode = 0
+offset_right = 253.0
+offset_bottom = 162.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("1_hhle5")
+
+[node name="JervNorsk" type="Label" parent="Team" unique_id=1825981149]
+layout_mode = 2
+text = "Jerv Norsk"
+
+[node name="Feona" type="Label" parent="Team" unique_id=1156527526]
+layout_mode = 2
+text = "Feona"
+
+[node name="Chinni2D" type="Label" parent="Team" unique_id=510653923]
+layout_mode = 2
+text = "Chinni2D"
+
+[node name="Raino98" type="Label" parent="Team" unique_id=184044961]
+layout_mode = 2
+text = "Raino98"
+
+[node name="Skaiira" type="Label" parent="Team" unique_id=1341363033]
+layout_mode = 2
+text = "Skaiira"
+
+[node name="Explosive_Lr2u" type="Label" parent="Team" unique_id=476483743]
+layout_mode = 2
+text = "Explosive_Lr2u"
+
+[node name="L U C A" type="Label" parent="Team" unique_id=1931579158]
+layout_mode = 2
+text = "V U O T O T E T R O"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1864471008]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 640.0
+offset_bottom = 421.0
+theme_override_constants/separation = 18
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=3486151]
+layout_mode = 2
+text = "Developed By"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=390182136]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=408076392]
+layout_mode = 2
+theme_override_constants/separation = 27
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1026519534]
+layout_mode = 2
+theme_override_constants/separation = 96
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=957182968]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="DirectedBy" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=40881266 instance=ExtResource("3_f827x")]
+layout_mode = 2
+
+[node name="Title" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/DirectedBy" index="0" unique_id=317113487]
+text = "Created and Directed by"
+
+[node name="Community" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/DirectedBy/ActorContainer/ActorList" parent_id_path=PackedInt32Array(40881266, 1310870481) index="0" unique_id=860432382]
+layout_mode = 2
+text = "Community"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=402826366]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ManagedBy" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1077764482 instance=ExtResource("3_f827x")]
+layout_mode = 2
+
+[node name="Title" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/ManagedBy" index="0" unique_id=317113487]
+text = "Managed By"
+
+[node name="JervNorsk" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/ManagedBy/ActorContainer/ActorList" parent_id_path=PackedInt32Array(1077764482, 1310870481) index="0" unique_id=250743314]
+layout_mode = 2
+text = "Jerv Norsk"
+
+[node name="Raino98" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/ManagedBy/ActorContainer/ActorList" parent_id_path=PackedInt32Array(1077764482, 1310870481) index="1" unique_id=21516894]
+layout_mode = 2
+text = "Raino98"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=537783709]
+layout_mode = 2
+theme = ExtResource("1_hhle5")
+theme_override_constants/separation = 62
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1084086208]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_hhle5")
+theme_override_constants/separation = 20
+
+[node name="Narrative" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=25027329 instance=ExtResource("3_f827x")]
+layout_mode = 2
+
+[node name="Title" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Narrative" index="0" unique_id=317113487]
+text = "Narrative And Writing"
+
+[node name="Feona" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Narrative/ActorContainer/ActorList" parent_id_path=PackedInt32Array(25027329, 1310870481) index="0" unique_id=1946847272]
+layout_mode = 2
+text = "Feona"
+
+[node name="VFX" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=260410154 instance=ExtResource("3_f827x")]
+layout_mode = 2
+
+[node name="Title" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/VFX" index="0" unique_id=317113487]
+text = "Art and Visuals"
+
+[node name="Chinni2D" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/VFX/ActorContainer/ActorList" parent_id_path=PackedInt32Array(260410154, 1310870481) index="0" unique_id=1146590689]
+layout_mode = 2
+text = "Chinni2D"
+
+[node name="Explosive_Lr2u" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/VFX/ActorContainer/ActorList" parent_id_path=PackedInt32Array(260410154, 1310870481) index="1" unique_id=521861195]
+layout_mode = 2
+text = "Explosive_Lr2u"
+
+[node name="Skaiira" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/VFX/ActorContainer/ActorList" parent_id_path=PackedInt32Array(260410154, 1310870481) index="2" unique_id=584890462]
+layout_mode = 2
+text = "Skaiira"
+
+[node name="SFX" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=922190699 instance=ExtResource("3_f827x")]
+layout_mode = 2
+
+[node name="Title" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/SFX" index="0" unique_id=317113487]
+text = "Audio and Music"
+
+[node name="L U C A" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/SFX/ActorContainer/ActorList" parent_id_path=PackedInt32Array(922190699, 1310870481) index="0" unique_id=628181484]
+layout_mode = 2
+text = "-----------"
+
+[node name="Coding" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=1998510904 instance=ExtResource("3_f827x")]
+layout_mode = 2
+
+[node name="Title" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Coding" index="0" unique_id=317113487]
+text = "Programming"
+
+[node name="JervNorsk" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Coding/ActorContainer/ActorList" parent_id_path=PackedInt32Array(1998510904, 1310870481) index="0" unique_id=874408951]
+layout_mode = 2
+text = "Jerv Norsk"
+
+[editable path="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/DirectedBy"]
+[editable path="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/ManagedBy"]
+[editable path="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Narrative"]
+[editable path="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/VFX"]
+[editable path="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/SFX"]
+[editable path="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Coding"]
