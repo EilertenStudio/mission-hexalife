@@ -30,9 +30,7 @@ buses/default_bus_layout="res://settings/audio_bus_config.tres"
 
 EngineManager="*uid://bc2oppla4bcac"
 InputManager="*uid://caoycmajsho2k"
-SettingsManager="*uid://ds51xgpvx61go"
-LoadingManager="*uid://daifpwdyrrpqs"
-GameMenuManager="*res://components/menus/game_menu/game_menu_manager.gd"
+GameManager="*uid://d1uaxs6gv2i2k"
 
 [display]
 
@@ -49,6 +47,8 @@ enabled=PackedStringArray()
 folder_colors={
 "res://assets/": "pink",
 "res://components/": "orange",
+"res://components/overlays/": "green",
+"res://components/scenes/": "purple",
 "res://features/": "blue",
 "res://settings/": "gray",
 "res://tests/": "teal"

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://c6ksigo5lrhel"]
+
+[ext_resource type="Script" uid="uid://c7nxxkuhrvm3v" path="res://components/scenes/title_screen.gd" id="1_4k7ef"]
+[ext_resource type="VideoStream" uid="uid://t4ut164kfti2" path="res://assets/videos/test_finale_video.ogv" id="1_lpngp"]
+
+[node name="TitleScreen" type="Control" unique_id=449411541]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4k7ef")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1710661073]
+layout_mode = 1
+offset_right = 1920.0
+offset_bottom = 1080.0
+scale = Vector2(0.6666653, 0.6666653)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+stream = ExtResource("1_lpngp")
+speed_scale = 3.0
+autoplay = true

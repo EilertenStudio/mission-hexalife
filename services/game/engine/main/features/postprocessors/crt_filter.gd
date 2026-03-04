@@ -1,29 +1,38 @@
-@tool
 class_name CrtFilter
 extends Control
 
 @onready var screen: MeshInstance2D = $Screen
 
-@export_tool_button("Update") var update = _do_update
-
-func _init() -> void:
-	SettingsManager.ready.connect(_do_register)
+func _enter_tree() -> void:
+	Log.event(self, "Init")
 
 func _ready() -> void:
+	Log.event(self, "Ready")
 	self._do_update()
 
+	GameManager.settings.load_init.connect(_do_register)
+#	GameManager.settings.load_start.connect(_do_register)
+#	GameManager.settings.load_end.connect(_do_settings_fetch)
+
 func _do_register():
-	Log.debug(self, "SettingManager ready")
-	SettingsManager.display.crt_filter_set_node(self)
+	Log.event(self, "Register nodes")
+	GameManager.settings.display.crt_filter_set_node(self)
+
+#func _do_settings_fetch():
+#	Log.event(self, "Settings fetch")
+#
+#	GameManager.settings.display.crt_filter_set(GameManager.settings.gameplay.font_size_get()
+#	font_size_incremental_slider.value = GameManager.settings.gameplay.font_size_get()
 
 func _do_update():
+	Log.debug(self, "Update")
 	_do_mesh_init()
 
 func _do_mesh_init():
-	Log.event(self, "Update mesh")
+	Log.debug(self, "Mesh init")
 	
-	var viewport_size_scale = 1
-	var viewport_size = Vector2(
+	var viewport_size_scale := 1
+	var viewport_size := Vector2(
 		ProjectSettings.get_setting("display/window/size/viewport_width") * viewport_size_scale,
 		ProjectSettings.get_setting("display/window/size/viewport_height") * viewport_size_scale
 	)

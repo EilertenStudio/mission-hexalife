@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://1njvs66p8hls"]
+
+[ext_resource type="PackedScene" path="res://components/rooms/cryogenic_room/v1/cryogenic-room-v1.blend" id="1_fbow4"]
+
+
+[node name="CryogenicRoomV1" instance=ExtResource("1_fbow4")]

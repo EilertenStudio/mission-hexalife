@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://s075rqwa6icc"]
+
+[ext_resource type="Script" uid="uid://mtc17jk7vaoi" path="res://features/logging/log.gd" id="1_o8e50"]
+
+[node name="LogManager" type="Node" unique_id=535081557]
+script = ExtResource("1_o8e50")

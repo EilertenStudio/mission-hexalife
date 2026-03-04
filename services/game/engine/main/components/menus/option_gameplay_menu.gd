@@ -4,13 +4,13 @@ extends GameMenu
 
 func _ready():
 	super._ready()
-	SettingsManager.loaded.connect(_do_settings_fetch)
+	GameManager.settings.load_end.connect(_do_settings_fetch)
 	
 func _do_settings_fetch():
-	Log.info(self, "Settings fetch")
+	Log.event(self, "Load settings")
 	
-	font_size_incremental_slider.value = SettingsManager.gameplay.font_size_get()
+	font_size_incremental_slider.value = GameManager.settings.gameplay.font_size_get()
 
 func _on_font_size_incremental_slider_value_changed(value: float) -> void:
 	Log.event(self, "Font Size changed -> %s" % value)
-	SettingsManager.gameplay.font_size_set(value)
+	GameManager.settings.gameplay.font_size_set(value)

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cnjyd8jkllg0r"]
+
+[ext_resource type="Material" uid="uid://d1pjxjvtfeokb" path="res://components/items/game_item.tres" id="1_pju8k"]
+[ext_resource type="Texture2D" uid="uid://6o6poeckreyl" path="res://components/icons/github/assets/icon-github-white.svg" id="2_jy6co"]
+[ext_resource type="Script" uid="uid://uqtynvvpmkkw" path="res://components/items/game_item.gd" id="2_tct65"]
+
+[node name="GameItem" type="Sprite2D" unique_id=2132652088]
+material = ExtResource("1_pju8k")
+texture = ExtResource("2_jy6co")
+centered = false
+script = ExtResource("2_tct65")
+
+[node name="Control" type="Control" parent="." unique_id=1176985365]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

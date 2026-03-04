@@ -1,4 +1,5 @@
-class_name Log extends Object
+class_name Log
+extends Object
 
 enum Level {
 	ERROR,
@@ -9,9 +10,16 @@ enum Level {
 	TRACE,
 }
 
-static var log_level_root := Level.TRACE:
+@export
+var log_level := Level.INFO:
 	set(value):
-		Log.info(Log, "Set logging level to %s" % Log.Level.keys()[value])
+		Log.info(self, "Set logging level to %s" % Log.Level.keys()[value])
+		log_level = value
+		log_level_root = value
+
+
+static var log_level_root := Level.INFO:
+	set(value):
 		log_level_root = value
 
 static var log_level_map := {}
@@ -36,7 +44,8 @@ static func log_level_category_get(handler: Variant):
 	return category
 
 static func log_level_set(handler: Variant, level: Level):
-	log_level_map.set(handler, level)
+	var category = log_level_category_get(handler)
+	log_level_map.set(category, level)
 
 static func error(handler: Variant, message: String):
 	_log(Level.ERROR, handler, message)
@@ -60,7 +69,7 @@ static func _log(level: Level, handler: Variant, message: String):
 		return
 
 	var category = log_level_category_get(handler)
-	var category_level = log_level_map.get(handler, log_level_root)
+	var category_level = log_level_map.get(category, log_level_root)
 	
 	if level > category_level:
 		return

@@ -2,8 +2,8 @@ class_name GameMenu
 extends Control
 
 func _ready():
-	GameMenuManager.register_menu(self)
-	GameMenuManager.register_menu_button_events(self, _on_button_event)
+	GameManager.menu.register_menu(self)
+	GameManager.menu.register_menu_button_events(self, _on_button_event)
 	
 	# TODO: learn about Control focus and navigations
 	# https://docs.godotengine.org/en/stable/tutorials/ui/gui_navigation.html
@@ -39,11 +39,11 @@ func start_navigation():
 signal submenu_toggled(button: GameMenuButton, submenu: GameMenu, is_toggled: bool)
 # -----------------------------------------------------------------------------
 func _on_submenu_toggled(button: GameMenuButton, submenu: GameMenu, is_toggled: bool) -> void:
-	Log.debug(self, "Detect submenu toggled [%s] for `%s` from `%s` " % [is_toggled, submenu.name, button.name.to_pascal_case()])
+	#Log.debug(self, "Detect submenu toggled [%s] for `%s` from `%s` " % [is_toggled, submenu.name, button.name.to_pascal_case()])
 	if is_toggled:
-		GameMenuManager.prevent_menu_input(self, [button])
+		GameManager.menu.prevent_menu_input(self, [button])
 	else:
-		GameMenuManager.allow_menu_input(self)
+		GameManager.menu.allow_menu_input(self)
 	pass
 # -----------------------------------------------------------------------------
 #endregion

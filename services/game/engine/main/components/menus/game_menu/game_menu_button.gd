@@ -1,4 +1,4 @@
-@tool
+#@tool
 
 class_name GameMenuButton
 extends Button
@@ -25,7 +25,7 @@ func update_text() -> void:
 	#self.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	pass
 func update_from_theme() -> void:
-	Log.debug(self, "Update from theme")
+#	Log.debug(self, "Update from theme")
 	self.custom_minimum_size = Vector2(
 		get_theme_constant("minimum_size_x"),
 		get_theme_constant("minimum_size_y")
@@ -44,16 +44,16 @@ func update_from_theme() -> void:
 # -----------------------------------------------------------------------------
 func update_submenu(current: GameMenu, next: GameMenu) -> void:
 	if next:
-		GameMenuManager.bind_submenu_to_button(next, self)
+		GameManager.menu.bind_submenu_to_button(next, self)
 	elif current:
-		GameMenuManager.unbind_submenu_to_button(current, self)
+		GameManager.menu.unbind_submenu_to_button(current, self)
 	pass
 	
 func toggle_submenu(value: bool) -> void:
 	if value:
-		GameMenuManager.open_submenu(self, submenu)
+		GameManager.menu.open_submenu(self, submenu)
 	else:
-		GameMenuManager.close_submenu(self, submenu)
+		GameManager.menu.close_submenu(self, submenu)
 	
 	submenu_toggled.emit(submenu, value)
 	pass

@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://bu07fd42lrcb2"]
+
+[ext_resource type="Texture2D" uid="uid://rysf15seq2hj" path="res://components/rooms/cryogenic_room/v2/cryogenic_room_v2.png" id="1_rd6kc"]
+
+[resource]
+atlas = ExtResource("1_rd6kc")
+region = Rect2(3840, 0, 1280, 720)
