@@ -2,23 +2,28 @@ class_name Log
 extends Object
 
 enum Level {
+	OFF,
+	FATAL,
 	ERROR,
 	WARN,
 	INFO,
 	DEBUG,
-	EVENT,
 	TRACE,
+	CYCLE,
+	EVENT,
+	INPUT,
+	ALL
 }
 
 @export
-var log_level := Level.INFO:
+var log_level := Level.ALL:
 	set(value):
 		Log.info(self, "Set logging level to %s" % Log.Level.keys()[value])
 		log_level = value
 		log_level_root = value
 
 
-static var log_level_root := Level.INFO:
+static var log_level_root := Level.ALL:
 	set(value):
 		log_level_root = value
 
@@ -47,22 +52,32 @@ static func log_level_set(handler: Variant, level: Level):
 	var category = log_level_category_get(handler)
 	log_level_map.set(category, level)
 
+static func fatal(handler: Variant, message: String):
+	_log(Level.FATAL, handler, message)
+
 static func error(handler: Variant, message: String):
 	_log(Level.ERROR, handler, message)
 
 static func warn(handler: Variant, message: String):
 	_log(Level.WARN, handler, message)
+
 static func info(handler: Variant, message: String):
 	_log(Level.INFO, handler, message)
 
 static func debug(handler: Variant, message: String):
 	_log(Level.DEBUG, handler, message)
 
+static func trace(handler: Variant, message: String):
+	_log(Level.TRACE, handler, message)
+
+static func cycle(handler: Variant, message: String):
+	_log(Level.CYCLE, handler, message)
+
 static func event(handler: Variant, message: String):
 	_log(Level.EVENT, handler, message)
 
-static func trace(handler: Variant, message: String):
-	_log(Level.TRACE, handler, message)
+static func input(handler: Variant, message: String):
+	_log(Level.INPUT, handler, message)
 
 static func _log(level: Level, handler: Variant, message: String):
 	if log_level_root and (level > log_level_root):# and (handler is not log_level_map):
@@ -80,7 +95,7 @@ static func _log(level: Level, handler: Variant, message: String):
 	
 	var color
 	match level:
-		Level.ERROR:
+		Level.FATAL, Level.ERROR:
 			color = "#ed4532"
 		Level.WARN:
 			color = "#edd132"
@@ -88,10 +103,14 @@ static func _log(level: Level, handler: Variant, message: String):
 			color = "#7ab32b"
 		Level.DEBUG:
 			color = "#32c1ed"
+		Level.CYCLE:
+			color = "#e68e37"
 		Level.EVENT:
 			color = "#e68e37"
 		Level.TRACE:
 			color = "#8080f9"
+		Level.INPUT:
+			color = "#e68e37"
 	
 	match level:
 		#Level.ERROR:
@@ -100,3 +119,9 @@ static func _log(level: Level, handler: Variant, message: String):
 			#print(formatted_msg)
 		_:
 			print_rich("[color=%s]%s[/color]" % [color, formatted_msg])
+
+	match level:
+		Level.FATAL:
+			GameManager.get_tree().quit()
+		_:
+			pass

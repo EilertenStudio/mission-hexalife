@@ -1,41 +1,71 @@
 class_name SceneManager
-extends Node
+extends Object
 
-func _enter_tree() -> void:
-	Log.event(self, "Init")
+func _init() -> void:
+	Log.cycle(self, "Init")
 
-func _ready() -> void:
-	Log.event(self, "Ready")
+func _load() -> void:
+	Log.cycle(self, "Load")
+	InputManager.escape_key_event.connect(_on_game_menu_toggle_event)
+	game_menu.visibility_changed.connect(_on_game_menu_visibility_changed)
 
 #region Layers
-var game_load: Node
-var game_menu: Node
-var game_scene: Node
+var game_load: CanvasItem
+var game_menu: CanvasItem
+var game_scene: CanvasItem
 
 func _start_loading_screen():
 	game_load.visible = true
-	game_menu.visible = false
 	game_scene.visible = false
+#	game_menu.visible = false
 
 func _stop_loading_screen():
 	game_load.visible = false
-	game_menu.visible = false
 	game_scene.visible = true
+#	game_menu.visible = false
 
 #endregion
 
-#region GameScene
+#region GAME_MENU
+
+var      game_menu_toggle_lock := false
+func     game_menu_toggle() -> void:
+	var visible := game_menu.visible
+	var toggled := !visible
+	Log.event(self, "Game menu toggled -> (%s -> %s)" % [visible, toggled])
+	if game_menu_toggle_lock:
+		Log.warn(self, "Operation interrupted due lock function")
+		return
+	else:
+		game_menu.visible = toggled
+
+func _on_game_menu_toggle_event(event: InputEventKey):
+	Log.event(self, "Game menu toggle event -> %s" % event)
+	if event.pressed:
+		game_menu_toggle()
+
+signal    game_menu_visibility_changed(value: bool)
+func  _on_game_menu_visibility_changed():
+	var _vl_visible := game_menu.visible
+	Log.event(self, "Game menu visibility changed -> %s" % _vl_visible)
+	if not _vl_visible:
+		GameManager.menu.close_all()
+	game_menu_visibility_changed.emit(_vl_visible)
+
+#endregion
+
+#region GAME_SCENE
 
 func _game_scene_set(scene: Node):
 	game_scene.add_child(scene)
 
 func _game_scene_clean():
 	for child in game_scene.get_children():
-		game_scene.remove_child(child)
+		child.queue_free()
+#		game_scene.remove_child(child)
 
-#endregion
-
-func load(path: String, closure := func():pass):
+signal game_scene_loaded()
+func   game_scene_load(path: String):
 	Log.info(self, "Load scene: %s" % path)
 	_start_loading_screen()
 
@@ -61,4 +91,6 @@ func load(path: String, closure := func():pass):
 
 	_stop_loading_screen()
 
-	if closure: closure.call()
+	game_scene_loaded.emit()
+
+#endregion

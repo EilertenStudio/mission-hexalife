@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dosmm7o7ei5jk"]
+
+[ext_resource type="Texture2D" uid="uid://thc4swa0d4wd" path="res://features/game/contexts/inventory/inventory_panel.svg" id="1_ogsof"]
+
+[node name="Inventory" type="Node2D" unique_id=834160069]
+
+[node name="Container" type="TextureRect" parent="." unique_id=1634730648]
+offset_right = 497.7778
+offset_bottom = 112.0
+texture = ExtResource("1_ogsof")
+expand_mode = 1
+stretch_mode = 4

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cb7bqqwuegvfq"
-path="res://.godot/imported/logo-icon.svg-bb4a0493837c114e513bddee3abe0255.ctex"
+uid="uid://thc4swa0d4wd"
+path="res://.godot/imported/inventory_panel.svg-6814f9e2d3c3a2dc9d22568703edb614.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://components/logo/assets/logo-icon.svg"
-dest_files=["res://.godot/imported/logo-icon.svg-bb4a0493837c114e513bddee3abe0255.ctex"]
+source_file="res://features/game/contexts/inventory/inventory_panel.svg"
+dest_files=["res://.godot/imported/inventory_panel.svg-6814f9e2d3c3a2dc9d22568703edb614.ctex"]
 
 [params]
 

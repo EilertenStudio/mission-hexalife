@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cyb11gh5k4nvo" path="res://components/menus/game_menu/game_menu_background.png" id="1_3khnl"]
 [ext_resource type="Script" uid="uid://ct7wkp8u1g0e1" path="res://components/overlays/game_menu_overlay.gd" id="1_jcbjo"]
 [ext_resource type="AnimationLibrary" uid="uid://1c37dxtwo5oe" path="res://components/overlays/game_menu_overlay_animations.res" id="2_bfvls"]
-[ext_resource type="PackedScene" uid="uid://d3xxxj8j6vaox" path="res://components/logo/logo_title.tscn" id="3_vm3yr"]
+[ext_resource type="PackedScene" uid="uid://d3xxxj8j6vaox" path="res://components/logos/logo_title.tscn" id="3_vm3yr"]
 [ext_resource type="PackedScene" uid="uid://covjvtab5kgu1" path="res://components/icons/github/icon_github.tscn" id="4_8fij5"]
 [ext_resource type="PackedScene" uid="uid://cnh31od46fggr" path="res://components/icons/itchio/icon_itchio.tscn" id="5_2abye"]
 [ext_resource type="PackedScene" uid="uid://btfk8360kky62" path="res://components/icons/discord/icon_discord.tscn" id="6_vmvrm"]
@@ -187,7 +187,6 @@ submenu_mode = true
 [connection signal="gui_input" from="IconContainer/IconItchio" to="." method="_on_icon_itchio_gui_input"]
 [connection signal="gui_input" from="IconContainer/IconDiscord" to="." method="_on_icon_discord_gui_input"]
 [connection signal="submenu_toggled" from="MenuOverlay/MenuContainer/MainMenu" to="." method="_on_main_menu_submenu_toggled"]
-[connection signal="pressed" from="MenuOverlay/MenuContainer/MainMenu/ItemContainer/ItemList/NEW GAME" to="." method="_on_main_menu_new_game_pressed"]
 [connection signal="pressed" from="MenuOverlay/MenuContainer/MainMenu/ItemContainer/ItemList/QUIT" to="." method="_on_main_menu_quit_pressed"]
 
 [editable path="MenuOverlay/MenuContainer/MainMenu"]

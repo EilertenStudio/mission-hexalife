@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://d3xxxj8j6vaox"]
-
-[ext_resource type="Texture2D" uid="uid://b6f64jcrdg5nc" path="res://components/logo/assets/logo-title.svg" id="1_rky8d"]
-
-[node name="LogoTitle" type="TextureRect"]
-texture = ExtResource("1_rky8d")

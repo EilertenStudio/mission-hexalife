@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://ba1xryj2avcaf"]
 
-[ext_resource type="Script" uid="uid://wwfiy175bgyj" path="res://components/scenes/main_scene.gd" id="1_55hj4"]
+[ext_resource type="Script" uid="uid://wwfiy175bgyj" path="res://scenes/main_scene.gd" id="1_55hj4"]
 [ext_resource type="PackedScene" uid="uid://s075rqwa6icc" path="res://features/logging/log_manager.tscn" id="2_hq5cm"]
 [ext_resource type="PackedScene" uid="uid://cujptywsasjhp" path="res://components/overlays/game_load_overlay.tscn" id="2_rt2n2"]
+[ext_resource type="PackedScene" uid="uid://b10wvgo7hme4c" path="res://components/rooms/cryogenic_room/v2/cryogenic_room_v2.tscn" id="2_u7yev"]
 [ext_resource type="PackedScene" uid="uid://c7sjrxq1kgv4y" path="res://features/postprocessors/crt_filter.tscn" id="3_0b30t"]
 [ext_resource type="PackedScene" uid="uid://dljlm66c2b4ng" path="res://components/overlays/game_scene_overlay.tscn" id="3_rt2n2"]
-[ext_resource type="PackedScene" uid="uid://5yoyc0sceqjg" path="res://features/debugs/project_version.tscn" id="3_rxy18"]
+[ext_resource type="PackedScene" uid="uid://5yoyc0sceqjg" path="res://components/labels/project_version.tscn" id="3_rxy18"]
 [ext_resource type="PackedScene" uid="uid://btrlk72p3nqxq" path="res://components/overlays/game_menu_overlay.tscn" id="6_c16ls"]
 
 [node name="MainScene" type="Control" unique_id=1959146252]
@@ -16,9 +17,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_55hj4")
+level_start = ExtResource("2_u7yev")
 
 [node name="LogManager" parent="." unique_id=535081557 instance=ExtResource("2_hq5cm")]
-log_level = 5
+log_level = 8
 
 [node name="PostProcessorLayer" type="CanvasLayer" parent="." unique_id=1317983695]
 layer = 300
@@ -30,17 +32,16 @@ metadata/_edit_lock_ = true
 layer = 200
 
 [node name="ProjectVersion" parent="DebugLayer" unique_id=838290403 instance=ExtResource("3_rxy18")]
-text = "v0.0.3-alpha.18"
+text = "v0.0.3-alpha.19"
 metadata/_edit_lock_ = true
 
 [node name="GameUnderDevelopment" type="Label" parent="DebugLayer" unique_id=934814443]
 offset_left = 560.0
-offset_top = 688.0
+offset_top = 8.0
 offset_right = 786.0
-offset_bottom = 711.0
+offset_bottom = 31.0
 text = "Game Under Development"
 uppercase = true
-metadata/_edit_lock_ = true
 
 [node name="GameLayer" type="CanvasLayer" parent="." unique_id=1715075723]
 
@@ -52,11 +53,13 @@ metadata/_edit_lock_ = true
 
 [node name="GameMenu" parent="GameLayer" unique_id=1978468807 instance=ExtResource("6_c16ls")]
 unique_name_in_owner = true
+z_index = 20
 metadata/_edit_lock_ = true
 
 [node name="GameLoad" parent="GameLayer" unique_id=740184770 instance=ExtResource("2_rt2n2")]
 unique_name_in_owner = true
 visible = false
+z_index = 40
 metadata/_edit_lock_ = true
 
 [editable path="GameLayer/GameScene"]

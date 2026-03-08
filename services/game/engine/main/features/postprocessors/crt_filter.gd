@@ -4,7 +4,7 @@ extends Control
 @onready var screen: MeshInstance2D = $Screen
 
 func _enter_tree() -> void:
-	Log.event(self, "Init")
+	Log.event(self, "Enter Tree")
 
 func _ready() -> void:
 	Log.event(self, "Ready")

@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://dnn4bnbyeorv"]
+
+[ext_resource type="Texture2D" uid="uid://dstdccwgpyps" path="res://components/rooms/cryogenic_room/v2/props/cryogenic_room_v2_room.tres" id="2_cm6c3"]
+[ext_resource type="Texture2D" uid="uid://bwv1swvasd5kp" path="res://components/menus/game_menu/game_menu_icon.tres" id="2_fu6ps"]
+[ext_resource type="PackedScene" uid="uid://dosmm7o7ei5jk" path="res://features/game/contexts/inventory/inventory.tscn" id="2_m0opm"]
+[ext_resource type="Texture2D" uid="uid://d38ibn34kt07" path="res://components/rooms/cryogenic_room/v2/props/cryogenic_room_v2_door.tres" id="3_bquip"]
+[ext_resource type="PackedScene" uid="uid://cnjyd8jkllg0r" path="res://components/items/game_item.tscn" id="4_h7elj"]
+[ext_resource type="Texture2D" uid="uid://rysf15seq2hj" path="res://components/rooms/cryogenic_room/v2/cryogenic_room_v2.png" id="5_orbhf"]
+[ext_resource type="Texture2D" uid="uid://c7y1yd4hybak2" path="res://components/rooms/cryogenic_room/v2/props/cryogenic_room_v2_terminal.tres" id="6_hdnwu"]
+[ext_resource type="Texture2D" uid="uid://bu07fd42lrcb2" path="res://components/rooms/cryogenic_room/v2/props/cryogenic_room_v2_capsule.tres" id="7_jbwb7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fu6ps"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u43f1"]
+atlas = ExtResource("5_orbhf")
+region = Rect2(1275.768, 838.213, 151.343, 509.546)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b1yfh"]
+atlas = ExtResource("5_orbhf")
+region = Rect2(144.209, 1070.275, 81.888, 139.879)
+margin = Rect2(7.085, 0, 10.645, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6nlu0"]
+atlas = ExtResource("5_orbhf")
+region = Rect2(1795.1829, 812.8589, 554.49927, 251.56189)
+margin = Rect2(7.085, 0, 10.645, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkqdj"]
+atlas = ExtResource("5_orbhf")
+region = Rect2(3107.294, 1043.958, 454.88428, 89.47473)
+margin = Rect2(7.085, 0, 10.645, 0)
+
+[node name="GameRoom" type="Node2D" unique_id=1717685068]
+metadata/_edit_lock_ = true
+
+[node name="HudContainer" type="Node2D" parent="." unique_id=434809874]
+z_index = 5
+
+[node name="Menu" type="Button" parent="HudContainer" unique_id=1783554618]
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 112.0
+offset_bottom = 104.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_fu6ps")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_fu6ps")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_fu6ps")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_fu6ps")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fu6ps")
+icon = ExtResource("2_fu6ps")
+
+[node name="Inventory" parent="HudContainer" unique_id=1634730648 instance=ExtResource("2_m0opm")]
+position = Vector2(784, 616)
+
+[node name="Room" type="TextureRect" parent="." unique_id=855816789]
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+texture = ExtResource("2_cm6c3")
+metadata/_edit_lock_ = true
+
+[node name="Door" type="TextureRect" parent="." unique_id=1616291954]
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+texture = ExtResource("3_bquip")
+metadata/_edit_lock_ = true
+
+[node name="DoorGateway_L" parent="Door" unique_id=2132652088 instance=ExtResource("4_h7elj")]
+z_index = 1
+position = Vector2(-10.05, 117.095)
+texture = SubResource("AtlasTexture_u43f1")
+
+[node name="DoorTerminal_L" parent="Door" unique_id=1154150654 instance=ExtResource("4_h7elj")]
+z_index = 1
+position = Vector2(139, 350)
+texture = SubResource("AtlasTexture_b1yfh")
+
+[node name="DoorGateway_R" parent="Door" unique_id=385109675 instance=ExtResource("4_h7elj")]
+z_index = 1
+position = Vector2(1285, 117.095)
+scale = Vector2(-1, 1)
+texture = SubResource("AtlasTexture_u43f1")
+
+[node name="DoorTerminal_R" parent="Door" unique_id=186685473 instance=ExtResource("4_h7elj")]
+z_index = 1
+position = Vector2(1137, 350)
+scale = Vector2(-1, 1)
+texture = SubResource("AtlasTexture_b1yfh")
+
+[node name="Terminal" type="TextureRect" parent="." unique_id=540061043]
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+texture = ExtResource("6_hdnwu")
+metadata/_edit_lock_ = true
+
+[node name="TerminaScreen_0" parent="Terminal" unique_id=547055007 instance=ExtResource("4_h7elj")]
+z_index = 1
+position = Vector2(509, 82)
+texture = SubResource("AtlasTexture_6nlu0")
+
+[node name="TerminaScreen_1" parent="Terminal" unique_id=1380215716 instance=ExtResource("4_h7elj")]
+z_index = 1
+position = Vector2(538, 326)
+texture = SubResource("AtlasTexture_xkqdj")
+
+[node name="Capsule" type="TextureRect" parent="." unique_id=1392002624]
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+texture = ExtResource("7_jbwb7")
+metadata/_edit_lock_ = true

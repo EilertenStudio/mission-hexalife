@@ -1,17 +1,18 @@
 class_name SettingsManager
-extends Node
+extends Object
 
-func _enter_tree() -> void:
+func _init() -> void:
 	Log.event(self, "Init")
-
-func _ready() -> void:
-	Log.event(self, "Ready")
 
 const CONFIG_PATH := "user://settings.cfg"
 var config := ConfigFile.new()
 
 var gameplay := GameplaySettings.new()
 var display := DisplaySettings.new()
+
+func clear():
+	Log.trace(self, "Clear configurations -> \n%s" % config.encode_to_text())
+	config.clear()
 
 func save():
 	Log.trace(self, "Save configurations -> \n%s" % config.encode_to_text())
@@ -20,7 +21,8 @@ func save():
 signal load_init()
 signal load_start()
 signal load_end()
-func   load():
+func   load() -> void:
+	Log.event(self, "Load")
 	load_init.emit()
 
 	var error := config.load(CONFIG_PATH)

@@ -1,19 +1,28 @@
 extends Node
 
-func _enter_tree() -> void:
+func _init() -> void:
 	Log.event(self, "Init")
+
+func _enter_tree() -> void:
+	Log.event(self, "Enter Tree")
 
 func _ready() -> void:
 	Log.event(self, "Ready")
 
-var bypass_keys = [
-	KEY_ESCAPE,
-	KEY_F1, KEY_F2, KEY_F3, KEY_F4,KEY_F5, KEY_F6, KEY_F7, KEY_F8, KEY_F9, KEY_F10, KEY_F11, KEY_F12
-]
+signal mouse_button_left_event(event: InputEventMouseButton)
+signal mouse_button_right_event(event: InputEventMouseButton)
 
-#func _input(event):
-	#Log.event(self, "Input catch -> (%s)" % event)
-	#if event is InputEventKey:        
-		#if event.keycode in bypass_keys:
-			#Log.trace(self, "Ignore it")
-			#return
+signal escape_key_event(event: InputEventKey)
+
+func _input(event):
+	Log.input(self, "Input catch -> (%s)" % event)
+	if event is InputEventMouseButton:
+		match event.button_index:
+			MOUSE_BUTTON_LEFT:
+				mouse_button_left_event.emit(event)
+			MOUSE_BUTTON_RIGHT:
+				mouse_button_right_event.emit(event)
+	elif event is InputEventKey:
+		match event.keycode:
+			KEY_ESCAPE:
+				escape_key_event.emit(event)

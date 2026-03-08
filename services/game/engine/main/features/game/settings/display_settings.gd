@@ -1,5 +1,10 @@
 class_name DisplaySettings
-extends Node
+extends Object
+
+func _init() -> void:
+	Log.event(self, "Init %s" % get_script().get_global_name())
+
+const FEATURE_ID := "display"
 
 func load():
 	Log.event(self, "Load settings display")
@@ -10,11 +15,11 @@ func load():
 signal fullscreen_changed(enabled: bool)
 
 func fullscreen_get() -> bool:
-	return GameManager.settings.feature_get(self.name.to_snake_case(), "fullscreen", false)
+	return GameManager.settings.feature_get(FEATURE_ID, "fullscreen", false)
 	
 func fullscreen_set(enabled: bool, save := true, emit := true):
 	Log.debug(self, "Fullscreen changed -> (%s)" % enabled)
-	GameManager.settings.feature_set(self.name.to_snake_case(), "fullscreen", enabled, save)
+	GameManager.settings.feature_set(FEATURE_ID, "fullscreen", enabled, save)
 	
 	if enabled:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
@@ -32,11 +37,11 @@ func fullscreen_set(enabled: bool, save := true, emit := true):
 signal crt_filter_changed(enabled: bool)
 
 func crt_filter_get() -> bool:
-	return GameManager.settings.feature_get(self.name.to_snake_case(), "crt_filter", true)
+	return GameManager.settings.feature_get(FEATURE_ID, "crt_filter", true)
 
 func crt_filter_set(enabled: bool, save := true, emit := true):
 	Log.debug(self, "CRT Filter changed -> (%s)" % enabled)
-	GameManager.settings.feature_set(self.name.to_snake_case(), "crt_filter", enabled, save)
+	GameManager.settings.feature_set(FEATURE_ID, "crt_filter", enabled, save)
 	
 	if crt_filter_get_node():
 		crt_filter_get_node().visible = enabled

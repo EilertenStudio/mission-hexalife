@@ -1,11 +1,8 @@
-class_name StateManager
-extends Node
+class_name DataManager
+extends Object
 
-func _enter_tree() -> void:
+func _init() -> void:
 	Log.event(self, "Init")
-
-func _ready() -> void:
-	Log.event(self, "Ready")
 
 func save():
 	Log.info(self, "Save game -> \n%s" % config.encode_to_text())

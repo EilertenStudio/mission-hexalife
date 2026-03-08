@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Mission HeXalife"
-config/version="0.0.3-alpha.18"
+config/version="0.0.3-alpha.19"
 run/main_scene="uid://ba1xryj2avcaf"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://dijwxpv0mbldj"
@@ -48,9 +48,10 @@ folder_colors={
 "res://assets/": "pink",
 "res://components/": "orange",
 "res://components/overlays/": "green",
-"res://components/scenes/": "purple",
 "res://features/": "blue",
+"res://scenes/": "purple",
 "res://settings/": "gray",
+"res://shaders/": "yellow",
 "res://tests/": "teal"
 }
 

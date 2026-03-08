@@ -1,17 +1,13 @@
 @tool
 class_name GameMenuManager
-extends Node
+extends Object
 
-var navigator_stack: Array[GameMenu]
+var menu_button_stack: Array[GameMenuButton]
+var menu_input_cache: Dictionary
 
 func _init() -> void:
-	Log.log_level_set(self, Log.Level.INFO)
-
-func _enter_tree() -> void:
 	Log.event(self, "Init")
-
-func _ready() -> void:
-	Log.event(self, "Ready")
+	Log.log_level_set(self, Log.Level.INFO)
 
 #region Menu
 
@@ -40,6 +36,7 @@ func prevent_menu_input(menu: GameMenu, ignore: Array[GameMenuButton] = []) -> v
 		Log.trace(self, "Disable mouse input for `%s`" % button.name)
 		#button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		#button.focus_mode = Control.FOCUS_NONE
+		menu_input_cache.set(button, button.disabled)
 		button.disabled = true
 
 func allow_menu_input(menu: GameMenu, ignore: Array[GameMenuButton] = []) -> void:
@@ -52,7 +49,8 @@ func allow_menu_input(menu: GameMenu, ignore: Array[GameMenuButton] = []) -> voi
 		Log.trace(self, "Enable mouse input for `%s`" % button.name)
 		#button.mouse_filter = Control.MOUSE_FILTER_STOP
 		#button.focus_mode = Control.FOCUS_ALL
-		button.disabled = false
+		button.disabled = menu_input_cache.get(button, button.disabled)
+		menu_input_cache.erase(button)
 
 #endregion
 
@@ -88,6 +86,9 @@ func open_submenu(button: GameMenuButton, submenu: GameMenu) -> void:
 	Log.debug(self, "Open submenu `%s`" % submenu.name)
 	submenu.visible = true
 
+	menu_button_stack.append(button)
+	Log.trace(self, "MenuButtonStack -> %s" % menu_button_stack.size())
+
 func close_submenu(button: GameMenuButton, submenu: GameMenu) -> void:
 	Log.debug(self, "Update button theme for `%s`" % button.name)
 	button.remove_theme_stylebox_override("pressed")
@@ -101,7 +102,14 @@ func close_submenu(button: GameMenuButton, submenu: GameMenu) -> void:
 	Log.debug(self, "Close submenu `%s`" % submenu.name)
 	submenu.visible = false
 
-#endregion
+	menu_button_stack.pop_back()
+	Log.trace(self, "MenuButtonStack -> %s" % menu_button_stack.size())
 
-func visible(value : bool):
-	GameManager.scene.game_menu.visible = value
+func close_all() -> void:
+	if menu_button_stack.size() == 0: return
+
+	var menu_button := menu_button_stack.get(0) as GameMenuButton
+	if menu_button:
+		menu_button.button_pressed = false
+
+#endregion

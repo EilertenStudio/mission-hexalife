@@ -2,7 +2,7 @@ class_name LoadingManager
 extends Node
 
 func _enter_tree() -> void:
-	Log.event(self, "Init")
+	Log.event(self, "Enter Tree")
 
 func _ready() -> void:
 	Log.event(self, "Ready")

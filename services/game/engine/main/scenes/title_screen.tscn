@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c6ksigo5lrhel"]
 
-[ext_resource type="Script" uid="uid://c7nxxkuhrvm3v" path="res://components/scenes/title_screen.gd" id="1_4k7ef"]
+[ext_resource type="Script" uid="uid://c7nxxkuhrvm3v" path="res://scenes/title_screen.gd" id="1_4k7ef"]
 [ext_resource type="VideoStream" uid="uid://t4ut164kfti2" path="res://assets/videos/test_finale_video.ogv" id="1_lpngp"]
 
 [node name="TitleScreen" type="Control" unique_id=449411541]
