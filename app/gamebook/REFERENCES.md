@@ -18,6 +18,10 @@ Fonti e progetti citati nelle note, nei profili dei personaggi e nella documenta
 
 ## Struttura narrativa e mistero interattivo
 
+- [Arthur Conan Doyle, *The Adventure of the Speckled Band*, testo originale](https://en.wikisource.org/wiki/The_Adventures_of_Sherlock_Holmes_(1892,_US)/The_Adventure_of_the_Speckled_Band) — morte in una stanza apparentemente inaccessibile e pericolo naturale la cui interpretazione nasconde un intervento umano; riferimento di struttura, non di metodo.
+- [John Dickson Carr, *The Three Coffins* / *The Hollow Man*, scheda dell'editore](https://www.simonandschuster.com/books/The-Three-Coffins/John-Dickson-Carr/Dr-Gideon-Fell/9781613165850) — modello classico della stanza chiusa: i fatti osservati sono corretti, ma l'idea che nessuno potesse entrare o uscire è da verificare.
+- [Agatha Christie, *The Pale Horse*, presentazione ufficiale](https://www.agathachristie.com/en/stories/the-pale-horse) — una causa apparentemente estranea all'omicidio può ritardare il riconoscimento del delitto; utile per il passaggio da «è stato il fungo» a «qualcuno ha agito».
+- [Cuyahoga County Medical Examiner, *Forensic Pathology*](https://cuyahogacounty.gov/medical-examiner/departments/forensic-pathology) — causa e modalità della morte vengono valutate insieme a corpo, scena, registri e altre informazioni; il Medico può riconoscere un'aggressione senza identificare subito l'assassino.
 - [Randy Ingermanson, *The Snowflake Method for Designing a Novel*](https://www.advancedfictionwriting.com/articles/snowflake-method/) — espansione progressiva da premessa a scene, adattata qui a un gioco breve.
 - [Choice of Games, *Planning a ChoiceScript Game*](https://www.choiceofgames.com/2010/05/planning-a-choicescript-game/) — premessa, personaggi, schema delle scene e variabili prima della stesura.
 - [Choice of Games, *By the Numbers: How to Write a Long Interactive Novel That Doesn't Suck*](https://www.choiceofgames.com/2011/07/by-the-numbers-how-to-write-a-long-interactive-novel-that-doesnt-suck/) — gestione delle ramificazioni tramite conseguenze che riemergono in scene condivise.

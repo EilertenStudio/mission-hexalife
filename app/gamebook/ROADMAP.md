@@ -11,7 +11,7 @@ Le fasi sono **porte di lavoro**, non capitoli del gioco: si può tornare indiet
 | Fase | Da produrre | Pronta quando… | Stato |
 | --- | --- | --- | --- |
 | 1. Promessa e perimetro | Premessa in una frase, domanda morale, esperienza desiderata e limite di durata. | Si capisce che cosa il giocatore fa, perché ha fretta e quali tre esiti principali sono possibili. | Parziale |
-| 2. Verità degli eventi | Cronologia privata: piano dello Scienziato, ragione e modo dell'omicidio, ciò che accade sulla nave anche senza intervento del giocatore. | Omicidio, fungo e piano segreto hanno cause compatibili; ogni personaggio può agire da sé. | Da fare; priorità |
+| 2. Verità degli eventi | Cronologia privata: piano dello Scienziato, ragione e modo dell'omicidio, ciò che accade sulla nave anche senza intervento del giocatore. | Omicidio, fungo e piano segreto hanno cause compatibili; ogni personaggio può agire da sé. | Parziale: metodo scelto, movente immediato da precisare |
 | 3. Personaggi e attriti | Per ciascun ruolo: ragione per partire, obiettivo immediato, cosa nasconde o ignora, limite morale, rapporti e compito durante la crisi. | Le azioni della crew nascono dai personaggi e possono favorire o ostacolare l'Ingegnere. | Parziale |
 | 4. Regole e orologio | Vincoli di energia, fungo, QC e accessi; azioni che consumano tempo; calendario degli snodi e delle azioni della crew. | Il pericolo è comprensibile e la preparazione del giocatore cambia conseguenze osservabili. | Parziale |
 | 5. Indagine | Per ogni verità da scoprire: tracce, luoghi, testimoni, interpretazione iniziale e verifica successiva. | Il giocatore può distinguere l'invasione dall'omicidio e dedurre il colpevole prima della rivelazione. | Da fare |
@@ -37,10 +37,10 @@ Queste sono **schede di funzione**, non scene già scritte. Le scelte indicate s
 
 | Passaggio | Funzione e fatto fermo | Scelta o informazione ancora da progettare |
 | --- | --- | --- |
-| Risveglio | QC sveglia la crew per il calo di energia e avvisa già del futuro incontro con gli asteroidi. Stabilisce le due pressioni che dureranno oltre la morte del Capitano. | Che cosa sa il QC con certezza, quanto preavviso offre e quali dati l'Ingegnere può consultare subito. |
-| Primo intervento | L'Ingegnere raggiunge la sala motori e ripristina energia mentre il Capitano viene ucciso nel centro di comando. | Quale intervento richiede una scelta, quale costo comporta e cosa fanno nel frattempo gli altri tre membri della crew. |
+| Risveglio | QC sveglia la crew in modo asincrono per il calo di energia e avvisa già del futuro incontro con gli asteroidi. Il Capitano è il primo a svegliarsi, lo Scienziato il secondo per sua scelta, l'Ingegnere l'ultimo. | Che cosa sa il QC con certezza, quanto preavviso offre e quali dati l'Ingegnere può consultare subito. |
+| Primo intervento | L'Ingegnere raggiunge la sala motori su ordine tecnico del Capitano, senza ricevere indizi sui suoi sospetti, e ripristina energia mentre lo Scienziato manomette l'aria del centro di comando con un agente di decontaminazione. | Quale intervento richiede una scelta, quale costo comporta, quale decisione del Capitano scatena l'omicidio e cosa fanno gli altri. |
 | Silenzio e successione | Il Capitano smette di rispondere; il fungo blocca il centro di comando. Il Primo Ufficiale assume il comando provvisorio e risolve la breve confusione operativa. | Ultimo contatto verificabile con il Capitano, priorità in conflitto e reazioni individuali. |
-| Accesso e prima indagine | La crew cerca di entrare e di capire cosa è successo. Il fungo è il sospetto iniziale, ma l'indagine deve poterlo separare dall'omicidio. | Almeno due approcci praticabili per l'accesso, con costi diversi; prime tracce che il giocatore può interpretare. |
+| Accesso e prima indagine | La crew cerca di entrare. Il fungo resta la spiegazione iniziale; il Medico può riconoscere l'agente con un'analisi e l'Ingegnere può trovare la manomissione del sistema. | Almeno due approcci praticabili per l'accesso, con costi diversi; ordine possibile delle scoperte e decisioni su cosa rivelare. |
 
 Per ciascuna scheda, prima della prosa compilare: **luogo e momento; cosa vuole l'Ingegnere; cosa fanno gli altri; informazione disponibile; azione che fa avanzare il tempo; conseguenza immediata; effetto che ritorna più tardi**. Ispezioni e dialoghi di approfondimento restano senza costo temporale, come stabilito nelle note. Le azioni a tempo devono essere segnalate in modo comprensibile al giocatore.
 
@@ -48,10 +48,12 @@ Per ciascuna scheda, prima della prosa compilare: **luogo e momento; cosa vuole 
 
 Ordine proposto per sbloccare la prima tranche senza progettare già tutto il gioco:
 
-1. **Fissare la verità del delitto:** cosa scopre o impedisce il Capitano, perché lo Scienziato decide di ucciderlo proprio allora, con quale metodo e quali limiti fisici di accesso al centro di comando. Tenere separati *scoperta del colpevole* e *possibilità di fermarne il piano*.
+1. **Completare la verità del delitto:** il metodo è la manomissione dell'aria con l'agente di decontaminazione. Stabilire cosa scopre o impedisce il Capitano, perché lo Scienziato agisce proprio allora e chi può comandare la decontaminazione. Tenere separati *scoperta del delitto*, *scoperta del colpevole* e *possibilità di fermarne il piano*.
 2. **Fissare il nesso tra fungo e piano:** che cosa lo Scienziato aveva davvero scoperto prima della criogenesi, cosa ha omesso nel rapporto, che cosa lo sorprende durante l'invasione e quale opportunità concreta vede dopo il risveglio.
 3. **Definire solo le regole operative usate nell'apertura:** da dove l'Ingegnere può ripristinare energia, che cosa consuma il fungo, come blocca le porte, quale margine energetico serve al QC e quanto tempo manca alla manovra. Il preavviso deve permettere preparazione reale, mentre i dettagli scientifici completi possono attendere.
 4. **Distribuire le persone nello spazio e nel tempo:** dove sono Primo Ufficiale, Medico e Scienziato durante l'omicidio; cosa vedono, cosa credono e cosa fanno senza attendere l'Ingegnere. Questo produce sospetti verificabili e rende possibile la delega.
 5. **Progettare le prime prove e i costi d'accesso:** cosa fa sospettare il fungo, cosa rende la morte incompatibile con il solo fungo, quali rapporti dello Scienziato sono consultabili e come due vie d'accesso cambiano tempo, energia, fiducia o integrità della nave.
+
+La durata dell'isolamento del centro di comando e la scansione dei giorni si scelgono dopo una prova giocabile: il ritmo deve nascere dalle azioni che consumano tempo e dalle iniziative autonome della crew, non da un numero deciso prima della prova.
 
 Solo dopo queste decisioni si stende l'apertura in paragrafi lineari. La sequenza e la motivazione dei personaggi sono più urgenti del nome del minerale alimentare, della spiegazione completa del viaggio o della prosa dei finali. Le informazioni indispensabili al finale vanno poi seminate abbastanza presto da influenzare le scelte del giocatore, incluso il passato dell'Ingegnere.

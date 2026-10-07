@@ -29,8 +29,13 @@ Questo documento raccoglie i pilastri stabiliti e le domande ancora aperte. I ru
 - Le motivazioni personali che hanno spinto i membri della crew a partecipare alla missione devono essere legate ai loro profili psicologici. Alcune motivazioni possono essere in contrapposizione tra loro e incidere sulla collaborazione durante la crisi.
 - Il capitano viene assassinato da un membro dell’equipaggio.
 - Lo Scienziato uccide il Capitano ed è l’antagonista della storia.
+- Il risveglio dalla criogenesi è asincrono a causa dell'instabilità della nave: il Capitano si sveglia per primo e fa risvegliare lo Scienziato per affrontare l'avaria legata al fungo; l'Ingegnere si sveglia per ultimo e riceve compiti specifici tramite gli ordini del Capitano. Non occorre che i due si incontrino di persona prima della morte. L'ordine esatto di risveglio del Primo Ufficiale e del Medico resta da definire.
+- Prima di morire, il Capitano impartisce all'Ingegnere solo istruzioni tecniche: non gli rivela i sospetti sullo Scienziato né lascia trapelare la scoperta del suo piano.
+- Il Capitano entra in possesso di informazioni che gli fanno comprendere le vere intenzioni dello Scienziato. Contenuto preciso, fonte e momento della scoperta restano da definire.
+- Lo Scienziato uccide il Capitano con una decisione improvvisa, dopo dissapori precedenti e davanti al rischio che il Capitano ostacoli il suo piano. Manomette l'aria immessa nel centro di comando usando un agente di decontaminazione della nave, destinato normalmente a settori contaminati e vuoti. Il modo esatto in cui aggira le protezioni e avvia la procedura resta da definire.
+- Il fungo e i malfunzionamenti rendono inizialmente credibile una morte accidentale. Il Medico può riconoscere la sostanza con un'analisi e distinguere la causa della morte dal fungo; l'Ingegnere può individuare nei sistemi una manomissione intenzionale. Le scoperte possono avvenire in ordine diverso e non identificano da sole l'assassino. Chi scopre un'informazione decide se, quando e a chi comunicarla; il Medico e gli altri membri agiscono anche senza attendere il giocatore.
 - Lo Scienziato è un prodigio cresciuto nella povertà e gravato da molte aspettative. La scoperta della corruzione nei rapporti sociali e dell’avidità umana ha alimentato la sua disillusione.
-- Lo Scienziato studia in segreto un modo per ridurre drasticamente la popolazione umana. Il metodo, la portata del piano e il legame con l’omicidio del Capitano restano da definire.
+- Lo Scienziato studia in segreto un modo per ridurre drasticamente la popolazione umana. Vorrebbe usare il fungo, insieme alle risorse riportate sulla Terra, per sottrarre energia agli impianti terrestri, provocando un collasso che nella sua visione permetterebbe al pianeta di guarire a costo di molte vite. Lo sviluppo di un ceppo resistente e il funzionamento concreto del piano restano da definire.
 - Lo Scienziato si è unito alla missione per allontanarsi dalla Terra e non vederla nel suo stato di crisi. Prima della partenza aveva già l'intenzione di ridurre drasticamente la popolazione, ma non un piano attuabile né i mezzi per realizzarlo.
 - La scoperta della vita aliena, in particolare del fungo, insieme a materiali e fenomeni naturali incontrati sui pianeti gli permette di sviluppare durante la missione un piano concreto. Il funzionamento del piano resta TBD; la storia continua a svolgersi interamente a bordo della nave.
 - Lo Scienziato vuole impedire che la Terra muoia per l’avidità umana, anche a costo di sacrificare una parte dell’umanità.
@@ -59,7 +64,7 @@ Questo documento raccoglie i pilastri stabiliti e le domande ancora aperte. I ru
 - Prima di partire, l'Ingegnere aveva già un piano personale per dirottare parte delle risorse recuperate verso comunità più piccole dotate di raffinerie locali. Portata, metodo, persone informate ed eventuale attuazione restano TBD.
 - Il giocatore ricostruisce gradualmente quel passato: prima apprende che cosa l'Ingegnere ha scelto, poi la disparità e chi ne ha subito il costo. L'Ingegnere conosce già questi fatti all'inizio del gioco; persone coinvolte, conseguenze concrete e modalità della rivelazione restano TBD.
 - La visione dello Scienziato ha ora una prima base; le sue motivazioni precise, e quelle del Capitano, del Primo Ufficiale e del Medico, sono ancora da chiarire.
-- È ancora da chiarire perché lo Scienziato uccide il Capitano.
+- Resta da definire che cosa il Capitano abbia scoperto e quale sua decisione renda immediato il pericolo per lo Scienziato.
 - Per ora non sono stati stabiliti nomi propri. Ci si riferisce ai personaggi tramite il ruolo. Le motivazioni individuali, salvo la prima base dello Scienziato, sono ancora aperte.
 
 ### Struttura e finali
@@ -89,8 +94,8 @@ Questo documento raccoglie i pilastri stabiliti e le domande ancora aperte. I ru
 3. Lo Scienziato redige un rapporto sull’analisi. L’equipaggio entra in criogenesi mentre il computer quantistico della nave esegue il viaggio di ritorno.
 4. Il computer quantistico mantiene la nave alla piena potenza per evitare collisioni con oggetti spaziali e seguire traiettorie precise, riducendo molto la durata del viaggio. L’idea include il superamento della barriera degli anni luce, ma il meccanismo scientifico è ancora da ricercare e definire.
 5. Durante la criogenesi il parassita si attiva, assorbe energia dai reattori e invade la nave. Il calo di energia mette a rischio la missione e l’equipaggio.
-6. Il computer quantistico (QC) avvia un protocollo di emergenza e risveglia l’equipaggio dalla criogenesi. Già al risveglio segnala il futuro rischio di collisione con un gruppo di asteroidi.
-7. L’Ingegnere interviene nella sala motori per ripristinare l’energia. In quel momento il Capitano muore al centro di comando: è il primo snodo principale; i dettagli dell’omicidio restano da definire.
+6. Il computer quantistico (QC) avvia un protocollo di emergenza e risveglia l’equipaggio dalla criogenesi in modo asincrono. Il Capitano si sveglia per primo, fa risvegliare lo Scienziato per l'avaria fungina e l'Ingegnere si sveglia per ultimo. Già al risveglio il QC segnala il futuro rischio di collisione con un gruppo di asteroidi.
+7. L’Ingegnere interviene nella sala motori per ripristinare l’energia. In quel momento lo Scienziato provoca la morte del Capitano nel centro di comando manomettendo l'aria con l'agente di decontaminazione: è il primo snodo principale. Circostanze e accessi precisi restano da definire.
 8. Il Capitano smette di rispondere al terminale di comunicazione. La sua ultima posizione nota è il centro di comando.
 9. Il centro di comando è isolato dal fungo e la crew non può verificare subito cosa sia accaduto al Capitano. Nasce una breve incertezza sulle priorità; il Primo Ufficiale assume il comando provvisorio e coordina una decisione sull'emergenza.
 10. L'equipaggio decide di indagare insieme nel centro di comando e deve trovare un modo per superare le porte bloccate. Quando la morte del Capitano sarà accertata, il Primo Ufficiale assumerà formalmente il comando.
@@ -114,17 +119,18 @@ Questo documento raccoglie i pilastri stabiliti e le domande ancora aperte. I ru
 - Come il sistema di distribuzione definiva l'«efficienza», perché i ricchi ricevevano più risorse, chi è rimasto escluso e quali tracce permettono al giocatore di ricostruirlo.
 - Che cosa l'Ingegnere sperava di ottenere con la missione dopo aver scoperto lo squilibrio e quali altre motivazioni personali aveva per partire.
 - Come l'Ingegnere intendeva dirottare risorse verso raffinerie locali, chi conosce il piano, se il giocatore sceglierà di attuarlo e quali tensioni ciò crea con la missione ufficiale.
-- Le motivazioni e gli obiettivi dello Scienziato, antagonista e assassino del Capitano.
+- I dettagli operativi del piano terrestre dello Scienziato, la sua preparazione e i mezzi per impedirlo.
 - Quali scoperte della missione rendono attuabile l'intenzione che lo Scienziato aveva già prima di partire e come si combinano nel suo piano concreto.
 - Le circostanze dell’omicidio, gli indizi e il modo in cui l’equipaggio conduce l’indagine.
 - I passaggi precisi tra scoperta del corpo alieno, inizio della criogenesi, invasione del parassita, omicidio e risveglio dell’equipaggio.
 - Il funzionamento scientifico del computer quantistico, della propulsione e del viaggio di ritorno, inclusa l’idea di superare la barriera degli anni luce.
-- Che cosa accade esattamente al Capitano mentre l’Ingegnere ripristina l’energia e come lo Scienziato commette l’omicidio.
-- Possibili cause ancora da scegliere per l’omicidio: il Capitano scopre che lo Scienziato ha omesso nel rapporto dettagli rilevanti sull’espansione del fungo; oppure lo sorprende mentre mette in atto il piano segreto di riduzione della popolazione.
+- Quali informazioni rivelano al Capitano il piano dello Scienziato, da dove provengono e quale decisione imminente del Capitano scatena l'omicidio.
+- Come funziona il sistema di decontaminazione dell'aria del centro di comando, chi può attivarlo e come l'avaria influisce sulle protezioni; quale traccia medica e quale traccia tecnica permettono di riconoscere il delitto senza svelare subito l'assassino.
+- Quando e dove si trovano Primo Ufficiale, Medico e Scienziato durante l'omicidio, e quali informazioni scelgono di condividere in seguito.
 - L’invasione del fungo potrebbe sorprendere anche lo Scienziato e diventare l’occasione o la spinta per attuare il suo piano. Il nesso tra gli esperimenti dello Scienziato e l’invasione resta da definire.
 - Come funziona il parassita, quali sistemi della nave colpisce oltre ai reattori e quali limiti o vulnerabilità ha.
 - Se il parassita è senziente o agisce senza intenzioni.
-- Se il parassita ha un legame causale con l’omicidio o se il suo ruolo è quello di falso sospettato.
+- Quale ruolo preciso hanno invasione e malfunzionamenti nel rendere credibile l'ipotesi iniziale di una morte accidentale e nel consentire la manomissione dell'aria.
 - Se e come le altre navi della missione influenzano gli eventi, dato che non è disponibile la comunicazione a grande distanza.
 - Quale decisione l’equipaggio deve prendere sulla missione dopo la morte del Capitano.
 - Come superare le porte del centro di comando bloccate dal fungo. Idee ancora da decidere:
@@ -144,6 +150,7 @@ Questo documento raccoglie i pilastri stabiliti e le domande ancora aperte. I ru
 - Quali danni può subire la nave nel secondo snodo e come influenzano energia, accesso ai settori, indagine e rapporti nella crew.
 - Quanto dura la sequenza temporale della crisi e come viene scandita.
 - Quanto tempo passa fra l'avviso del QC e la manovra del secondo snodo; quali finestre di intervento sono disponibili e come cambia il costo della manovra col passare del tempo.
+- Quanto tempo resta isolato il centro di comando dopo il silenzio del Capitano: la durata sarà valutata con una prova giocabile del ritmo e dell'avanzamento dei giorni, prima di diventare canonica.
 - Quali sviluppi rendono la situazione progressivamente più pesante senza abbassare troppo la tensione.
 - Che cosa comporta concretamente la vittoria dello Scienziato quando il giocatore non scopre la verità in tempo.
 - La posizione del Capitano sulla missione e il modo in cui le sue decisioni alimentano (o meno) il conflitto.

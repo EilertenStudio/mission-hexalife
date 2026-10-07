@@ -28,7 +28,7 @@ Ogni membro della crew ha una ragione personale per aver accettato la missione. 
 - Vuole sopravvivere alla crisi della nave e collabora davvero per preparare la crew agli eventi che la minacciano.
 - Conosce alcune proprietà del fungo, ma sottovaluta la portata dell'invasione durante la criogenesi. La sorpresa è parziale e non la lascia vedere alla crew.
 - I rapporti possono far sospettare che conoscesse qualcosa del fungo che non ha dichiarato; contenuto e significato dell'omissione restano da definire.
-- Ha ucciso il Capitano ed è l'antagonista. Il motivo immediato dell'omicidio e il suo piano concreto restano da definire.
+- Ha ucciso il Capitano con una decisione improvvisa, manomettendo l'aria del centro di comando tramite un agente di decontaminazione della nave. Il Capitano aveva scoperto informazioni sulle sue vere intenzioni; il contenuto preciso e l'azione immediata che intendeva compiere restano da definire.
 - È l'unico membro della crew a cui, per ora, è affidata l'analisi del fungo. Anche dopo che la morte del Capitano viene riconosciuta come omicidio, gli altri hanno bisogno di collaborare con lui per affrontare la crisi.
 
 Per lo Scienziato la sopravvivenza della Terra giustifica una riduzione drastica della popolazione umana. Non è ancora definito quale parte dell'umanità intenda preservare, né quali effetti si aspetti che questa scelta abbia sul pianeta.
@@ -59,7 +59,7 @@ Lo Scienziato conosce alcune proprietà del fungo ma ne sottostima la capacità 
 - Quale evento preciso gli ha fatto perdere fiducia nelle persone o nelle istituzioni?
 - Perché ritiene che ridurre la popolazione sia l'unica risposta possibile, malgrado la missione cerchi nuove risorse?
 - Che cosa sa o decide il Capitano per diventare un ostacolo immediato?
-- Due possibilità per l'omicidio: il Capitano scopre che lo Scienziato ha omesso nel rapporto informazioni rilevanti sull'espansione del fungo; oppure sorprende lo Scienziato mentre mette in atto il piano di riduzione della popolazione. Nessuna delle due è confermata.
+- Quali documenti o azioni rivelano al Capitano l'intenzione dello Scienziato di usare il fungo per colpire l'energia terrestre?
 - L'invasione del fungo potrebbe cogliere di sorpresa anche lo Scienziato e diventare per lui l'occasione o la spinta per attuare il piano. Restano da definire il rapporto causale tra esperimenti e invasione e il momento in cui decide di agire.
 - Quanto è disposto a mettere a rischio la crew, che conosce personalmente, per il suo progetto?
 - Quale parte del piano è già in corso sulla nave e quale dipende dal rientro sulla Terra? Restano da definire gli effetti narrativi, senza fissare qui il metodo.
@@ -121,13 +121,13 @@ La ripartizione automatica è stata scelta come passato dell'Ingegnere. Le altre
 ### Nucleo confermato
 
 - Fa parte della crew di cinque persone e muore nel centro di comando durante l'intervento dell'Ingegnere nella sala motori.
-- La sua morte avvia l'indagine. Lo Scienziato è l'assassino; causa immediata, metodo e movente restano da definire.
+- La sua morte avvia l'indagine. Lo Scienziato è l'assassino e altera l'aria del centro di comando con un agente di decontaminazione. Il Capitano aveva scoperto qualcosa del piano terrestre; la prova esatta e la sua reazione restano da definire.
 - La sua posizione personale sulla missione e il rapporto con gli altri non sono ancora stabiliti.
 
 ### Profilo da esplorare
 
 - **Responsabilità:** deve tenere insieme l'obiettivo ufficiale di riportare risorse, la sicurezza della crew e ciò che il gruppo ha scoperto sul corpo alieno.
-- **Possibile attrito con lo Scienziato:** potrebbe accorgersi delle omissioni nel rapporto sul fungo oppure sorprenderlo mentre attua il piano segreto. In entrambi i casi, ciò che scopre e la sua reazione devono rendere plausibile il rischio immediato percepito dallo Scienziato. Sono alternative, non fatti.
+- **Attrito con lo Scienziato:** scopre informazioni sulle sue vere intenzioni e può impedirne il piano. Restano da scegliere la fonte delle informazioni e la decisione che precipita il delitto.
 - **Presenza dopo la morte:** ordini, rapporti e decisioni lasciati dal Capitano possono continuare a dividere la crew. Ogni traccia dovrebbe avere una ragione nel suo comportamento precedente, oltre alla funzione di indizio.
 
 ## Primo Ufficiale
@@ -152,10 +152,11 @@ La ripartizione automatica è stata scelta come passato dell'Ingegnere. Le altre
 
 - È uno dei cinque membri della crew. Motivazione personale e rapporti con gli altri restano da definire.
 - Continua a dover collaborare con gli altri dopo la morte del Capitano e durante l'invasione del fungo.
+- Può riconoscere attraverso un'analisi l'agente di decontaminazione che ha ucciso il Capitano, distinguendolo dagli effetti del fungo. La scoperta non identifica da sola l'assassino; sceglie autonomamente se e a chi riferirla.
 
 ### Profilo da esplorare
 
-- **Competenza narrativa:** può aiutare a distinguere la causa della morte del Capitano dagli effetti del fungo, se questa funzione viene confermata nella trama.
+- **Competenza narrativa:** l'analisi della morte può smontare l'ipotesi del fungo. L'Ingegnere può raggiungere la stessa conclusione da una traccia di manomissione nei sistemi; l'ordine delle scoperte può cambiare.
 - **Conflitto possibile:** proteggere la riservatezza di informazioni personali o condividerle quando la sicurezza collettiva è in gioco.
 - **Pressione possibile:** deve assistere persone che potrebbero mentire, nascondere sintomi o essere responsabili dell'omicidio. Per rendere il personaggio autonomo occorre definirne un obiettivo proprio, oltre al sostegno all'indagine.
 
