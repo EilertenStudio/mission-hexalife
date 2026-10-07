@@ -1,0 +1,2 @@
+[tools]
+"github:inkle/ink" = { version = "1.2.1", matching = "inklecate", filter_bins = "inklecate" }

@@ -1,0 +1,12 @@
+[tools]
+
+[tools."github:Dialog-IF/dialog"]
+version = "release-1c03-1.2.3"
+filter_bins = ["dialogc", "dgdebug"]
+strip_components = 1
+
+[tools."github:Dialog-IF/dialog".platforms]
+linux-x64 = { bin_path = "prebuilt/linux-x86_64" }
+macos-x64 = { bin_path = "prebuilt/macos-universal" }
+macos-arm64 = { bin_path = "prebuilt/macos-universal" }
+windows-x64 = { bin_path = "prebuilt/win32" }

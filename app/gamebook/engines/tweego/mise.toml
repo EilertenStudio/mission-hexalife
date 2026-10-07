@@ -1,0 +1,2 @@
+[tools]
+"github:tmedwards/tweego" = { version = "2.1.1", filter_bins = "tweego", rename_exe = "tweego" }
