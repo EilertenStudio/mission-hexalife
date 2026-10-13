@@ -15,8 +15,8 @@ Le fasi sono **porte di lavoro**, non capitoli del gioco: si può tornare indiet
 | 3. Personaggi e attriti | Per ciascun ruolo: ragione per partire, obiettivo immediato, cosa nasconde o ignora, limite morale, rapporti e compito durante la crisi. | Le azioni della crew nascono dai personaggi e possono favorire o ostacolare l'Ingegnere. | Parziale |
 | 4. Regole e orologio | Vincoli di energia, fungo, QC e accessi; azioni che consumano tempo; calendario degli snodi e delle azioni della crew. | Il pericolo è comprensibile e la preparazione del giocatore cambia conseguenze osservabili. | Parziale |
 | 5. Indagine | Per ogni verità da scoprire: tracce, luoghi, testimoni, interpretazione iniziale e verifica successiva. | Il giocatore può distinguere l'invasione dall'omicidio e dedurre il colpevole prima della rivelazione. | Da fare |
-| 6. Ossatura giocabile | Sequenza di scene brevi, scelte con costi leggibili, stati che persistono e condizioni dei tre finali. | Ogni scelta significativa cambia una risorsa, una relazione, una prova o la preparazione a uno snodo. | Da fare |
-| 7. Prime scene | Paragrafi semplici dal punto di vista dell'Ingegnere, fino all'accesso al centro di comando. | Il giocatore conosce l'emergenza, compie una scelta e vede una prima conseguenza senza spiegazioni retroattive. | Da fare |
+| 6. Ossatura giocabile | Sequenza di scene brevi, scelte con costi leggibili, stati che persistono e condizioni dei tre finali. | Ogni scelta significativa cambia una risorsa, una relazione, una prova o la preparazione a uno snodo. | Prima prova parziale in Ink; finali da progettare |
+| 7. Prime scene | Paragrafi semplici dal punto di vista dell'Ingegnere, fino all'accesso al centro di comando. | Il giocatore conosce l'emergenza, compie una scelta e vede una prima conseguenza senza spiegazioni retroattive. | Prima bozza giocabile in Ink |
 | 8. Espansione | Dialoghi, dettagli sensoriali, variazioni di scena e stesura dei finali. | Tutte le informazioni necessarie restano disponibili nei percorsi previsti e il tono mantiene pressione crescente. | Dopo l'ossatura |
 
 ### Perché questo ordine
@@ -29,7 +29,7 @@ La [lista di scene di Emily Short](https://emshort.blog/2008/05/04/plot-scene-by
 
 **Domanda morale di lavoro:** chi può decidere il sacrificio di altri per salvare la Terra, e con quali conseguenze? Va resa concreta attraverso le scelte dell'Ingegnere, il suo piano di dirottare risorse e la proposta dello Scienziato; non è ancora una risposta della storia.
 
-**Spina dorsale confermata:** ultimo atterraggio e recupero del corpo alieno → analisi e rapporto dello Scienziato → criogenesi e invasione → risveglio per emergenza energetica e avviso del QC sugli asteroidi → Ingegnere in sala motori e morte del Capitano nel centro di comando (**snodo 1**) → silenzio del Capitano, porte bloccate, comando provvisorio del Primo Ufficiale → indagine e preparazione → manovra per evitare gli asteroidi (**snodo 2**) → prosecuzione sulla stessa nave → tre esiti principali. Gli eventi precedenti al risveglio possono emergere attraverso tracce; la storia resta a bordo.
+**Spina dorsale confermata:** ultimo atterraggio e recupero del corpo alieno → analisi e rapporto dello Scienziato → criogenesi e invasione → risveglio ritardato dell'Ingegnere nella sala criogenica isolata → consultazione del terminale e riavvio locale che sblocca la porta → incontro con il Medico nel corridoio → Ingegnere in sala motori e morte del Capitano nel centro di comando (**snodo 1**) → silenzio del Capitano, porte bloccate, comando provvisorio del Primo Ufficiale → indagine e preparazione → manovra per evitare gli asteroidi (**snodo 2**) → prosecuzione sulla stessa nave → tre esiti principali. L'avviso del QC è consultabile al terminale; gli eventi precedenti al risveglio possono emergere attraverso tracce. La storia resta a bordo.
 
 ## Prima tranche: dal risveglio al centro di comando
 
@@ -55,5 +55,7 @@ Ordine proposto per sbloccare la prima tranche senza progettare già tutto il gi
 5. **Progettare le prime prove e i costi d'accesso:** cosa fa sospettare il fungo, cosa rende la morte incompatibile con il solo fungo, quali rapporti dello Scienziato sono consultabili e come due vie d'accesso cambiano tempo, energia, fiducia o integrità della nave.
 
 La durata dell'isolamento del centro di comando e la scansione dei giorni si scelgono dopo una prova giocabile: il ritmo deve nascere dalle azioni che consumano tempo e dalle iniziative autonome della crew, non da un numero deciso prima della prova.
+
+La [prima prova in Ink](engines/ink/story.ink) usa provvisoriamente turni da sei ore, apre comunque il centro di comando tramite l'iniziativa della crew se il giocatore non riesce prima e arriva alla manovra sugli asteroidi al dodicesimo turno. Questi valori servono a valutare il ritmo e non fissano la cronologia definitiva. La prova termina dopo il secondo snodo, prima dei tre finali della storia completa.
 
 Solo dopo queste decisioni si stende l'apertura in paragrafi lineari. La sequenza e la motivazione dei personaggi sono più urgenti del nome del minerale alimentare, della spiegazione completa del viaggio o della prosa dei finali. Le informazioni indispensabili al finale vanno poi seminate abbastanza presto da influenzare le scelte del giocatore, incluso il passato dell'Ingegnere.

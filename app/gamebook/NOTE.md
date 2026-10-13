@@ -16,6 +16,9 @@ Questo documento raccoglie i pilastri stabiliti e le domande ancora aperte. I ru
 - La comunicazione a grande distanza con la Terra non è disponibile. Le navi possono invece viaggiare a velocità tali da completare il tragitto in alcuni anni.
 - La sovrappopolazione e la decisione distopica dei governi hanno un peso centrale nella motivazione dei personaggi.
 - La storia si svolge interamente a bordo della nave spaziale; non ci sono scene ambientate sui pianeti.
+- Il giocatore segue soltanto la prospettiva dell'Ingegnere: apprende gli eventi fuori dalla sua vista attraverso persone, registri e osservazioni successive.
+- L'Ingegnere è un protagonista parlante: le sue risposte e comunicazioni possono comparire come battute esplicite. Il giocatore sceglie che cosa dire nei passaggi in cui la risposta esprime una posizione o cambia i rapporti con la crew.
+- Le informazioni sul carico, sulla crisi terrestre e sugli scopi della missione non vengono esposte nell'apertura. L'Ingegnere le conosce già, mentre il giocatore le ricostruisce indagando e cogliendo il sottotesto dei dialoghi.
 
 ### Equipaggio e conflitto
 
@@ -30,6 +33,10 @@ Questo documento raccoglie i pilastri stabiliti e le domande ancora aperte. I ru
 - Il capitano viene assassinato da un membro dell’equipaggio.
 - Lo Scienziato uccide il Capitano ed è l’antagonista della storia.
 - Il risveglio dalla criogenesi è asincrono a causa dell'instabilità della nave: il Capitano si sveglia per primo e fa risvegliare lo Scienziato per affrontare l'avaria legata al fungo; l'Ingegnere si sveglia per ultimo e riceve compiti specifici tramite gli ordini del Capitano. Non occorre che i due si incontrino di persona prima della morte. L'ordine esatto di risveglio del Primo Ufficiale e del Medico resta da definire.
+- Un guasto alla capsula dell'Ingegnere ritarda il suo risveglio di giorni e mette a rischio la sua vita. Si sveglia da solo nella sala criogenica, frastornato, con una luce rossa intermittente e una sirena d'allarme. All'inizio ignora il guasto e il pericolo corso. La porta è bloccata finché, dopo le prime osservazioni del giocatore, un blackout e il riavvio della riserva locale spengono la sirena, riportano le luci alla normalità e sbloccano l'uscita.
+- Il Medico è la prima persona incontrata dall'Ingegnere: lo aspetta nel corridoio per controllare il suo risveglio e può parlargli dopo che la sirena si è spenta.
+- L'ordine di dare al QC un'alimentazione regolare riguarda il suo circuito elettrico, non una linea di comunicazione; i cali di tensione disturbano i calcoli e le manovre, ma gli impianti vitali devono restare attivi.
+- L'avviso del QC sulla collisione si trova nel terminale della sala criogenica: il giocatore lo ottiene ispezionandolo, invece di riceverlo automaticamente all'apertura.
 - Prima di morire, il Capitano impartisce all'Ingegnere solo istruzioni tecniche: non gli rivela i sospetti sullo Scienziato né lascia trapelare la scoperta del suo piano.
 - Il Capitano entra in possesso di informazioni che gli fanno comprendere le vere intenzioni dello Scienziato. Contenuto preciso, fonte e momento della scoperta restano da definire.
 - Lo Scienziato uccide il Capitano con una decisione improvvisa, dopo dissapori precedenti e davanti al rischio che il Capitano ostacoli il suo piano. Manomette l'aria immessa nel centro di comando usando un agente di decontaminazione della nave, destinato normalmente a settori contaminati e vuoti. Il modo esatto in cui aggira le protezioni e avvia la procedura resta da definire.
@@ -77,13 +84,14 @@ Questo documento raccoglie i pilastri stabiliti e le domande ancora aperte. I ru
 - Il gioco è una corsa contro il tempo: i membri della crew non restano in attesa delle decisioni del giocatore e portano avanti le proprie azioni mentre l’Ingegnere agisce.
 - La struttura prevede un numero ancora da definire di snodi principali. Se entro quegli snodi il giocatore non ha scoperto la verità sull’omicidio, lo Scienziato vince.
 - Uno snodo principale è un evento che accade comunque. Prima che arrivi, il giocatore può compiere azioni per prepararsi.
-- Il primo snodo principale è la morte del Capitano. Il secondo è un'emergenza di collisione con un gruppo di asteroidi: il QC (*Quantic Computer*) ne avvisa la crew già al risveglio, ma l'evento si concretizza più avanti.
+- Il primo snodo principale è la morte del Capitano. Il secondo è un'emergenza di collisione con un gruppo di asteroidi: il QC (*Quantic Computer*) registra e rende consultabile l'avviso fin dal risveglio dell'Ingegnere, ma l'evento si concretizza più avanti.
 - Per evitare la collisione, il QC deve manovrare la nave e ha bisogno di energia. Il fungo deve essere affrontato nelle parti della nave necessarie alla manovra. Quali siano queste parti e come si intervenga restano da definire.
 - Dopo il secondo snodo la storia prosegue sulla nave principale. In base alla preparazione, la nave può superare il pericolo illesa oppure proseguire danneggiata; i danni concreti e i loro effetti restano da definire.
 - *The Alters* è un riferimento per la delega: affidare compiti a persone diverse dal protagonista e dipendere dal team deve essere insieme una forza e una fonte di preoccupazione.
 - *Mouthwashing* è un riferimento per l'atmosfera pesante, i sospetti tra membri della crew, le cose non dette e i dissapori presenti già prima della crisi che, dopo, sfociano in problemi concreti.
 - La scialuppa di salvataggio con criogenesi è esclusa dalla struttura attuale: l'autore vuole evitare questa specifica somiglianza percepita con *Mouthwashing*.
 - Il tempo avanza con determinate azioni che rappresentano scelte del giocatore. Ispezioni e dialoghi di approfondimento non fanno avanzare il tempo.
+- Il gameplay è pensato stanza per stanza: ogni stanza ha un terminale e una o più porte. Il terminale mostra la mappa della nave e la posizione rilevata degli altri membri e permette normalmente di interagire con il QC. Le regole di navigazione e gli oggetti sono raccolti in [ENVIRONMENT.md](ENVIRONMENT.md) e [PROPS.md](PROPS.md).
 - Il ritmo narrativo deve mantenere il giocatore in uno stato costante di ansia, con pochi momenti di respiro.
 - Gli eventi non si svolgono tutti nell’arco di un solo giorno: la storia si distende su una sequenza temporale più ampia, durante la quale la situazione si appesantisce progressivamente.
 
@@ -94,7 +102,7 @@ Questo documento raccoglie i pilastri stabiliti e le domande ancora aperte. I ru
 3. Lo Scienziato redige un rapporto sull’analisi. L’equipaggio entra in criogenesi mentre il computer quantistico della nave esegue il viaggio di ritorno.
 4. Il computer quantistico mantiene la nave alla piena potenza per evitare collisioni con oggetti spaziali e seguire traiettorie precise, riducendo molto la durata del viaggio. L’idea include il superamento della barriera degli anni luce, ma il meccanismo scientifico è ancora da ricercare e definire.
 5. Durante la criogenesi il parassita si attiva, assorbe energia dai reattori e invade la nave. Il calo di energia mette a rischio la missione e l’equipaggio.
-6. Il computer quantistico (QC) avvia un protocollo di emergenza e risveglia l’equipaggio dalla criogenesi in modo asincrono. Il Capitano si sveglia per primo, fa risvegliare lo Scienziato per l'avaria fungina e l'Ingegnere si sveglia per ultimo. Già al risveglio il QC segnala il futuro rischio di collisione con un gruppo di asteroidi.
+6. Il computer quantistico (QC) avvia un protocollo di emergenza e risveglia l’equipaggio dalla criogenesi in modo asincrono. Il Capitano si sveglia per primo, fa risvegliare lo Scienziato per l'avaria fungina e l'Ingegnere si sveglia per ultimo, con giorni di ritardo per il guasto della capsula. Il QC registra il futuro rischio di collisione con un gruppo di asteroidi; l'Ingegnere può leggerne l'avviso sul terminale.
 7. L’Ingegnere interviene nella sala motori per ripristinare l’energia. In quel momento lo Scienziato provoca la morte del Capitano nel centro di comando manomettendo l'aria con l'agente di decontaminazione: è il primo snodo principale. Circostanze e accessi precisi restano da definire.
 8. Il Capitano smette di rispondere al terminale di comunicazione. La sua ultima posizione nota è il centro di comando.
 9. Il centro di comando è isolato dal fungo e la crew non può verificare subito cosa sia accaduto al Capitano. Nasce una breve incertezza sulle priorità; il Primo Ufficiale assume il comando provvisorio e coordina una decisione sull'emergenza.
@@ -189,6 +197,14 @@ Questa sezione raccoglie principi utili da verificare nello sviluppo. Non stabil
 - GDC Vault, [Choice and Character: Lessons from Writing Multiplayer Narrative Games](https://gdcvault.com/play/1016833/Choice-and-Character-Lessons-from), Emily Short.
 - GDC Vault, [The Burden of Proof: Narrative Deduction Mechanics for Detective Games](https://www.gdcvault.com/play/1027723/The-Burden-of-Proof-Narrative).
 
+## Ricerca narrativa: voce dell'Ingegnere (spunti, non canonici)
+
+Non emerge un rapporto numerico affidabile tra il lavoro necessario per scrivere un protagonista che parla e uno silenzioso. Il silenzio riduce le battute da scrivere per l'Ingegnere, ma può richiedere più testo negli altri personaggi e nelle azioni per rendere credibili discussioni, sospetti e decisioni. Dare al protagonista battute esplicite facilita la caratterizzazione e il confronto con la crew; richiede di controllare che parole e tono corrispondano alla scelta fatta dal giocatore.
+
+**Decisione:** l'Ingegnere parla. Per la stesura, le comunicazioni tecniche ordinarie possono essere brevi e fisse. Accuse, promesse, menzogne e adesione o opposizione allo Scienziato richiedono scelte del giocatore, con intenzione e tono leggibili prima di selezionarle. Le scene possono ricongiungersi dopo la risposta, conservando le conseguenze nelle relazioni e nelle informazioni condivise. La quantità di dialogo e il tono preciso della sua voce restano da definire.
+
+Le fonti consultate sono raccolte nella sezione [Voce del protagonista e dialoghi interattivi](REFERENCES.md#voce-del-protagonista-e-dialoghi-interattivi).
+
 ## Struttura narrativa da esplorare: competenza e sospetto
 
 **Proposta, non canonica.** La stessa sequenza di crisi dovrebbe far crescere due cose insieme: il bisogno delle competenze dello Scienziato e il sospetto nei suoi confronti. La sua genialità si vede quando formula una previsione controllabile sul fungo, la verifica con risorse limitate e ne ricava un intervento utile alla nave. Può aver sottovalutato o non previsto l'invasione durante la criogenesi: essere un prodigio non richiede infallibilità.
@@ -208,7 +224,7 @@ Questa tabella descrive **funzioni narrative**, non fissa quattro snodi obbligat
 
 ### Proposta per la durata del secondo snodo
 
-Il QC potrebbe avvisare la crew al risveglio che il gruppo di asteroidi intersecherà la rotta della nave **fra circa quattro giorni**. Il primo snodo, la morte del Capitano, avviene poco dopo. Nei giorni successivi il giocatore prepara la nave e indaga, mentre il fungo continua a sottrarre energia. Una correzione anticipata richiederebbe meno energia; rimandare porta a una manovra più costosa e rischiosa. Il secondo snodo coincide con l'ultima finestra utile per evitare la collisione, prima dell'eventuale impatto. Durata, soglie ed esiti non sono ancora canonici.
+Il terminale potrebbe mostrare all'Ingegnere, se consultato, che il gruppo di asteroidi intersecherà la rotta della nave **fra circa quattro giorni**. Il primo snodo, la morte del Capitano, avviene poco dopo. Nei giorni successivi il giocatore prepara la nave e indaga, mentre il fungo continua a sottrarre energia. Una correzione anticipata richiederebbe meno energia; rimandare porta a una manovra più costosa e rischiosa. Il secondo snodo coincide con l'ultima finestra utile per evitare la collisione, prima dell'eventuale impatto. Durata, soglie ed esiti non sono ancora canonici.
 
 **Direzione confermata:** dopo il secondo snodo la storia resta sulla nave principale. Una buona preparazione può lasciarla illesa; una preparazione insufficiente può causare danni persistenti. Le conseguenze specifiche restano TBD. La scialuppa con criogenesi è esclusa dalla struttura attuale per evitare questa specifica somiglianza percepita con *Mouthwashing*, che resta comunque un riferimento per il progetto.
 

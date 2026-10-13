@@ -1,2 +1,13 @@
 [tools]
 "github:inkle/ink" = { version = "1.2.1", matching = "inklecate", filter_bins = "inklecate" }
+node = "24.16.0"
+
+[tasks.play]
+description = "Avvia la storia nel terminale con colori ANSI"
+dir = "{{ config_root }}"
+run = "sh scripts/play-color.sh"
+
+[tasks.export-web]
+description = "Esporta la storia come pagina web statica in dist/"
+dir = "{{ config_root }}"
+run = "sh scripts/export-web.sh"

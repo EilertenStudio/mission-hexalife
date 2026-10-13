@@ -69,6 +69,7 @@ Lo Scienziato conosce alcune proprietà del fungo ma ne sottostima la capacità 
 ### Nucleo confermato
 
 - È il protagonista e il punto di vista del giocatore.
+- È un protagonista parlante; nei dialoghi decisivi il giocatore sceglie la posizione che esprime.
 - Ripristina l'energia nella sala motori mentre il Capitano muore nel centro di comando.
 - Deve mantenere la nave operativa, sopravvivere e scoprire la verità entro gli snodi previsti.
 - Il giocatore può scegliere di opporsi allo Scienziato o di condividere la sua visione e aiutarlo. Motivazione e background dell'Ingegnere devono rendere credibili entrambe le decisioni.
@@ -159,6 +160,38 @@ La ripartizione automatica è stata scelta come passato dell'Ingegnere. Le altre
 - **Competenza narrativa:** l'analisi della morte può smontare l'ipotesi del fungo. L'Ingegnere può raggiungere la stessa conclusione da una traccia di manomissione nei sistemi; l'ordine delle scoperte può cambiare.
 - **Conflitto possibile:** proteggere la riservatezza di informazioni personali o condividerle quando la sicurezza collettiva è in gioco.
 - **Pressione possibile:** deve assistere persone che potrebbero mentire, nascondere sintomi o essere responsabili dell'omicidio. Per rendere il personaggio autonomo occorre definirne un obiettivo proprio, oltre al sostegno all'indagine.
+
+## Laboratorio delle voci (proposta da valutare)
+
+Le personalità non sono ancora fissate: queste sono **direzioni di scrittura**, non nuovi fatti canonici. La ricerca in [REFERENCES.md](REFERENCES.md#voce-del-protagonista-e-dialoghi-interattivi) suggerisce di dare a ogni interlocutore un obiettivo nella scena, un'informazione che trattiene e una strategia riconoscibile. Un lessico diverso, da solo, non basta.
+
+| Ruolo | Cosa cerca nelle prime scene | Cosa evita di dire | Strategia e voce proposta |
+| --- | --- | --- | --- |
+| Ingegnere | Riprendere controllo sul proprio corpo e sui sistemi della nave; capire quanto può fidarsi degli altri. | La propria vulnerabilità dopo il risveglio; più avanti, ciò che sa della distribuzione terrestre. | Frasi concrete, verifica dati e responsabilità operative. Quando è sotto pressione può ridurre una questione morale a un problema tecnico; il giocatore sceglie se ammettere quel limite o usarlo per proteggersi. |
+| Medico | Valutare se l'Ingegnere può lavorare e impedire che un'emergenza cancelli le prove cliniche. | Quanto teme che il risveglio tardivo abbia lasciato danni; quali conclusioni premature sta considerando. | Domande precise, osservazioni sul corpo, richieste di consenso che possono diventare ordini quando la salute è a rischio. Contraddice l'Ingegnere quando minimizza i sintomi. |
+| Primo Ufficiale | Ottenere decisioni eseguibili e mantenere la collaborazione mentre il Capitano non risponde. | Quanto sia incerta la sua autorità e di chi si fidi meno. | Assegna compiti, chiede stime e scadenze, interrompe le speculazioni quando serve una scelta. Può usare la procedura per contenere la paura, senza sembrare infallibile. |
+| Scienziato | Procurarsi strumenti e tempo per studiare il fungo, salvando la nave e conservando il controllo delle informazioni. | Cosa aveva già osservato prima della criogenesi e quanto l'invasione l'abbia sorpreso. | Risposte verificabili ma selettive: offre una previsione utile, poi delimita ciò che è disposto a spiegare. Se viene contestato, torna ai dati o alla necessità di agire. La precisione è una difesa, non una prova di sincerità. |
+| Capitano | Presente soprattutto attraverso ordini e registrazioni: far eseguire la missione e mantenere la crew al lavoro. | I sospetti sullo Scienziato, che non condivide con l'Ingegnere nell'ordine iniziale. | Ordini tecnici brevi. Una frase personale in un documento futuro avrebbe peso proprio perché rara; motivazione e stile definitivo restano aperti. |
+
+**Applicazione alle scene:** prima di scrivere una conversazione, annotare cosa vuole ogni persona adesso, quale dato controlla, quale richiesta rivolge all'altra e cosa cambia dopo la risposta. Poi togliere le battute che ripetono informazioni già visibili sul terminale. Le scelte dialogiche dell'Ingegnere dovrebbero indicare al giocatore l'intenzione; la formulazione pronunciata può essere più indiretta, purché rispetti quell'intenzione. Se una scelta cambia fiducia o accesso a informazioni, la reazione deve riemergere più tardi.
+
+**Diagnosi della prima prova Ink:** il Medico spiega il controllo, il Primo Ufficiale riassume due procedure e lo Scienziato descrive il fungo. Queste informazioni servono, ma le battute quasi non interferiscono con gli obiettivi reciproci. Il primo intervento utile è far sì che il Medico chieda qualcosa che l'Ingegnere preferirebbe rimandare e che la sua risposta cambi il tono del loro rapporto; solo dopo ha senso rifinire il lessico.
+
+### Sorteggio per le prove di dialogo
+
+Questi tratti sono **provvisori e non canonici**. Per ogni ruolo sono stati preparati due pool binari: una reazione alla pressione e un modo di parlare. Una moneta indipendente per pool sceglie fra **testa (0)** e **croce (1)**. I dieci lanci hanno dato, nell'ordine della tabella: `1 1 1 1 0 1 0 0 0 0`. I tratti scelti verranno messi alla prova nelle scene; si conserveranno solo quelli che rendono più chiari conflitto e personaggio.
+
+| Ruolo | Pressione: testa / croce | Voce: testa / croce | Esito provvisorio |
+| --- | --- | --- | --- |
+| Ingegnere | Controlla i dati prima di agire / Cerca di riprendere controllo agendo subito | Frasi tecniche essenziali / Ironia asciutta che copre l'ansia | **Croce, croce:** agisce subito; ironia asciutta. |
+| Medico | Protegge anche invadendo lo spazio altrui / Rispetta l'autonomia finché il rischio non è immediato | Domande rapide e incalzanti / Pausa prima del giudizio, poi formula un'osservazione precisa | **Croce, croce:** lascia scegliere finché può; osserva prima di giudicare. |
+| Primo Ufficiale | Si aggrappa alla procedura / Cerca consenso prima di dare ordini | Assegna compiti con scadenze / Spiega i rischi prima di impartire un ordine | **Testa, croce:** procedura come appiglio; espone i rischi. |
+| Scienziato | Se contestato, propone un esperimento / Se contestato, rivendica la propria autorità | Dichiara il limite della previsione / Spiega con analogie | **Testa, testa:** risponde con una prova; dichiara i limiti del risultato senza rivelare tutto ciò che sa. |
+| Capitano | Tiene le preoccupazioni personali fuori dagli ordini / Controlla individualmente come regge la crew | Ordini telegrafici / Ordini con richiesta di conferma | **Testa, testa:** distanza personale; ordini telegrafici. |
+
+**Criterio di selezione dopo la prova:** un tratto vale la pena di fissare se cambia una battuta, una richiesta o una decisione osservabile; se interagisce con un altro personaggio; e se resta plausibile anche quando la situazione peggiora. Evitare che diventi un intercalare ripetuto o che cancelli le scelte morali del giocatore. Il sorteggio non decide motivazioni, colpe o fatti della trama.
+
+La prima prova dei tratti è nei dialoghi di [story.ink](engines/ink/story.ink): l'Ingegnere reagisce al proprio risveglio e al silenzio del Capitano, il Medico valuta il rischio senza imporre subito una visita, il Primo Ufficiale si appoggia alla procedura, lo Scienziato mostra un comportamento misurabile del fungo e il Capitano resta presente in un ordine tecnico breve. Il testo è materiale da valutare, non conferma dei tratti.
 
 ## Riferimenti per costruire lo Scienziato
 

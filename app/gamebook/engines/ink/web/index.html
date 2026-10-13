@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Missione Hexalife</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      background: #101820;
+      color: #87afd7;
+      font: 1.1rem/1.65 system-ui, sans-serif;
+      --narrative: #87afd7;
+      --qc: #00ffff;
+      --alarm: #ff4444;
+      --status: #8a8a8a;
+      --free: #5fff00;
+      --cost: #ffd75f;
+    }
+    * { box-sizing: border-box; }
+    body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.2rem 5rem; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+    h1 { color: #e6edf3; font-size: 1.25rem; letter-spacing: .08em; margin: 0; text-transform: uppercase; }
+    .checkpoint-bar { border: 1px solid #34404b; border-radius: .35rem; margin-bottom: 2rem; padding: .8rem 1rem; }
+    .checkpoint-bar form { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+    .checkpoint-bar label { color: #d9e3e9; }
+    .checkpoint-bar select, .checkpoint-bar button { background: #1b2933; border: 1px solid #667885; border-radius: .35rem; color: #e6edf3; font: inherit; padding: .35rem .6rem; }
+    .checkpoint-bar p { color: #8a8a8a; font-size: .85rem; margin: .5rem 0 0; }
+    p { margin: 0 0 1.1rem; white-space: pre-wrap; }
+    .scene { margin-bottom: 2.25rem; }
+    .scene + .scene { border-top: 1px solid #34404b; padding-top: 2rem; }
+    .qc { color: var(--qc); }
+    .alarm { color: var(--alarm); font-weight: 700; }
+    .status { color: var(--status); }
+    .free { color: var(--free); }
+    .cost { color: var(--cost); }
+    .captain { color: #ff8700; }
+    .officer { color: #ff87d7; }
+    .doctor { color: #5fd7af; }
+    .scientist { color: #af87ff; }
+    .engineer { color: #ffffd7; }
+    .choices { display: grid; gap: .7rem; margin: 1.5rem 0 0; }
+    button { font: inherit; cursor: pointer; }
+    .choices button { background: #1b2933; border: 1px solid #445662; border-radius: .35rem; padding: .7rem 1rem; text-align: left; }
+    .choices button:hover, .choices button:focus-visible { background: #29404d; outline: 2px solid currentColor; outline-offset: 2px; }
+    #restart { color: #d9e3e9; background: transparent; border: 1px solid #667885; border-radius: .35rem; padding: .3rem .7rem; white-space: nowrap; }
+    #restart:hover, #restart:focus-visible { background: #29404d; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Missione Hexalife</h1>
+    <button id="restart" type="button">Dall'inizio</button>
+  </header>
+  <nav class="checkpoint-bar" aria-label="Checkpoint di sviluppo">
+    <form id="checkpoint-form">
+      <label for="checkpoint">Inizia dalla scena</label>
+      <select id="checkpoint" name="checkpoint"></select>
+      <button type="submit">Vai</button>
+    </form>
+    <p>Il salto avvia una nuova partita con uno stato preparato per la scena.</p>
+  </nav>
+  <main id="story" aria-label="Storia"></main>
+  <script src="ink.js"></script>
+  <script src="story.js"></script>
+  <script src="checkpoints.js"></script>
+  <script>
+    const storyRoot = document.getElementById("story");
+    const checkpointSelect = document.getElementById("checkpoint");
+    const sceneCheckpoints = window.hexalifeCheckpoints;
+    const roleColors = {
+      capitano: "captain",
+      "primo ufficiale": "officer",
+      ufficiale: "officer",
+      medico: "doctor",
+      scienziato: "scientist",
+      ingegnere: "engineer",
+    };
+    const roleReferences = /(\b(?:Primo Ufficiale|Capitano|Ufficiale|Medico|Scienziato|Ingegnere)\b)/gi;
+    const uiColors = {
+      qc: "qc",
+      allarme: "alarm",
+      stato: "status",
+      scelta_gratuita: "free",
+      scelta_turno: "cost",
+    };
+    let story;
+
+    function appendRoles(target, text) {
+      for (const part of text.split(roleReferences)) {
+        const color = roleColors[part.toLowerCase()];
+        if (color) {
+          const span = document.createElement("span");
+          span.className = color;
+          span.textContent = part;
+          target.append(span);
+        } else {
+          target.append(document.createTextNode(part));
+        }
+      }
+    }
+
+    function renderLine(text, tags, scene) {
+      const trimmed = text.trimEnd();
+      if (!trimmed) return;
+      const paragraph = document.createElement("p");
+      const character = tags.find(tag => tag.startsWith("char:"))?.slice(5);
+      if (character && roleColors[character]) {
+        for (const part of trimmed.split(/(«[^»]*»)/g)) {
+          if (part.startsWith("«")) {
+            const speech = document.createElement("span");
+            speech.className = roleColors[character];
+            appendRoles(speech, part);
+            paragraph.append(speech);
+          } else {
+            appendRoles(paragraph, part);
+          }
+        }
+      } else {
+        const ui = tags.find(tag => tag.startsWith("ui:"))?.slice(3);
+        paragraph.className = uiColors[ui] || "";
+        appendRoles(paragraph, trimmed);
+      }
+      scene.append(paragraph);
+    }
+
+    function continueStory() {
+      const scene = document.createElement("section");
+      scene.className = "scene";
+      storyRoot.append(scene);
+      while (story.canContinue) {
+        renderLine(story.Continue(), story.currentTags, scene);
+      }
+      if (story.currentChoices.length) {
+        const choices = document.createElement("div");
+        choices.className = "choices";
+        choices.setAttribute("aria-label", "Scelte");
+        story.currentChoices.forEach((choice, index) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = /\b(?:un|due|tre|\d+)\s+turn[oi]\b/i.test(choice.text) ? "cost" : "free";
+          appendRoles(button, choice.text.trim());
+          button.addEventListener("click", () => {
+            choices.remove();
+            story.ChooseChoiceIndex(index);
+            continueStory();
+          });
+          choices.append(button);
+        });
+        scene.append(choices);
+        choices.querySelector("button").focus({ preventScroll: true });
+      }
+      if (scene !== storyRoot.firstElementChild) scene.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function loadCheckpoint(id) {
+      const checkpoint = sceneCheckpoints.find(item => item.id === id) || sceneCheckpoints[0];
+      story = new inkjs.Story(window.storyContent);
+      for (const [name, value] of Object.entries(checkpoint.setup)) {
+        story.variablesState.$(name, value);
+      }
+      if (checkpoint.path) story.ChoosePathString(checkpoint.path);
+      checkpointSelect.value = checkpoint.id;
+      storyRoot.replaceChildren();
+      continueStory();
+    }
+
+    function navigate(id) {
+      if (window.location.hash.slice(1) === id) {
+        loadCheckpoint(id);
+      } else {
+        window.location.hash = id;
+      }
+    }
+
+    for (const checkpoint of sceneCheckpoints) {
+      checkpointSelect.add(new Option(checkpoint.label, checkpoint.id));
+    }
+    document.getElementById("checkpoint-form").addEventListener("submit", event => {
+      event.preventDefault();
+      navigate(checkpointSelect.value);
+    });
+    document.getElementById("restart").addEventListener("click", () => navigate("inizio"));
+    window.addEventListener("hashchange", () => loadCheckpoint(window.location.hash.slice(1)));
+    loadCheckpoint(window.location.hash.slice(1));
+  </script>
+</body>
+</html>

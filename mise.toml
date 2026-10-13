@@ -2,6 +2,13 @@
 monorepo_root = true
 
 [monorepo]
-config_roots = [
-  ""
+config_roots = [""]
+
+[tasks."gamebook"]
+usage = '''
+arg "[args]" var=#true
+'''
+run = [
+  "mise -C app/gamebook {{ (usage.args | join(sep=' ')) if usage.args else 'tasks --all' }}"
 ]
+quiet = true

@@ -1,0 +1,9 @@
+{
+  "name": "mission-hexalife-ink-cli",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Renderer CLI colorato per la storia Ink",
+  "dependencies": {
+    "inkjs": "2.4.0"
+  }
+}
