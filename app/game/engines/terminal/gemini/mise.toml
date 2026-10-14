@@ -1,0 +1,11 @@
+[tools]
+rust = "stable"
+
+[env]
+CARGO_HOME = "{{ config_root }}/../../../../../.local/cargo"
+RUSTUP_HOME = "{{ config_root }}/../../../../../.local/rustup"
+
+[tasks.play]
+description = "Avvia la stanza 3D con Gemini Engine"
+dir = "{{ config_root }}"
+run = "cargo run --release --locked"
