@@ -10,3 +10,13 @@ linux-x64 = { bin_path = "prebuilt/linux-x86_64" }
 macos-x64 = { bin_path = "prebuilt/macos-universal" }
 macos-arm64 = { bin_path = "prebuilt/macos-universal" }
 windows-x64 = { bin_path = "prebuilt/win32" }
+
+[tasks.play]
+description = "Avvia la prima stanza nel debugger Dialog"
+dir = "{{ config_root }}"
+run = "sh scripts/play.sh"
+
+[tasks.build]
+description = "Compila la storia Dialog in formato Å-machine"
+dir = "{{ config_root }}"
+run = "sh scripts/build.sh"

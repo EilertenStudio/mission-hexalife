@@ -56,15 +56,15 @@ Giallo: scelta che consuma un turno. # ui:scelta_turno
 * [Iniziare la storia.] -> risveglio
 
 === risveglio ===
-Un suono lontano si fa strada nel torpore del criosonno. Apri gli occhi. Una luce rossa pulsa oltre il vetro della capsula; la sirena la segue a ogni intervallo.
+Il suono arriva prima dei pensieri. Apri gli occhi: una luce rossa pulsa oltre il vetro della capsula, e la sirena le risponde a ogni intervallo.
 
-Spingi il coperchio, ma non si muove. Cerchi di ricordare la procedura d'emergenza. La leva rossa è sopra la tua testa. La afferri, tiri con entrambe le mani e il vetro si solleva. L'aria pressurizzata sfugge dalle bocchette laterali.
+Spingi il coperchio. Non si muove. La leva rossa è sopra la tua testa. La afferri e tiri con entrambe le mani. Il vetro si solleva di colpo; l'aria pressurizzata sibila dalle bocchette laterali.
 
-Ti sporgi fuori. La stanza gira; le gambe cedono e cadi sul pavimento.
+Ti sporgi. La stanza gira e le gambe cedono. Il pavimento ti urta una spalla.
 
-Ti rimetti seduto sul pavimento finché la stanza smette di girare. Hai la gola secca e le dita lente. La guarnizione della tua capsula è annerita; le altre quattro sono vuote. Nella stanza non c'è nessuno.
+Resti seduto finché la stanza rallenta. Hai la gola secca; le dita non chiudono bene. La guarnizione della capsula è annerita. Le altre capsule sono vuote. Non c'è nessuno.
 
-Il terminale accanto alla porta lampeggia: un messaggio in attesa. Sopra la maniglia pulsa la scritta «SETTORE CRIOGENICO ISOLATO». L'accesso al corridoio centrale è bloccato.
+Un terminale lampeggia accanto alla porta: messaggio in attesa. Sopra la maniglia, una scritta rossa: «SETTORE CRIOGENICO ISOLATO». La porta è bloccata.
 -> sala_criogenica
 
 === sala_criogenica ===
@@ -76,20 +76,20 @@ Il terminale accanto alla porta lampeggia: un messaggio in attesa. Sopra la mani
 * [Provare la porta del corridoio.] -> porta_crio
 
 === porta_crio ===
-La maniglia non si muove. La porta è bloccata.
+Tiri la maniglia. La porta non cede. Sul pannello, «SETTORE CRIOGENICO ISOLATO» resta acceso.
 -> sala_criogenica
 
 === capsula_crio ===
 ~ visto_capsula_crio = true
-Un fermo del coperchio è deformato dal calore. La spia di manutenzione lampeggia, ma il piccolo display della capsula non mostra la cronologia del guasto. Ti appoggi al bordo finché il tremore alle mani passa.
+Un fermo del coperchio è deformato. La spia di manutenzione lampeggia; il display non mostra la cronologia. Appoggi una mano al bordo finché le dita smettono di tremare.
 -> sala_criogenica
 
 === terminale_crio ===
 { not visto_terminale_crio:
     ~ visto_terminale_crio = true
-    Il terminale apre il messaggio in attesa. Leggi il testo firmato dal Capitano: «Ingegnere. Sala motori. Alimentazione stabile al QC. Impianti vitali attivi.» # char:capitano
+    Il terminale apre il messaggio in attesa. Parte una registrazione audio. La voce del Capitano arriva coperta da statica: «Ingegnere. Sala motori. Alimentazione stabile al QC. Impianti vitali attivi.» # char:capitano
 
-    La registrazione termina. Non dice perché tu sia stato svegliato per ultimo.
+    La registrazione finisce senza spiegazioni. Sullo schermo restano tre richieste: mappa, allarme del QC, ritorno alla sala.
 }
 * {not visto_mappa_crio} [Aprire la mappa e cercare gli altri membri della crew.] -> mappa_crio
 * {not visto_qc_crio} [Interrogare il QC sull'allarme.] -> allarme_crio
@@ -97,14 +97,16 @@ Un fermo del coperchio è deformato dal calore. La spia di manutenzione lampeggi
 
 === mappa_crio ===
 ~ visto_mappa_crio = true
-Sulla mappa, il Capitano risulta nel centro di comando. Il Primo Ufficiale è nel corridoio centrale, il Medico è in transito dall'infermeria verso la sala criogenica, lo Scienziato è vicino al laboratorio. Sono posizioni rilevate dai terminali; da qui non puoi vedere nessuno di loro.
+La mappa localizza il Capitano nel centro di comando, il Primo Ufficiale nel corridoio, il Medico in transito verso la sala criogenica e lo Scienziato vicino al laboratorio. Sono segnali dei terminali. Da qui non puoi vedere nessuno di loro.
 -> terminale_crio
 
 === allarme_crio ===
 ~ visto_qc_crio = true
-Sul display, il QC scrive: «Energia dei reattori in calo. Ritorno interrotto. Incontro con un gruppo di asteroidi previsto fra circa tre giorni, secondo il margine attuale.» # ui:allarme
+«QC, leggi l'allarme attivo.» # char:ingegnere
 
-Il QC segnala che la previsione dipende dall'energia disponibile per calcolare e correggere la rotta.
+Sul display compare la risposta: «Energia dei reattori in calo. Ritorno interrotto. Incontro con un gruppo di asteroidi previsto fra circa tre giorni, secondo il margine attuale.» # ui:allarme
+
+La previsione dipende dall'energia disponibile per calcolare e correggere la rotta. Il messaggio non dice se la collisione sia inevitabile.
 -> terminale_crio
 
 === riavvio_crio ===
