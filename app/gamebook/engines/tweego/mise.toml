@@ -1,2 +1,7 @@
 [tools]
 "github:tmedwards/tweego" = { version = "2.1.1", filter_bins = "tweego", rename_exe = "tweego" }
+
+[tasks.build]
+description = "Compila la prima stanza Tweego in HTML locale"
+dir = "{{ config_root }}"
+run = "sh scripts/build.sh"

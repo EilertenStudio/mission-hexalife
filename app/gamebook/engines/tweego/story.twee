@@ -1,0 +1,184 @@
+:: StoryTitle
+Missione Hexalife — Risveglio
+
+:: StoryData
+{
+	"ifid": "A10D37B2-D17E-4078-9CFD-83444EE28115"
+}
+
+:: StoryStylesheet [stylesheet]
+body {
+	background: #101820;
+	color: #87afd7;
+	font: 1.15rem/1.7 system-ui, sans-serif;
+}
+
+#passages {
+	max-width: 48rem;
+}
+
+a.link-internal {
+	color: #00d787;
+	font-weight: 700;
+}
+
+a.link-internal:hover,
+a.link-internal:focus {
+	color: #afffd7;
+}
+
+.alarm {
+	color: #ff5f5f;
+	font-weight: 700;
+}
+
+.status {
+	color: #8a8a8a;
+	font-style: italic;
+}
+
+.qc {
+	color: #00d7ff;
+	font-weight: 700;
+}
+
+.captain {
+	color: #ff8700;
+}
+
+.officer {
+	color: #ff87d7;
+}
+
+.doctor {
+	color: #5fd7af;
+}
+
+.scientist {
+	color: #af87ff;
+}
+
+.engineer {
+	color: #ffffd7;
+}
+
+.actions {
+	margin-top: 1.5rem;
+	padding-top: 1rem;
+	border-top: 1px solid #40505f;
+}
+
+.actions a {
+	margin-right: 1.25rem;
+}
+
+:: StoryInit
+<<set $capsuleSeen = false>>
+<<set $mapSeen = false>>
+<<set $qcSeen = false>>
+<<set $rebooted = false>>
+
+:: Start
+<<goto "Risveglio">>
+
+:: Risveglio
+Il suono arriva prima dei pensieri. Apro gli occhi: una luce rossa pulsa oltre il vetro della capsula. La sirena le risponde a ogni intervallo.
+
+Spingo il coperchio. Non si muove. La leva rossa è sopra la mia testa. La afferro e tiro con entrambe le mani. Il vetro si solleva di colpo; l'aria pressurizzata sibila dalle bocchette laterali.
+
+Mi sporgo. La stanza gira e le gambe cedono. Il pavimento mi urta una spalla. Resto seduto finché la stanza rallenta. Ho la gola secca; le dita non si chiudono bene.
+
+La guarnizione della [[capsula->LookCapsule]] è annerita. Le altre capsule sono vuote. Un [[terminale->LookTerminal]] lampeggia accanto alla [[porta->LookDoor]]: messaggio in attesa. Sopra la maniglia, una scritta rossa: <span class="alarm">«SETTORE CRIOGENICO ISOLATO»</span>.
+
+<p class="alarm">La sirena copre ogni altro suono.</p>
+
+<div class="actions">
+<strong>Azioni</strong><br>
+Gli oggetti verdi sono cliccabili. Ispezionarli equivale a <code>look &lt;soggetto&gt;</code>; le azioni operative sono indicate come <code>use &lt;soggetto&gt;</code>.
+</div>
+
+:: LookCapsule
+<<set $capsuleSeen = true>>
+Un fermo del coperchio è deformato. La spia di manutenzione lampeggia; il display non mostra la cronologia. Appoggio una mano al bordo finché le dita smettono di tremare.
+
+<<rebootIfReady>>
+
+<div class="actions">[[look capsula->Risveglio]] · [[use capsula->UseCapsule]]</div>
+
+:: UseCapsule
+Premo il comando di diagnostica sulla capsula. Il display resta spento; il danno sembra meccanico, non un guasto del pannello.
+
+<div class="actions">[[look capsula->LookCapsule]] · [[torna alla stanza->Risveglio]]</div>
+
+:: LookTerminal
+Il messaggio è pronto, ma la registrazione non è partita. Posso [[use terminale->UseTerminal]].
+
+Sul display sono disponibili anche la mappa della nave e il pannello del [[QC->LookQC]].
+
+<div class="actions">[[look terminale->LookTerminal]] · [[torna alla stanza->Risveglio]]</div>
+
+:: UseTerminal
+La registrazione parte. La voce del <span class="captain">Capitano</span> arriva coperta da statica: «Ingegnere. Sala motori. Alimentazione stabile al QC. Impianti vitali attivi.»
+
+La registrazione finisce senza spiegazioni. Sul terminale posso consultare la [[mappa->LookMap]] o il pannello del [[QC->LookQC]]: [[use QC->UseQC]].
+
+<div class="actions">[[look terminale->LookTerminal]] · [[torna alla stanza->Risveglio]]</div>
+
+:: LookMap
+La mappa è schematica. I segnali della crew non sono visibili finché non interrogo il terminale. Posso [[use mappa->UseMap]] per richiederli.
+
+<div class="actions">[[look mappa->LookMap]] · [[torna al terminale->UseTerminal]]</div>
+
+:: UseMap
+<<set $mapSeen = true>>
+<p class="status">La mappa localizza il <span class="captain">Capitano</span> nel centro di comando, il <span class="officer">Primo Ufficiale</span> nel corridoio, il <span class="doctor">Medico</span> in transito verso la sala criogenica e lo <span class="scientist">Scienziato</span> vicino al laboratorio. Sono segnali dei terminali: da qui non posso vedere nessuno di loro.</p>
+
+<<rebootIfReady>>
+
+<div class="actions">[[use QC->UseQC]] · [[torna al terminale->UseTerminal]]</div>
+
+:: LookQC
+Il pannello del <span class="qc">QC</span> è in attesa di una richiesta. Posso [[use QC->UseQC]] per leggere l'allarme attivo.
+
+<div class="actions">[[torna al terminale->UseTerminal]]</div>
+
+:: UseQC
+<<set $qcSeen = true>>
+«<span class="qc">QC</span>, leggi l'allarme attivo.»
+
+<p class="alarm">Sul display compare la risposta: «Energia dei reattori in calo. Ritorno interrotto. Incontro con un gruppo di asteroidi previsto fra circa tre giorni, secondo il margine attuale.»</p>
+
+<p><span class="qc">La previsione dipende dall'energia disponibile per calcolare e correggere la rotta.</span> Il messaggio non dice se la collisione sia inevitabile.</p>
+
+<<rebootIfReady>>
+
+<div class="actions">[[look porta->LookDoor]] · [[use porta->UseDoor]] · [[torna al terminale->UseTerminal]]</div>
+
+:: LookDoor
+La porta è bloccata. Sul pannello, <span class="alarm">«SETTORE CRIOGENICO ISOLATO»</span> resta acceso.
+
+<div class="actions">[[use porta->UseDoor]] · [[torna alla stanza->Risveglio]]</div>
+
+:: UseDoor
+<<if $rebooted>>
+La porta si apre. Oltre la soglia c'è il corridoio; non vedo ancora nessuno.
+
+<p class="status">La prova si ferma qui, prima dell'incontro con il Medico.</p>
+<<else>>
+Tiro la maniglia. La porta non cede. Sul pannello, <span class="alarm">«SETTORE CRIOGENICO ISOLATO»</span> resta acceso.
+<</if>>
+
+<div class="actions">[[torna alla stanza->Risveglio]]</div>
+
+:: Widgets [widget]
+<<widget "rebootIfReady">>
+<<if $capsuleSeen && $mapSeen && $qcSeen && !$rebooted>>
+<<set $rebooted = true>>
+
+<p class="alarm">Il terminale si spegne di colpo. Un istante dopo si spengono anche la luce rossa e la sirena.</p>
+
+<p>Nel buio sento soltanto il mio respiro e un clic dietro la parete. La riserva locale si riavvia. Le luci bianche tornano una alla volta; sul terminale compare <span class="status">«ALIMENTAZIONE AUSILIARIA ATTIVA»</span>. La spia della porta passa al verde. I reattori restano in avaria.</p>
+
+<p class="status">La porta è sbloccata. Posso tentare di aprirla.</p>
+<</if>>
+<</widget>>
