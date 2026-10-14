@@ -28,6 +28,13 @@ eventi mouse per usarli. Nel menu della camera,
 `Alt+sinistro` orbita, `Ctrl+Alt+sinistro` fa pan e `Alt+destro` regola lo zoom.
 `Esc` chiude il menu; `q` o `Esc` escono dalla schermata principale.
 
+La configurazione desiderata dei menu condivisi è in
+[`app/game/src/scenes/room/menus.json`](../../../src/scenes/room/menus.json).
+Questa implementazione offre il menu camera con orbita, pan e zoom, ma non il
+volo in prima persona né il menu di debug sistema; il limite resta fissato a 6
+FPS. Non sono implementati neppure i gesti alternativi di pan con il tasto
+centrale e zoom con la rotella definiti nello stato condiviso.
+
 ## Differenze rispetto allo stato desiderato
 
 Gemini Engine proietta mesh 3D nel terminale e supporta modalità wireframe,

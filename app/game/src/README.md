@@ -1,8 +1,8 @@
 # Stato desiderato delle scene
 
-Questa cartella contiene la descrizione indipendente dal motore delle scene di
-gioco. I progetti sotto `app/game/engines/` traducono questi dati nelle API e
-nelle capacità di ciascun engine.
+Questa cartella contiene lo stato desiderato, indipendente dal motore, delle
+scene di gioco. I progetti sotto `app/game/engines/` traducono questi dati
+nell'API e nelle capacità di ciascun engine.
 
 ## Convenzioni
 
@@ -13,7 +13,13 @@ nelle capacità di ciascun engine.
   l'asse verticale è Y e i colori sono RGB interi nell'intervallo 0–255.
 - `geometry.json` descrive le superfici, gli oggetti visibili e i materiali;
   `lighting.json` descrive luce ambientale, sorgenti e animazioni; `camera.json`
-  descrive la vista iniziale e i parametri di proiezione.
+  descrive la vista iniziale e i parametri di proiezione; `menus.json` definisce
+  contenuto, impostazioni e interazioni desiderate per i menu condivisi di
+  sistema e camera.
+- I menu di sistema descrivono impostazioni runtime come il limite degli FPS;
+  il menu camera descrive solo modalità e navigazione della camera. Gli engine
+  possono adattare il layout alle proprie API, ma devono mantenere le azioni e
+  i comandi definiti; le differenze non supportate vanno documentate.
 - I valori sono lo stato voluto della scena, non una promessa che ogni engine
   supporti tutte le caratteristiche. Le differenze e le approssimazioni degli
   engine vanno indicate nella documentazione dell'engine.

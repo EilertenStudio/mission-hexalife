@@ -31,6 +31,14 @@ sistema, dove `[` e `]` modificano il limite degli FPS (predefinito 6). `q`
 chiude il gioco dalla schermata principale, mentre `Esc` chiude un menu o esce
 dalla schermata principale.
 
+Contenuto, impostazioni e interazioni desiderate dei menu sono definiti in
+[`app/game/src/scenes/room/menus.json`](../../../src/scenes/room/menus.json).
+Il volo usa `Space`/`X` per salire e scendere, una delle coppie di tasti
+verticali previste nello stato condiviso.
+I gesti aggiuntivi `middle` per il pan e rotella per lo zoom presenti nella
+configurazione condivisa non sono implementati in questa versione. Il tasto
+`Shift` non accelera il volo.
+
 La resa non è identica alla scena Arcade: xRenderEngine 0.2.0 offre luci
 puntiformi e direzionali, ma non una luce spot con cono né materiali
 trasparenti. La lampada resta al centro e una luce puntiforme calda oscilla

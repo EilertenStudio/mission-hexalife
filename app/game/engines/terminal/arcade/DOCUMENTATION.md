@@ -21,6 +21,10 @@ modalità di input e il ripristino dello schermo all'uscita.
 Il ciclo di gioco, le animazioni, i comandi e le regole restano responsabilità
 dell'applicazione. In questo esempio il codice importa `ascii-arcade/engine` e
 `ascii-arcade/platform` direttamente; non avvia la CLI completa di Arcade.
+La configurazione desiderata dei menu condivisi di debug e camera è definita
+in [`app/game/src/scenes/room/menus.json`](../../../src/scenes/room/menus.json).
+`Esc` chiude il menu attivo; `q` o `Esc` escono solo quando entrambi i menu
+sono chiusi.
 
 ## Riferimenti upstream
 

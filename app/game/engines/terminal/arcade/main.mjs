@@ -261,14 +261,14 @@ function draw() {
         'DEBUG SISTEMA  [D: chiudi]',
         `FPS EFFETTIVI: ${measuredFps.toFixed(1)}   LIMITE: ${targetFps}`,
         `TERMINALE: ${cols}x${rows}   BUFFER RENDER: ${width * supersampling}x${height}`,
-        '-: diminuisci   + o =: aumenta FPS (1-30)',
+        '- o [: diminuisci   +, = o ]: aumenta FPS (1-30)',
       ]
     : cameraMenuOpen
       ? [
-          `${cameraDragMode === 'fly' ? 'CAMERA / VOLO' : 'CAMERA / PRONTA AL VOLO'}  [C o Q: chiudi menu]`,
+          `${cameraDragMode === 'fly' ? 'CAMERA / VOLO' : 'CAMERA / PRONTA AL VOLO'}  [C/Esc: chiudi menu]`,
           'Ctrl+Alt+sinistro pan  Alt+sinistro orbita  Alt+destro zoom',
           'centrale pan  rotella zoom',
-          `Tieni destro: mouse guarda; WASD/EQ volo${kittyKeyboardSeen ? ' continuo' : ' (rilascio stimato)'}; Shift accelera`,
+          `Tieni destro: mouse guarda; WASD + E/Q o Space/X${kittyKeyboardSeen ? ' continuo' : ' (rilascio stimato)'}; Shift accelera`,
         ]
       : ['ROOM 3D  C: camera  D: debug sistema  Shift+R: ricarica  q: esci'];
   light.direction = normalize3({ x: Math.sin(angle), y: -Math.cos(angle), z: 0 });
@@ -376,6 +376,8 @@ const flightDirections = {
   d: [0, 1, 0],
   e: [0, 0, 1],
   q: [0, 0, -1],
+  space: [0, 0, 1],
+  x: [0, 0, -1],
 };
 
 function updateFlightMovement() {
@@ -464,16 +466,26 @@ function onKey(event) {
     return;
   }
 
-  if (name === 'escape' || (name === 'q' && !cameraMenuOpen) || (name === 'c' && ctrl)) close();
-  if (name === 'r' && shift) restart();
-
-  if (cameraMenuOpen && name === 'q' && cameraDragMode !== 'fly' && !ctrl && !meta) {
-    cameraMenuOpen = false;
-    cameraDragMode = null;
-    lastMousePosition = null;
-    draw();
+  if (name === 'escape') {
+    if (cameraMenuOpen) {
+      if (cameraDragMode === 'fly') stopFlight();
+      cameraMenuOpen = false;
+      cameraDragMode = null;
+      lastMousePosition = null;
+      draw();
+      return;
+    }
+    if (debugMenuOpen) {
+      debugMenuOpen = false;
+      draw();
+      return;
+    }
+    close();
     return;
   }
+  if ((name === 'q' && !cameraMenuOpen && !debugMenuOpen) || (name === 'c' && ctrl)) close();
+  if (name === 'r' && shift) restart();
+
   if (cameraMenuOpen && cameraDragMode === 'fly' && handleFlightInput(event)) {
     return;
   }
@@ -507,8 +519,8 @@ function onKey(event) {
     }
     draw();
   }
-  if (debugMenuOpen && name === '-') adjustTargetFps(-1);
-  if (debugMenuOpen && (name === '+' || name === '=')) adjustTargetFps(1);
+  if (debugMenuOpen && (name === '-' || name === '[')) adjustTargetFps(-1);
+  if (debugMenuOpen && (name === '+' || name === '=' || name === ']')) adjustTargetFps(1);
 }
 
 function onMouse(event) {

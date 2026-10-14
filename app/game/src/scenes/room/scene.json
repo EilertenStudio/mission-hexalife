@@ -9,7 +9,8 @@
   "state": {
     "geometry": "geometry.json",
     "lighting": "lighting.json",
-    "camera": "camera.json"
+    "camera": "camera.json",
+    "menus": "menus.json"
   },
   "reference_implementation": "app/game/engines/terminal/arcade/main.mjs"
 }

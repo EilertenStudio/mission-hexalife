@@ -1,0 +1,132 @@
+{
+  "format_version": 1,
+  "menus": {
+    "system_debug": {
+      "scope": "system",
+      "title": "Debug sistema",
+      "toggle": {
+        "key": "d",
+        "context": "scene",
+        "when_open": "close"
+      },
+      "close_keys": ["d", "escape"],
+      "items": [
+        {
+          "id": "measured_fps",
+          "type": "read_only",
+          "label": "FPS effettivi",
+          "source": "runtime.measured_fps"
+        },
+        {
+          "id": "target_fps",
+          "type": "integer_setting",
+          "label": "Limite FPS",
+          "source": "runtime.target_fps",
+          "default": 6,
+          "minimum": 1,
+          "maximum": 30,
+          "step": 1,
+          "adjustment_keys": {
+            "decrease": ["-", "["],
+            "increase": ["+", "=", "]"]
+          }
+        }
+      ]
+    },
+    "camera": {
+      "scope": "camera",
+      "title": "Camera",
+      "toggle": {
+        "key": "c",
+        "context": "scene",
+        "when_open": "close"
+      },
+      "close_keys": ["c", "escape"],
+      "default_mode": "orbit",
+      "modes": ["orbit", "first_person_flight"],
+      "items": [
+        {
+          "id": "current_mode",
+          "type": "read_only",
+          "label": "Modalità",
+          "source": "camera.navigation_mode"
+        },
+        {
+          "id": "orbit_hint",
+          "type": "control_hint",
+          "label": "Orbita",
+          "action": "orbit"
+        },
+        {
+          "id": "pan_hint",
+          "type": "control_hint",
+          "label": "Pan",
+          "action": "pan"
+        },
+        {
+          "id": "zoom_hint",
+          "type": "control_hint",
+          "label": "Zoom",
+          "action": "zoom"
+        },
+        {
+          "id": "flight_hint",
+          "type": "control_hint",
+          "label": "Volo in prima persona",
+          "action": "first_person_flight"
+        }
+      ],
+      "controls": [
+        {
+          "action": "orbit",
+          "mouse_button": "left",
+          "modifiers": ["alt"]
+        },
+        {
+          "action": "pan",
+          "mouse_button": "left",
+          "modifiers": ["ctrl", "alt"]
+        },
+        {
+          "action": "pan",
+          "mouse_button": "middle",
+          "modifiers": []
+        },
+        {
+          "action": "zoom",
+          "mouse_button": "right",
+          "modifiers": ["alt"]
+        },
+        {
+          "action": "zoom",
+          "device": "mouse_wheel",
+          "axis": "vertical"
+        },
+        {
+          "action": "first_person_flight",
+          "mouse_button": "right",
+          "modifiers": [],
+          "behavior": "while_held",
+          "look": "mouse_delta",
+          "movement": {
+            "forward": ["w"],
+            "backward": ["s"],
+            "left": ["a"],
+            "right": ["d"],
+            "up": ["e", "space"],
+            "down": ["q", "x"]
+          },
+          "speed_modifier": "shift",
+          "resume_mode": "orbit"
+        }
+      ]
+    }
+  },
+  "global_actions": {
+    "quit": {
+      "keys": ["q", "escape"],
+      "active_when": "menus_closed"
+    }
+  },
+  "mutually_exclusive": true
+}
