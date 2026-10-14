@@ -1,0 +1,15 @@
+{
+  "id": "room",
+  "name": "Stanza con spotlight oscillante",
+  "format_version": 1,
+  "coordinate_system": {
+    "up": "y",
+    "handedness": "right"
+  },
+  "state": {
+    "geometry": "geometry.json",
+    "lighting": "lighting.json",
+    "camera": "camera.json"
+  },
+  "reference_implementation": "app/game/engines/terminal/arcade/main.mjs"
+}

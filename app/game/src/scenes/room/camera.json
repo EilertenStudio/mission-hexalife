@@ -1,0 +1,16 @@
+{
+  "projection": {
+    "type": "perspective",
+    "vertical_fov_degrees": 48,
+    "near": 0.1,
+    "far": 40
+  },
+  "initial_view": {
+    "mode": "orbit",
+    "eye": [4.5, 2.85, 6.5],
+    "target": [0, -0.35, 0],
+    "up": [0, 1, 0],
+    "orbit_distance_min": 2.5,
+    "orbit_distance_max": 20
+  }
+}
