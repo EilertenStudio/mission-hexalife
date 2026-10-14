@@ -12,3 +12,12 @@ run = [
   "mise -C app/gamebook {{ (usage.args | join(sep=' ')) if usage.args else 'tasks --all' }}"
 ]
 quiet = true
+
+[tasks."game"]
+usage = '''
+arg "[args]" var=#true
+'''
+run = [
+  "mise -C app/game {{ (usage.args | join(sep=' ')) if usage.args else 'tasks --all' }}"
+]
+quiet = true

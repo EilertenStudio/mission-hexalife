@@ -1,2 +1,3 @@
 .local/
+app/game/engines/terminal/arcade/node_modules/
 app/gamebook/engines/ink/dist/

@@ -1,0 +1,11 @@
+{
+  "name": "mission-hexalife-arcade",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "play": "node main.mjs"
+  },
+  "dependencies": {
+    "ascii-arcade": "0.1.7"
+  }
+}

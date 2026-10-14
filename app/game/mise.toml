@@ -1,0 +1,7 @@
+# ==== MISE | MONOREPO ==============================================
+monorepo_root = true
+
+[monorepo]
+config_roots = [
+  "engines/*/*"
+]
