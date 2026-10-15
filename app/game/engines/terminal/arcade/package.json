@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "play": "node main.mjs",
+    "play": "node main.mjs cryogenic-room",
+    "play:room": "node main.mjs room",
     "play:cryogenic-room": "node main.mjs cryogenic-room"
   },
   "dependencies": {

@@ -1,15 +1,46 @@
 {
-  "room": {
-    "id": "cryogenic-room",
-    "mesh": "cryogenic-room.obj",
-    "material_library": "cryogenic-room.mtl",
-    "surfaces": ["floor", "back_wall", "left_wall", "right_wall", "ceiling"],
-    "open_surfaces": ["front"],
-    "dimensions": {
-      "interior_width": 10,
-      "interior_depth": 6,
-      "interior_height": 3.2,
-      "wall_thickness": 0.16
+  "image_planes": [
+    {
+      "id": "base-room-background",
+      "image": "../../../assets/rooms/base-room/concepts/base-room-concept-v1.png",
+      "position": [0, 0, 0],
+      "rotation_degrees": [0, 0, 0],
+      "size": [14.5558, 8.192],
+      "image_width": 1672,
+      "image_height": 941,
+      "material": {
+        "type": "unlit-image",
+        "blend": "opaque",
+        "uv_origin": "top-left"
+      }
+    },
+    {
+      "id": "cryogenic-capsule-left",
+      "image": "../../../assets/rooms/cryogenic-room/exports/cryogenic-capsule-modular.png",
+      "position": [-4.8, -0.16, 0.02],
+      "rotation_degrees": [0, 0, 0],
+      "size": [1.68, 2.52],
+      "image_width": 1024,
+      "image_height": 1536,
+      "material": {
+        "type": "unlit-image",
+        "blend": "alpha",
+        "uv_origin": "top-left"
+      }
+    },
+    {
+      "id": "cryogenic-capsule-right",
+      "image": "../../../assets/rooms/cryogenic-room/exports/cryogenic-capsule-modular.png",
+      "position": [4.8, -0.16, 0.02],
+      "rotation_degrees": [0, 0, 0],
+      "size": [1.68, 2.52],
+      "image_width": 1024,
+      "image_height": 1536,
+      "material": {
+        "type": "unlit-image",
+        "blend": "alpha",
+        "uv_origin": "top-left"
+      }
     }
-  }
+  ]
 }

@@ -5,11 +5,16 @@ node = "24.16.0"
 npm_config_cache = "{{ config_root }}/../../../../../.local/npm/cache"
 
 [tasks.play]
-description = "Avvia cryogenic-room in Arcade"
+description = "Avvia Cryogenic room in Arcade"
 dir = "{{ config_root }}"
-run = "set -e; if [ ! -d node_modules/ascii-arcade ]; then npm ci --ignore-scripts --no-audit --no-fund; fi; node main.mjs"
+run = "set -e; if [ ! -d node_modules/ascii-arcade ]; then npm ci --ignore-scripts --no-audit --no-fund; fi; node main.mjs cryogenic-room"
+
+[tasks."play:room"]
+description = "Avvia Room 3D in Arcade"
+dir = "{{ config_root }}"
+run = "set -e; if [ ! -d node_modules/ascii-arcade ]; then npm ci --ignore-scripts --no-audit --no-fund; fi; node main.mjs room"
 
 [tasks."play:cryogenic-room"]
-description = "Avvia la sala criogenica importata da Blender"
+description = "Avvia Cryogenic room in Arcade"
 dir = "{{ config_root }}"
 run = "set -e; if [ ! -d node_modules/ascii-arcade ]; then npm ci --ignore-scripts --no-audit --no-fund; fi; node main.mjs cryogenic-room"

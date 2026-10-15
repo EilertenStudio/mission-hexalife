@@ -19,9 +19,10 @@ import { loadCryogenicRoom } from './cryogenic-room.mjs';
 
 const sceneNameArgument = process.argv[2];
 let sceneName = sceneNameArgument ?? 'cryogenic-room';
+const sceneOptions = ['room', 'cryogenic-room'];
 let sceneSelectionOpen = false;
-let selectedSceneIndex = sceneName === 'cryogenic-room' ? 1 : 0;
-if (!['room', 'cryogenic-room'].includes(sceneName)) {
+let selectedSceneIndex = sceneOptions.indexOf(sceneName);
+if (selectedSceneIndex < 0) {
   console.error(`Scena sconosciuta: ${sceneName}`);
   process.exit(1);
 }
@@ -41,20 +42,20 @@ let cameraProjection;
 function activateScene(name) {
   sceneName = name;
   if (name === 'cryogenic-room') cryogenicRoom ??= loadCryogenicRoom();
-  const camera = cryogenicRoom && name === 'cryogenic-room'
+  const camera = name === 'cryogenic-room'
     ? cryogenicRoom.camera
     : {
-        eye: { x: 4.5, y: 2.5, z: 6.5 },
-        target: { x: 0, y: -0.35, z: 0 },
-        minDistance: 2.5,
-        maxDistance: 20,
-        projection: {
-          up: { x: 0, y: 1, z: 0 },
-          fovy: 48 * Math.PI / 180,
-          near: 0.1,
-          far: 40,
-        },
-      };
+      eye: { x: 4.5, y: 2.5, z: 6.5 },
+      target: { x: 0, y: -0.35, z: 0 },
+      minDistance: 2.5,
+      maxDistance: 20,
+      projection: {
+        up: { x: 0, y: 1, z: 0 },
+        fovy: 48 * Math.PI / 180,
+        near: 0.1,
+        far: 40,
+      },
+    };
   const offset = {
     x: camera.eye.x - camera.target.x,
     y: camera.eye.y - camera.target.y,
@@ -298,7 +299,7 @@ function draw() {
     ? [
         'ARCADE  /  SELEZIONE SCENA',
         `${selectedSceneIndex === 0 ? '▶' : ' '}  1  Room 3D`,
-        `${selectedSceneIndex === 1 ? '▶' : ' '}  2  Sala criogenica`,
+        `${selectedSceneIndex === 1 ? '▶' : ' '}  2  Cryogenic room`,
         '↑/↓ seleziona   Invio avvia   1/2 avvio rapido',
         'Esc torna alla scena   q esce',
       ]
@@ -369,7 +370,7 @@ function close() {
 
 function chooseScene(name) {
   activateScene(name);
-  selectedSceneIndex = name === 'cryogenic-room' ? 1 : 0;
+  selectedSceneIndex = sceneOptions.indexOf(name);
   sceneSelectionOpen = false;
   cameraMenuOpen = false;
   debugMenuOpen = false;
@@ -390,7 +391,7 @@ function handleSceneSelectionKey(event) {
     return;
   }
   if (name === 'enter' || name === 'return') {
-    chooseScene(selectedSceneIndex === 0 ? 'room' : 'cryogenic-room');
+    chooseScene(sceneOptions[selectedSceneIndex]);
     return;
   }
   if (name === '1') {
@@ -401,8 +402,10 @@ function handleSceneSelectionKey(event) {
     chooseScene('cryogenic-room');
     return;
   }
-  if (name === 'up' || name === 'w') selectedSceneIndex = 0;
-  else if (name === 'down' || name === 's') selectedSceneIndex = 1;
+  if (name === 'up' || name === 'w') selectedSceneIndex = Math.max(0, selectedSceneIndex - 1);
+  else if (name === 'down' || name === 's') {
+    selectedSceneIndex = Math.min(sceneOptions.length - 1, selectedSceneIndex + 1);
+  }
   else return;
   draw();
 }
@@ -593,7 +596,7 @@ function onKey(event) {
     debugMenuOpen = false;
     cameraDragMode = null;
     lastMousePosition = null;
-    selectedSceneIndex = sceneName === 'cryogenic-room' ? 1 : 0;
+    selectedSceneIndex = sceneOptions.indexOf(sceneName);
     sceneSelectionOpen = true;
     draw();
     return;

@@ -1,3 +1,7 @@
 .local/
+.agent/
+nvim.log
+__pycache__/
+*.blend1
 app/game/engines/terminal/arcade/node_modules/
 app/gamebook/engines/ink/dist/

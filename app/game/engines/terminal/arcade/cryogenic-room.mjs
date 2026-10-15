@@ -1,8 +1,16 @@
 import { readFileSync } from 'node:fs';
+import { decodePng } from 'ascii-arcade/engine/png';
 import {
+  mat4Multiply,
   mat4MulDir,
   mat4MulVec4,
-  parseObj,
+  mat4RotX,
+  mat4RotY,
+  mat4RotZ,
+  mat4Scale,
+  mat4Translate,
+  quad,
+  sampleTexture,
   Scene,
   worldUniforms,
 } from 'ascii-arcade/engine';
@@ -10,49 +18,11 @@ import {
 const sceneDir = new URL('../../../src/scenes/cryogenic-room/', import.meta.url);
 const readJson = (name) => JSON.parse(readFileSync(new URL(name, sceneDir), 'utf8'));
 const vec3 = ([x, y, z]) => ({ x, y, z });
-
-function materialColors(mtlText) {
-  const colors = new Map();
-  let name;
-  for (const line of mtlText.split(/\r?\n/)) {
-    if (line.startsWith('newmtl ')) name = line.slice(7).trim();
-    if (name && line.startsWith('Kd ')) {
-      const [r, g, b] = line.slice(3).trim().split(/\s+/).map(Number);
-      colors.set(name, { x: r * 255, y: g * 255, z: b * 255 });
-    }
-  }
-  return colors;
-}
-
-function coloredObj(objText, mtlText) {
-  const parsed = parseObj(objText);
-  const colors = materialColors(mtlText);
-  const triangleColors = [];
-  let currentColor;
-  for (const line of objText.split(/\r?\n/)) {
-    if (line.startsWith('usemtl ')) {
-      currentColor = colors.get(line.slice(7).trim());
-      if (!currentColor) throw new Error(`Materiale OBJ sconosciuto: ${line}`);
-    }
-    if (line.startsWith('f ')) {
-      if (!currentColor) throw new Error('Faccia OBJ senza materiale');
-      const vertices = line.trim().split(/\s+/).length - 1;
-      for (let i = 2; i < vertices; i++) triangleColors.push(currentColor);
-    }
-  }
-  if (triangleColors.length * 3 !== parsed.indices.length) {
-    throw new Error('Triangolazione OBJ non coerente con i materiali');
-  }
-  const vertices = parsed.indices.map((index, i) => ({
-    ...parsed.vertices[index],
-    color: triangleColors[Math.floor(i / 3)],
-  }));
-  return { vertices, indices: vertices.map((_, i) => i) };
-}
-
 const pixel = { r: 0, g: 0, b: 0, a: 1 };
-const matteMaterial = {
+
+const imageMaterial = {
   cull: 'none',
+  blend: 'opaque',
   vertex(uniforms, vertex) {
     const position = vertex.position;
     const world = mat4MulVec4(uniforms.model, { ...position, w: 1 });
@@ -66,43 +36,45 @@ const matteMaterial = {
     };
   },
   fragment(uniforms, point) {
-    const length = Math.hypot(point.normal.x, point.normal.y, point.normal.z) || 1;
-    let brightness = uniforms.ambient;
-    for (const light of uniforms.lights) {
-      const dx = point.world.x - light.position.x;
-      const dy = point.world.y - light.position.y;
-      const dz = point.world.z - light.position.z;
-      const distance = Math.hypot(dx, dy, dz) || 1;
-      const diffuse = Math.max(0, -(point.normal.x * dx + point.normal.y * dy
-        + point.normal.z * dz) / (length * distance));
-      brightness += diffuse * light.intensity * 0.24
-        / (1 + 0.16 * distance + 0.035 * distance * distance);
-    }
-    pixel.r = point.color.x * brightness;
-    pixel.g = point.color.y * brightness;
-    pixel.b = point.color.z * brightness;
+    const color = sampleTexture(uniforms.texture, point.uv[0], point.uv[1]);
+    pixel.r = color[0];
+    pixel.g = color[1];
+    pixel.b = color[2];
+    pixel.a = color[3];
     return pixel;
   },
 };
 
+const alphaImageMaterial = { ...imageMaterial, blend: 'alpha' };
+
 export function loadCryogenicRoom() {
   const manifest = readJson('scene.json');
-  const geometry = readJson(manifest.state.geometry).room;
-  const lighting = readJson(manifest.state.lighting);
+  const imagePlanes = readJson(manifest.state.geometry).image_planes;
   const cameraState = readJson(manifest.state.camera);
-  const objText = readFileSync(new URL(geometry.mesh, sceneDir), 'utf8');
-  const mtlText = readFileSync(new URL(geometry.material_library, sceneDir), 'utf8');
 
   const scene = new Scene();
-  const lights = lighting.lights.map((light) => ({
-    position: vec3(light.position),
-    // Arcade non ha luci area: ogni sorgente diventa un punto neutro.
-    intensity: light.type === 'area' ? light.energy_watts / 50 : light.energy,
-  }));
-  scene.mesh(coloredObj(objText, mtlText), matteMaterial, worldUniforms({
-    lights,
-    ambient: 0.55,
-  }));
+  const textures = new Map();
+  for (const imagePlane of imagePlanes) {
+    let texture = textures.get(imagePlane.image);
+    if (!texture) {
+      texture = decodePng(readFileSync(new URL(imagePlane.image, sceneDir)));
+      textures.set(imagePlane.image, texture);
+    }
+
+    const [x, y, z] = imagePlane.position;
+    const [rx, ry, rz] = imagePlane.rotation_degrees.map((degrees) => degrees * Math.PI / 180);
+    const [width, height] = imagePlane.size;
+    const rotation = mat4Multiply(
+      mat4RotZ(rz),
+      mat4Multiply(mat4RotY(ry), mat4RotX(rx)),
+    );
+    const model = mat4Multiply(
+      mat4Translate(x, y, z),
+      mat4Multiply(rotation, mat4Scale(width, height, 1)),
+    );
+    const material = imagePlane.material.blend === 'alpha' ? alphaImageMaterial : imageMaterial;
+    scene.mesh(quad(), material, worldUniforms({ texture }), model);
+  }
 
   const view = cameraState.initial_view;
   const projection = cameraState.projection;

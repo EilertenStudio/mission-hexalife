@@ -26,17 +26,18 @@ in [`app/game/src/scenes/room/menus.json`](../../../src/scenes/room/menus.json).
 `Esc` chiude il menu attivo; `q` o `Esc` escono solo quando entrambi i menu
 sono chiusi.
 
-Il task `play` avvia direttamente `cryogenic-room`. Premi `m` durante il gioco
-per aprire il selettore delle scene: usa `↑`/`↓` e `Invio`, oppure `1`/`2` per
-scegliere `room` o `cryogenic-room`. `Esc` torna alla scena attiva e `q` esce.
-`play:cryogenic-room` resta disponibile come avvio diretto della sala
-criogenica.
+Il task `play` avvia `cryogenic-room`. Premi `m` durante il
+gioco per aprire il selettore: `1` avvia `room`, `2` `cryogenic-room`.
+`Esc` torna alla scena attiva e `q` esce. I task `play:room` e
+`play:cryogenic-room` avviano direttamente le rispettive scene.
 
-La scena `cryogenic-room` carica l'OBJ e il MTL da
-[`src/scenes/cryogenic-room/`](../../../src/scenes/cryogenic-room/) tramite
-`parseObj`. Si avvia con `mise run play:cryogenic-room`. Arcade usa i colori
-diffusi del MTL e approssima le luci area di Blender con luci puntiformi;
-quindi l'illuminazione non coincide esattamente con il render di Blender.
+La scena `cryogenic-room` compone il PNG della stanza
+[`base-room-concept-v1.png`](../../../assets/rooms/base-room/concepts/base-room-concept-v1.png)
+con due piani immagine alpha del prop
+[`cryogenic-capsule-modular.png`](../../../assets/rooms/cryogenic-room/exports/cryogenic-capsule-modular.png),
+posizionati ai lati. La camera iniziale resta fissa per mantenere la
+composizione 2D allineata. `mise run play:cryogenic-room` la avvia direttamente;
+questa scena non carica la geometria OBJ.
 
 Nel menu debug, `v` alterna la resa a glifi ASCII (`toShapeGlyph`) e quella a
 pixel colorati (`toHalfBlock`), che è la modalità iniziale. Usa un mezzo blocco

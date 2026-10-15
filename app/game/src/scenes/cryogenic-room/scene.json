@@ -9,9 +9,8 @@
   },
   "state": {
     "geometry": "geometry.json",
-    "lighting": "lighting.json",
     "camera": "camera.json",
     "menus": "../room/menus.json"
   },
-  "source_asset": "app/game/assets/rooms/cryogenic-room/set-cryogenic_room-modeling.blend"
+  "source_asset": "app/game/assets/rooms/base-room/concepts/base-room-concept-v1.png"
 }

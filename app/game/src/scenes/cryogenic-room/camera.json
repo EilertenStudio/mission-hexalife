@@ -1,8 +1,7 @@
 {
   "projection": {
     "type": "perspective",
-    "focal_length_mm": 20.0,
-    "vertical_fov_degrees_at_16_9": 53.701627,
+    "vertical_fov_degrees_at_16_9": 34,
     "near": 0.1,
     "far": 100
   },
@@ -10,20 +9,20 @@
     "mode": "orbit",
     "eye": [
       0.0,
-      2.055323,
-      2.808537
+      0.0,
+      14.0
     ],
     "target": [
       0.0,
-      1.105323,
-      -2.941463
+      0.0,
+      0.0
     ],
     "up": [
       0.0,
-      0.986625,
-      -0.163007
+      1.0,
+      0.0
     ],
-    "orbit_distance_min": 2.5,
-    "orbit_distance_max": 40
+    "orbit_distance_min": 3,
+    "orbit_distance_max": 35
   }
 }

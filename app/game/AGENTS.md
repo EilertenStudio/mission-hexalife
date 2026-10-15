@@ -10,7 +10,6 @@
 
 ## Formato delle scene
 
-- `app/game/src/README.md` descrive il formato e le convenzioni condivise.
 - Ogni cartella `src/scenes/<nome-scena>/` contiene `scene.json`, che identifica la scena e collega i suoi documenti di stato, oltre ai file specifici per geometria, luci, camera e menu condivisi quando presenti.
 - I documenti sono JSON indipendente dal linguaggio, con coordinate Y-up, colori RGB interi da 0 a 255 e misure nelle unità locali della scena.
 - La scena `room` è stata definita prendendo come riferimento l'implementazione Arcade. Da questo momento i file in `src/scenes/room/` descrivono lo stato desiderato; Arcade è un'implementazione di riferimento, non una seconda fonte canonica.

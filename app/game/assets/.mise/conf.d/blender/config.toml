@@ -21,6 +21,10 @@ run = "blender -b rooms/template-room/set-template_room-modelling.blend --python
 description = "Rigenera il blockout P0 dalle reference ortografiche mantenendo attiva la collection Reference"
 run = "blender -b ships/deep-space-freighter/prop-deep_space_freighter-modeling.blend --python ships/deep-space-freighter/scripts/03_genera_geometria.py"
 
+[tasks."export:deep-space-freighter-reference"]
+description = "Esporta la reference piana nave in OBJ/MTL/PNG per Arcade"
+run = "blender -b ships/deep-space-freighter/prop-deep_space_freighter-modeling.blend --python ships/deep-space-freighter/scripts/04_esporta_reference_obj.py"
+
 [tasks."reference:deep-space-freighter"]
 description = "Rimuove le GEO e allinea le quattro reference ortografiche nel file Blender della nave"
 run = "blender -b ships/deep-space-freighter/prop-deep_space_freighter-modeling.blend --python ships/deep-space-freighter/scripts/02_inserisci_references.py"

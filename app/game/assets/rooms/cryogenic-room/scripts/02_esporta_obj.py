@@ -1,15 +1,12 @@
 """Esporta solo la geometria della sala criogenica in Wavefront OBJ."""
 
 from pathlib import Path
-from shutil import copyfile
-
 import bpy
 
 
 ASSET_DIR = Path(__file__).resolve().parent.parent
 BLEND_FILE = ASSET_DIR / "set-cryogenic_room-modeling.blend"
 OBJ_FILE = ASSET_DIR / "exports" / "cryogenic-room.obj"
-SCENE_DIR = ASSET_DIR.parents[2] / "src" / "scenes" / "cryogenic-room"
 
 if Path(bpy.data.filepath).resolve() != BLEND_FILE.resolve():
     raise RuntimeError(f"Aprire prima {BLEND_FILE}")
@@ -45,9 +42,4 @@ bpy.ops.wm.obj_export(
     export_object_groups=True,
     export_triangulated_mesh=True,
 )
-SCENE_DIR.mkdir(parents=True, exist_ok=True)
-for extension in ("obj", "mtl"):
-    source = OBJ_FILE.with_suffix(f".{extension}")
-    copyfile(source, SCENE_DIR / source.name)
 print(f"Esportato {OBJ_FILE}")
-print(f"Importato OBJ e MTL in {SCENE_DIR}")
