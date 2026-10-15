@@ -16,10 +16,11 @@ import {
 } from 'ascii-arcade/engine';
 import { createInputParser, enterTerminal, leaveTerminal } from 'ascii-arcade/platform';
 import { loadCryogenicRoom } from './cryogenic-room.mjs';
+import { loadSandboxRoom } from './sandbox-room.mjs';
 
 const sceneNameArgument = process.argv[2];
 let sceneName = sceneNameArgument ?? 'cryogenic-room';
-const sceneOptions = ['room', 'cryogenic-room'];
+const sceneOptions = ['room', 'cryogenic-room', 'sandbox-room'];
 let sceneSelectionOpen = false;
 let selectedSceneIndex = sceneOptions.indexOf(sceneName);
 if (selectedSceneIndex < 0) {
@@ -35,16 +36,21 @@ if (!process.stdin.isTTY || !process.stdout.isTTY) {
 const scene = new Scene();
 const renderer = new SceneRenderer();
 let cryogenicRoom;
+let sandboxRoom;
 let activeScene = scene;
+let activeBackgroundColor = [3, 4, 8];
 let cameraOrbit;
 let cameraProjection;
 
 function activateScene(name) {
   sceneName = name;
   if (name === 'cryogenic-room') cryogenicRoom ??= loadCryogenicRoom();
+  if (name === 'sandbox-room') sandboxRoom ??= loadSandboxRoom();
   const camera = name === 'cryogenic-room'
     ? cryogenicRoom.camera
-    : {
+    : name === 'sandbox-room'
+      ? sandboxRoom.camera
+      : {
       eye: { x: 4.5, y: 2.5, z: 6.5 },
       target: { x: 0, y: -0.35, z: 0 },
       minDistance: 2.5,
@@ -68,7 +74,12 @@ function activateScene(name) {
     target: { ...camera.target },
   }, camera.minDistance, camera.maxDistance);
   cameraProjection = camera.projection;
-  activeScene = name === 'cryogenic-room' ? cryogenicRoom.scene : scene;
+  activeScene = name === 'cryogenic-room'
+    ? cryogenicRoom.scene
+    : name === 'sandbox-room'
+      ? sandboxRoom.scene
+      : scene;
+  activeBackgroundColor = name === 'sandbox-room' ? sandboxRoom.backgroundColor : [3, 4, 8];
 }
 
 activateScene(sceneName);
@@ -292,7 +303,7 @@ function draw() {
     frameCount = 0;
     fpsWindowStart = now;
   }
-  const hudLineCount = sceneSelectionOpen ? 5 : debugMenuOpen ? 5 : cameraMenuOpen ? 4 : 1;
+  const hudLineCount = sceneSelectionOpen ? 6 : debugMenuOpen ? 5 : cameraMenuOpen ? 4 : 1;
   const sceneRows = Math.max(8, rows - hudLineCount);
   const height = sceneRows * 2 * supersampling;
   const hudLines = sceneSelectionOpen
@@ -300,8 +311,9 @@ function draw() {
         'ARCADE  /  SELEZIONE SCENA',
         `${selectedSceneIndex === 0 ? '▶' : ' '}  1  Room 3D`,
         `${selectedSceneIndex === 1 ? '▶' : ' '}  2  Cryogenic room`,
-        '↑/↓ seleziona   Invio avvia   1/2 avvio rapido',
+        `${selectedSceneIndex === 2 ? '▶' : ' '}  3  Sandbox room 2D`,
         'Esc torna alla scena   q esce',
+        '↑/↓ seleziona   Invio avvia   1/2/3 avvio rapido',
       ]
     : debugMenuOpen
       ? [
@@ -325,7 +337,7 @@ function draw() {
   }
 
   target.resize(width * supersampling, height);
-  target.clear(3, 4, 8);
+  target.clear(...activeBackgroundColor);
   renderer.render(target, activeScene, cameraOrbit.toCamera(cameraProjection));
 
   const hud = hudLines.map((line, index) =>
@@ -400,6 +412,10 @@ function handleSceneSelectionKey(event) {
   }
   if (name === '2') {
     chooseScene('cryogenic-room');
+    return;
+  }
+  if (name === '3') {
+    chooseScene('sandbox-room');
     return;
   }
   if (name === 'up' || name === 'w') selectedSceneIndex = Math.max(0, selectedSceneIndex - 1);

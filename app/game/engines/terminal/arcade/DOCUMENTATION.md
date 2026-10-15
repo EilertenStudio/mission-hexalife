@@ -26,10 +26,23 @@ in [`app/game/src/scenes/room/menus.json`](../../../src/scenes/room/menus.json).
 `Esc` chiude il menu attivo; `q` o `Esc` escono solo quando entrambi i menu
 sono chiusi.
 
-Il task `play` avvia `cryogenic-room`. Premi `m` durante il
-gioco per aprire il selettore: `1` avvia `room`, `2` `cryogenic-room`.
-`Esc` torna alla scena attiva e `q` esce. I task `play:room` e
+Il task `play` avvia `sandbox-room`. Premi `m` durante il
+gioco per aprire il selettore: `1` avvia `room`, `2` `cryogenic-room`, `3`
+`sandbox-room`. `Esc` torna alla scena attiva e `q` esce. I task `play:room`,
 `play:cryogenic-room` avviano direttamente le rispettive scene.
+
+Dalla root dell’engine si avvia con `mise run play`; dalla root di `app/game`
+con `mise run arcade:play`, oppure dalla root del repository con
+`mise run game arcade:play`.
+
+La `sandbox-room` carica i dati canonici da
+[`app/game/src/scenes/sandbox-room/`](../../../src/scenes/sandbox-room/): il
+fondale della base-room e le due capsule sono piani immagine sovrapposti, con
+campionamento nearest e alpha per gli sprite. Lo stato richiede una proiezione
+ortografica; Arcade espone una camera prospettica, quindi la scena usa una
+camera con vista iniziale frontale calibrata sulla cornice 160×100. I piani 2D
+quasi complanari mantengono la composizione piatta; la prospettiva resta una
+approssimazione del modello ortografico richiesto dallo stato.
 
 La scena `cryogenic-room` compone il PNG della stanza
 [`base-room-concept-v1.png`](../../../assets/rooms/base-room/concepts/base-room-concept-v1.png)
