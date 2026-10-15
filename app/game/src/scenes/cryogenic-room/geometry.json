@@ -1,0 +1,15 @@
+{
+  "room": {
+    "id": "cryogenic-room",
+    "mesh": "cryogenic-room.obj",
+    "material_library": "cryogenic-room.mtl",
+    "surfaces": ["floor", "back_wall", "left_wall", "right_wall", "ceiling"],
+    "open_surfaces": ["front"],
+    "dimensions": {
+      "interior_width": 10,
+      "interior_depth": 6,
+      "interior_height": 3.2,
+      "wall_thickness": 0.16
+    }
+  }
+}

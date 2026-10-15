@@ -1,0 +1,30 @@
+[tools]
+"aqua:blender/blender" = "5.2.2"
+
+[tasks.blender]
+description = "Avvia Blender"
+run = "blender"
+
+[tasks."prepare:template-base"]
+description = "Prepara la base generica di Blender e i nomi Scene/View Layer"
+run = "blender -b template.blend --python scripts/01_prepara_template_base.py"
+
+[tasks."materialize:room-template"]
+description = "Materializza il template specializzato per set e stanze"
+run = "blender -b template.blend --python rooms/template-room/scripts/01_materializza_template.py"
+
+[tasks."build:cryogenic-room"]
+description = "Genera la stanza criogenica dal template per set e stanze"
+run = "blender -b rooms/template-room/set-template_room-modelling.blend --python rooms/cryogenic-room/scripts/01_crea_stanza.py"
+
+[tasks."build:deep-space-freighter"]
+description = "Rigenera il blockout P0 dalle reference ortografiche mantenendo attiva la collection Reference"
+run = "blender -b ships/deep-space-freighter/prop-deep_space_freighter-modeling.blend --python ships/deep-space-freighter/scripts/03_genera_geometria.py"
+
+[tasks."reference:deep-space-freighter"]
+description = "Rimuove le GEO e allinea le quattro reference ortografiche nel file Blender della nave"
+run = "blender -b ships/deep-space-freighter/prop-deep_space_freighter-modeling.blend --python ships/deep-space-freighter/scripts/02_inserisci_references.py"
+
+[tasks."export:cryogenic-room-camera"]
+description = "Sincronizza la camera Blender con lo stato letto da Arcade"
+run = "blender -b rooms/cryogenic-room/set-cryogenic_room-modeling.blend --python rooms/cryogenic-room/scripts/03_esporta_camera.py"

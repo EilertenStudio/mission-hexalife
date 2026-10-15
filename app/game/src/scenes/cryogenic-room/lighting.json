@@ -1,0 +1,37 @@
+{
+  "ambient": {
+    "color": [31, 31, 31],
+    "strength": 0.4
+  },
+  "lights": [
+    {
+      "id": "sun",
+      "type": "sun",
+      "position": [-3, 6, 5],
+      "target": [0, 1.2, -3],
+      "color": [255, 255, 255],
+      "energy": 0.45,
+      "angular_size_radians": 0.45
+    },
+    {
+      "id": "area-key",
+      "type": "area",
+      "position": [-2.7, 2.5, 1],
+      "target": [0, 1.2, -3],
+      "color": [255, 255, 255],
+      "energy_watts": 220,
+      "shape": "disk",
+      "size": 5
+    },
+    {
+      "id": "area-fill",
+      "type": "area",
+      "position": [2.7, 1.5, 1.2],
+      "target": [0, 2.2, -3.5],
+      "color": [255, 255, 255],
+      "energy_watts": 140,
+      "shape": "disk",
+      "size": 5
+    }
+  ]
+}

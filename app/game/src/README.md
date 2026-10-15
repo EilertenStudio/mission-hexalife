@@ -27,3 +27,10 @@ nell'API e nelle capacità di ciascun engine.
 La scena `room` è stata ricavata dalla scena di Arcade presente nel repository.
 La sua definizione in `scenes/room/` è ora il riferimento da seguire quando si
 aggiorna o si replica la scena in un engine.
+
+La scena `cryogenic-room` importa la mesh esportata da
+`app/game/assets/rooms/cryogenic-room/exports/`. Conserva OBJ e MTL accanto ai
+documenti JSON in `scenes/cryogenic-room/`; i percorsi in `scene.json` sono
+relativi alla cartella della scena. Il suo `menus` riusa quello della scena
+`room` per mantenere gli stessi comandi di sistema e camera. Lo script Blender
+`02_esporta_obj.py` rigenera l'export e aggiorna le copie nella scena.

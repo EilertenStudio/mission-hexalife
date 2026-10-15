@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "play": "node main.mjs"
+    "play": "node main.mjs",
+    "play:cryogenic-room": "node main.mjs cryogenic-room"
   },
   "dependencies": {
     "ascii-arcade": "0.1.7"

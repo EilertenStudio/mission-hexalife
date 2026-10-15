@@ -1,0 +1,17 @@
+{
+  "id": "cryogenic-room",
+  "name": "Sala criogenica",
+  "format_version": 1,
+  "coordinate_system": {
+    "up": "y",
+    "handedness": "right",
+    "unit": "meter"
+  },
+  "state": {
+    "geometry": "geometry.json",
+    "lighting": "lighting.json",
+    "camera": "camera.json",
+    "menus": "../room/menus.json"
+  },
+  "source_asset": "app/game/assets/rooms/cryogenic-room/set-cryogenic_room-modeling.blend"
+}

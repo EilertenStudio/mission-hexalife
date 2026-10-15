@@ -26,6 +26,23 @@ in [`app/game/src/scenes/room/menus.json`](../../../src/scenes/room/menus.json).
 `Esc` chiude il menu attivo; `q` o `Esc` escono solo quando entrambi i menu
 sono chiusi.
 
+Il task `play` avvia direttamente `cryogenic-room`. Premi `m` durante il gioco
+per aprire il selettore delle scene: usa `↑`/`↓` e `Invio`, oppure `1`/`2` per
+scegliere `room` o `cryogenic-room`. `Esc` torna alla scena attiva e `q` esce.
+`play:cryogenic-room` resta disponibile come avvio diretto della sala
+criogenica.
+
+La scena `cryogenic-room` carica l'OBJ e il MTL da
+[`src/scenes/cryogenic-room/`](../../../src/scenes/cryogenic-room/) tramite
+`parseObj`. Si avvia con `mise run play:cryogenic-room`. Arcade usa i colori
+diffusi del MTL e approssima le luci area di Blender con luci puntiformi;
+quindi l'illuminazione non coincide esattamente con il render di Blender.
+
+Nel menu debug, `v` alterna la resa a glifi ASCII (`toShapeGlyph`) e quella a
+pixel colorati (`toHalfBlock`), che è la modalità iniziale. Usa un mezzo blocco
+Unicode per cella del terminale, con un colore per ciascuna delle due metà
+verticali.
+
 ## Riferimenti upstream
 
 - [README ufficiale: rendering engine e package API](https://github.com/vercel-labs/arcade#build-with-arcade)

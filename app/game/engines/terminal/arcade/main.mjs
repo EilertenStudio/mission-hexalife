@@ -6,13 +6,25 @@ import {
   Scene,
   SceneRenderer,
   cube,
+  downsample,
   mat4MulDir,
   mat4MulVec4,
   normalize3,
+  toHalfBlock,
   toShapeGlyph,
   worldUniforms,
 } from 'ascii-arcade/engine';
 import { createInputParser, enterTerminal, leaveTerminal } from 'ascii-arcade/platform';
+import { loadCryogenicRoom } from './cryogenic-room.mjs';
+
+const sceneNameArgument = process.argv[2];
+let sceneName = sceneNameArgument ?? 'cryogenic-room';
+let sceneSelectionOpen = false;
+let selectedSceneIndex = sceneName === 'cryogenic-room' ? 1 : 0;
+if (!['room', 'cryogenic-room'].includes(sceneName)) {
+  console.error(`Scena sconosciuta: ${sceneName}`);
+  process.exit(1);
+}
 
 if (!process.stdin.isTTY || !process.stdout.isTTY) {
   console.error('Arcade richiede un terminale interattivo.');
@@ -21,20 +33,44 @@ if (!process.stdin.isTTY || !process.stdout.isTTY) {
 
 const scene = new Scene();
 const renderer = new SceneRenderer();
-const cameraTarget = { x: 0, y: -0.35, z: 0 };
-const cameraOffset = { x: 4.5, y: 2.85, z: 6.5 };
-const cameraOrbit = new OrbitCamera({
-  azimuth: Math.atan2(cameraOffset.x, cameraOffset.z),
-  elevation: Math.atan2(cameraOffset.y, Math.hypot(cameraOffset.x, cameraOffset.z)),
-  distance: Math.hypot(cameraOffset.x, cameraOffset.y, cameraOffset.z),
-  target: cameraTarget,
-}, 2.5, 20);
-const cameraProjection = {
-  up: { x: 0, y: 1, z: 0 },
-  fovy: 48 * Math.PI / 180,
-  near: 0.1,
-  far: 40,
-};
+let cryogenicRoom;
+let activeScene = scene;
+let cameraOrbit;
+let cameraProjection;
+
+function activateScene(name) {
+  sceneName = name;
+  if (name === 'cryogenic-room') cryogenicRoom ??= loadCryogenicRoom();
+  const camera = cryogenicRoom && name === 'cryogenic-room'
+    ? cryogenicRoom.camera
+    : {
+        eye: { x: 4.5, y: 2.5, z: 6.5 },
+        target: { x: 0, y: -0.35, z: 0 },
+        minDistance: 2.5,
+        maxDistance: 20,
+        projection: {
+          up: { x: 0, y: 1, z: 0 },
+          fovy: 48 * Math.PI / 180,
+          near: 0.1,
+          far: 40,
+        },
+      };
+  const offset = {
+    x: camera.eye.x - camera.target.x,
+    y: camera.eye.y - camera.target.y,
+    z: camera.eye.z - camera.target.z,
+  };
+  cameraOrbit = new OrbitCamera({
+    azimuth: Math.atan2(offset.x, offset.z),
+    elevation: Math.atan2(offset.y, Math.hypot(offset.x, offset.z)),
+    distance: Math.hypot(offset.x, offset.y, offset.z),
+    target: { ...camera.target },
+  }, camera.minDistance, camera.maxDistance);
+  cameraProjection = camera.projection;
+  activeScene = name === 'cryogenic-room' ? cryogenicRoom.scene : scene;
+}
+
+activateScene(sceneName);
 let cameraMenuOpen = false;
 let cameraDragMode = null;
 let lastMousePosition = null;
@@ -230,6 +266,8 @@ let measuredFps = 0;
 let fpsWindowStart = performance.now();
 let targetFps = 6;
 let target = new RenderTarget(1, 1);
+let pixelTarget = new RenderTarget(1, 2);
+let renderMode = 'half-block';
 let timer;
 let interactionRenderTimer;
 let lastDrawAt = performance.now();
@@ -253,13 +291,22 @@ function draw() {
     frameCount = 0;
     fpsWindowStart = now;
   }
-  const hudLineCount = debugMenuOpen ? 4 : cameraMenuOpen ? 4 : 1;
+  const hudLineCount = sceneSelectionOpen ? 5 : debugMenuOpen ? 5 : cameraMenuOpen ? 4 : 1;
   const sceneRows = Math.max(8, rows - hudLineCount);
   const height = sceneRows * 2 * supersampling;
-  const hudLines = debugMenuOpen
+  const hudLines = sceneSelectionOpen
     ? [
+        'ARCADE  /  SELEZIONE SCENA',
+        `${selectedSceneIndex === 0 ? '▶' : ' '}  1  Room 3D`,
+        `${selectedSceneIndex === 1 ? '▶' : ' '}  2  Sala criogenica`,
+        '↑/↓ seleziona   Invio avvia   1/2 avvio rapido',
+        'Esc torna alla scena   q esce',
+      ]
+    : debugMenuOpen
+      ? [
         'DEBUG SISTEMA  [D: chiudi]',
         `FPS EFFETTIVI: ${measuredFps.toFixed(1)}   LIMITE: ${targetFps}`,
+        `RESA: ${renderMode === 'half-block' ? 'PIXEL A BLOCCHI' : 'GLIFI ASCII'}  [V: cambia]`,
         `TERMINALE: ${cols}x${rows}   BUFFER RENDER: ${width * supersampling}x${height}`,
         '- o [: diminuisci   +, = o ]: aumenta FPS (1-30)',
       ]
@@ -270,20 +317,29 @@ function draw() {
           'centrale pan  rotella zoom',
           `Tieni destro: mouse guarda; WASD + E/Q o Space/X${kittyKeyboardSeen ? ' continuo' : ' (rilascio stimato)'}; Shift accelera`,
         ]
-      : ['ROOM 3D  C: camera  D: debug sistema  Shift+R: ricarica  q: esci'];
-  light.direction = normalize3({ x: Math.sin(angle), y: -Math.cos(angle), z: 0 });
-  beam.rotation.z = angle;
+      : [`${sceneName.toUpperCase()}  M: scene  C: camera  D: debug sistema  Shift+R: ricarica  q: esci`];
+  if (sceneName === 'room') {
+    light.direction = normalize3({ x: Math.sin(angle), y: -Math.cos(angle), z: 0 });
+    beam.rotation.z = angle;
+  }
 
   target.resize(width * supersampling, height);
   target.clear(3, 4, 8);
-  renderer.render(target, scene, cameraOrbit.toCamera(cameraProjection));
+  renderer.render(target, activeScene, cameraOrbit.toCamera(cameraProjection));
 
   const hud = hudLines.map((line, index) =>
     `\x1b[${sceneRows + index + 1};1H\x1b[38;2;190;204;226m${line.slice(0, width)}\x1b[0m`,
   ).join('');
+  let picture;
+  if (renderMode === 'half-block') {
+    pixelTarget = downsample(target, supersampling, pixelTarget);
+    picture = toHalfBlock(pixelTarget);
+  } else {
+    picture = toShapeGlyph(target, width, sceneRows, { color: true, hybrid: true });
+  }
   process.stdout.write(
     '\x1b[2J'
-      + toShapeGlyph(target, width, sceneRows, { color: true, hybrid: true })
+      + picture
       + hud,
   );
 }
@@ -309,6 +365,46 @@ function close() {
   restoreKittyKeyboardMode();
   leaveTerminal();
   process.exit(0);
+}
+
+function chooseScene(name) {
+  activateScene(name);
+  selectedSceneIndex = name === 'cryogenic-room' ? 1 : 0;
+  sceneSelectionOpen = false;
+  cameraMenuOpen = false;
+  debugMenuOpen = false;
+  cameraDragMode = null;
+  lastMousePosition = null;
+  draw();
+}
+
+function handleSceneSelectionKey(event) {
+  const { name } = event;
+  if (name === 'escape') {
+    sceneSelectionOpen = false;
+    draw();
+    return;
+  }
+  if (name === 'q') {
+    close();
+    return;
+  }
+  if (name === 'enter' || name === 'return') {
+    chooseScene(selectedSceneIndex === 0 ? 'room' : 'cryogenic-room');
+    return;
+  }
+  if (name === '1') {
+    chooseScene('room');
+    return;
+  }
+  if (name === '2') {
+    chooseScene('cryogenic-room');
+    return;
+  }
+  if (name === 'up' || name === 'w') selectedSceneIndex = 0;
+  else if (name === 'down' || name === 's') selectedSceneIndex = 1;
+  else return;
+  draw();
 }
 
 function restart() {
@@ -457,6 +553,11 @@ function onKey(event) {
   const { name, raw, shift, ctrl, meta } = event;
   if (event.enhanced) kittyKeyboardSeen = true;
 
+  if (sceneSelectionOpen) {
+    if (event.eventType !== 'release') handleSceneSelectionKey(event);
+    return;
+  }
+
   if (event.enhanced && event.eventType === 'release') {
     if (cameraMenuOpen && cameraDragMode === 'fly') handleFlightInput(event);
     return;
@@ -485,6 +586,18 @@ function onKey(event) {
   }
   if ((name === 'q' && !cameraMenuOpen && !debugMenuOpen) || (name === 'c' && ctrl)) close();
   if (name === 'r' && shift) restart();
+
+  if (name === 'm' && !ctrl && !meta) {
+    if (cameraMenuOpen && cameraDragMode === 'fly') stopFlight();
+    cameraMenuOpen = false;
+    debugMenuOpen = false;
+    cameraDragMode = null;
+    lastMousePosition = null;
+    selectedSceneIndex = sceneName === 'cryogenic-room' ? 1 : 0;
+    sceneSelectionOpen = true;
+    draw();
+    return;
+  }
 
   if (cameraMenuOpen && cameraDragMode === 'fly' && handleFlightInput(event)) {
     return;
@@ -521,6 +634,10 @@ function onKey(event) {
   }
   if (debugMenuOpen && (name === '-' || name === '[')) adjustTargetFps(-1);
   if (debugMenuOpen && (name === '+' || name === '=' || name === ']')) adjustTargetFps(1);
+  if (debugMenuOpen && name === 'v' && !ctrl && !meta) {
+    renderMode = renderMode === 'half-block' ? 'shape-glyph' : 'half-block';
+    draw();
+  }
 }
 
 function onMouse(event) {
