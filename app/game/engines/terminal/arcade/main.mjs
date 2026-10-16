@@ -1,378 +1,368 @@
 import { spawnSync } from 'node:child_process';
-import {
-  GeometryBuilder,
-  OrbitCamera,
-  RenderTarget,
-  Scene,
-  SceneRenderer,
-  cube,
-  downsample,
-  mat4MulDir,
-  mat4MulVec4,
-  normalize3,
-  toHalfBlock,
-  toShapeGlyph,
-  worldUniforms,
-} from 'ascii-arcade/engine';
+import { RenderTarget, toHalfBlock, toShapeGlyph } from 'ascii-arcade/engine';
 import { createInputParser, enterTerminal, leaveTerminal } from 'ascii-arcade/platform';
+import { Box, Button, Screen, Text, wrapText } from 'ascii-arcade/tui';
 import { loadCryogenicRoom } from './cryogenic-room.mjs';
-import { loadSandboxRoom } from './sandbox-room.mjs';
 
-const sceneNameArgument = process.argv[2];
-let sceneName = sceneNameArgument ?? 'cryogenic-room';
-const sceneOptions = ['room', 'cryogenic-room', 'sandbox-room'];
-let sceneSelectionOpen = false;
-let selectedSceneIndex = sceneOptions.indexOf(sceneName);
-if (selectedSceneIndex < 0) {
-  console.error(`Scena sconosciuta: ${sceneName}`);
-  process.exit(1);
-}
-
+const room = loadCryogenicRoom();
 if (!process.stdin.isTTY || !process.stdout.isTTY) {
   console.error('Arcade richiede un terminale interattivo.');
   process.exit(1);
 }
 
-const scene = new Scene();
-const renderer = new SceneRenderer();
-let cryogenicRoom;
-let sandboxRoom;
-let activeScene = scene;
-let activeBackgroundColor = [3, 4, 8];
-let cameraOrbit;
-let cameraProjection;
+const View = Object.freeze({
+  Wakeup: 'wakeup',
+  Room: 'room',
+  Capsule: 'capsule',
+  Terminal: 'terminal',
+  Map: 'map',
+  QcAlert: 'qc-alert',
+  Blackout: 'blackout',
+  End: 'end',
+});
 
-function activateScene(name) {
-  sceneName = name;
-  if (name === 'cryogenic-room') cryogenicRoom ??= loadCryogenicRoom();
-  if (name === 'sandbox-room') sandboxRoom ??= loadSandboxRoom();
-  const camera = name === 'cryogenic-room'
-    ? cryogenicRoom.camera
-    : name === 'sandbox-room'
-      ? sandboxRoom.camera
-      : {
-      eye: { x: 4.5, y: 2.5, z: 6.5 },
-      target: { x: 0, y: -0.35, z: 0 },
-      minDistance: 2.5,
-      maxDistance: 20,
-      projection: {
-        up: { x: 0, y: 1, z: 0 },
-        fovy: 48 * Math.PI / 180,
-        near: 0.1,
-        far: 40,
-      },
-    };
-  const offset = {
-    x: camera.eye.x - camera.target.x,
-    y: camera.eye.y - camera.target.y,
-    z: camera.eye.z - camera.target.z,
-  };
-  cameraOrbit = new OrbitCamera({
-    azimuth: Math.atan2(offset.x, offset.z),
-    elevation: Math.atan2(offset.y, Math.hypot(offset.x, offset.z)),
-    distance: Math.hypot(offset.x, offset.y, offset.z),
-    target: { ...camera.target },
-  }, camera.minDistance, camera.maxDistance);
-  cameraProjection = camera.projection;
-  activeScene = name === 'cryogenic-room'
-    ? cryogenicRoom.scene
-    : name === 'sandbox-room'
-      ? sandboxRoom.scene
-      : scene;
-  activeBackgroundColor = name === 'sandbox-room' ? sandboxRoom.backgroundColor : [3, 4, 8];
-}
-
-activateScene(sceneName);
-let cameraMenuOpen = false;
-let cameraDragMode = null;
-let lastMousePosition = null;
-const enhancedFlightKeys = new Map();
-const repeatedFlightKeys = new Map();
-const flightModifiers = new Set();
-let flightTimer;
-let lastFlightUpdateAt = 0;
-let kittyKeyboardSeen = false;
-let kittyKeyboardModePushed = false;
-
-const light = {
-  position: { x: 0, y: 1.5, z: 0 },
-  direction: { x: 0, y: -1, z: 0 },
-  color: { x: 255, y: 177, z: 91 },
-  intensity: 12,
-  innerCone: Math.cos(16 * Math.PI / 180),
-  outerCone: Math.cos(27 * Math.PI / 180),
+const colors = {
+  alert: [255, 154, 154],
+  alertPanel: [120, 53, 62],
+  data: [140, 231, 241],
+  dataPanel: [45, 130, 144],
+  good: [141, 230, 194],
+  goodPanel: [57, 125, 108],
+  muted: [185, 200, 213],
+  text: [213, 225, 237],
+  panel: [8, 13, 20],
 };
-
-const fixedLights = [
-  { position: { x: -2.2, y: 1.5, z: -2.45 }, color: { x: 115, y: 181, z: 255 }, intensity: 2.8 },
-  { position: { x: 2.2, y: 1.5, z: -2.45 }, color: { x: 255, y: 122, z: 194 }, intensity: 2.8 },
-  { position: { x: -2.2, y: 1.5, z: 2.45 }, color: { x: 122, y: 255, z: 199 }, intensity: 2.8 },
-];
-const lights = [light, ...fixedLights];
-
-const clamp01 = (value) => Math.max(0, Math.min(1, value));
-const roomPixel = { r: 0, g: 0, b: 0, a: 1 };
-const lampPixel = { r: 255, g: 208, b: 124, a: 1 };
-const beamPixel = { r: 0, g: 0, b: 0, a: 0.13 };
-
-const roomMaterial = {
-  cull: 'none',
-  vertex(uniforms, vertex) {
-    const point = vertex.position;
-    const clip = mat4MulVec4(uniforms.mvp, { x: point.x, y: point.y, z: point.z, w: 1 });
-    const world = mat4MulVec4(uniforms.model, { x: point.x, y: point.y, z: point.z, w: 1 });
-    return {
-      clip,
-      world: { x: world.x, y: world.y, z: world.z },
-      normal: mat4MulDir(uniforms.model, vertex.normal),
-      uv: vertex.uv,
-      color: vertex.color,
-      bary: { x: 0, y: 0, z: 0 },
-    };
-  },
-  fragment(uniforms, point) {
-    const normalLength = Math.hypot(point.normal.x, point.normal.y, point.normal.z) || 1;
-    let red = point.color.x * uniforms.ambient;
-    let green = point.color.y * uniforms.ambient;
-    let blue = point.color.z * uniforms.ambient;
-
-    for (const source of uniforms.lights) {
-      const dx = point.world.x - source.position.x;
-      const dy = point.world.y - source.position.y;
-      const dz = point.world.z - source.position.z;
-      const distance = Math.hypot(dx, dy, dz) || 1;
-      const rayX = dx / distance;
-      const rayY = dy / distance;
-      const rayZ = dz / distance;
-      let cone = 1;
-
-      if (source.direction) {
-        const coneDot = rayX * source.direction.x
-          + rayY * source.direction.y
-          + rayZ * source.direction.z;
-        const coneT = clamp01((coneDot - source.outerCone) / (source.innerCone - source.outerCone));
-        cone = coneT * coneT * (3 - 2 * coneT);
-      }
-
-      const diffuse = Math.max(0, -(point.normal.x * rayX + point.normal.y * rayY + point.normal.z * rayZ) / normalLength);
-      const attenuation = 1 / (1 + 0.16 * distance + 0.035 * distance * distance);
-      const strength = cone * diffuse * attenuation * source.intensity * 0.24;
-      red += source.color.x * strength;
-      green += source.color.y * strength;
-      blue += source.color.z * strength;
-    }
-
-    roomPixel.r = red;
-    roomPixel.g = green;
-    roomPixel.b = blue;
-    return roomPixel;
-  },
-};
-
-const roomUniforms = worldUniforms(() => ({
-  lights,
-  ambient: 0.18,
-}));
-
-const walls = new GeometryBuilder();
-const point = (x, y, z) => ({ x, y, z });
-walls.quad(
-  point(-3, -2, -3.4), point(3, -2, -3.4), point(3, -2, 3.4), point(-3, -2, 3.4),
-  { color: { x: 91, y: 103, z: 126 } }, point(0, 1, 0),
-);
-walls.quad(
-  point(-3, -2, -3.4), point(3, -2, -3.4), point(3, 2, -3.4), point(-3, 2, -3.4),
-  { color: { x: 80, y: 95, z: 124 } }, point(0, 0, 1),
-);
-walls.quad(
-  point(-3, -2, 3.4), point(-3, -2, -3.4), point(-3, 2, -3.4), point(-3, 2, 3.4),
-  { color: { x: 101, y: 112, z: 139 } }, point(1, 0, 0),
-);
-walls.quad(
-  point(3, -2, -3.4), point(3, -2, 3.4), point(3, 2, 3.4), point(3, 2, -3.4),
-  { color: { x: 75, y: 87, z: 112 } }, point(-1, 0, 0),
-);
-scene.mesh(walls.mesh(), roomMaterial, roomUniforms);
-
-const lampMaterial = {
-  cull: 'none',
-  vertex(uniforms, vertex) {
-    const point = vertex.position;
-    return {
-      clip: mat4MulVec4(uniforms.mvp, { x: point.x, y: point.y, z: point.z, w: 1 }),
-      world: point,
-      normal: vertex.normal,
-      uv: vertex.uv,
-      color: vertex.color,
-      bary: { x: 0, y: 0, z: 0 },
-    };
-  },
-  fragment(_uniforms, point) {
-    lampPixel.r = point.color.x;
-    lampPixel.g = point.color.y;
-    lampPixel.b = point.color.z;
-    return lampPixel;
-  },
-};
-
-const lampGeometry = cube(0.115);
-for (const vertex of lampGeometry.vertices) vertex.color = { x: 255, y: 208, z: 124 };
-const lamp = scene.mesh(lampGeometry, lampMaterial, worldUniforms({}));
-lamp.position.y = 1.67;
-
-for (const source of fixedLights) {
-  const geometry = cube(0.09);
-  for (const vertex of geometry.vertices) vertex.color = source.color;
-  const bulb = scene.mesh(geometry, lampMaterial, worldUniforms({}));
-  bulb.position.x = source.position.x;
-  bulb.position.y = source.position.y + 0.17;
-  bulb.position.z = source.position.z;
-}
-
-const beamGeometry = new GeometryBuilder();
-const beamSegments = 32;
-const beamLength = 3.4;
-const beamRadius = Math.tan(28 * Math.PI / 180) * beamLength;
-const beamApex = point(0, 0, 0);
-for (let i = 0; i < beamSegments; i++) {
-  const a = (i / beamSegments) * Math.PI * 2;
-  const b = ((i + 1) / beamSegments) * Math.PI * 2;
-  const edgeA = point(Math.cos(a) * beamRadius, -beamLength, Math.sin(a) * beamRadius);
-  const edgeB = point(Math.cos(b) * beamRadius, -beamLength, Math.sin(b) * beamRadius);
-  beamGeometry.triangle(beamApex, edgeA, edgeB, { color: { x: 255, y: 177, z: 91 } });
-}
-
-const beamMaterial = {
-  blend: 'alpha',
-  cull: 'none',
-  vertex(uniforms, vertex) {
-    const point = vertex.position;
-    const world = mat4MulVec4(uniforms.model, { x: point.x, y: point.y, z: point.z, w: 1 });
-    return {
-      clip: mat4MulVec4(uniforms.mvp, { x: point.x, y: point.y, z: point.z, w: 1 }),
-      world: { x: world.x, y: world.y, z: world.z },
-      normal: mat4MulDir(uniforms.model, vertex.normal),
-      uv: vertex.uv,
-      color: vertex.color,
-      bary: { x: 0, y: 0, z: 0 },
-    };
-  },
-  fragment(_uniforms, point) {
-    beamPixel.r = point.color.x;
-    beamPixel.g = point.color.y;
-    beamPixel.b = point.color.z;
-    return beamPixel;
-  },
-};
-const beam = scene.mesh(beamGeometry.mesh(), beamMaterial, worldUniforms({}));
-beam.position.y = light.position.y - 0.08;
-beam.renderOrder = 1;
 
 let running = true;
-let startTime = performance.now();
-let paused = false;
-let pausedElapsed = 0;
 let debugMenuOpen = false;
 let frameCount = 0;
 let measuredFps = 0;
 let fpsWindowStart = performance.now();
 let targetFps = 6;
-let target = new RenderTarget(1, 1);
-let pixelTarget = new RenderTarget(1, 2);
 let renderMode = 'half-block';
+let target = new RenderTarget(1, 2);
+let imageRect = { left: 0, top: 0, width: 1, height: 1 };
+let ui = new Screen(1, 1);
 let timer;
-let interactionRenderTimer;
-let lastDrawAt = performance.now();
+let kittyKeyboardModePushed = false;
+let pendingKittyInput = '';
+
+const story = {
+  view: View.Wakeup,
+  selectedTarget: 0,
+  capsuleExamined: false,
+  terminalSeen: false,
+  rebooted: false,
+  roomMessage: [
+    'RESTI SEDUTO FINCHE LA STANZA RALLENTA.',
+    'LA GUARNIZIONE DELLA CAPSULA E NERA.',
+    'LE ALTRE CAPSULE SONO VUOTE. SEI SOLO.',
+    'IL TERMINALE LAMPEGGIA. PORTA BLOCCATA.',
+  ],
+};
+
+const storyTargets = room.interactiveElements.map((element) => ({
+  id: element.id,
+  label: ({ capsule: 'CAPSULA', terminal: 'TERMINALE', door: 'PORTA' })[element.role] ?? element.id,
+}));
+
+function drawBackground() {
+  target.clear(...room.color);
+
+  const frameScale = Math.min(target.width / room.frameWidth, target.height / room.frameHeight);
+  const frameWidth = room.frameWidth * frameScale;
+  const frameHeight = room.frameHeight * frameScale;
+  const imageScale = room.fit === 'cover'
+    ? Math.max(frameWidth / room.texture.width, frameHeight / room.texture.height)
+    : Math.min(frameWidth / room.texture.width, frameHeight / room.texture.height);
+  const imageWidth = Math.max(1, Math.round(room.texture.width * imageScale));
+  const imageHeight = Math.max(1, Math.round(room.texture.height * imageScale));
+  const left = Math.floor((target.width - imageWidth) / 2);
+  const top = Math.floor((target.height - imageHeight) / 2);
+  imageRect = { left, top, width: imageWidth, height: imageHeight };
+
+  const pixels = target.color;
+  const source = room.texture.data;
+  for (let y = 0; y < imageHeight; y++) {
+    const targetY = top + y;
+    if (targetY < 0 || targetY >= target.height) continue;
+    const sourceY = Math.min(room.texture.height - 1, Math.floor(y * room.texture.height / imageHeight));
+    for (let x = 0; x < imageWidth; x++) {
+      const targetX = left + x;
+      if (targetX < 0 || targetX >= target.width) continue;
+      const sourceX = Math.min(room.texture.width - 1, Math.floor(x * room.texture.width / imageWidth));
+      const sourceIndex = (sourceY * room.texture.width + sourceX) * 4;
+      const targetIndex = (targetY * target.width + targetX) * 3;
+      const alpha = source[sourceIndex + 3] / 255;
+      if (alpha >= 1) {
+        pixels[targetIndex] = source[sourceIndex];
+        pixels[targetIndex + 1] = source[sourceIndex + 1];
+        pixels[targetIndex + 2] = source[sourceIndex + 2];
+      } else if (alpha > 0) {
+        const inverseAlpha = 1 - alpha;
+        pixels[targetIndex] = source[sourceIndex] * alpha + pixels[targetIndex] * inverseAlpha;
+        pixels[targetIndex + 1] = source[sourceIndex + 1] * alpha + pixels[targetIndex + 1] * inverseAlpha;
+        pixels[targetIndex + 2] = source[sourceIndex + 2] * alpha + pixels[targetIndex + 2] * inverseAlpha;
+      }
+    }
+  }
+
+  if (!story.rebooted) {
+    for (let index = 0; index < pixels.length; index++) pixels[index] *= 0.68;
+  }
+}
+
+function storyPanel() {
+  switch (story.view) {
+    case View.Wakeup:
+      return {
+        title: 'RISVEGLIO // POV INGEGNERE',
+        lines: [
+          'IL SUONO ARRIVA PRIMA DEI PENSIERI.',
+          'LA LUCE ROSSA PULSA OLTRE IL VETRO.',
+          'TIRI LA LEVA. L ARIA SIBILA.',
+          'LE GAMBE CEDONO. SEI SOLO.',
+        ],
+        accent: colors.alert,
+        status: ['ALLARME', colors.alert],
+        actions: [{ id: 'wakeup-continue', label: 'INVIO  GUARDA LA SALA', onClick: () => activateFooter(0) }],
+        onPanelClick: () => activateFooter(0),
+      };
+    case View.Room:
+      return {
+        title: 'SALA CRIOGENICA // 1-3 O FRECCE',
+        lines: story.roomMessage,
+        accent: story.rebooted ? colors.goodPanel : colors.alertPanel,
+        status: story.rebooted ? ['RISERVA LOCALE ATTIVA', colors.good] : ['SIRENA / SETTORE ISOLATO', colors.alert],
+        actions: storyTargets.map((target, index) => ({
+          id: `room-${index}`,
+          label: `${index + 1}  ${target.label}`,
+          selected: story.selectedTarget === index,
+          onClick: () => {
+            openTarget(target.id);
+            draw();
+          },
+        })),
+      };
+    case View.Capsule:
+      return {
+        title: 'LA TUA CAPSULA',
+        lines: [
+          'UN FERMO DEL COPERCHIO E DEFORMATO.',
+          'LA SPIA DI MANUTENZIONE LAMPEGGIA.',
+          'IL DISPLAY NON MOSTRA LA CRONOLOGIA.',
+          'APPOGGI LA MANO. LE DITA SI CALMANO.',
+        ],
+        accent: colors.alert,
+        status: ['CAPSULA / ISPEZIONE', colors.alert],
+        actions: [{ id: 'capsule-close', label: 'INVIO  TORNA ALLA SALA', onClick: () => activateFooter(0) }],
+        onPanelClick: () => activateFooter(0),
+      };
+    case View.Terminal:
+      return {
+        title: 'TERMINALE // MESSAGGIO IN ATTESA',
+        lines: [
+          'REGISTRAZIONE AUDIO DEL CAPITANO.',
+          'INGEGNERE. SALA MOTORI.',
+          'QC STABILE. IMPIANTI VITALI ATTIVI.',
+        ],
+        accent: colors.dataPanel,
+        status: ['TERMINALE / ARCHIVIO', colors.data],
+        actions: [
+          { id: 'terminal-map', label: 'M  MAPPA', onClick: () => activateFooter(0) },
+          { id: 'terminal-qc', label: 'A  ALLARME QC', onClick: () => activateFooter(1) },
+          { id: 'terminal-close', label: 'ESC  CHIUDI', onClick: () => activateFooter(2) },
+        ],
+      };
+    case View.Map:
+      return {
+        title: 'MAPPA // SEGNALI DEI TERMINALI',
+        lines: [
+          'CAPITANO: CENTRO DI COMANDO',
+          'PRIMO UFFICIALE: CORRIDOIO',
+          'MEDICO: VERSO SALA CRIOGENICA',
+          'SCIENZIATO: VICINO AL LABORATORIO',
+          'SEGNALI. NON VEDI NESSUNO.',
+        ],
+        accent: colors.dataPanel,
+        status: ['TERMINALE / MAPPA', colors.data],
+        actions: [{ id: 'map-back', label: 'ESC  TORNA AL TERMINALE', onClick: () => activateFooter(0) }],
+      };
+    case View.QcAlert:
+      return {
+        title: 'QC // ALLARME ATTIVO',
+        lines: [
+          'ENERGIA DEI REATTORI IN CALO.',
+          'RITORNO INTERROTTO.',
+          'ASTEROIDI: CIRCA TRE GIORNI.',
+          'STIMA ATTUALE. COLLISIONE NON CERTA.',
+        ],
+        accent: colors.dataPanel,
+        status: ['TERMINALE / QC', colors.data],
+        actions: [{ id: 'qc-back', label: 'ESC  TORNA AL TERMINALE', onClick: () => activateFooter(0) }],
+      };
+    case View.Blackout:
+      return {
+        title: 'BLACKOUT',
+        lines: [
+          'IL TERMINALE SI SPEGNE.',
+          'UN CLIC NEL BUIO. LA SIRENA TACE.',
+          'LA RISERVA LOCALE SI RIAVVIA.',
+        ],
+        accent: colors.alertPanel,
+        status: ['SEGNALE ASSENTE', colors.alert],
+        actions: [{ id: 'blackout-continue', label: 'INVIO  CONTINUA', onClick: () => activateFooter(0) }],
+        onPanelClick: () => activateFooter(0),
+      };
+    case View.End:
+      return {
+        title: 'PORTA SBLOCCATA',
+        lines: [
+          'IL CORRIDOIO E OLTRE LA SOGLIA.',
+          'IL MEDICO TI ASPETTA LI.',
+          'LA SCENA DEL RISVEGLIO TERMINA QUI.',
+        ],
+        accent: colors.goodPanel,
+        status: ['RISERVA LOCALE ATTIVA', colors.good],
+        actions: [{ id: 'end-back', label: 'ESC  TORNA ALLA SALA', onClick: () => activateFooter(0) }],
+        onPanelClick: () => activateFooter(0),
+      };
+  }
+}
+
+function debugPanel() {
+  return {
+    title: 'DEBUG SISTEMA // D CHIUDE',
+    lines: [
+      `FPS EFFETTIVI: ${measuredFps.toFixed(1)}`,
+      `LIMITE: ${targetFps} FPS   RESA: ${renderMode === 'half-block' ? 'PIXEL' : 'ASCII'}`,
+    ],
+    accent: colors.dataPanel,
+    status: ['SISTEMA / DEBUG', colors.data],
+    actions: [
+      { id: 'debug-minus', label: '- FPS', onClick: () => adjustTargetFps(-1) },
+      { id: 'debug-plus', label: '+ FPS', onClick: () => adjustTargetFps(1) },
+      {
+        id: 'debug-renderer',
+        label: 'V  CAMBIA RESA',
+        onClick: () => {
+          renderMode = renderMode === 'half-block' ? 'shape-glyph' : 'half-block';
+          draw();
+        },
+      },
+      {
+        id: 'debug-close',
+        label: 'D  CHIUDI',
+        onClick: () => {
+          debugMenuOpen = false;
+          draw();
+        },
+      },
+    ],
+  };
+}
+
+function focusedActionId(content) {
+  if (debugMenuOpen) return 'debug-minus';
+  if (story.view === View.Room) return `room-${story.selectedTarget}`;
+  return content.actions[0]?.id ?? null;
+}
+
+function drawUi(cols, rows) {
+  const content = debugMenuOpen ? debugPanel() : storyPanel();
+  const isWide = cols >= 56;
+  const bodyWidth = Math.max(12, cols - 8);
+  const bodyLines = content.lines.flatMap((line) => wrapText(line, bodyWidth));
+  const actionsHeight = isWide ? 3 : content.actions.length;
+  const panelHeight = Math.min(rows - 1, bodyLines.length + actionsHeight + 3);
+  const actionNodes = content.actions.map((action) => {
+    const selected = action.selected === true;
+    const normalBg = selected ? [20, 51, 47] : [14, 23, 26];
+    const normalFg = selected ? colors.good : colors.text;
+    return Button({
+      id: action.id,
+      label: action.label,
+      onClick: action.onClick,
+      style: {
+        width: 'auto',
+        height: isWide ? 3 : 1,
+        padding: [0, 1],
+        border: isWide ? 'square' : 'none',
+        borderColor: selected ? colors.good : content.accent,
+        background: normalBg,
+        color: normalFg,
+        bold: true,
+        hover: { background: [38, 58, 66], color: colors.text, borderColor: colors.data },
+        focus: { background: [38, 58, 66], color: colors.text, borderColor: colors.data },
+        pressed: { background: [66, 100, 108], color: colors.text },
+      },
+    });
+  });
+  const panelNode = Box({
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    width: cols,
+    height: panelHeight,
+    padding: [0, 1],
+    flexDirection: 'column',
+    gap: 0,
+    background: colors.panel,
+    border: 'square',
+    borderColor: content.accent,
+    overflow: 'hidden',
+  }, [
+    Text({ text: content.title, style: { height: 1, color: content.accent, bold: true } }),
+    ...bodyLines.map((line) => Text({ text: line, style: { height: 1, color: colors.text } })),
+    Box({ flexDirection: isWide ? 'row' : 'column', gap: isWide ? 1 : 0 }, actionNodes),
+  ]);
+  if (content.onPanelClick) panelNode.onClick = content.onPanelClick;
+
+  const status = Box({
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: cols,
+    height: 1,
+    padding: [0, 1],
+    background: story.rebooted ? [9, 23, 25] : [38, 9, 13],
+  }, [Text({ text: content.status[0], style: { height: 1, color: content.status[1], bold: true } })]);
+  const root = Box({ width: cols, height: rows, flexDirection: 'column', background: 'transparent', overflow: 'hidden' }, [status, panelNode]);
+  ui.resize(cols, rows);
+  ui.setRoot(root, { x: 0, y: 0, w: cols, h: rows });
+  ui.setFocus(focusedActionId(content));
+  return ui.frame();
+}
 
 function draw() {
-  if (interactionRenderTimer) {
-    clearTimeout(interactionRenderTimer);
-    interactionRenderTimer = undefined;
-  }
-  lastDrawAt = performance.now();
   const cols = Math.max(30, process.stdout.columns || 80);
   const rows = Math.max(16, process.stdout.rows || 24);
   const width = cols - 1;
-  const supersampling = 3;
+  const height = Math.max(16, rows - 1) * 2;
   const now = performance.now();
-  const elapsed = paused ? pausedElapsed : (now - startTime) / 1000;
-  const angle = Math.sin(elapsed * 1.15) * 0.43;
+
   frameCount++;
   if (now - fpsWindowStart >= 500) {
     measuredFps = frameCount * 1000 / (now - fpsWindowStart);
     frameCount = 0;
     fpsWindowStart = now;
   }
-  const hudLineCount = sceneSelectionOpen ? 6 : debugMenuOpen ? 5 : cameraMenuOpen ? 4 : 1;
-  const sceneRows = Math.max(8, rows - hudLineCount);
-  const height = sceneRows * 2 * supersampling;
-  const hudLines = sceneSelectionOpen
-    ? [
-        'ARCADE  /  SELEZIONE SCENA',
-        `${selectedSceneIndex === 0 ? '▶' : ' '}  1  Room 3D`,
-        `${selectedSceneIndex === 1 ? '▶' : ' '}  2  Cryogenic room`,
-        `${selectedSceneIndex === 2 ? '▶' : ' '}  3  Sandbox room 2D`,
-        'Esc torna alla scena   q esce',
-        '↑/↓ seleziona   Invio avvia   1/2/3 avvio rapido',
-      ]
-    : debugMenuOpen
-      ? [
-        'DEBUG SISTEMA  [D: chiudi]',
-        `FPS EFFETTIVI: ${measuredFps.toFixed(1)}   LIMITE: ${targetFps}`,
-        `RESA: ${renderMode === 'half-block' ? 'PIXEL A BLOCCHI' : 'GLIFI ASCII'}  [V: cambia]`,
-        `TERMINALE: ${cols}x${rows}   BUFFER RENDER: ${width * supersampling}x${height}`,
-        '- o [: diminuisci   +, = o ]: aumenta FPS (1-30)',
-      ]
-    : cameraMenuOpen
-      ? [
-          `${cameraDragMode === 'fly' ? 'CAMERA / VOLO' : 'CAMERA / PRONTA AL VOLO'}  [C/Esc: chiudi menu]`,
-          'Ctrl+Alt+sinistro pan  Alt+sinistro orbita  Alt+destro zoom',
-          'centrale pan  rotella zoom',
-          `Tieni destro: mouse guarda; WASD + E/Q o Space/X${kittyKeyboardSeen ? ' continuo' : ' (rilascio stimato)'}; Shift accelera`,
-        ]
-      : [`${sceneName.toUpperCase()}  M: scene  C: camera  D: debug sistema  Shift+R: ricarica  q: esci`];
-  if (sceneName === 'room') {
-    light.direction = normalize3({ x: Math.sin(angle), y: -Math.cos(angle), z: 0 });
-    beam.rotation.z = angle;
-  }
 
-  target.resize(width * supersampling, height);
-  target.clear(...activeBackgroundColor);
-  renderer.render(target, activeScene, cameraOrbit.toCamera(cameraProjection));
+  target.resize(width, height);
+  drawBackground();
+  if (story.view === View.Blackout) target.clear(2, 4, 7);
 
-  const hud = hudLines.map((line, index) =>
-    `\x1b[${sceneRows + index + 1};1H\x1b[38;2;190;204;226m${line.slice(0, width)}\x1b[0m`,
-  ).join('');
-  let picture;
-  if (renderMode === 'half-block') {
-    pixelTarget = downsample(target, supersampling, pixelTarget);
-    picture = toHalfBlock(pixelTarget);
-  } else {
-    picture = toShapeGlyph(target, width, sceneRows, { color: true, hybrid: true });
-  }
-  process.stdout.write(
-    '\x1b[2J'
-      + picture
-      + hud,
-  );
-}
-
-function requestInteractionDraw() {
-  if (interactionRenderTimer) return;
-  const minimumFrameMs = 1000 / 20;
-  const delay = Math.max(0, minimumFrameMs - (performance.now() - lastDrawAt));
-  interactionRenderTimer = setTimeout(() => {
-    interactionRenderTimer = undefined;
-    draw();
-  }, delay);
+  const picture = renderMode === 'half-block'
+    ? toHalfBlock(target)
+    : toShapeGlyph(target, width, rows - 1, { color: true, hybrid: true });
+  const interfaceLayer = drawUi(width, rows - 1);
+  process.stdout.write('\x1b[2J\x1b[H' + picture + interfaceLayer);
 }
 
 function close() {
   if (!running) return;
   running = false;
   clearInterval(timer);
-  clearInterval(flightTimer);
-  clearTimeout(interactionRenderTimer);
   process.stdin.off('data', parseTerminalInput);
   process.stdout.off('resize', draw);
   restoreKittyKeyboardMode();
@@ -380,58 +370,10 @@ function close() {
   process.exit(0);
 }
 
-function chooseScene(name) {
-  activateScene(name);
-  selectedSceneIndex = sceneOptions.indexOf(name);
-  sceneSelectionOpen = false;
-  cameraMenuOpen = false;
-  debugMenuOpen = false;
-  cameraDragMode = null;
-  lastMousePosition = null;
-  draw();
-}
-
-function handleSceneSelectionKey(event) {
-  const { name } = event;
-  if (name === 'escape') {
-    sceneSelectionOpen = false;
-    draw();
-    return;
-  }
-  if (name === 'q') {
-    close();
-    return;
-  }
-  if (name === 'enter' || name === 'return') {
-    chooseScene(sceneOptions[selectedSceneIndex]);
-    return;
-  }
-  if (name === '1') {
-    chooseScene('room');
-    return;
-  }
-  if (name === '2') {
-    chooseScene('cryogenic-room');
-    return;
-  }
-  if (name === '3') {
-    chooseScene('sandbox-room');
-    return;
-  }
-  if (name === 'up' || name === 'w') selectedSceneIndex = Math.max(0, selectedSceneIndex - 1);
-  else if (name === 'down' || name === 's') {
-    selectedSceneIndex = Math.min(sceneOptions.length - 1, selectedSceneIndex + 1);
-  }
-  else return;
-  draw();
-}
-
 function restart() {
   if (!running) return;
   running = false;
   clearInterval(timer);
-  clearInterval(flightTimer);
-  clearTimeout(interactionRenderTimer);
   process.stdin.off('data', parseTerminalInput);
   process.stdout.off('resize', draw);
   restoreKittyKeyboardMode();
@@ -457,260 +399,244 @@ function adjustTargetFps(amount) {
   draw();
 }
 
-function setCameraTargetFromEye(eye) {
-  const horizontalDistance = Math.cos(cameraOrbit.elevation) * cameraOrbit.distance;
-  cameraOrbit.target = {
-    x: eye.x - horizontalDistance * Math.sin(cameraOrbit.azimuth),
-    y: eye.y - Math.sin(cameraOrbit.elevation) * cameraOrbit.distance,
-    z: eye.z - horizontalDistance * Math.cos(cameraOrbit.azimuth),
-  };
-}
-
-function lookFromCurrentPosition(dx, dy) {
-  const eye = cameraOrbit.eye();
-  cameraOrbit.orbit(dx, dy);
-  setCameraTargetFromEye(eye);
-}
-
-function moveCameraInFlight(forwardAmount, rightAmount, verticalAmount, speed) {
-  const { forward, right } = cameraOrbit.basis();
-  const dx = (forward.x * forwardAmount + right.x * rightAmount) * speed;
-  const dy = (forward.y * forwardAmount + right.y * rightAmount + verticalAmount) * speed;
-  const dz = (forward.z * forwardAmount + right.z * rightAmount) * speed;
-  cameraOrbit.target = {
-    x: cameraOrbit.target.x + dx,
-    y: cameraOrbit.target.y + dy,
-    z: cameraOrbit.target.z + dz,
-  };
-}
-
-const flightDirections = {
-  w: [1, 0, 0],
-  s: [-1, 0, 0],
-  a: [0, -1, 0],
-  d: [0, 1, 0],
-  e: [0, 0, 1],
-  q: [0, 0, -1],
-  space: [0, 0, 1],
-  x: [0, 0, -1],
-};
-
-function updateFlightMovement() {
-  if (cameraDragMode !== 'fly') return;
-  const now = performance.now();
-  const elapsed = Math.min((now - lastFlightUpdateAt) / 1000, 0.1);
-  lastFlightUpdateAt = now;
-
-  for (const [name, input] of repeatedFlightKeys) {
-    if (input.expiresAt <= now) repeatedFlightKeys.delete(name);
-  }
-
-  let forward = 0;
-  let right = 0;
-  let vertical = 0;
-  let fast = flightModifiers.size > 0;
-  for (const [name, input] of [...enhancedFlightKeys, ...repeatedFlightKeys]) {
-    const direction = flightDirections[name];
-    if (!direction) continue;
-    forward += direction[0];
-    right += direction[1];
-    vertical += direction[2];
-    fast ||= input.shift;
-  }
-
-  if (forward === 0 && right === 0 && vertical === 0) return;
-  const magnitude = Math.hypot(forward, right, vertical);
-  const speed = fast ? 7.5 : 2.5;
-  moveCameraInFlight(forward / magnitude, right / magnitude, vertical / magnitude, speed * elapsed);
-  requestInteractionDraw();
-}
-
-function startFlight() {
-  enhancedFlightKeys.clear();
-  repeatedFlightKeys.clear();
-  flightModifiers.clear();
-  lastFlightUpdateAt = performance.now();
-  clearInterval(flightTimer);
-  flightTimer = setInterval(updateFlightMovement, 1000 / 30);
-}
-
-function stopFlight() {
-  clearInterval(flightTimer);
-  flightTimer = undefined;
-  enhancedFlightKeys.clear();
-  repeatedFlightKeys.clear();
-  flightModifiers.clear();
-}
-
-function handleFlightInput(event) {
-  if (event.ctrl || event.meta) return false;
-  const direction = flightDirections[event.name];
-  if (direction) {
-    if (event.enhanced) {
-      if (event.eventType === 'release') enhancedFlightKeys.delete(event.name);
-      else enhancedFlightKeys.set(event.name, { shift: event.shift });
+function openTarget(id) {
+  const element = room.interactiveElements.find((candidate) => candidate.id === id);
+  if (element?.role === 'capsule') {
+    story.selectedTarget = storyTargets.findIndex((target) => target.id === id);
+    story.capsuleExamined = true;
+    story.view = View.Capsule;
+  } else if (element?.role === 'terminal') {
+    story.selectedTarget = storyTargets.findIndex((target) => target.id === id);
+    story.terminalSeen = true;
+    story.view = View.Terminal;
+  } else if (element?.role === 'door') {
+    story.selectedTarget = storyTargets.findIndex((target) => target.id === id);
+    if (story.rebooted) {
+      story.view = View.End;
     } else {
-      // Legacy terminal input has no key-up event. Treat repeated key presses as
-      // a short lease so movement stays smooth and stops shortly after release.
-      repeatedFlightKeys.set(event.name, {
-        shift: event.shift,
-        expiresAt: performance.now() + 140,
-      });
+      story.roomMessage = [
+        'TIRI LA MANIGLIA. LA PORTA NON CEDE.',
+        'SETTORE CRIOGENICO ISOLATO.',
+        'SUL PANNELLO LA LUCE RESTA ROSSA.',
+        'IL TERMINALE E ANCORA ACCESO.',
+      ];
     }
-    return true;
   }
+}
 
-  if (event.enhanced && ['left_shift', 'right_shift'].includes(event.name)) {
-    if (event.eventType === 'release') flightModifiers.delete(event.name);
-    else flightModifiers.add(event.name);
-    return true;
+function closeCapsule() {
+  story.view = story.terminalSeen && !story.rebooted ? View.Blackout : View.Room;
+}
+
+function closeTerminal() {
+  if (story.capsuleExamined && !story.rebooted) {
+    story.view = View.Blackout;
+  } else {
+    story.view = View.Room;
+    story.roomMessage = [
+      'IL MESSAGGIO DEL CAPITANO RESTA ATTIVO.',
+      'PUOI RILEGGERE MAPPA E ALLARME QC.',
+      'NESSUNO E VISIBILE NELLA SALA.',
+      'SCEGLI UN OGGETTO DA ESAMINARE.',
+    ];
   }
-  return false;
+}
+
+function rebootRoom() {
+  story.rebooted = true;
+  story.view = View.Room;
+  story.roomMessage = [
+    'LA RISERVA LOCALE SI RIAVVIA.',
+    'SIRENA SPENTA. LUCI NORMALI DI NUOVO.',
+    'LA SPIA DELLA PORTA PASSA AL VERDE.',
+    'I REATTORI RESTANO IN AVARIA.',
+  ];
+}
+
+function goBack() {
+  switch (story.view) {
+    case View.Capsule:
+      closeCapsule();
+      break;
+    case View.Terminal:
+      closeTerminal();
+      break;
+    case View.Map:
+    case View.QcAlert:
+      story.view = View.Terminal;
+      break;
+    case View.End:
+      story.view = View.Room;
+      break;
+    case View.Room:
+      close();
+      return;
+    case View.Wakeup:
+      close();
+      return;
+    case View.Blackout:
+      break;
+  }
+  draw();
+}
+
+function activateFooter(index = 0) {
+  switch (story.view) {
+    case View.Wakeup:
+      story.view = View.Room;
+      break;
+    case View.Room:
+      openTarget(storyTargets[index]?.id ?? storyTargets[0].id);
+      break;
+    case View.Capsule:
+      closeCapsule();
+      break;
+    case View.Terminal:
+      if (index === 0) story.view = View.Map;
+      else if (index === 1) story.view = View.QcAlert;
+      else closeTerminal();
+      break;
+    case View.Map:
+    case View.QcAlert:
+      story.view = View.Terminal;
+      break;
+    case View.Blackout:
+      rebootRoom();
+      break;
+    case View.End:
+      story.view = View.Room;
+      break;
+  }
+  draw();
+}
+
+function onMouse(event) {
+  if (event.type !== 'down' || event.button !== 0) return;
+  if (event.x > ui.cols || event.y > ui.rows) return;
+  const uiSurface = ui.pointerDown(event.x, event.y, event.button);
+  ui.pointerUp();
+  if (uiSurface) {
+    draw();
+    return;
+  }
+  if (debugMenuOpen || story.view !== View.Room) return;
+
+  const pixelX = event.x - 1;
+  const pixelY = 2 * (event.y - 1) + 0.5;
+  const imageX = (pixelX - imageRect.left) / imageRect.width;
+  const imageY = (pixelY - imageRect.top) / imageRect.height;
+  if (imageX < 0 || imageX > 1 || imageY < 0 || imageY > 1) return;
+  const hotspot = room.interactiveElements.find((element) =>
+    element.hit_regions.some(([x, y, w, h]) => imageX >= x && imageX <= x + w && imageY >= y && imageY <= y + h),
+  );
+  if (hotspot) {
+    openTarget(hotspot.id);
+    draw();
+  }
 }
 
 function onKey(event) {
-  const { name, raw, shift, ctrl, meta } = event;
-  if (event.enhanced) kittyKeyboardSeen = true;
-
-  if (sceneSelectionOpen) {
-    if (event.eventType !== 'release') handleSceneSelectionKey(event);
-    return;
-  }
-
-  if (event.enhanced && event.eventType === 'release') {
-    if (cameraMenuOpen && cameraDragMode === 'fly') handleFlightInput(event);
-    return;
-  }
-  if (event.enhanced && event.eventType === 'repeat') {
-    if (cameraMenuOpen && cameraDragMode === 'fly') handleFlightInput(event);
-    return;
-  }
+  if (event.enhanced && event.eventType !== 'press') return;
+  const { name, shift, ctrl, meta } = event;
+  const confirm = name === 'enter' || name === 'space';
+  const back = name === 'escape' || name === 'backspace';
 
   if (name === 'escape') {
-    if (cameraMenuOpen) {
-      if (cameraDragMode === 'fly') stopFlight();
-      cameraMenuOpen = false;
-      cameraDragMode = null;
-      lastMousePosition = null;
-      draw();
-      return;
-    }
     if (debugMenuOpen) {
       debugMenuOpen = false;
       draw();
-      return;
+    } else {
+      goBack();
     }
+    return;
+  }
+  if (name === 'q' && !debugMenuOpen) {
     close();
     return;
   }
-  if ((name === 'q' && !cameraMenuOpen && !debugMenuOpen) || (name === 'c' && ctrl)) close();
-  if (name === 'r' && shift) restart();
-
-  if (name === 'm' && !ctrl && !meta) {
-    if (cameraMenuOpen && cameraDragMode === 'fly') stopFlight();
-    cameraMenuOpen = false;
-    debugMenuOpen = false;
-    cameraDragMode = null;
-    lastMousePosition = null;
-    selectedSceneIndex = sceneOptions.indexOf(sceneName);
-    sceneSelectionOpen = true;
-    draw();
+  if (name === 'r' && shift) {
+    restart();
     return;
   }
-
-  if (cameraMenuOpen && cameraDragMode === 'fly' && handleFlightInput(event)) {
-    return;
-  }
-  if (cameraMenuOpen && cameraDragMode !== 'fly' && name === 'r' && !shift && !ctrl && !meta) {
-    cameraOrbit.reset();
-    requestInteractionDraw();
-    return;
-  }
-
-  if (name === 'c' && !ctrl && !meta) {
-    if (cameraDragMode === 'fly') stopFlight();
-    cameraMenuOpen = !cameraMenuOpen;
-    if (cameraMenuOpen) debugMenuOpen = false;
-    cameraDragMode = null;
-    lastMousePosition = null;
-    draw();
-    return;
-  }
-  if (!cameraMenuOpen && name === 'd' && !ctrl && !meta) {
+  if (name === 'd' && !ctrl && !meta) {
     debugMenuOpen = !debugMenuOpen;
     draw();
     return;
   }
-  if (name === 'space') {
-    if (paused) {
-      startTime = performance.now() - pausedElapsed * 1000;
-      paused = false;
-    } else {
-      pausedElapsed = (performance.now() - startTime) / 1000;
-      paused = true;
-    }
+  if (ui.handleKey(event)) {
     draw();
+    return;
   }
-  if (debugMenuOpen && (name === '-' || name === '[')) adjustTargetFps(-1);
-  if (debugMenuOpen && (name === '+' || name === '=' || name === ']')) adjustTargetFps(1);
+  if (debugMenuOpen && (name === '-' || name === '[')) {
+    adjustTargetFps(-1);
+    return;
+  }
+  if (debugMenuOpen && (name === '+' || name === '=' || name === ']')) {
+    adjustTargetFps(1);
+    return;
+  }
   if (debugMenuOpen && name === 'v' && !ctrl && !meta) {
     renderMode = renderMode === 'half-block' ? 'shape-glyph' : 'half-block';
     draw();
+    return;
   }
-}
 
-function onMouse(event) {
-  if (!cameraMenuOpen) return;
-
-  if (event.type === 'down') {
-    cameraDragMode = event.button === 0 && event.ctrl && event.meta
-      ? 'pan'
-      : event.button === 1
-        ? 'pan'
-        : event.button === 0 && event.meta
-          ? 'orbit'
-          : event.button === 2 && event.meta
-            ? 'zoom'
-            : event.button === 2
-              ? 'fly'
-              : null;
-    lastMousePosition = { x: event.x, y: event.y };
-    if (cameraDragMode === 'fly') {
-      startFlight();
-      const eye = cameraOrbit.eye();
-      cameraOrbit.distance = 2.5;
-      setCameraTargetFromEye(eye);
-      requestInteractionDraw();
-    }
-    return;
-  }
-  if (event.type === 'up') {
-    const wasFlying = cameraDragMode === 'fly';
-    if (wasFlying) stopFlight();
-    cameraDragMode = null;
-    lastMousePosition = null;
-    if (wasFlying) requestInteractionDraw();
-    return;
-  }
-  if (event.type === 'drag' && cameraDragMode && lastMousePosition) {
-    const dx = event.x - lastMousePosition.x;
-    const dy = event.y - lastMousePosition.y;
-    if (cameraDragMode === 'orbit') cameraOrbit.orbit(dx, dy);
-    else if (cameraDragMode === 'zoom') cameraOrbit.zoomBy(Math.exp(dy * 0.012));
-    else if (cameraDragMode === 'fly') lookFromCurrentPosition(dx, dy);
-    else cameraOrbit.pan(dx, dy);
-    lastMousePosition = { x: event.x, y: event.y };
-    requestInteractionDraw();
-    return;
-  }
-  if (event.type === 'wheel' && event.wheelAxis === 'vertical') {
-    cameraOrbit.zoomBy(event.wheel === -1 ? 0.9 : 1.1);
-    requestInteractionDraw();
+  switch (story.view) {
+    case View.Wakeup:
+      if (confirm) activateFooter(0);
+      else if (back) close();
+      break;
+    case View.Room:
+      if (back) {
+        close();
+      } else if (name === 'left' || name === 'up') {
+        story.selectedTarget = (story.selectedTarget + storyTargets.length - 1) % storyTargets.length;
+      } else if (name === 'right' || name === 'down') {
+        story.selectedTarget = (story.selectedTarget + 1) % storyTargets.length;
+      } else if (name === '1' || name === 'c') {
+        openTarget(storyTargets[0].id);
+      } else if (name === '2' || name === 't') {
+        openTarget(storyTargets[1].id);
+      } else if (name === '3' || name === 'p') {
+        openTarget(storyTargets[2].id);
+      } else if (confirm) {
+        openTarget(storyTargets[story.selectedTarget].id);
+      } else {
+        return;
+      }
+      draw();
+      break;
+    case View.Capsule:
+      if (confirm || back) activateFooter(0);
+      break;
+    case View.Terminal:
+      if (name === 'm' || name === '1') {
+        activateFooter(0);
+        return;
+      } else if (name === 'a' || name === '2') {
+        activateFooter(1);
+        return;
+      } else if (back) closeTerminal();
+      else return;
+      draw();
+      break;
+    case View.Map:
+    case View.QcAlert:
+      if (confirm || back) {
+        story.view = View.Terminal;
+        draw();
+      }
+      break;
+    case View.Blackout:
+      if (confirm) activateFooter(0);
+      break;
+    case View.End:
+      if (back) activateFooter(0);
+      break;
   }
 }
 
 const legacyInputParser = createInputParser({ onKey, onMouse });
-let pendingKittyInput = '';
 
 function decodeKittyKey(sequence) {
   const match = /^\x1b\[(\d+)(?:;(\d+)(?::(\d+))?)?u$/.exec(sequence);
@@ -814,8 +740,6 @@ function restoreKittyKeyboardMode() {
 
 process.once('exit', restoreKittyKeyboardMode);
 enterTerminal();
-process.stdout.write('\x1b[>11u');
-kittyKeyboardModePushed = true;
 process.stdin.on('data', parseTerminalInput);
 process.stdout.on('resize', draw);
 draw();

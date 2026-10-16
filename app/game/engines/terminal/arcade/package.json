@@ -3,9 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "play": "node main.mjs sandbox-room",
-    "play:room": "node main.mjs room",
-    "play:cryogenic-room": "node main.mjs cryogenic-room"
+    "play": "node main.mjs"
   },
   "dependencies": {
     "ascii-arcade": "0.1.7"

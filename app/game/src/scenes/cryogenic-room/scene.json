@@ -4,13 +4,25 @@
   "format_version": 1,
   "coordinate_system": {
     "up": "y",
-    "handedness": "right",
-    "unit": "meter"
+    "origin": "center",
+    "unit": "pixel"
   },
   "state": {
     "geometry": "geometry.json",
-    "camera": "camera.json",
-    "menus": "../room/menus.json"
+    "menus": "menus.json"
   },
-  "source_asset": "app/game/assets/rooms/base-room/concepts/base-room-concept-v1.png"
+  "story": {
+    "source": "app/gamebook/engines/ink/story.ink",
+    "opening_knot": "risveglio",
+    "perspective": "first_person",
+    "player_role": "Ingegnere",
+    "show_player_avatar": false
+  },
+  "rendering": {
+    "projection": "orthographic",
+    "frame_size_pixels": [160, 100],
+    "background_color_rgb": [9, 14, 24]
+  },
+  "source_asset": "app/game/assets/rooms/cryogenic-room/exports/cryogenic-room-pixelart-v2.png",
+  "reference_implementation": "app/game/engines/terminal/arcade/main.mjs"
 }

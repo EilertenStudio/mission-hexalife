@@ -1,3 +1,34 @@
+# Ruoli dei file e delle cartelle degli asset
+
+Ogni cartella di asset può organizzare il lavoro con questa struttura:
+
+```text
+<asset>/
+├── SOURCE.md
+├── concepts/
+├── references/
+├── exports/
+└── scripts/
+    ├── blender/
+    └── pixelorama/
+```
+
+- `SOURCE.md` descrive l'identità, la funzione e lo stato desiderato stabile
+  dell'asset. È la fonte che l'agente interpreta per ricordare che cosa
+  rappresenta l'asset; non è una descrizione del task corrente né una lista di
+  passaggi temporanei. In caso di divergenza, `SOURCE.md` prevale su concept,
+  reference e implementazioni degli script.
+- `concepts/` raccoglie proposte ed esplorazioni visive. Non imporre vincoli
+  preventivi di stile, tecnica o composizione ai concept.
+- `references/` raccoglie immagini reali provenienti da fonti esterne, usate
+  per rafforzare e contestualizzare `SOURCE.md`. Le reference informano il
+  lavoro, ma non sostituiscono né modificano da sole lo stato desiderato.
+- `exports/` contiene gli asset finali prodotti per essere usati dal progetto.
+- `scripts/blender/` e `scripts/pixelorama/` contengono gli script, separati
+  per applicazione, che generano o aggiornano gli asset finali in `exports/`.
+  Gli script realizzano lo stato descritto in `SOURCE.md`: non diventano una
+  fonte autonoma dello stato desiderato.
+
 # Convenzioni di naming per Blender
 
 Per collection, oggetti e altri datablock nei file `.blend`, seguire la

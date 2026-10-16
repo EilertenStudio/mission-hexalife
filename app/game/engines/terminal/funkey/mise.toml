@@ -1,0 +1,16 @@
+[tools]
+rust = { version = "stable", install_env = { RUSTUP_HOME = "{{ config_root }}/../../../../../.local/mise/data/funkey/rustup", CARGO_HOME = "{{ config_root }}/../../../../../.local/mise/data/funkey/cargo" } }
+
+[env]
+CARGO_HOME = "{{ config_root }}/../../../../../.local/mise/data/funkey/cargo"
+CARGO_TARGET_DIR = "{{ config_root }}/../../../../../.local/mise/data/funkey/target"
+RUSTUP_HOME = "{{ config_root }}/../../../../../.local/mise/data/funkey/rustup"
+FUNKEY_SOURCE_ROOT = "{{ config_root }}/../../../../../.local/mise/data/funkey/upstream"
+FUNKEY_SCENE_SOURCE = "{{ config_root }}/src/main.rs"
+FUNKEY_CRYOGENIC_ROOM_IMAGE = "{{ config_root }}/../../../assets/rooms/cryogenic-room/exports/cryogenic-room-pixelart-v2.png"
+FUNKEY_SOUND = "0"
+
+[tasks.play]
+description = "Avvia la scena del risveglio in Funkey"
+dir = "{{ config_root }}"
+run = "bash scripts/play.sh"

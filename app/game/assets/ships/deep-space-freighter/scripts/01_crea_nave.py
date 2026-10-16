@@ -199,7 +199,7 @@ asset.asset_data.description = (
     "Scafo esterno geometrico della deep-space freighter; senza interni, "
     "scanner o ugelli."
 )
-asset["source_prompt"] = "PROMPT.md"
+asset["source_document"] = "SOURCE.md"
 asset["source_reference"] = "references/deep-space-freighter-sketch-v8.png"
 asset["iteration"] = "exterior_hull_blockout_v1"
 

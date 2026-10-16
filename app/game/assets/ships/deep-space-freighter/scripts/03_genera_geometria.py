@@ -244,7 +244,7 @@ for screen in bpy.data.screens:
 if root.asset_data:
     root.asset_data.description = "P0: blockout volumetrico dello scafo dalla reference ortografica v2."
 root["source_reference"] = "references/deep-space-freighter-orthographic-reference-v2.png"
-root["source_prompt"] = "PROMPT.md"
+root["source_document"] = "SOURCE.md"
 root["iteration"] = "p0_orthographic_blockout"
 
 scene.render.engine = "BLENDER_WORKBENCH"

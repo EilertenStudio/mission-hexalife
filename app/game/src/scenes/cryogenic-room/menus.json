@@ -1,0 +1,53 @@
+{
+  "format_version": 1,
+  "menus": {
+    "system_debug": {
+      "scope": "system",
+      "title": "Debug sistema",
+      "toggle": {
+        "key": "d",
+        "context": "scene",
+        "when_open": "close"
+      },
+      "close_keys": ["d", "escape"],
+      "items": [
+        {
+          "id": "measured_fps",
+          "type": "read_only",
+          "label": "FPS effettivi",
+          "source": "runtime.measured_fps"
+        },
+        {
+          "id": "target_fps",
+          "type": "integer_setting",
+          "label": "Limite FPS",
+          "source": "runtime.target_fps",
+          "default": 6,
+          "minimum": 1,
+          "maximum": 30,
+          "step": 1,
+          "adjustment_keys": {
+            "decrease": ["-", "["],
+            "increase": ["+", "=", "]"]
+          }
+        },
+        {
+          "id": "render_mode",
+          "type": "choice_setting",
+          "label": "Modalità di resa",
+          "source": "runtime.render_mode",
+          "default": "half-block",
+          "values": ["half-block", "shape-glyph"],
+          "cycle_key": "v"
+        }
+      ]
+    }
+  },
+  "global_actions": {
+    "quit": {
+      "keys": ["q", "escape"],
+      "active_when": "menus_closed"
+    }
+  },
+  "mutually_exclusive": true
+}

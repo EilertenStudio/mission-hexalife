@@ -1,61 +1,54 @@
-# Arcade: guida generale all'engine
+# Arcade: risveglio nella sala criogenica
 
-Questa applicazione usa le API pubbliche di `ascii-arcade` per disegnare scene
-3D in un terminale. L'engine è un renderer software: esegue i calcoli sulla CPU
-e non richiede una GPU.
+Questa applicazione usa le API pubbliche di `ascii-arcade` per presentare un
+framebuffer 2D nel terminale. La scena non usa mesh, proiezione 3D, luci o
+controlli di camera.
 
-## Flusso di rendering
+## Scena
 
-Il gioco descrive una scena con oggetti 3D, geometrie, materiali e una camera.
-Ad ogni fotogramma aggiorna lo stato necessario, poi `SceneRenderer` proietta la
-scena nel `RenderTarget`, un buffer di pixel. Il renderer gestisce la proiezione
-prospettica, la profondità e i materiali; il codice del gioco può fornire
-materiali personalizzati per determinare come le superfici reagiscono alla
-luce.
+Il comando `arcade:play` avvia l'apertura del gamebook dal punto di vista dell'Ingegnere.
+Il giocatore si risveglia nella stanza, ispeziona la capsula e il terminale, può
+consultare la mappa e l'allarme del QC, poi assiste al riavvio della riserva
+locale che sblocca la porta. La scena si ferma sulla soglia del corridoio.
 
-Il presenter converte il buffer in caratteri, glifi e colori ANSI. In questo
-modo l'immagine 3D diventa un'uscita che un terminale può mostrare. Il modulo
-`ascii-arcade/platform` gestisce l'interazione con il terminale, come la
-modalità di input e il ripristino dello schermo all'uscita.
+Stanza e props restano un'unica immagine pixel art statica; l'Ingegnere non è
+disegnato come avatar. Capsule, terminale e porta rispondono ai click. Lo
+sblocco della porta è rappresentato dal testo: il fondale, porta inclusa, non
+cambia stato visivo. Le aree cliccabili sono descritte in
+[`geometry.json`](../../../src/scenes/cryogenic-room/geometry.json), insieme
+allo stato della scena. Pannelli, testo e pulsanti vengono disegnati nel
+layer TUI pubblico di `ascii-arcade`, alla dimensione delle celle del terminale;
+restano leggibili indipendentemente dalla scala del framebuffer. Il fondale
+rimane nel framebuffer 160×100. La sequenza segue l'apertura in
+[`story.ink`](../../../../gamebook/engines/ink/story.ink).
 
-Il ciclo di gioco, le animazioni, i comandi e le regole restano responsabilità
-dell'applicazione. In questo esempio il codice importa `ascii-arcade/engine` e
-`ascii-arcade/platform` direttamente; non avvia la CLI completa di Arcade.
-La configurazione desiderata dei menu condivisi di debug e camera è definita
-in [`app/game/src/scenes/room/menus.json`](../../../src/scenes/room/menus.json).
-`Esc` chiude il menu attivo; `q` o `Esc` escono solo quando entrambi i menu
-sono chiusi.
+Il fondale usato è
+[`cryogenic-room-pixelart-v2.png`](../../../assets/rooms/cryogenic-room/exports/cryogenic-room-pixelart-v2.png).
+Arcade lo ridimensiona con campionamento nearest nel frame 160×100.
 
-Il task `play` avvia `sandbox-room`. Premi `m` durante il
-gioco per aprire il selettore: `1` avvia `room`, `2` `cryogenic-room`, `3`
-`sandbox-room`. `Esc` torna alla scena attiva e `q` esce. I task `play:room`,
-`play:cryogenic-room` avviano direttamente le rispettive scene.
+## Comandi
 
-Dalla root dell’engine si avvia con `mise run play`; dalla root di `app/game`
-con `mise run arcade:play`, oppure dalla root del repository con
-`mise run game arcade:play`.
+- `Invio` o click sul pannello: avanza dal risveglio e conferma le schermate.
+- Nella stanza, click su un prop oppure `C`/`1` (capsula), `T`/`2` (terminale),
+  `P`/`3` (porta). Le frecce selezionano un prop e `Invio` lo apre.
+- Nel terminale: `M`/`1` apre la mappa; `A`/`2` mostra l'allarme QC; `Esc` torna
+  alla stanza.
+- Nei pannelli di dettaglio, `Invio`, `Esc` o click tornano indietro.
+- `D`: apre o chiude il menu debug del sistema.
+- Nel menu debug, clicca i pulsanti FPS/resa oppure usa `-` o `[` per diminuire
+  il limite FPS, `+`, `=` o `]` per aumentarlo, e `V` per alternare pixel a
+  mezzo blocco e glifi ASCII.
+- `Shift+R`: ricarica il processo del gioco.
+- `Q`: esce. `Esc` chiude prima il menu debug o il pannello narrativo attivo;
+  dalla stanza esce.
 
-La `sandbox-room` carica i dati canonici da
-[`app/game/src/scenes/sandbox-room/`](../../../src/scenes/sandbox-room/): il
-fondale della base-room e le due capsule sono piani immagine sovrapposti, con
-campionamento nearest e alpha per gli sprite. Lo stato richiede una proiezione
-ortografica; Arcade espone una camera prospettica, quindi la scena usa una
-camera con vista iniziale frontale calibrata sulla cornice 160×100. I piani 2D
-quasi complanari mantengono la composizione piatta; la prospettiva resta una
-approssimazione del modello ortografico richiesto dallo stato.
+Il limite iniziale è 6 FPS. L'applicazione usa direttamente le API
+`ascii-arcade/engine/png`, `ascii-arcade/engine` e `ascii-arcade/platform`;
+non avvia la CLI completa.
 
-La scena `cryogenic-room` compone il PNG della stanza
-[`base-room-concept-v1.png`](../../../assets/rooms/base-room/concepts/base-room-concept-v1.png)
-con due piani immagine alpha del prop
-[`cryogenic-capsule-modular.png`](../../../assets/rooms/cryogenic-room/exports/cryogenic-capsule-modular.png),
-posizionati ai lati. La camera iniziale resta fissa per mantenere la
-composizione 2D allineata. `mise run play:cryogenic-room` la avvia direttamente;
-questa scena non carica la geometria OBJ.
-
-Nel menu debug, `v` alterna la resa a glifi ASCII (`toShapeGlyph`) e quella a
-pixel colorati (`toHalfBlock`), che è la modalità iniziale. Usa un mezzo blocco
-Unicode per cella del terminale, con un colore per ciascuna delle due metà
-verticali.
+L'interazione mouse richiede un terminale che supporti il reporting SGR. Arcade
+abilita questa modalità tramite la piattaforma `ascii-arcade`; il gioco agisce
+sul click sinistro e ignora gli eventi di movimento.
 
 ## Riferimenti upstream
 

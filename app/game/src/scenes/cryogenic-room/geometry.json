@@ -1,46 +1,45 @@
 {
-  "image_planes": [
-    {
-      "id": "base-room-background",
-      "image": "../../../assets/rooms/base-room/concepts/base-room-concept-v1.png",
-      "position": [0, 0, 0],
-      "rotation_degrees": [0, 0, 0],
-      "size": [14.5558, 8.192],
-      "image_width": 1672,
-      "image_height": 941,
-      "material": {
-        "type": "unlit-image",
-        "blend": "opaque",
-        "uv_origin": "top-left"
-      }
+  "background": {
+    "id": "cryogenic-room-pixelart-v2",
+    "image": "../../../assets/rooms/cryogenic-room/exports/cryogenic-room-pixelart-v2.png",
+    "image_size_pixels": [1586, 992],
+    "fit": "contain",
+    "sampling": "nearest",
+    "embedded_elements": [
+      "four cryogenic capsules, two along each side wall",
+      "closed sliding door",
+      "control terminal"
+    ],
+    "hotspot_coordinates": {
+      "space": "normalized_image",
+      "origin": "top_left",
+      "bounds": "[x, y, width, height]"
     },
-    {
-      "id": "cryogenic-capsule-left",
-      "image": "../../../assets/rooms/cryogenic-room/exports/cryogenic-capsule-modular.png",
-      "position": [-4.8, -0.16, 0.02],
-      "rotation_degrees": [0, 0, 0],
-      "size": [1.68, 2.52],
-      "image_width": 1024,
-      "image_height": 1536,
-      "material": {
-        "type": "unlit-image",
-        "blend": "alpha",
-        "uv_origin": "top-left"
+    "interactive_elements": [
+      {
+        "id": "engineer_capsule",
+        "role": "capsule",
+        "hit_regions": [
+          [0.015, 0.14, 0.13, 0.51],
+          [0.17, 0.29, 0.10, 0.35],
+          [0.74, 0.29, 0.10, 0.35],
+          [0.855, 0.14, 0.135, 0.51]
+        ]
+      },
+      {
+        "id": "room_terminal",
+        "role": "terminal",
+        "hit_regions": [
+          [0.435, 0.42, 0.085, 0.22]
+        ]
+      },
+      {
+        "id": "corridor_door",
+        "role": "door",
+        "hit_regions": [
+          [0.515, 0.29, 0.19, 0.39]
+        ]
       }
-    },
-    {
-      "id": "cryogenic-capsule-right",
-      "image": "../../../assets/rooms/cryogenic-room/exports/cryogenic-capsule-modular.png",
-      "position": [4.8, -0.16, 0.02],
-      "rotation_degrees": [0, 0, 0],
-      "size": [1.68, 2.52],
-      "image_width": 1024,
-      "image_height": 1536,
-      "material": {
-        "type": "unlit-image",
-        "blend": "alpha",
-        "uv_origin": "top-left"
-      }
-    }
-  ]
+    ]
+  }
 }

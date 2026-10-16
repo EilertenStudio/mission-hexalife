@@ -1,31 +1,30 @@
 # SOURCE — Sala criogenica
 
-La sala criogenica è una composizione 2D ambientata nella base-room. La sua
-identità visiva combina il volume metallico della stanza con capsule
-criogeniche modulari.
+La sala criogenica è una scena 2D pixel art vista dall'interno, da altezza
+umana, verso la parete di fondo. L'inquadratura non è incorniciata da un ingresso
+né da colonne laterali. Architettura e props sono composti in un unico fondale
+statico.
 
-## Ambiente
+## Composizione
 
-La base-room è un ambiente chiuso e largo con pavimento, parete posteriore,
-pareti laterali e soffitto. La vista è fissa, centrata verso la parete di fondo,
-con una lieve prospettiva che mantiene leggibili il volume e la profondità.
+- Stanza metallica chiusa, larga, con pavimento in primo piano e pareti che
+  convergono verso il fondo.
+- Quattro capsule criogeniche verticali, due lungo ciascuna parete laterale,
+  distribuite a profondità diverse. Hanno guscio metallico chiaro, contorni scuri
+  e vetro azzurro luminoso.
+- Una porta scorrevole chiusa sulla parete di fondo.
+- Un terminale di controllo con schermo ciano, vicino alla porta.
+- Nessun personaggio, testo leggibile o interfaccia sovrapposta.
 
-La stanza è rappresentata dal fondale pixel art
-`../base-room/exports/base-room-pixelart-v1.png`; il fondale definisce
-l'architettura, mentre i props sono immagini indipendenti sovrapposte.
+## Resa visiva
 
-## Capsule criogeniche
+Pixel art nitida, leggibile nel framebuffer 160×100, con gruppi di pixel
+intenzionali, bordi a gradini e aree di colore compatte. La palette usa grigi
+metallici e blu-grigi, contorni antracite e accenti ciano limitati a capsule,
+illuminazione e terminale. La camera è fissa dentro la stanza; un corridoio
+centrale libero e un'ampia porzione di pavimento mantengono leggibili profondità
+e distribuzione delle capsule.
 
-La capsula selezionata è un'unità verticale in pixel art, con guscio metallico
-chiaro e modulare, struttura laterale scura e inserto frontale azzurro pallido.
-È rivolta verso la camera e appoggiata al pavimento. Due istanze della stessa
-immagine sono disposte ai lati della stanza, lasciando libero il volume centrale.
-
-La forma della capsula è documentata in
-`concepts/cryogenic-capsule-reference-sheet-v1.png`. Il prop pixel art è
-materializzato in `exports/cryogenic-capsule-pixelart-v1.png`.
-
-## Esplorazioni visive
-
-I concept della stanza e delle capsule documentano alternative di design; non
-sono elementi da fondere automaticamente nella composizione selezionata.
+La scena usa un solo file immagine completo:
+`exports/cryogenic-room-pixelart-v2.png`. Capsule, porta e terminale non sono
+sprite separati nella scena runtime.
