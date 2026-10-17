@@ -1,1 +1,1 @@
-import './test-visual-grooms.mjs';
+import './test-gameplay-action-adventure.mjs';

@@ -669,6 +669,7 @@ function onKey(event) {
 
 function selectScene(scene) {
   if (scene === 'test-visual-grooms') switchScene('test-visual-grooms.mjs');
+  else if (scene === 'test-gameplay-action-adventure') switchScene('test-gameplay-action-adventure.mjs');
 }
 
 const systemOverlay = createSystemOverlay({

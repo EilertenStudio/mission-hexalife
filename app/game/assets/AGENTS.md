@@ -5,6 +5,7 @@ Ogni cartella di asset può organizzare il lavoro con questa struttura:
 ```text
 <asset>/
 ├── SOURCE.md
+├── ANIMATION.md
 ├── concepts/
 ├── references/
 ├── exports/
@@ -13,11 +14,17 @@ Ogni cartella di asset può organizzare il lavoro con questa struttura:
     └── pixelorama/
 ```
 
-- `SOURCE.md` descrive l'identità, la funzione e lo stato desiderato stabile
-  dell'asset. È la fonte che l'agente interpreta per ricordare che cosa
-  rappresenta l'asset; non è una descrizione del task corrente né una lista di
-  passaggi temporanei. In caso di divergenza, `SOURCE.md` prevale su concept,
-  reference e implementazioni degli script.
+- `SOURCE.md` descrive in dettaglio l'identità, la funzione e lo stato
+  desiderato stabile dell'asset, con le informazioni necessarie a definirne
+  chiaramente forma e resa. È la fonte che l'agente interpreta per capire che
+  cosa rappresenta l'asset e come deve apparire. Non è una descrizione del task
+  corrente, un changelog delle revisioni o un indice dei file nella cartella.
+  In caso di divergenza, `SOURCE.md` prevale su concept, reference e
+  implementazioni degli script.
+- `ANIMATION.md` elenca per ogni animazione la colonna iniziale, il numero di
+  frame espresso in colonne, una breve descrizione dell'azione e la durata o
+  cadenza del ciclo quando definita. Non aggiungere altri dettagli o
+  informazioni generali sullo spritesheet.
 - `concepts/` raccoglie proposte ed esplorazioni visive. Non imporre vincoli
   preventivi di stile, tecnica o composizione ai concept.
 - `references/` raccoglie immagini reali provenienti da fonti esterne, usate

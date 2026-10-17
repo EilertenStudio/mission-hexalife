@@ -605,6 +605,7 @@ function reloadScene() {
 function selectScene(scene) {
   if (scene === manifest.id) return;
   if (scene === 'cryogenic-room') switchScene('cryogenic-story.mjs');
+  else if (scene === 'test-gameplay-action-adventure') switchScene('test-gameplay-action-adventure.mjs');
 }
 
 function onKey(event) {

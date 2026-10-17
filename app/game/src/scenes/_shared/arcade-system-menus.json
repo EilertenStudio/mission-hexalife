@@ -53,7 +53,8 @@
       "close_keys": ["escape"],
       "items": [
         { "id": "test-visual-grooms", "type": "scene_option", "label": "Test visual grooms", "key": "1", "scene": "test-visual-grooms" },
-        { "id": "cryogenic-room", "type": "scene_option", "label": "Sala criogenica", "key": "2", "scene": "cryogenic-room" }
+        { "id": "cryogenic-room", "type": "scene_option", "label": "Sala criogenica", "key": "2", "scene": "cryogenic-room" },
+        { "id": "test-gameplay-action-adventure", "type": "scene_option", "label": "Test gameplay action adventure", "key": "3", "scene": "test-gameplay-action-adventure" }
       ]
     }
   },

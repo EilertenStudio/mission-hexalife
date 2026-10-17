@@ -1,0 +1,29 @@
+{
+  "player": {
+    "id": "jerv",
+    "sprite_sheet": "../../../assets/characters/engineer/exports/jerv-topdown-animation-v1.png",
+    "frame_size_pixels": [32, 32],
+    "sprite_size_pixels": [32, 32],
+    "direction_rows_top_to_bottom": ["down", "left", "top", "right"],
+    "starting_tile": [2, 1],
+    "movement": {
+      "tiles_per_keypress": 1,
+      "walk_cycle_duration_seconds": 0.33,
+      "tiles_per_walk_cycle": 1,
+      "grid_boundary_behavior": "stop"
+    },
+    "animations": {
+      "idle": {
+        "start_column": 1,
+        "frame_count": 1,
+        "frame_duration_seconds": 1
+      },
+      "walk": {
+        "start_column": 2,
+        "frame_count": 2,
+        "cycle_duration_seconds": 0.33,
+        "tiles_per_cycle": 1
+      }
+    }
+  }
+}

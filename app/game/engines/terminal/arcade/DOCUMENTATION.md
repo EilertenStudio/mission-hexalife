@@ -1,10 +1,18 @@
 # Arcade
 
-`arcade:play` avvia la scena canonica `test-visual-grooms`, definita in
-[`src/scenes/test-visual-grooms/`](../../../src/scenes/test-visual-grooms/).
-La scena usa un framebuffer ortografico fisso da 160×90 pixel, una stanza,
-tre oggetti, una torcia stilizzata fissa sul lato destro e una luce locale che
-segue il puntatore. La sfera conserva un'emissione pulsante tenue.
+`arcade:play` avvia per impostazione predefinita la scena canonica
+`test-gameplay-action-adventure`, definita in
+[`src/scenes/test-gameplay-action-adventure/`](../../../src/scenes/test-gameplay-action-adventure/).
+Usa un framebuffer fisso da 160×128 pixel con una griglia 5×4 di tile da
+32×32 e Jerv al centro. `K`, `J`, `I` e `L` muovono Jerv rispettivamente in
+basso, a sinistra, in alto e a destra; ogni pressione avvia un movimento di
+una tile. Il ciclo WALK dura 0,33 s per tile. Ai bordi della griglia il
+movimento si ferma.
+
+La scena `test-visual-grooms` resta selezionabile. Usa un framebuffer
+ortografico fisso da 160×90 pixel, una stanza, tre oggetti, una torcia
+stilizzata fissa sul lato destro e una luce locale che segue il puntatore. La
+sfera conserva un'emissione pulsante tenue.
 
 Geometria, posizioni, dimensioni, illuminazione, camera, hotspot e menu
 provengono dai documenti della scena. I tre sprite RGBA da 32×32 sono collegati
@@ -31,8 +39,8 @@ selezionabili. Le scene forniscono le operazioni specifiche di ricarica, pausa
 e copia del proprio framebuffer.
 
 - `Ctrl+P`, poi `D`: apre Debug.
-- `Ctrl+P`, poi `M`: apre il selettore scene; `1` sceglie Test visual grooms e
-  `2` la Sala criogenica.
+- `Ctrl+P`, poi `M`: apre il selettore scene; `1` sceglie Test visual grooms,
+  `2` la Sala criogenica e `3` Test gameplay action adventure.
 - `Ctrl+P`, poi `R`: ricarica la scena attiva e rilegge gli asset dal disco.
 - `Ctrl+P`, poi `C`: copia il framebuffer corrente come PNG negli appunti.
 - In Debug, `P` mette in pausa o riprende il frame; `-`/`[` e `+`/`=`/`]`
@@ -54,7 +62,13 @@ La Sala criogenica resta selezionabile ed è implementata in
 pixel art statica descritta in [`src/scenes/cryogenic-room/`](../../../src/scenes/cryogenic-room/).
 Da lì si possono ispezionare capsula, terminale e porta; il terminale mostra
 mappa e allarme QC. Pannelli e pulsanti usano il layer TUI di Arcade, mentre il
-fondale pixel art resta statico. Il limite iniziale è 6 FPS per entrambe le scene.
+fondale pixel art resta statico. Il limite iniziale è 6 FPS per tutte le scene.
+
+La scena di gameplay usa lo spritesheet PNG di Jerv indicato in
+[`character.json`](../../../src/scenes/test-gameplay-action-adventure/character.json).
+Il foglio contiene tre colonne (IDLE e due frame WALK) e quattro righe
+orientate in basso, sinistra, alto e destra. L'implementazione ritaglia un
+frame RGBA dal PNG e lo compone sul framebuffer con campionamento nearest.
 
 ## Capacità e limiti
 
