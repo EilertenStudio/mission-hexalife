@@ -5,6 +5,6 @@ node = "24.16.0"
 npm_config_cache = "{{ config_root }}/../../../../../.local/npm/cache"
 
 [tasks.play]
-description = "Avvia la sala criogenica 2D in Arcade"
+description = "Avvia la scena test-visual-grooms in Arcade"
 dir = "{{ config_root }}"
 run = "set -e; if [ ! -d node_modules/ascii-arcade ]; then npm ci --ignore-scripts --no-audit --no-fund; fi; node main.mjs"

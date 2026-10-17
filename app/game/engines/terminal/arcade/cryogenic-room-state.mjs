@@ -7,6 +7,7 @@ const readJson = (name) => JSON.parse(readFileSync(new URL(name, sceneDir), 'utf
 export function loadCryogenicRoom() {
   const manifest = readJson('scene.json');
   const geometry = readJson(manifest.state.geometry);
+  const menus = readJson(manifest.state.menus);
   const background = geometry.background;
   if (background.sampling !== 'nearest') {
     throw new Error(`Campionamento non supportato: ${background.sampling}`);
@@ -30,5 +31,6 @@ export function loadCryogenicRoom() {
     fit: background.fit,
     color: manifest.rendering.background_color_rgb,
     interactiveElements,
+    menus,
   };
 }

@@ -1,0 +1,24 @@
+{
+  "id": "test-visual-grooms",
+  "name": "Test visual grooms",
+  "format_version": 1,
+  "coordinate_system": {
+    "up": "y",
+    "handedness": "right",
+    "origin": "center",
+    "unit": "pixel"
+  },
+  "state": {
+    "geometry": "geometry.json",
+    "lighting": "lighting.json",
+    "camera": "camera.json",
+    "menus": "../_shared/arcade-system-menus.json"
+  },
+  "rendering": {
+    "projection": "orthographic",
+    "frame_size_pixels": [160, 90],
+    "background_color_rgb": [3, 3, 4],
+    "sampling": "nearest"
+  },
+  "reference_implementation": "app/game/engines/terminal/arcade/test-visual-grooms.mjs"
+}
