@@ -1,0 +1,13 @@
+[tools]
+godot = "4.7.2-stable"
+uv = "0.12.15"
+
+[tasks.play]
+description = "Avvia il progetto Godot in engines/godot"
+dir = "{{ config_root }}"
+run = "godot --path ."
+
+[tasks.editor]
+description = "Apre l'editor Godot sul progetto in engines/godot"
+dir = "{{ config_root }}"
+run = "godot --editor --path ."
