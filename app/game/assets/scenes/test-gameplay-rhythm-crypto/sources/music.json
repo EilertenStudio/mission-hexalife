@@ -1,0 +1,80 @@
+{
+  "id": "dungeon-pulse-original",
+  "tempo_bpm": 120,
+  "time_signature": [4, 4],
+  "key": "E minor",
+  "bar_count": 8,
+  "subdivisions_per_beat": 2,
+  "loop_export": "../exports/dungeon-pulse-original.wav",
+  "playback": {
+    "default_volume_percent": 40,
+    "volume_step_percent": 10,
+    "minimum_volume_percent": 0,
+    "maximum_volume_percent": 100,
+    "tempo_follows_scene_bpm": true,
+    "loop": true
+  },
+  "synthesis": {
+    "sample_rate_hz": 22050,
+    "master_gain": 0.82,
+    "style": "Composizione originale chiptune/elettronica da dungeon: lead pulse in frasi brevi, basso sincopato, accordi scuri e batteria sintetica asciutta."
+  },
+  "parts": {
+    "lead": {
+      "waveform": "pulse",
+      "gain": 0.14,
+      "notes_by_bar_eighths": [
+        ["E5", null, "B4", "G4", "D5", null, "B4", "G4"],
+        ["C5", "G4", null, "E4", "G4", "B4", "G4", null],
+        ["D5", null, "A4", "F#4", "C5", "A4", null, "F#4"],
+        ["B4", "F#4", "D4", null, "F#4", "A4", "F#4", null],
+        ["E5", "G5", null, "B5", "G5", "D5", "B4", null],
+        ["C5", null, "E5", "G5", "E5", "B4", null, "G4"],
+        ["A4", "F#4", null, "D5", "A4", "F#4", "D4", null],
+        ["B4", null, "D5", "F#5", "D5", "A4", "F#4", "D4"]
+      ]
+    },
+    "bass": {
+      "waveform": "triangle",
+      "gain": 0.2,
+      "notes_by_bar_quarters": [
+        ["E2", "E2", "B2", "D3"],
+        ["C2", "C2", "G2", "B2"],
+        ["D2", "D2", "A2", "C3"],
+        ["B1", "B1", "F#2", "A2"],
+        ["E2", "E2", "B2", "D3"],
+        ["C2", "C2", "G2", "B2"],
+        ["A1", "A1", "E2", "G2"],
+        ["B1", "B1", "F#2", "D#3"]
+      ]
+    },
+    "pad": {
+      "waveform": "triangle",
+      "gain": 0.032,
+      "chords_by_bar": [
+        ["E3", "G3", "B3"],
+        ["C3", "E3", "G3"],
+        ["D3", "F#3", "A3"],
+        ["B2", "D3", "F#3"],
+        ["E3", "G3", "B3"],
+        ["C3", "E3", "G3"],
+        ["A2", "C3", "E3"],
+        ["B2", "D#3", "F#3", "A3"]
+      ]
+    },
+    "drums": {
+      "kick_steps_by_bar": [[0, 3, 4], [0, 4, 7], [0, 3, 4], [0, 4, 6], [0, 3, 4], [0, 4, 7], [0, 3, 4], [0, 4, 6]],
+      "snare_steps_by_bar": [[2, 6], [2, 6], [2, 6], [2, 6], [2, 6], [2, 6], [2, 6], [2, 6]],
+      "hat_steps_by_bar": [
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7]
+      ]
+    }
+  }
+}

@@ -16,6 +16,8 @@ const BPM_STEP := 5.0
 const FREE_MOVE_INITIAL_DELAY := 0.22
 const FREE_MOVE_REPEAT_INTERVAL := 0.12
 const DEFAULT_ANIMATION_BEAT_DURATION := 60.0 / DEFAULT_BPM
+const PERFECT_WINDOW_SECONDS := 0.05
+const GOOD_WINDOW_SECONDS := 0.12
 const BPM_PROFILE_KEYS := [KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6]
 const BPM_PROFILE_VALUES := [60.0, 80.0, 100.0, 120.0, 140.0, 160.0]
 
@@ -25,13 +27,10 @@ const FACING_ROW_UP := 2
 const FACING_ROW_RIGHT := 3
 
 @onready var grid: Node = get_parent().get_node("Grid")
-@onready var metronome: Node = get_parent().get_node("Metronome")
+@onready var music: Node = get_parent().get_node("Music")
 
 var player_column := 4
 var player_row_from_bottom := 3
-var queued_direction := Vector2i.ZERO
-var queued_attack := ""
-var beat_timer := 0.0
 var bpm := DEFAULT_BPM
 var bpm_enabled := true
 var beat_duration := 60.0 / DEFAULT_BPM
@@ -49,6 +48,9 @@ var idle_frame_timer := 0.0
 var active_attack := ""
 var active_attack_frame := 0
 var attack_timer := 0.0
+var last_clock_beat_index := -1
+var last_accepted_action_slot_index := -1
+var movement_log_sequence := 0
 
 
 func _ready() -> void:
@@ -56,6 +58,8 @@ func _ready() -> void:
 	region_enabled = true
 	_set_idle_frame(0)
 	grid.call("set_tempo", bpm, bpm_profile)
+	music.call("set_tempo", bpm)
+	last_clock_beat_index = int(music.call("get_track_beat_index"))
 	_update_position()
 	_update_target_cell()
 
@@ -67,15 +71,9 @@ func _process(delta: float) -> void:
 		_update_idle_animation(delta)
 
 	if bpm_enabled:
-		beat_timer += delta
-		while beat_timer >= beat_duration:
-			beat_timer -= beat_duration
-			_advance_turn()
-		var cycle_phase := fposmod(float(turn_count) + beat_timer / beat_duration, 2.0) / 2.0
-		grid.call("set_timing_phase", cycle_phase)
+		_sync_clock_to_music()
+		grid.call("set_timing_phase", float(music.call("get_beat_phase")))
 	else:
-		if not queued_attack.is_empty() or queued_direction != Vector2i.ZERO:
-			_resolve_queued_action()
 		_update_free_mode_repeat(delta)
 
 
@@ -110,16 +108,19 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 	if not attack.is_empty():
 		if bpm_enabled:
-			queued_attack = attack
+			_submit_rhythm_action(Vector2i.ZERO, attack)
 		else:
+			grid.call("set_judgment", "FREE")
 			_perform_attack(attack)
 	elif direction != Vector2i.ZERO:
+		_set_facing_direction(direction)
 		if bpm_enabled:
-			queued_direction = direction
+			_submit_rhythm_action(direction, "")
 		else:
 			free_move_direction = direction
 			free_move_timer = FREE_MOVE_INITIAL_DELAY
-			_perform_movement(direction)
+			grid.call("set_judgment", "FREE")
+			_perform_movement(direction, "key_free", "", -1, "FREE")
 	if not attack.is_empty() or direction != Vector2i.ZERO:
 		get_viewport().set_input_as_handled()
 
@@ -144,12 +145,11 @@ func _handle_tempo_key(key: int) -> bool:
 
 
 func _set_bpm(value: float, profile_name: String) -> void:
-	var beat_phase := beat_timer / beat_duration
 	bpm = clampf(value, MIN_BPM, MAX_BPM)
 	beat_duration = 60.0 / bpm
-	beat_timer = beat_phase * beat_duration
 	bpm_profile = profile_name
 	_set_animation_beat_duration(beat_duration)
+	music.call("set_tempo", bpm)
 	grid.call("set_tempo", bpm, bpm_profile)
 	grid.call("set_bpm_enabled", bpm_enabled)
 
@@ -169,12 +169,12 @@ func _set_animation_beat_duration(value: float) -> void:
 
 func _toggle_bpm_enabled() -> void:
 	bpm_enabled = not bpm_enabled
-	beat_timer = 0.0
+	last_clock_beat_index = int(music.call("get_track_beat_index"))
+	last_accepted_action_slot_index = -1
 	free_move_direction = Vector2i.ZERO
 	free_move_timer = 0.0
 	var animation_duration := beat_duration if bpm_enabled else DEFAULT_ANIMATION_BEAT_DURATION
 	_set_animation_beat_duration(animation_duration)
-	metronome.call("set_enabled", bpm_enabled)
 	grid.call("set_bpm_enabled", bpm_enabled)
 
 
@@ -185,27 +185,69 @@ func _profile_name_for_bpm(value: float) -> String:
 
 func _advance_turn() -> void:
 	turn_count += 1
-	metronome.call("play_tick")
 	grid.call("advance_turn", turn_count)
-	_resolve_queued_action()
+	var beat_action_slot_index := turn_count * 2
+	if last_accepted_action_slot_index == beat_action_slot_index:
+		return
+	var held_direction := _read_direction()
+	if held_direction != Vector2i.ZERO:
+		_set_facing_direction(held_direction)
+		if _can_move(held_direction):
+			last_accepted_action_slot_index = beat_action_slot_index
+			grid.call("set_judgment", "PERFECT", "BEAT")
+			_perform_movement(held_direction, "held_beat", "BEAT", beat_action_slot_index, "PERFECT")
+		else:
+			grid.call("set_judgment", "BLOCKED")
+			_log_blocked_movement("held_beat", held_direction, "BEAT", beat_action_slot_index)
 
 
-func _resolve_queued_action() -> void:
-	var direction := queued_direction
-	if queued_attack.is_empty() and direction == Vector2i.ZERO:
-		direction = _read_direction()
-	var has_action := not queued_attack.is_empty() or direction != Vector2i.ZERO
-	if not has_action:
+func _sync_clock_to_music(allow_held_movement: bool = true) -> void:
+	var track_beat_index := int(music.call("get_track_beat_index"))
+	var beats_per_loop := int(music.call("get_beats_per_loop"))
+	while last_clock_beat_index != track_beat_index:
+		last_clock_beat_index = (last_clock_beat_index + 1) % beats_per_loop
+		if allow_held_movement:
+			_advance_turn()
+		else:
+			turn_count += 1
+			grid.call("advance_turn", turn_count)
+
+
+func _submit_rhythm_action(direction: Vector2i, attack: String) -> void:
+	_sync_clock_to_music(false)
+	var phase := float(music.call("get_beat_phase"))
+	var nearest_subdivision := roundi(phase * 2.0)
+	var phase_error := absf(phase - float(nearest_subdivision) * 0.5)
+	var timing_error := phase_error * beat_duration
+	var slot_name := "HALF" if nearest_subdivision % 2 == 1 else "BEAT"
+	var action_slot_index := turn_count * 2 + nearest_subdivision
+	var action_name := attack.to_upper()
+	if direction != Vector2i.ZERO:
+		action_name = "MOVE %s" % str(direction)
+	if timing_error > GOOD_WINDOW_SECONDS:
+		grid.call("set_judgment", "MISS", slot_name)
+		if direction != Vector2i.ZERO:
+			_log_rhythm_movement_attempt(action_name, slot_name, action_slot_index, phase, timing_error, "MISS")
 		return
 
-	if not queued_attack.is_empty():
-		var attack := queued_attack
-		queued_attack = ""
+	if last_accepted_action_slot_index == action_slot_index:
+		grid.call("set_judgment", "LOCKED", slot_name)
+		if direction != Vector2i.ZERO:
+			_log_rhythm_movement_attempt(action_name, slot_name, action_slot_index, phase, timing_error, "LOCKED")
+		return
+	if direction != Vector2i.ZERO and not _can_move(direction):
+		grid.call("set_judgment", "BLOCKED", slot_name)
+		_log_rhythm_movement_attempt(action_name, slot_name, action_slot_index, phase, timing_error, "BLOCKED")
+		return
+
+	last_accepted_action_slot_index = action_slot_index
+	var judgment := "PERFECT" if timing_error <= PERFECT_WINDOW_SECONDS else "GOOD"
+	grid.call("set_judgment", judgment, slot_name)
+	if not attack.is_empty():
 		_perform_attack(attack)
-		return
-
-	queued_direction = Vector2i.ZERO
-	_perform_movement(direction)
+	else:
+		_log_rhythm_movement_attempt(action_name, slot_name, action_slot_index, phase, timing_error, judgment)
+		_perform_movement(direction, "key", slot_name, action_slot_index, judgment)
 
 
 func _prepare_for_player_action() -> void:
@@ -220,11 +262,74 @@ func _perform_attack(attack: String) -> void:
 	_start_attack(attack)
 
 
-func _perform_movement(direction: Vector2i) -> void:
+func _perform_movement(
+	direction: Vector2i,
+	source: String = "key_free",
+	slot_name: String = "",
+	action_slot_index: int = -1,
+	judgment: String = "FREE"
+) -> void:
+	var from_cell := Vector2i(player_column, player_row_from_bottom)
 	_prepare_for_player_action()
 	_set_facing_direction(direction)
 	_reset_idle_animation()
-	_move_one_cell(direction)
+	var moved := _move_one_cell(direction)
+	var to_cell := Vector2i(player_column, player_row_from_bottom)
+	movement_log_sequence += 1
+	var phase_text := "OFF"
+	if bpm_enabled:
+		phase_text = "%.3f" % float(music.call("get_beat_phase"))
+	print(
+		"[MOVE #%04d] source=%s turn=%d slot=%s slot_index=%d phase=%s judgment=%s dir=%s cell=%s->%s result=%s" % [
+			movement_log_sequence,
+			source,
+			turn_count,
+			slot_name if not slot_name.is_empty() else "-",
+			action_slot_index,
+			phase_text,
+			judgment,
+			str(direction),
+			str(from_cell),
+			str(to_cell),
+			"MOVED" if moved else "BLOCKED",
+		]
+	)
+
+
+func _log_rhythm_movement_attempt(
+	action_name: String,
+	slot_name: String,
+	action_slot_index: int,
+	phase: float,
+	timing_error: float,
+	result: String
+) -> void:
+	print(
+		"[MOVE INPUT] action=%s turn=%d slot=%s slot_index=%d phase=%.3f error_ms=%.1f result=%s cell=%s" % [
+			action_name,
+			turn_count,
+			slot_name,
+			action_slot_index,
+			phase,
+			timing_error * 1000.0,
+			result,
+			str(Vector2i(player_column, player_row_from_bottom)),
+		]
+	)
+
+
+func _log_blocked_movement(source: String, direction: Vector2i, slot_name: String, action_slot_index: int) -> void:
+	print(
+		"[MOVE INPUT] action=MOVE %s source=%s turn=%d slot=%s slot_index=%d phase=%.3f result=BLOCKED cell=%s" % [
+			str(direction),
+			source,
+			turn_count,
+			slot_name,
+			action_slot_index,
+			float(music.call("get_beat_phase")),
+			str(Vector2i(player_column, player_row_from_bottom)),
+		]
+	)
 
 
 func _update_free_mode_repeat(delta: float) -> void:
@@ -239,7 +344,7 @@ func _update_free_mode_repeat(delta: float) -> void:
 		return
 	free_move_timer -= delta
 	if free_move_timer <= 0.0:
-		_perform_movement(direction)
+		_perform_movement(direction, "held_free_repeat", "", -1, "FREE")
 		free_move_timer = FREE_MOVE_REPEAT_INTERVAL
 
 
@@ -262,10 +367,10 @@ func _update_idle_animation(delta: float) -> void:
 
 
 func _reset_idle_animation() -> void:
-	var frame_changed := idle_frame != 0
+	var should_change_frame := idle_frame != 0
 	idle_frame = 0
 	idle_frame_timer = 0.0
-	if frame_changed:
+	if should_change_frame:
 		_set_idle_frame(idle_frame)
 
 
@@ -349,7 +454,7 @@ func _read_direction() -> Vector2i:
 	return Vector2i.ZERO
 
 
-func _move_one_cell(direction: Vector2i) -> void:
+func _move_one_cell(direction: Vector2i) -> bool:
 	var next_column := player_column + direction.x
 	var next_row := player_row_from_bottom + direction.y
 	if next_column >= 0 and next_column < COLUMNS and next_row >= 0 and next_row < ROWS:
@@ -357,6 +462,14 @@ func _move_one_cell(direction: Vector2i) -> void:
 		player_row_from_bottom = next_row
 		_update_position()
 		_update_target_cell()
+		return true
+	return false
+
+
+func _can_move(direction: Vector2i) -> bool:
+	var next_column := player_column + direction.x
+	var next_row := player_row_from_bottom + direction.y
+	return next_column >= 0 and next_column < COLUMNS and next_row >= 0 and next_row < ROWS
 
 
 func _target_cell() -> Vector2i:

@@ -1,7 +1,8 @@
 {
-  "clock": {
+  "beat_clock": {
     "bpm": 120,
     "seconds_per_beat": 0.5,
+    "beat_source": "music.json",
     "starts_on_scene_ready": true,
     "enabled_by_default": true,
     "toggle_key": "0",
@@ -15,7 +16,7 @@
     },
     "disabled_mode": {
       "clock_stops": true,
-      "metronome_stops": true,
+      "music_continues": true,
       "actions_resolve_immediately": true,
       "held_movement_repeat_seconds": {
         "initial_delay": 0.22,
@@ -24,30 +25,37 @@
       "animation_reference_bpm": 120
     },
     "audio_enabled": true,
-    "music_enabled": false,
-    "metronome": {
-      "enabled": true,
-      "sound": "short dry click on every beat",
-      "accent_pattern": "uniform",
-      "default_volume_percent": 40,
-      "minimum_volume_percent": 0,
-      "maximum_volume_percent": 100,
-      "volume_step_percent": 10
-    }
+    "music_enabled": true
   },
   "turns": {
     "turns_per_beat": 1,
+    "action_slots_per_beat": 2,
+    "maximum_accepted_actions_per_slot": 1,
+    "slot_positions": ["beat", "half_beat"],
     "first_turn_after_seconds": 0.5,
     "advances_without_input": true,
-    "movement_cells_per_beat": 1,
-    "commands_resolve_on_next_beat": true,
-    "one_command_per_turn": true,
+    "movement_cells_per_beat": 2,
+    "commands_resolve_on_input_within_judgment_window": true,
+    "one_accepted_action_per_slot": true,
+    "maximum_accepted_actions_per_beat": 2,
     "animation_flow": {
       "continue_across_beats_without_player_action": true,
-      "cancel_active_animation_when_action_resolves_on_beat": true,
-      "new_action_starts_on_that_beat": true
+      "cancel_active_animation_when_new_action_is_accepted": true,
+      "new_action_starts_immediately_within_beat_window": true
     },
-    "simultaneous_command_priority": "ability before movement; queued movement is retained for the following turn"
+    "held_movement": "one move on each full beat while a direction remains held; the half-beat extra action requires a new input"
+  },
+  "movement": {
+    "schedule": "nearest_beat_or_half_beat",
+    "motion": "instantaneous_tile_step",
+    "maximum_moves_per_slot": 1,
+    "maximum_moves_per_beat": 2,
+    "outside_good_window": "miss_no_move"
+  },
+  "judgment": {
+    "perfect_window_ms": 50,
+    "good_window_ms": 120,
+    "labels": ["PERFECT", "GOOD", "MISS", "BLOCKED", "LOCKED", "FREE"]
   },
   "visualization": {
     "hud_shows_bpm": true,
@@ -56,11 +64,13 @@
     "timing_bar": {
       "orientation": "horizontal",
       "placement": "centered below the grid",
-      "judgment_zone": "centered green segment",
-      "marker_motion": "continuous back and forth across the bar",
-      "beat_alignment": "marker crosses the centered zone on every beat"
+      "judgment_zone": "green segment centered on the full beat and matching segments at both bar edges for the half-beat",
+      "marker_motion": "travels left to right and wraps to the left at the half-beat",
+      "beat_alignment": "marker reaches the centered zone on every full beat and the edge zones at each half-beat",
+      "good_window_ms": 120,
+      "perfect_window_ms": 50
     },
     "audio_output": true,
-    "audio_content": "metronome only; no music"
+    "audio_content": "original synthesized dungeon groove; no separate metronome"
   }
 }

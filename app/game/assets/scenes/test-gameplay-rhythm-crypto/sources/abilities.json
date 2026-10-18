@@ -7,7 +7,10 @@
   },
   "black_hole": {
     "key": "A",
-    "resolve_on_next_beat": true,
+    "resolve": "immediately when the input is accepted inside the nearest beat or half-beat judgment window",
+    "rhythm_judgment": "shared with movement; one accepted action per beat slot, with full-beat and half-beat slots",
+    "maximum_accepted_actions_per_slot": 1,
+    "can_use_half_beat_slot": true,
     "target": "the adjacent tile in Jerv's last facing direction",
     "success": "remove the object from the target tile and push it onto the top of the inventory stack",
     "empty_target": "leave the inventory unchanged and show empty-target feedback",
@@ -21,7 +24,10 @@
   },
   "white_hole": {
     "key": "S",
-    "resolve_on_next_beat": true,
+    "resolve": "immediately when the input is accepted inside the nearest beat or half-beat judgment window",
+    "rhythm_judgment": "shared with movement; one accepted action per beat slot, with full-beat and half-beat slots",
+    "maximum_accepted_actions_per_slot": 1,
+    "can_use_half_beat_slot": true,
     "target": "the adjacent tile in Jerv's last facing direction",
     "success": "pop the top item from the inventory stack and place it on the target tile",
     "empty_inventory": "leave the target tile unchanged and show empty-inventory feedback",

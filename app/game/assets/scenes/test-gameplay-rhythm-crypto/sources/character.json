@@ -18,7 +18,7 @@
     "starting_cell_bottom_left": [4, 3],
     "anchor": "cell_center",
     "right_upper_arm_bracelet": "Una sottile linea gialla rappresenta il braccialetto della gravità.",
-    "movement": "I, J, K e L accodano rispettivamente alto, sinistra, basso e destra fino al beat successivo. Un tasto tenuto ripete il movimento di una cella per beat; Jerv mantiene l'ultimo orientamento da fermo e riproduce l'animazione idle di due frame nella riga corrispondente.",
+    "movement": "I, J, K e L indicano rispettivamente alto, sinistra, basso e destra. Ogni nuova pressione muove Jerv subito se cade nella finestra del beat intero o del mezzo beat più vicino; è accettata una azione per slot, fino a due passi per beat. Una direzione tenuta ripete un passo sui beat interi; il passo extra sul mezzo beat richiede una nuova pressione. Jerv mantiene l'ultimo orientamento da fermo e riproduce l'animazione idle di due frame nella riga corrispondente.",
     "attacks": "L'attivazione dei braccialetti illumina il braccio destro mentre la relativa animazione di potere appare sul tile davanti a Jerv."
   }
 }

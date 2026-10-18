@@ -1,8 +1,13 @@
 {
   "movement": {
-    "one_cell_per_beat": true,
+    "one_cell_per_accepted_input": true,
+    "schedule": "nearest_beat_or_half_beat",
+    "action_slots_per_beat": 2,
+    "maximum_moves_per_slot": 1,
+    "maximum_moves_per_beat": 2,
     "repeat_while_held": true,
-    "resolve_on_next_beat": true,
+    "held_repeat_slots": ["beat"],
+    "half_beat_extra_action_requires_new_input": true,
     "keys": [
       { "key": "I", "direction": "up" },
       { "key": "J", "direction": "left" },
@@ -14,7 +19,9 @@
     "A": "black_hole",
     "S": "white_hole",
     "target": "the adjacent tile in Jerv's last facing direction",
-    "resolve_on_next_beat": true
+    "use_movement_rhythm_judgment": true,
+    "maximum_accepted_actions_per_slot": 1,
+    "can_use_half_beat_slot": true
   },
   "audio_volume": {
     "volume_up": ["pageup"],
@@ -41,7 +48,7 @@
     "maximum_bpm": 240,
     "disabled_mode": {
       "clock": "stopped",
-      "metronome": "off",
+      "music": "continues at selected tempo",
       "actions": "resolve immediately on key press",
       "held_movement_repeat_seconds": {
         "initial_delay": 0.22,

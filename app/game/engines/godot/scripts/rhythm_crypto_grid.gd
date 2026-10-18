@@ -16,6 +16,8 @@ const OUTER_BORDER := Color8(99, 67, 99)
 const EFFECT_FRAME_COUNT := 4
 const BEAT_PULSE_FRACTION := 0.36
 const DEFAULT_ANIMATION_BPM := 120.0
+const GOOD_WINDOW_SECONDS := 0.12
+const PERFECT_WINDOW_SECONDS := 0.05
 
 const OBJECT_CATALOG := {
 	"ion_crystal": {
@@ -53,6 +55,9 @@ var turn_count := 0
 var beat_pulse_remaining := 0.0
 var timing_cycle_phase := 0.0
 var audio_volume_percent := 40
+var judgment_feedback := "READY"
+var judgment_slot := ""
+var judgment_feedback_timer := 0.0
 
 
 func _ready() -> void:
@@ -79,6 +84,13 @@ func _process(delta: float) -> void:
 
 	if beat_pulse_remaining > 0.0:
 		beat_pulse_remaining = maxf(0.0, beat_pulse_remaining - delta)
+		should_redraw = true
+
+	if judgment_feedback_timer > 0.0:
+		judgment_feedback_timer = maxf(0.0, judgment_feedback_timer - delta)
+		if judgment_feedback_timer == 0.0:
+			judgment_feedback = "READY"
+			judgment_slot = ""
 		should_redraw = true
 
 	if should_redraw:
@@ -122,6 +134,13 @@ func advance_turn(next_turn_count: int) -> void:
 
 func set_timing_phase(phase: float) -> void:
 	timing_cycle_phase = clampf(phase, 0.0, 1.0)
+	queue_redraw()
+
+
+func set_judgment(label: String, slot_name: String = "") -> void:
+	judgment_feedback = label
+	judgment_slot = slot_name
+	judgment_feedback_timer = 0.8
 	queue_redraw()
 
 
@@ -270,7 +289,7 @@ func _draw_hud() -> void:
 	draw_string(font, Vector2(14, 17), "IJKL MOVE  A/S HOLES  1-6 BPM  [ +5 ] -5  0 BPM ON/OFF  PGUP/DN VOL", HORIZONTAL_ALIGNMENT_LEFT, 350, 8, Color8(217, 223, 239))
 	var top_item := "VUOTO" if inventory.is_empty() else _item_name(inventory.back())
 	var tempo_status := "%d BPM %s" % [roundi(bpm), bpm_profile] if bpm_enabled else "FREE (BPM OFF, NEXT %d)" % roundi(bpm)
-	var status_text := "%s  T%04d  STACK %d %s  VOL %d%%  %s" % [tempo_status, turn_count, inventory.size(), top_item, audio_volume_percent, action_feedback]
+	var status_text := "%s  T%04d  STACK %d %s  VOL %d%%" % [tempo_status, turn_count, inventory.size(), top_item, audio_volume_percent]
 	draw_string(font, Vector2(14, 29), status_text, HORIZONTAL_ALIGNMENT_LEFT, 342, 7, Color8(177, 191, 217))
 	if bpm_enabled:
 		var pulse_strength := beat_pulse_remaining / beat_pulse_duration
@@ -280,24 +299,52 @@ func _draw_hud() -> void:
 
 
 func _draw_timing_bar() -> void:
+	var judgment_text := judgment_feedback
+	if not judgment_slot.is_empty():
+		judgment_text = "%s %s" % [judgment_feedback, judgment_slot]
+	draw_string(ThemeDB.fallback_font, Vector2(14, 264), "%s  %s" % [judgment_text, action_feedback], HORIZONTAL_ALIGNMENT_LEFT, 356, 7, _judgment_color())
 	if not bpm_enabled:
 		return
-	var bar_rect := Rect2(Vector2(126, 266), Vector2(132, 8))
+	var bar_rect := Rect2(Vector2(126, 274), Vector2(132, 8))
 	draw_rect(bar_rect, Color8(8, 12, 22), true)
 	draw_rect(bar_rect, Color8(112, 127, 151), false, 1.0)
-	var zone_rect := Rect2(Vector2(182, 267), Vector2(20, 6))
-	draw_rect(zone_rect, Color8(45, 115, 69), true)
-	draw_rect(Rect2(Vector2(190, 267), Vector2(4, 6)), Color8(115, 220, 135), true)
+	var good_radius := minf(0.5, GOOD_WINDOW_SECONDS / beat_duration)
+	var perfect_radius := minf(good_radius, PERFECT_WINDOW_SECONDS / beat_duration)
+	var good_width := good_radius * 2.0 * bar_rect.size.x
+	var perfect_width := perfect_radius * 2.0 * bar_rect.size.x
+	var half_beat_good_width := good_radius * bar_rect.size.x
+	var half_beat_perfect_width := perfect_radius * bar_rect.size.x
+	var center_x := bar_rect.position.x + bar_rect.size.x * 0.5
+	var zone_y := bar_rect.position.y + 1.0
+	var zone_height := bar_rect.size.y - 2.0
+	var good_color := Color8(38, 111, 66)
+	var perfect_color := Color8(83, 188, 103)
+	draw_rect(Rect2(Vector2(center_x - good_width * 0.5, zone_y), Vector2(good_width, zone_height)), good_color, true)
+	draw_rect(Rect2(Vector2(bar_rect.position.x + 1.0, zone_y), Vector2(half_beat_good_width, zone_height)), good_color, true)
+	draw_rect(Rect2(Vector2(bar_rect.end.x - half_beat_good_width - 1.0, zone_y), Vector2(half_beat_good_width, zone_height)), good_color, true)
+	draw_rect(Rect2(Vector2(center_x - perfect_width * 0.5, zone_y), Vector2(perfect_width, zone_height)), perfect_color, true)
+	draw_rect(Rect2(Vector2(bar_rect.position.x + 1.0, zone_y), Vector2(half_beat_perfect_width, zone_height)), perfect_color, true)
+	draw_rect(Rect2(Vector2(bar_rect.end.x - half_beat_perfect_width - 1.0, zone_y), Vector2(half_beat_perfect_width, zone_height)), perfect_color, true)
 
-	var marker_position := 0.0
-	if timing_cycle_phase < 0.25:
-		marker_position = 0.5 + timing_cycle_phase * 2.0
-	elif timing_cycle_phase < 0.75:
-		marker_position = 1.0 - (timing_cycle_phase - 0.25) * 2.0
-	else:
-		marker_position = (timing_cycle_phase - 0.75) * 2.0
+	var marker_position := 0.5 + timing_cycle_phase if timing_cycle_phase < 0.5 else timing_cycle_phase - 0.5
 	var marker_x := bar_rect.position.x + marker_position * bar_rect.size.x
 	draw_rect(Rect2(Vector2(marker_x - 1.0, bar_rect.position.y - 2.0), Vector2(2.0, 12.0)), Color8(244, 247, 255), true)
+
+
+func _judgment_color() -> Color:
+	match judgment_feedback:
+		"PERFECT":
+			return Color8(150, 255, 178)
+		"GOOD":
+			return Color8(226, 244, 156)
+		"MISS":
+			return Color8(255, 112, 112)
+		"BLOCKED", "LOCKED":
+			return Color8(255, 190, 105)
+		"FREE":
+			return Color8(141, 211, 255)
+		_:
+			return Color8(177, 191, 217)
 
 
 func _is_inside_grid(cell: Vector2i) -> bool:
