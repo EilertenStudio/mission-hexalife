@@ -1,0 +1,27 @@
+{
+  "id": "test-gameplay-action-adventure",
+  "name": "Test gameplay action adventure",
+  "format_version": 1,
+  "coordinate_system": {
+    "up": "y",
+    "handedness": "right",
+    "origin": "center",
+    "unit": "pixel"
+  },
+  "state": {
+    "map": "map.json",
+    "interior": "interior.json",
+    "grid": "grid.json",
+    "character": "character.json",
+    "controls": "controls.json",
+    "camera": "camera.json",
+    "menus": "menus.json"
+  },
+  "rendering": {
+    "projection": "orthographic",
+    "frame_size_pixels": [320, 288],
+    "background_color_rgb": [214, 217, 147],
+    "sampling": "nearest"
+  },
+  "reference_implementation": "app/game/engines/arcade/test-gameplay-action-adventure.mjs"
+}

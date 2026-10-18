@@ -4,5 +4,5 @@ monorepo_root = true
 [monorepo]
 config_roots = [
   "assets",
-  "engines/*/*"
+  "engines/*"
 ]

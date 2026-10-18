@@ -1,0 +1,33 @@
+{
+  "room": {
+    "id": "empty-house-interior",
+    "vector_asset": "../../rooms/action-adventure-field/exports/action-adventure-interior-empty.svg",
+    "raster_asset": "../../rooms/action-adventure-field/exports/action-adventure-interior-empty.png",
+    "size_pixels": [320, 288],
+    "grid": {
+      "columns": 10,
+      "rows": 9,
+      "metatile_size_pixels": [32, 32],
+      "base_graphic_grid_pixels": [16, 16],
+      "origin": "bottom_left",
+      "walkable_cells": "all_except_blocked",
+      "blocked_cells_bottom_left": [
+        [0, 0], [1, 0], [2, 0], [3, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0],
+        [0, 1], [9, 1], [0, 2], [9, 2], [0, 3], [9, 3],
+        [0, 4], [9, 4], [0, 5], [9, 5], [0, 6], [9, 6], [0, 7], [9, 7],
+        [0, 8], [1, 8], [2, 8], [3, 8], [4, 8], [5, 8], [6, 8], [7, 8], [8, 8], [9, 8]
+      ]
+    },
+    "entry": {
+      "spawn_tile_bottom_left": [4, 1],
+      "facing": "down"
+    },
+    "exit": {
+      "threshold_cells_bottom_left": [[4, 0]],
+      "direction": "down",
+      "destination": "outdoor",
+      "spawn_tile_bottom_left": [3, 3],
+      "spawn_direction": "top"
+    }
+  }
+}

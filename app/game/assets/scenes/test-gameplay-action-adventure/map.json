@@ -1,0 +1,15 @@
+{
+  "map": {
+    "vector_asset": "../../rooms/action-adventure-field/exports/action-adventure-field-map.svg",
+    "raster_asset": "../../rooms/action-adventure-field/exports/action-adventure-field-map.png",
+    "size_pixels": [320, 288],
+    "coordinate_origin": "top_left",
+    "entrance": {
+      "threshold_cells_bottom_left": [[3, 4], [4, 4]],
+      "direction": "top",
+      "destination": "interior",
+      "spawn_tile_bottom_left": [4, 1],
+      "spawn_direction": "down"
+    }
+  }
+}
