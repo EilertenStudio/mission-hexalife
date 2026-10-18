@@ -4,8 +4,20 @@
     "idle": {
       "start_column": 1,
       "frame_count_columns": 2,
-      "frame_duration_seconds": 1,
+      "frame_duration_beats": 2,
       "action": "Jerv mantiene la posa nella direzione corrente. Nel secondo frame busto, mantello e testa si sollevano leggermente mentre coda e zampe restano ancorate, creando un lieve molleggio. L'animazione è disponibile per tutte e quattro le direzioni."
+    },
+    "black_hole": {
+      "start_column": 3,
+      "frame_count_columns": 4,
+      "duration_beats": 1,
+      "action": "Jerv carica il braccialetto destro e apre un buco nero sul tile davanti a sé. Il vortice si espande, attira e assorbe l'oggetto presente; infine si contrae."
+    },
+    "white_hole": {
+      "start_column": 7,
+      "frame_count_columns": 4,
+      "duration_beats": 1,
+      "action": "Jerv carica il braccialetto destro e apre un buco bianco sul tile davanti a sé. Il nucleo luminoso si espande e proietta sul tile l'oggetto che si trova in cima all'inventario."
     }
   }
 }

@@ -5,6 +5,7 @@ const ROWS := 7
 const CELL_SIZE := Vector2(32.0, 32.0)
 const GRAPHIC_GRID_SIZE := Vector2(16.0, 16.0)
 const GRID_ORIGIN := Vector2(32.0, 32.0)
+const SPRITE_SHEET: Texture2D = preload("res://assets/characters/jerv/jerv-tgrc-topdown-sheet.png")
 
 const BACKGROUND := Color8(5, 7, 16)
 const FLOOR := Color8(13, 16, 29)
@@ -12,6 +13,178 @@ const FLOOR_ALTERNATE := Color8(17, 20, 35)
 const GRID_LINE := Color8(43, 49, 69)
 const MOVEMENT_TILE_LINE := Color8(61, 67, 88)
 const OUTER_BORDER := Color8(99, 67, 99)
+const EFFECT_FRAME_COUNT := 4
+const BEAT_PULSE_FRACTION := 0.36
+const DEFAULT_ANIMATION_BPM := 120.0
+
+const OBJECT_CATALOG := {
+	"ion_crystal": {
+		"name": "Cristallo ionico",
+		"shape": "diamond",
+		"color": Color8(91, 220, 255),
+	},
+	"brass_gear": {
+		"name": "Ingranaggio d'ottone",
+		"shape": "gear",
+		"color": Color8(244, 177, 79),
+	},
+	"echo_orb": {
+		"name": "Sfera d'eco",
+		"shape": "orb",
+		"color": Color8(194, 145, 255),
+	},
+}
+
+var objects_by_cell: Dictionary = {}
+var inventory: Array[Dictionary] = []
+var target_cell := Vector2i(4, 2)
+var action_feedback := "PRONTO"
+var active_effect := ""
+var effect_cell := Vector2i.ZERO
+var effect_frame := 0
+var effect_timer := 0.0
+var bpm := 120.0
+var bpm_enabled := true
+var bpm_profile := "P4"
+var beat_duration := 0.5
+var effect_frame_duration := 0.5 / EFFECT_FRAME_COUNT
+var beat_pulse_duration := 0.5 * BEAT_PULSE_FRACTION
+var turn_count := 0
+var beat_pulse_remaining := 0.0
+var timing_cycle_phase := 0.0
+var audio_volume_percent := 40
+
+
+func _ready() -> void:
+	objects_by_cell = {
+		Vector2i(4, 2): {"id": "ion_crystal"},
+		Vector2i(6, 3): {"id": "brass_gear"},
+		Vector2i(2, 4): {"id": "echo_orb"},
+	}
+	queue_redraw()
+
+
+func _process(delta: float) -> void:
+	var should_redraw := false
+	if not active_effect.is_empty():
+		effect_timer += delta
+		var next_frame := int(effect_timer / effect_frame_duration)
+		if next_frame >= EFFECT_FRAME_COUNT:
+			active_effect = ""
+			effect_frame = 0
+			effect_timer = 0.0
+		else:
+			effect_frame = next_frame
+		should_redraw = true
+
+	if beat_pulse_remaining > 0.0:
+		beat_pulse_remaining = maxf(0.0, beat_pulse_remaining - delta)
+		should_redraw = true
+
+	if should_redraw:
+		queue_redraw()
+
+
+func set_tempo(value_bpm: float, profile_name: String = "") -> void:
+	bpm = value_bpm
+	bpm_profile = profile_name
+	_update_tempo_durations()
+	queue_redraw()
+
+
+func set_bpm_enabled(enabled: bool) -> void:
+	bpm_enabled = enabled
+	if not bpm_enabled:
+		beat_pulse_remaining = 0.0
+	_update_tempo_durations()
+	queue_redraw()
+
+
+func _update_tempo_durations() -> void:
+	var effect_phase := effect_timer / beat_duration
+	var pulse_phase := beat_pulse_remaining / beat_pulse_duration
+	var animation_bpm := bpm if bpm_enabled else DEFAULT_ANIMATION_BPM
+	beat_duration = 60.0 / animation_bpm
+	effect_frame_duration = beat_duration / EFFECT_FRAME_COUNT
+	beat_pulse_duration = beat_duration * BEAT_PULSE_FRACTION
+	effect_timer = effect_phase * beat_duration
+	if bpm_enabled:
+		beat_pulse_remaining = pulse_phase * beat_pulse_duration
+	if not active_effect.is_empty():
+		effect_frame = mini(int(effect_timer / effect_frame_duration), EFFECT_FRAME_COUNT - 1)
+
+
+func advance_turn(next_turn_count: int) -> void:
+	turn_count = next_turn_count
+	beat_pulse_remaining = beat_pulse_duration
+	queue_redraw()
+
+
+func set_timing_phase(phase: float) -> void:
+	timing_cycle_phase = clampf(phase, 0.0, 1.0)
+	queue_redraw()
+
+
+func set_audio_volume_percent(value: int) -> void:
+	audio_volume_percent = clampi(value, 0, 100)
+	queue_redraw()
+
+
+func set_target_cell(cell: Vector2i) -> void:
+	if target_cell == cell:
+		return
+	target_cell = cell
+	queue_redraw()
+
+
+func use_black_hole(cell: Vector2i) -> void:
+	_start_effect("black_hole", cell)
+	if not _is_inside_grid(cell):
+		action_feedback = "BLACK HOLE: FUORI GRIGLIA"
+	elif not objects_by_cell.has(cell):
+		action_feedback = "BLACK HOLE: TILE VUOTO"
+	else:
+		var item: Dictionary = objects_by_cell[cell]
+		objects_by_cell.erase(cell)
+		inventory.append(item)
+		action_feedback = "ASSORBITO: %s" % _item_name(item)
+	queue_redraw()
+
+
+func use_white_hole(cell: Vector2i) -> void:
+	_start_effect("white_hole", cell)
+	if inventory.is_empty():
+		action_feedback = "WHITE HOLE: INVENTARIO VUOTO"
+	elif not _is_inside_grid(cell):
+		action_feedback = "WHITE HOLE: FUORI GRIGLIA"
+	elif objects_by_cell.has(cell):
+		action_feedback = "WHITE HOLE: TILE OCCUPATO"
+	else:
+		var item: Dictionary = inventory.pop_back()
+		objects_by_cell[cell] = item
+		action_feedback = "ESPULSO: %s" % _item_name(item)
+	queue_redraw()
+
+
+func _start_effect(effect: String, cell: Vector2i) -> void:
+	active_effect = effect
+	effect_cell = cell
+	effect_frame = 0
+	effect_timer = 0.0
+	queue_redraw()
+
+
+func has_active_effect() -> bool:
+	return not active_effect.is_empty()
+
+
+func cancel_active_effect() -> void:
+	if active_effect.is_empty():
+		return
+	active_effect = ""
+	effect_frame = 0
+	effect_timer = 0.0
+	queue_redraw()
 
 
 func _draw() -> void:
@@ -35,3 +208,105 @@ func _draw() -> void:
 		var y := GRID_ORIGIN.y + row * CELL_SIZE.y
 		draw_line(Vector2(GRID_ORIGIN.x, y), Vector2(GRID_ORIGIN.x + grid_size.x, y), MOVEMENT_TILE_LINE, 1.0)
 	draw_rect(Rect2(GRID_ORIGIN - Vector2(2.0, 2.0), grid_size + Vector2(4.0, 4.0)), OUTER_BORDER, false, 2.0)
+
+	if _is_inside_grid(target_cell):
+		var target_rect := Rect2(_cell_screen_position(target_cell), CELL_SIZE)
+		draw_rect(target_rect, Color(0.95, 0.72, 0.26, 0.08), true)
+		draw_rect(target_rect, Color8(241, 190, 55, 220), false, 1.0)
+
+	for cell_variant in objects_by_cell:
+		var cell: Vector2i = cell_variant
+		_draw_object(cell, objects_by_cell[cell])
+
+	_draw_active_effect()
+	_draw_hud()
+	_draw_timing_bar()
+
+
+func _draw_object(cell: Vector2i, item: Dictionary) -> void:
+	var catalog: Dictionary = OBJECT_CATALOG[item["id"]]
+	var center := _cell_screen_position(cell) + CELL_SIZE * 0.5
+	var item_color: Color = catalog["color"]
+	match catalog["shape"]:
+		"diamond":
+			draw_colored_polygon(
+				PackedVector2Array([center + Vector2(0, -8), center + Vector2(6, 0), center + Vector2(0, 8), center + Vector2(-6, 0)]),
+				item_color
+			)
+			draw_line(center + Vector2(0, -6), center + Vector2(0, 6), Color(0.86, 0.98, 1.0), 1.0)
+		"gear":
+			draw_rect(Rect2(center + Vector2(-5, -5), Vector2(10, 10)), item_color, true)
+			draw_rect(Rect2(center + Vector2(-2, -2), Vector2(4, 4)), FLOOR, true)
+			draw_rect(Rect2(center + Vector2(-1, -8), Vector2(2, 3)), item_color, true)
+			draw_rect(Rect2(center + Vector2(-1, 5), Vector2(2, 3)), item_color, true)
+			draw_rect(Rect2(center + Vector2(-8, -1), Vector2(3, 2)), item_color, true)
+			draw_rect(Rect2(center + Vector2(5, -1), Vector2(3, 2)), item_color, true)
+		"orb":
+			draw_circle(center, 6.0, item_color)
+			draw_rect(Rect2(center + Vector2(-2, -3), Vector2(2, 2)), Color(0.96, 0.92, 1.0), true)
+
+
+func _draw_active_effect() -> void:
+	if active_effect.is_empty() or not _is_inside_grid(effect_cell):
+		return
+
+	var effect_row := 4 if active_effect == "black_hole" else 5
+	var start_column := 2 if active_effect == "black_hole" else 6
+	var source_rect := Rect2(
+		Vector2((start_column + effect_frame) * 32, effect_row * 32),
+		Vector2(32, 32)
+	)
+	draw_texture_rect_region(
+		SPRITE_SHEET,
+		Rect2(_cell_screen_position(effect_cell), CELL_SIZE),
+		source_rect
+	)
+
+
+func _draw_hud() -> void:
+	draw_rect(Rect2(Vector2(8, 5), Vector2(368, 27)), Color8(8, 11, 24, 242), true)
+	draw_rect(Rect2(Vector2(8, 5), Vector2(368, 27)), OUTER_BORDER, false, 1.0)
+	var font := ThemeDB.fallback_font
+	draw_string(font, Vector2(14, 17), "IJKL MOVE  A/S HOLES  1-6 BPM  [ +5 ] -5  0 BPM ON/OFF  PGUP/DN VOL", HORIZONTAL_ALIGNMENT_LEFT, 350, 8, Color8(217, 223, 239))
+	var top_item := "VUOTO" if inventory.is_empty() else _item_name(inventory.back())
+	var tempo_status := "%d BPM %s" % [roundi(bpm), bpm_profile] if bpm_enabled else "FREE (BPM OFF, NEXT %d)" % roundi(bpm)
+	var status_text := "%s  T%04d  STACK %d %s  VOL %d%%  %s" % [tempo_status, turn_count, inventory.size(), top_item, audio_volume_percent, action_feedback]
+	draw_string(font, Vector2(14, 29), status_text, HORIZONTAL_ALIGNMENT_LEFT, 342, 7, Color8(177, 191, 217))
+	if bpm_enabled:
+		var pulse_strength := beat_pulse_remaining / beat_pulse_duration
+		var pulse_radius := 1.5 + pulse_strength * 2.0
+		var pulse_color := Color(0.45, 0.92, 1.0, 0.35 + pulse_strength * 0.65)
+		draw_circle(Vector2(365, 14), pulse_radius, pulse_color)
+
+
+func _draw_timing_bar() -> void:
+	if not bpm_enabled:
+		return
+	var bar_rect := Rect2(Vector2(126, 266), Vector2(132, 8))
+	draw_rect(bar_rect, Color8(8, 12, 22), true)
+	draw_rect(bar_rect, Color8(112, 127, 151), false, 1.0)
+	var zone_rect := Rect2(Vector2(182, 267), Vector2(20, 6))
+	draw_rect(zone_rect, Color8(45, 115, 69), true)
+	draw_rect(Rect2(Vector2(190, 267), Vector2(4, 6)), Color8(115, 220, 135), true)
+
+	var marker_position := 0.0
+	if timing_cycle_phase < 0.25:
+		marker_position = 0.5 + timing_cycle_phase * 2.0
+	elif timing_cycle_phase < 0.75:
+		marker_position = 1.0 - (timing_cycle_phase - 0.25) * 2.0
+	else:
+		marker_position = (timing_cycle_phase - 0.75) * 2.0
+	var marker_x := bar_rect.position.x + marker_position * bar_rect.size.x
+	draw_rect(Rect2(Vector2(marker_x - 1.0, bar_rect.position.y - 2.0), Vector2(2.0, 12.0)), Color8(244, 247, 255), true)
+
+
+func _is_inside_grid(cell: Vector2i) -> bool:
+	return cell.x >= 0 and cell.x < COLUMNS and cell.y >= 0 and cell.y < ROWS
+
+
+func _cell_screen_position(cell: Vector2i) -> Vector2:
+	return GRID_ORIGIN + Vector2(cell.x, ROWS - cell.y - 1) * CELL_SIZE
+
+
+func _item_name(item: Dictionary) -> String:
+	return str(OBJECT_CATALOG[item["id"]]["name"])

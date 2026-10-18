@@ -1,0 +1,66 @@
+{
+  "clock": {
+    "bpm": 120,
+    "seconds_per_beat": 0.5,
+    "starts_on_scene_ready": true,
+    "enabled_by_default": true,
+    "toggle_key": "0",
+    "bpm_range": [40, 240],
+    "manual_step_bpm": 5,
+    "profiles": [60, 80, 100, 120, 140, 160],
+    "profile_keys": ["1", "2", "3", "4", "5", "6"],
+    "manual_adjustment_keys": {
+      "increase": "[",
+      "decrease": "]"
+    },
+    "disabled_mode": {
+      "clock_stops": true,
+      "metronome_stops": true,
+      "actions_resolve_immediately": true,
+      "held_movement_repeat_seconds": {
+        "initial_delay": 0.22,
+        "interval": 0.12
+      },
+      "animation_reference_bpm": 120
+    },
+    "audio_enabled": true,
+    "music_enabled": false,
+    "metronome": {
+      "enabled": true,
+      "sound": "short dry click on every beat",
+      "accent_pattern": "uniform",
+      "default_volume_percent": 40,
+      "minimum_volume_percent": 0,
+      "maximum_volume_percent": 100,
+      "volume_step_percent": 10
+    }
+  },
+  "turns": {
+    "turns_per_beat": 1,
+    "first_turn_after_seconds": 0.5,
+    "advances_without_input": true,
+    "movement_cells_per_beat": 1,
+    "commands_resolve_on_next_beat": true,
+    "one_command_per_turn": true,
+    "animation_flow": {
+      "continue_across_beats_without_player_action": true,
+      "cancel_active_animation_when_action_resolves_on_beat": true,
+      "new_action_starts_on_that_beat": true
+    },
+    "simultaneous_command_priority": "ability before movement; queued movement is retained for the following turn"
+  },
+  "visualization": {
+    "hud_shows_bpm": true,
+    "hud_shows_turn_count": true,
+    "beat_pulse_fraction_of_beat": 0.36,
+    "timing_bar": {
+      "orientation": "horizontal",
+      "placement": "centered below the grid",
+      "judgment_zone": "centered green segment",
+      "marker_motion": "continuous back and forth across the bar",
+      "beat_alignment": "marker crosses the centered zone on every beat"
+    },
+    "audio_output": true,
+    "audio_content": "metronome only; no music"
+  }
+}

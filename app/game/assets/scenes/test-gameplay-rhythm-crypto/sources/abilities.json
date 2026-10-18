@@ -1,0 +1,42 @@
+{
+  "inventory": {
+    "starts_empty": true,
+    "organization": "LIFO stack",
+    "top_of_stack": "last item added",
+    "capacity": "unlimited"
+  },
+  "black_hole": {
+    "key": "A",
+    "resolve_on_next_beat": true,
+    "target": "the adjacent tile in Jerv's last facing direction",
+    "success": "remove the object from the target tile and push it onto the top of the inventory stack",
+    "empty_target": "leave the inventory unchanged and show empty-target feedback",
+    "visual": {
+      "character_animation": "black_hole",
+      "effect_row_index_zero_based": 4,
+      "effect_start_column": 3,
+      "effect_frame_count": 4,
+      "effect_duration_beats": 1
+    }
+  },
+  "white_hole": {
+    "key": "S",
+    "resolve_on_next_beat": true,
+    "target": "the adjacent tile in Jerv's last facing direction",
+    "success": "pop the top item from the inventory stack and place it on the target tile",
+    "empty_inventory": "leave the target tile unchanged and show empty-inventory feedback",
+    "blocked_target": "if the target tile is occupied or outside the grid, keep the item on top of the inventory stack",
+    "visual": {
+      "character_animation": "white_hole",
+      "effect_row_index_zero_based": 5,
+      "effect_start_column": 7,
+      "effect_frame_count": 4,
+      "effect_duration_beats": 1
+    }
+  },
+  "feedback": {
+    "target_tile": "outline the tile Jerv is facing",
+    "inventory": "show stack size and its top item above the grid",
+    "last_action": "show whether the object was absorbed, expelled, or the action had no effect"
+  }
+}

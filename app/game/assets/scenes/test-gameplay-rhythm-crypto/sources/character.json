@@ -2,18 +2,23 @@
   "player": {
     "id": "jerv",
     "sprite_sheet": "../exports/jerv-tgrc-topdown-sheet.png",
-    "sheet_size_pixels": [64, 128],
+    "sheet_size_pixels": [320, 192],
     "frame_size_pixels": [32, 32],
-    "frame_column_origins_top_left_pixels": [0, 32],
+    "frame_column_origins_top_left_pixels": [0, 32, 64, 96, 128, 160, 192, 224, 256, 288],
     "frame_row_origins_top_left_pixels": [0, 32, 64, 96],
     "sprite_size_pixels": [32, 32],
     "sprite_style": "Pixel art 32×32 con palette ristretta, campiture piatte e pochi dettagli grandi e leggibili.",
-    "available_animations": ["idle"],
+    "available_animations": ["idle", "black_hole", "white_hole"],
     "direction_rows_top_to_bottom": ["down", "left", "up", "right"],
+    "effect_rows_top_to_bottom": [
+      { "id": "black_hole", "row_index_zero_based": 4 },
+      { "id": "white_hole", "row_index_zero_based": 5 }
+    ],
     "displayed_pose": "front_down",
     "starting_cell_bottom_left": [4, 3],
     "anchor": "cell_center",
     "right_upper_arm_bracelet": "Una sottile linea gialla rappresenta il braccialetto della gravità.",
-    "movement": "Si muove di una cella per pressione e ripete il movimento finché il tasto resta premuto. Guarda nella direzione corrispondente tra basso, sinistra, alto e destra; mantiene l'ultimo orientamento da fermo e riproduce l'animazione idle di due frame nella riga corrispondente."
+    "movement": "I, J, K e L accodano rispettivamente alto, sinistra, basso e destra fino al beat successivo. Un tasto tenuto ripete il movimento di una cella per beat; Jerv mantiene l'ultimo orientamento da fermo e riproduce l'animazione idle di due frame nella riga corrispondente.",
+    "attacks": "L'attivazione dei braccialetti illumina il braccio destro mentre la relativa animazione di potere appare sul tile davanti a Jerv."
   }
 }

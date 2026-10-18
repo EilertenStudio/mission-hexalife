@@ -44,76 +44,76 @@ import sys
 import zipfile
 
 source, destination, output_dir = sys.argv[1:]
-directions = ["DOWN", "LEFT", "TOP", "RIGHT"]
-# Pixelorama dispone i frame dall'alto in basso per colonna. Nella copia
-# temporanea intercalo le direzioni per ottenere una riga per direzione.
-column_major_order = [0, 2, 4, 6, 1, 3, 5, 7]
+row_layers = ["DOWN", "LEFT", "TOP", "RIGHT", "BLACK HOLE FX", "WHITE HOLE FX"]
 with zipfile.ZipFile(source, "r") as original:
-	with zipfile.ZipFile(destination, "w") as configured:
-		project = None
-		for entry in original.infolist():
-			if entry.filename == "data.json":
-				project = json.loads(original.read(entry.filename))
-				break
-		if project is None:
-			raise SystemExit("Il progetto Pixelorama non contiene data.json")
-		if len(project["frames"]) != 2:
-			raise SystemExit("Il PXO deve contenere due frame idle")
-		layer_indices = {layer["name"].strip().upper(): index for index, layer in enumerate(project["layers"])}
-		if set(layer_indices) != set(directions) or len(project["layers"]) != len(directions):
-			raise SystemExit("Il PXO deve contenere i layer DOWN, LEFT, TOP e RIGHT")
-		frame_sources = []
-		frames = []
-		for direction in directions:
-			layer_index = layer_indices[direction]
-			for source_frame_index, source_frame in enumerate(project["frames"], 1):
-				frames.append(
-					{
-						"cels": [copy.deepcopy(source_frame["cels"][layer_index])],
-						"duration": source_frame["duration"],
-						"metadata": copy.deepcopy(source_frame.get("metadata", {})),
-						"user_data": f"{direction}: {source_frame.get('user_data', '')}",
-					}
-				)
-				frame_sources.append((source_frame_index, layer_index + 1))
-		project["frames"] = [frames[index] for index in column_major_order]
-		project["layers"] = [copy.deepcopy(project["layers"][layer_indices["DOWN"]])]
-		project["layers"][0]["name"] = "Jerv - sprite sheet"
-		project["current_frame"] = 0
-		project["current_layer"] = 0
-		project["tags"] = []
-		profile = project["export_profile"]
-		profile.update(
-			{
-				"directory_path": json.dumps(output_dir),
-				"file_name": json.dumps("jerv-tgrc-topdown-sheet"),
-				"file_format": "0",
-				"current_tab": "1",
-				"orientation": "0",
-				"lines_count": "4",
-				"number_of_frames": "8",
-				"frame_current_tag": "0",
-				"export_layers": "0",
-				"resize": "100",
-				"split_layers": "false",
-				"sheet_layers_as_separate_files": "false",
-			}
-		)
-		for entry in original.infolist():
-			if entry.filename.startswith("image_data/frames/"):
-				continue
-			data = original.read(entry.filename)
-			if entry.filename == "data.json":
-				data = json.dumps(project, separators=(",", ":")).encode("utf-8")
-			configured.writestr(entry, data)
-		for output_frame, ordered_index in enumerate(column_major_order, 1):
-			source_frame, source_layer = frame_sources[ordered_index]
-			image_name = f"image_data/frames/{source_frame}/layer_{source_layer}"
-			indices_name = f"image_data/frames/{source_frame}/indices_layer_{source_layer}"
-			configured.writestr(f"image_data/frames/{output_frame}/layer_1", original.read(image_name))
-			configured.writestr(
-				f"image_data/frames/{output_frame}/indices_layer_1", original.read(indices_name)
-			)
+    with zipfile.ZipFile(destination, "w") as configured:
+        project = None
+        for entry in original.infolist():
+            if entry.filename == "data.json":
+                project = json.loads(original.read(entry.filename))
+                break
+        if project is None:
+            raise SystemExit("Il progetto Pixelorama non contiene data.json")
+        if (project.get("size_x"), project.get("size_y")) != (32, 32):
+            raise SystemExit("Il canvas PXO deve essere 32x32")
+        if len(project["frames"]) != 10:
+            raise SystemExit("Il PXO deve contenere 2 frame idle, 4 Black Hole e 4 White Hole")
+        layer_indices = {layer["name"].strip().upper(): index for index, layer in enumerate(project["layers"])}
+        if set(layer_indices) != set(row_layers) or len(project["layers"]) != len(row_layers):
+            raise SystemExit("Il PXO deve contenere DOWN, LEFT, TOP, RIGHT, BLACK HOLE FX e WHITE HOLE FX")
+
+        frames = []
+        frame_sources = []
+        for source_frame_index, source_frame in enumerate(project["frames"], 1):
+            for row_layer in row_layers:
+                layer_index = layer_indices[row_layer]
+                frames.append(
+                    {
+                        "cels": [copy.deepcopy(source_frame["cels"][layer_index])],
+                        "duration": source_frame["duration"],
+                        "metadata": copy.deepcopy(source_frame.get("metadata", {})),
+                        "user_data": f"{row_layer}: {source_frame.get('user_data', '')}",
+                    }
+                )
+                frame_sources.append((source_frame_index, layer_index + 1))
+
+        project["frames"] = frames
+        project["layers"] = [copy.deepcopy(project["layers"][layer_indices["DOWN"]])]
+        project["layers"][0]["name"] = "Sprite sheet"
+        project["current_frame"] = 0
+        project["current_layer"] = 0
+        project["tags"] = []
+        profile = project["export_profile"]
+        profile.update(
+            {
+                "directory_path": json.dumps(output_dir),
+                "file_name": json.dumps("jerv-tgrc-topdown-sheet"),
+                "file_format": "0",
+                "current_tab": "1",
+                "orientation": "0",
+                "lines_count": "6",
+                "number_of_frames": "60",
+                "frame_current_tag": "0",
+                "export_layers": "0",
+                "resize": "100",
+                "split_layers": "false",
+                "sheet_layers_as_separate_files": "false",
+            }
+        )
+        for entry in original.infolist():
+            if entry.filename.startswith("image_data/frames/"):
+                continue
+            data = original.read(entry.filename)
+            if entry.filename == "data.json":
+                data = json.dumps(project, separators=(",", ":")).encode("utf-8")
+            configured.writestr(entry, data)
+        for output_frame, (source_frame, source_layer) in enumerate(frame_sources, 1):
+            image_name = f"image_data/frames/{source_frame}/layer_{source_layer}"
+            indices_name = f"image_data/frames/{source_frame}/indices_layer_{source_layer}"
+            configured.writestr(f"image_data/frames/{output_frame}/layer_1", original.read(image_name))
+            configured.writestr(
+                f"image_data/frames/{output_frame}/indices_layer_1", original.read(indices_name)
+            )
 PY
 
 "$PIXELORAMA_BIN" --headless --quit-after 60 -- --export --spritesheet "$temporary_pxo"
@@ -128,10 +128,10 @@ with open(path, "rb") as image:
 if header[:8] != b"\x89PNG\r\n\x1a\n":
 	raise SystemExit(f"Export non valido: {path} non è una PNG")
 size = struct.unpack(">II", header[16:24])
-if size != (64, 128):
-	raise SystemExit(f"Dimensioni inattese per la sprite sheet: {size[0]}x{size[1]} (atteso 64x128)")
+if size != (320, 192):
+    raise SystemExit(f"Dimensioni inattese per la sprite sheet: {size[0]}x{size[1]} (atteso 320x192)")
 PY
 
 cp "$OUTPUT_PNG" "$GODOT_PNG"
-printf 'Esportata %s (64x128, 4 direzioni con due frame idle ciascuna)\n' "$OUTPUT_PNG"
+printf 'Esportata %s (320x192, IDLE e attacchi Black Hole / White Hole)\n' "$OUTPUT_PNG"
 printf 'Aggiornata copia Godot: %s\n' "$GODOT_PNG"

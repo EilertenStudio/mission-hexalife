@@ -1,14 +1,18 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/rhythm_crypto_grid.gd" id="1_grid"]
 [ext_resource type="Texture2D" path="res://assets/characters/jerv/jerv-tgrc-topdown-sheet.png" id="2_jerv_texture"]
 [ext_resource type="Script" path="res://scripts/rhythm_crypto_jerv.gd" id="3_jerv_script"]
+[ext_resource type="Script" path="res://scripts/metronome.gd" id="4_metronome_script"]
 
 [node name="TestGameplayRhythmCrypto" type="Node2D"]
 texture_filter = 1
 
 [node name="Grid" type="Node2D" parent="."]
 script = ExtResource("1_grid")
+
+[node name="Metronome" type="Node" parent="."]
+script = ExtResource("4_metronome_script")
 
 [node name="Jerv" type="Sprite2D" parent="."]
 texture_filter = 1

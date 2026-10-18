@@ -1,0 +1,79 @@
+{
+  "format_version": 1,
+  "shortcut_prefix": {
+    "keys": ["ctrl+p"],
+    "timeout": "until_next_key",
+    "commands": {
+      "d": "system_debug",
+      "m": "scene_select",
+      "r": "scene_reload",
+      "c": "frame_copy"
+    }
+  },
+  "global_actions": {
+    "scene_reload": {
+      "type": "action",
+      "label": "Ricarica scena",
+      "shortcut": ["ctrl+p", "r"]
+    },
+    "frame_copy": {
+      "type": "action",
+      "label": "Copia frame",
+      "shortcut": ["ctrl+p", "c"],
+      "output": "clipboard_image/png"
+    }
+  },
+  "menus": {
+    "system_debug": {
+      "scope": "system",
+      "title": "Debug sistema",
+      "close_keys": ["escape"],
+      "items": [
+        { "id": "measured_fps", "type": "read_only", "label": "FPS effettivi", "source": "runtime.measured_fps" },
+        {
+          "id": "target_fps",
+          "type": "integer_setting",
+          "label": "Limite FPS",
+          "source": "runtime.target_fps",
+          "default": 60,
+          "minimum": 1,
+          "maximum": 240,
+          "step": 1,
+          "adjustment_keys": { "decrease": ["-", "["], "increase": ["+", "=", "]"] }
+        },
+        {
+          "id": "render_mode",
+          "type": "choice_setting",
+          "label": "Filtro texture",
+          "source": "runtime.texture_filter",
+          "default": "nearest",
+          "values": ["nearest", "linear"],
+          "cycle_key": "v"
+        },
+        {
+          "id": "frame_pause",
+          "type": "toggle_action",
+          "label": "Pausa / avvia scena",
+          "source": "runtime.paused",
+          "key": "p",
+          "default": false
+        }
+      ]
+    },
+    "scene_select": {
+      "scope": "system",
+      "title": "Cambia scena",
+      "close_keys": ["escape"],
+      "items": [
+        {
+          "id": "test-gameplay-rhythm-crypto",
+          "type": "scene_option",
+          "label": "Test gameplay rhythm crypto",
+          "key": "1",
+          "scene": "res://scenes/test-gameplay-rhythm-crypto.tscn"
+        }
+      ]
+    }
+  },
+  "mutually_exclusive": true
+}

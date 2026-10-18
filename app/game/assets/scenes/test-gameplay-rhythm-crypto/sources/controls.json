@@ -1,12 +1,53 @@
 {
   "movement": {
-    "one_cell_per_press": true,
+    "one_cell_per_beat": true,
     "repeat_while_held": true,
+    "resolve_on_next_beat": true,
     "keys": [
       { "key": "I", "direction": "up" },
       { "key": "J", "direction": "left" },
       { "key": "K", "direction": "down" },
       { "key": "L", "direction": "right" }
     ]
+  },
+  "abilities": {
+    "A": "black_hole",
+    "S": "white_hole",
+    "target": "the adjacent tile in Jerv's last facing direction",
+    "resolve_on_next_beat": true
+  },
+  "audio_volume": {
+    "volume_up": ["pageup"],
+    "volume_down": ["pagedown"],
+    "step_percent": 10,
+    "minimum_percent": 0,
+    "maximum_percent": 100
+  },
+  "tempo": {
+    "enabled_by_default": true,
+    "toggle_key": "0",
+    "profiles": {
+      "1": 60,
+      "2": 80,
+      "3": 100,
+      "4": 120,
+      "5": 140,
+      "6": 160
+    },
+    "increase_key": "[",
+    "decrease_key": "]",
+    "step_bpm": 5,
+    "minimum_bpm": 40,
+    "maximum_bpm": 240,
+    "disabled_mode": {
+      "clock": "stopped",
+      "metronome": "off",
+      "actions": "resolve immediately on key press",
+      "held_movement_repeat_seconds": {
+        "initial_delay": 0.22,
+        "interval": 0.12
+      },
+      "animation_reference_bpm": 120
+    }
   }
 }

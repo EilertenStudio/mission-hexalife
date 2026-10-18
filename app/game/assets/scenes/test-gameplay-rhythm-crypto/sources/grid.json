@@ -8,6 +8,33 @@
     "walkable_cells": "all",
     "boundary_behavior": "stop"
   },
+  "objects": {
+    "capacity_per_cell": 1,
+    "movement_blocked": false,
+    "initial": [
+      {
+        "id": "ion_crystal",
+        "name": "Cristallo ionico",
+        "shape": "diamond",
+        "color_rgb": [91, 220, 255],
+        "cell_bottom_left": [4, 2]
+      },
+      {
+        "id": "brass_gear",
+        "name": "Ingranaggio d'ottone",
+        "shape": "gear",
+        "color_rgb": [244, 177, 79],
+        "cell_bottom_left": [6, 3]
+      },
+      {
+        "id": "echo_orb",
+        "name": "Sfera d'eco",
+        "shape": "orb",
+        "color_rgb": [194, 145, 255],
+        "cell_bottom_left": [2, 4]
+      }
+    ]
+  },
   "appearance": {
     "background_rgb": [5, 7, 16],
     "floor_rgb": [13, 16, 29],
