@@ -82,7 +82,7 @@ export function createSystemOverlay({
         action: cycleRenderMode,
       },
       {
-        text: `${pauseAction.key.toUpperCase()}  ${state.paused ? 'AVVIA' : 'PAUSA'} FRAME  [${state.paused ? 'IN PAUSA' : 'ATTIVO'}]`,
+        text: `${pauseAction.key.toUpperCase()}  ${pauseAction.label.toUpperCase()}  [${state.paused ? 'IN PAUSA' : 'ATTIVO'}]`,
         action: toggleFramePause,
       },
       { text: 'ESC  CHIUDI', action: close },

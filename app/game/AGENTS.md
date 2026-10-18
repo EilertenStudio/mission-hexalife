@@ -12,4 +12,4 @@
 
 - Ogni cartella `assets/scenes/<nome-scena>/` organizza il soggetto in `concepts/`, `references/`, `exports/` e `sources/`. `sources/description.json` identifica la scena e collega i suoi documenti di stato, oltre ai file specifici per geometria, luci, camera, controlli e menu quando presenti.
 - I documenti sono JSON indipendente dal linguaggio, con coordinate Y-up, colori RGB interi da 0 a 255 e misure nelle unità locali della scena.
-- `test-gameplay-action-adventure` è la scena attualmente mantenuta e quella predefinita di Arcade. Arcade è l'implementazione di riferimento, non una seconda fonte canonica.
+- `test-gameplay-rhythm` è la scena predefinita di Arcade; `test-gameplay-action-adventure` resta disponibile dal selettore scena. Arcade è l'implementazione di riferimento, non una seconda fonte canonica.

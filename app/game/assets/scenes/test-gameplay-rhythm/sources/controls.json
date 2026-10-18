@@ -1,0 +1,19 @@
+{
+  "movement": {
+    "one_cell_per_accepted_press": true,
+    "keys": [
+      { "key": "K", "direction": "down" },
+      { "key": "J", "direction": "left" },
+      { "key": "I", "direction": "top" },
+      { "key": "L", "direction": "right" }
+    ]
+  },
+  "keys": {
+    "toggle_playback": ["space"],
+    "restart_loop": ["r"],
+    "volume_up": ["pageup"],
+    "volume_down": ["pagedown"],
+    "quit": ["q", "escape"]
+  },
+  "system_overlay": "menus.json"
+}

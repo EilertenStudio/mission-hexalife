@@ -1,0 +1,6 @@
+{
+  "frame_size_pixels": [192, 144],
+  "static": false,
+  "sampling": "nearest",
+  "background_rgb": [5, 7, 16]
+}

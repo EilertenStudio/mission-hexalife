@@ -52,7 +52,8 @@
       "title": "Cambia scena",
       "close_keys": ["escape"],
       "items": [
-        { "id": "test-gameplay-action-adventure", "type": "scene_option", "label": "Test gameplay action adventure", "key": "1", "scene": "test-gameplay-action-adventure" }
+        { "id": "test-gameplay-rhythm", "type": "scene_option", "label": "Test gameplay rhythm", "key": "1", "scene": "test-gameplay-rhythm" },
+        { "id": "test-gameplay-action-adventure", "type": "scene_option", "label": "Test gameplay action adventure", "key": "2", "scene": "test-gameplay-action-adventure" }
       ]
     }
   },

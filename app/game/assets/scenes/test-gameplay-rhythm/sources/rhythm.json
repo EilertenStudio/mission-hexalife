@@ -1,0 +1,34 @@
+{
+  "beat_source": "music.json",
+  "movement": {
+    "cells_per_accepted_input": 1,
+    "schedule": "nearest_beat",
+    "motion": "instantaneous_tile_step",
+    "maximum_moves_per_beat": 1,
+    "outside_good_window": "miss_no_move"
+  },
+  "judgment": {
+    "perfect_window_ms": 50,
+    "good_window_ms": 120,
+    "labels": ["PERFECT", "GOOD", "MISS", "BLOCKED", "LOCKED", "PAUSED"]
+  },
+  "bar": {
+    "orientation": "horizontal",
+    "position_bottom_left_pixels": [48, 4],
+    "size_pixels": [96, 8],
+    "cycle": "one_beat",
+    "direction": "left_to_right",
+    "judgment_zones": "centered_on_beat",
+    "beat_position": "center",
+    "colors_rgb": {
+      "track": [19, 19, 33],
+      "border": [74, 71, 91],
+      "good_zone": [39, 91, 88],
+      "perfect_zone": [88, 177, 153],
+      "playhead": [242, 190, 90],
+      "perfect": [126, 225, 180],
+      "good": [79, 205, 194],
+      "miss": [237, 67, 133]
+    }
+  }
+}

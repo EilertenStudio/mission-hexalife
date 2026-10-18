@@ -6,7 +6,7 @@ import { createInputParser, enterTerminal, leaveTerminal } from 'ascii-arcade/pl
 import { copyFrameToClipboard } from './frame-clipboard.mjs';
 import { createSystemOverlay } from './system-overlay.mjs';
 
-const sceneDir = new URL('../../assets/scenes/test-gameplay-action-adventure/sources/', import.meta.url);
+const sceneDir = new URL('../../../../assets/scenes/test-gameplay-action-adventure/sources/', import.meta.url);
 const readJson = (path) => JSON.parse(readFileSync(new URL(path, sceneDir), 'utf8'));
 const manifest = readJson('description.json');
 const map = readJson(manifest.state.map).map;
@@ -284,6 +284,18 @@ function reloadScene() {
 
 function selectScene(scene) {
   if (scene === manifest.id) return;
+  if (scene !== 'test-gameplay-rhythm') return;
+  running = false;
+  clearInterval(frameTimer);
+  process.stdin.off('data', inputParser);
+  process.stdout.off('resize', draw);
+  leaveTerminal();
+  const result = spawnSync(process.execPath, [new URL('./test-gameplay-rhythm.mjs', import.meta.url).pathname], {
+    cwd: process.cwd(),
+    env: process.env,
+    stdio: 'inherit',
+  });
+  process.exit(result.status ?? 1);
 }
 
 function onKey(event) {

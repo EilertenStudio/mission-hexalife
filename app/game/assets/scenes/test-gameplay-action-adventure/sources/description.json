@@ -31,5 +31,5 @@
     "background_color_rgb": [214, 217, 147],
     "sampling": "nearest"
   },
-  "reference_implementation": "app/game/engines/arcade/test-gameplay-action-adventure.mjs"
+  "reference_implementation": "app/game/engines/arcade/src/js/test-gameplay-action-adventure.mjs"
 }

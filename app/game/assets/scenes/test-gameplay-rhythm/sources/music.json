@@ -1,0 +1,78 @@
+{
+  "id": "rhythm-loop-a-minor",
+  "tempo_bpm": 112,
+  "time_signature": [4, 4],
+  "key": "A minor",
+  "bar_count": 8,
+  "subdivisions_per_beat": 2,
+  "loop_export": "../exports/rhythm-loop.wav",
+  "playback": {
+    "default_volume_percent": 40,
+    "volume_step_percent": 10,
+    "minimum_volume_percent": 0,
+    "maximum_volume_percent": 100
+  },
+  "synthesis": {
+    "sample_rate_hz": 22050,
+    "master_gain": 0.82,
+    "style": "Melodia chiptune pulse, basso triangle, pad triangle e batteria sintetica asciutta."
+  },
+  "parts": {
+    "lead": {
+      "waveform": "pulse",
+      "gain": 0.15,
+      "notes_by_bar_eighths": [
+        ["A4", null, "E5", "C5", null, "E5", "A5", "E5"],
+        ["F4", "C5", "A4", "C5", "F5", "C5", "A4", null],
+        ["G4", "D5", "B4", "D5", "G5", "D5", "B4", "D5"],
+        ["E4", "B4", "G4", "B4", "E5", "B4", "G4", null],
+        ["A4", "C5", "E5", "G5", "A5", "G5", "E5", "C5"],
+        ["F4", "A4", "C5", "E5", "F5", "E5", "C5", "A4"],
+        ["G4", "B4", "D5", "F5", "G5", "F5", "D5", "B4"],
+        ["E4", "G4", "B4", "D5", "E5", "D5", "B4", "G4"]
+      ]
+    },
+    "bass": {
+      "waveform": "triangle",
+      "gain": 0.2,
+      "notes_by_bar_quarters": [
+        ["A2", "A2", "E3", "E3"],
+        ["F2", "F2", "C3", "C3"],
+        ["G2", "G2", "D3", "D3"],
+        ["E2", "E2", "B2", "B2"],
+        ["A2", "A2", "E3", "E3"],
+        ["F2", "F2", "C3", "C3"],
+        ["G2", "G2", "D3", "D3"],
+        ["E2", "E2", "B2", "B2"]
+      ]
+    },
+    "pad": {
+      "waveform": "triangle",
+      "gain": 0.035,
+      "chords_by_bar": [
+        ["A3", "C4", "E4"],
+        ["F3", "A3", "C4"],
+        ["G3", "B3", "D4"],
+        ["E3", "G3", "B3"],
+        ["A3", "C4", "E4"],
+        ["F3", "A3", "C4"],
+        ["G3", "B3", "D4"],
+        ["E3", "G3", "B3"]
+      ]
+    },
+    "drums": {
+      "kick_steps_by_bar": [[0, 4], [0, 4], [0, 4], [0, 3, 4, 6], [0, 4], [0, 4], [0, 4], [0, 3, 4, 6]],
+      "snare_steps_by_bar": [[2, 6], [2, 6], [2, 6], [2, 6], [2, 6], [2, 6], [2, 6], [2, 6]],
+      "hat_steps_by_bar": [
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7],
+        [0, 1, 2, 3, 4, 5, 6, 7]
+      ]
+    }
+  }
+}

@@ -15,7 +15,8 @@ creandole quando servono:
 │   └── ...
 └── scripts/
     ├── blender/
-    └── pixelorama/
+    ├── pixelorama/
+    └── audio/
 ```
 
 - `sources/` contiene i JSON canonici che definiscono identità, funzione,
@@ -39,6 +40,8 @@ creandole quando servono:
 - `scripts/blender/` e `scripts/pixelorama/` contengono gli script, separati
   per applicazione, che generano o aggiornano gli asset finali in `exports/` a
   partire dalle fonti in `sources/`.
+- `scripts/audio/` contiene gli script che generano o aggiornano gli asset
+  audio finali in `exports/` a partire dalle fonti in `sources/`.
 - `SOURCE.md` e `ANIMATION.md` non sono più formati canonici: i loro contenuti
   vanno registrati nei JSON pertinenti dentro `sources/`.
 
