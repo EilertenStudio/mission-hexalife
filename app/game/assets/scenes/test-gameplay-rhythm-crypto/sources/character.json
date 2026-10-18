@@ -1,0 +1,19 @@
+{
+  "player": {
+    "id": "jerv",
+    "sprite_sheet": "../exports/jerv-tgrc-topdown-sheet.png",
+    "sheet_size_pixels": [64, 128],
+    "frame_size_pixels": [32, 32],
+    "frame_column_origins_top_left_pixels": [0, 32],
+    "frame_row_origins_top_left_pixels": [0, 32, 64, 96],
+    "sprite_size_pixels": [32, 32],
+    "sprite_style": "Pixel art 32×32 con palette ristretta, campiture piatte e pochi dettagli grandi e leggibili.",
+    "available_animations": ["idle"],
+    "direction_rows_top_to_bottom": ["down", "left", "up", "right"],
+    "displayed_pose": "front_down",
+    "starting_cell_bottom_left": [4, 3],
+    "anchor": "cell_center",
+    "right_upper_arm_bracelet": "Una sottile linea gialla rappresenta il braccialetto della gravità.",
+    "movement": "Si muove di una cella per pressione e ripete il movimento finché il tasto resta premuto. Guarda nella direzione corrispondente tra basso, sinistra, alto e destra; mantiene l'ultimo orientamento da fermo e riproduce l'animazione idle di due frame nella riga corrispondente."
+  }
+}

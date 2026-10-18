@@ -1,0 +1,12 @@
+{
+  "movement": {
+    "one_cell_per_press": true,
+    "repeat_while_held": true,
+    "keys": [
+      { "key": "I", "direction": "up" },
+      { "key": "J", "direction": "left" },
+      { "key": "K", "direction": "down" },
+      { "key": "L", "direction": "right" }
+    ]
+  }
+}

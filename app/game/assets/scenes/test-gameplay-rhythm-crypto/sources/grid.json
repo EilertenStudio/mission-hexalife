@@ -1,0 +1,19 @@
+{
+  "grid": {
+    "columns": 10,
+    "rows": 7,
+    "cell_size_pixels": [32, 32],
+    "graphic_grid_size_pixels": [16, 16],
+    "origin_bottom_left_pixels": [32, 32],
+    "walkable_cells": "all",
+    "boundary_behavior": "stop"
+  },
+  "appearance": {
+    "background_rgb": [5, 7, 16],
+    "floor_rgb": [13, 16, 29],
+    "alternate_floor_rgb": [17, 20, 35],
+    "grid_line_rgb": [43, 49, 69],
+    "movement_tile_line_rgb": [61, 67, 88],
+    "outer_border_rgb": [99, 67, 99]
+  }
+}

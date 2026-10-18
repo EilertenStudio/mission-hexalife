@@ -1,0 +1,3 @@
+[tasks.export]
+description = "Esporta la sprite sheet di Jerv dal PXO"
+run = "bash \"$(git rev-parse --show-toplevel)/app/game/assets/scenes/test-gameplay-rhythm-crypto/scripts/pixelorama/export_topdown_sheet.sh\""

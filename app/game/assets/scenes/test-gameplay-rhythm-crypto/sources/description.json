@@ -1,0 +1,32 @@
+{
+  "id": "test-gameplay-rhythm-crypto",
+  "subject_type": "scene",
+  "name": "Test gameplay rhythm crypto",
+  "format_version": 1,
+  "description": {
+    "purpose": "Scena 2D minimale per verificare la leggibilità di una griglia di gioco e il movimento libero di Jerv in Godot.",
+    "composition": "Una griglia top-down rettangolare occupa il centro di un campo scuro. Le celle sono tutte percorribili e distinguibili con lievi variazioni di tono, linee sottili e un bordo esterno più luminoso. Jerv è visibile sopra la griglia, centrato nella cella iniziale.",
+    "grid": "La griglia di movimento misura 10 colonne per 7 righe; ogni tile logico misura 32×32 pixel ed è composto da quattro celle grafiche da 16×16 pixel. La griglia occupa 320×224 pixel, con origine in basso a sinistra a [32, 32]. Tutte le celle sono libere e il movimento si arresta ai bordi.",
+    "character": "Jerv usa jerv-tgrc-topdown-sheet.png, una sheet PNG trasparente da 64×32 pixel con due frame IDLE da 32×32 rivolti verso il basso. È pixel art a palette ristretta, con campiture piatte e pochi dettagli grandi. Conserva il mantello verde, la protezione toracica, la cintura con borsello, gli occhi verdi e una sottile linea gialla sul braccio destro per il braccialetto della gravità. Nel secondo frame busto, mantello e testa si sollevano di un pixel; coda e zampe restano ancorate. La sheet è mostrata a dimensione nativa con campionamento nearest e Jerv resta centrato nel tile.",
+    "movement": "I, J, K e L muovono Jerv rispettivamente verso l'alto, sinistra, basso e destra di una cella per pressione. Tenere premuto un tasto ripete il movimento. Lo spostamento è libero e indipendente dal tempo musicale. L'animazione IDLE si ripete quando Jerv è fermo; durante il movimento mostra la posa base rivolta verso il basso.",
+    "scope": "La scena contiene solo campo, griglia e personaggio controllabile. Non include musica, judgment bar, sincronizzazione ritmica, ostacoli o altre meccaniche."
+  },
+  "coordinate_system": {
+    "up": "y",
+    "handedness": "right",
+    "origin": "bottom_left",
+    "unit": "pixel"
+  },
+  "state": {
+    "grid": "grid.json",
+    "character": "character.json",
+    "animations": "animations.json",
+    "controls": "controls.json"
+  },
+  "rendering": {
+    "projection": "orthographic",
+    "frame_size_pixels": [384, 288],
+    "sampling": "nearest"
+  },
+  "reference_implementation": "app/game/engines/godot/scenes/test-gameplay-rhythm-crypto.tscn"
+}
