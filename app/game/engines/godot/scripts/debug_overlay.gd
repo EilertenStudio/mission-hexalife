@@ -18,6 +18,7 @@ var target_fps := DEFAULT_TARGET_FPS
 var use_linear_filter := false
 var fps_refresh_timer := 0.0
 var notice_timer := 0.0
+var rhythm_selected_item := 0
 
 var shade: ColorRect
 var menu_panel: PanelContainer
@@ -39,7 +40,7 @@ func _process(delta: float) -> void:
 	fps_refresh_timer -= delta
 	if fps_refresh_timer <= 0.0:
 		fps_refresh_timer = 0.2
-		if active_menu == "system_debug":
+		if active_menu == "system_debug" or active_menu == "rhythm_control":
 			_refresh_menu()
 
 	if notice_timer > 0.0:
@@ -155,10 +156,14 @@ func _handle_menu_key(key_event: InputEventKey) -> void:
 					_reload_scene()
 				KEY_C:
 					_copy_frame_to_clipboard()
+				KEY_J:
+					_open_menu("rhythm_control")
 		"system_debug":
 			_handle_debug_key(key_event)
 		"scene_select":
 			_handle_scene_key(key_event.keycode)
+		"rhythm_control":
+			_handle_rhythm_control_key(key_event.keycode)
 
 
 func _handle_debug_key(key_event: InputEventKey) -> void:
@@ -187,8 +192,31 @@ func _handle_scene_key(key: int) -> void:
 			return
 
 
+func _handle_rhythm_control_key(key: int) -> void:
+	if key == KEY_UP:
+		rhythm_selected_item = posmod(rhythm_selected_item - 1, 3)
+		_refresh_menu()
+	elif key == KEY_DOWN:
+		rhythm_selected_item = posmod(rhythm_selected_item + 1, 3)
+		_refresh_menu()
+	elif key == KEY_LEFT or key == KEY_RIGHT:
+		var controller := _get_rhythm_controller()
+		if controller == null or not controller.has_method("adjust_rhythm_setting"):
+			return
+		var setting_names := ["bpm", "perfect", "good"]
+		controller.call("adjust_rhythm_setting", setting_names[rhythm_selected_item], -1 if key == KEY_LEFT else 1)
+		_refresh_menu()
+	elif key == KEY_0 or key == KEY_KP_0:
+		var controller := _get_rhythm_controller()
+		if controller != null and controller.has_method("toggle_bpm_enabled"):
+			controller.call("toggle_bpm_enabled")
+		_refresh_menu()
+
+
 func _open_menu(menu_id: String) -> void:
 	active_menu = menu_id
+	if menu_id == "rhythm_control":
+		rhythm_selected_item = 0
 	shade.show()
 	menu_panel.get_parent().show()
 	_refresh_menu()
@@ -206,7 +234,7 @@ func _refresh_menu() -> void:
 	match active_menu:
 		"shortcuts":
 			title_label.text = "SYSTEM // CTRL+P"
-			content_label.text = "D   DEBUG SISTEMA\nM   CAMBIA SCENA\nR   RICARICA SCENA\nC   COPIA FRAME\nESC   CHIUDI"
+			content_label.text = "D   DEBUG SISTEMA\nJ   BPM / JUDGMENT\nM   CAMBIA SCENA\nR   RICARICA SCENA\nC   COPIA FRAME\nESC   CHIUDI"
 		"system_debug":
 			title_label.text = "DEBUG SISTEMA // ESC CHIUDE"
 			var filter_name := "LINEAR" if use_linear_filter else "NEAREST"
@@ -219,8 +247,35 @@ func _refresh_menu() -> void:
 				lines.append("%s   %s" % [OS.get_keycode_string(scene_option["key"]), scene_option["label"]])
 			lines.append("ESC   CHIUDI")
 			content_label.text = "\n".join(lines)
+		"rhythm_control":
+			_refresh_rhythm_control_menu()
 		_:
 			return
+
+
+func _refresh_rhythm_control_menu() -> void:
+	title_label.text = "RITMO // BPM E JUDGMENT"
+	var controller := _get_rhythm_controller()
+	if controller == null or not controller.has_method("get_rhythm_settings"):
+		content_label.text = "CONTROLLO RITMICO NON DISPONIBILE\nESC   CHIUDI"
+		return
+	var settings: Dictionary = controller.call("get_rhythm_settings")
+	var bpm_state := "ON" if settings["bpm_enabled"] else "OFF / MOSSA LIBERA"
+	var entries := [
+		"BPM: %d %s" % [settings["bpm"], settings["profile"]],
+		"PERFECT: ±%d ms" % settings["perfect_window_ms"],
+		"GOOD: ±%d ms   MAX %d ms" % [settings["good_window_ms"], settings["good_window_max_ms"]],
+	]
+	for index in range(entries.size()):
+		entries[index] = ("> " if index == rhythm_selected_item else "  ") + entries[index]
+	content_label.text = "↑ / ↓   SELEZIONA\n← / →   REGOLA (5 BPM / 5 ms)\n%s\n\n0   VINCOLO BPM: %s\nESC   CHIUDI" % ["\n".join(entries), bpm_state]
+
+
+func _get_rhythm_controller() -> Node:
+	var scene := get_tree().current_scene
+	if scene == null:
+		return null
+	return scene.find_child("Jerv", true, false)
 
 
 func _set_target_fps(value: int) -> void:
@@ -235,14 +290,14 @@ func _apply_texture_filter() -> void:
 		_set_texture_filter_recursive(scene, CanvasItem.TEXTURE_FILTER_LINEAR if use_linear_filter else CanvasItem.TEXTURE_FILTER_NEAREST)
 
 
-func _set_texture_filter_recursive(node: Node, filter_mode: int) -> void:
+func _set_texture_filter_recursive(node: Node, filter_mode: CanvasItem.TextureFilter) -> void:
 	if node is CanvasItem:
 		(node as CanvasItem).texture_filter = filter_mode
 	for child in node.get_children():
 		_set_texture_filter_recursive(child, filter_mode)
 
 
-func _on_scene_changed(scene: Node) -> void:
+func _on_scene_changed() -> void:
 	_apply_texture_filter()
 
 

@@ -13,11 +13,14 @@ const DEFAULT_BPM := 120.0
 const MIN_BPM := 40.0
 const MAX_BPM := 240.0
 const BPM_STEP := 5.0
+const DEFAULT_PERFECT_WINDOW_MS := 50
+const DEFAULT_GOOD_WINDOW_MS := 120
+const MIN_JUDGMENT_WINDOW_MS := 5
+const MAX_GOOD_WINDOW_MS := 120
+const JUDGMENT_WINDOW_STEP_MS := 5
 const FREE_MOVE_INITIAL_DELAY := 0.22
 const FREE_MOVE_REPEAT_INTERVAL := 0.12
 const DEFAULT_ANIMATION_BEAT_DURATION := 60.0 / DEFAULT_BPM
-const PERFECT_WINDOW_SECONDS := 0.05
-const GOOD_WINDOW_SECONDS := 0.12
 const BPM_PROFILE_KEYS := [KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6]
 const BPM_PROFILE_VALUES := [60.0, 80.0, 100.0, 120.0, 140.0, 160.0]
 
@@ -39,6 +42,8 @@ var idle_frame_duration := DEFAULT_ANIMATION_BEAT_DURATION * IDLE_FRAME_BEATS
 var attack_frame_duration := DEFAULT_ANIMATION_BEAT_DURATION / ATTACK_FRAME_COUNT
 var turn_count := 0
 var bpm_profile := "P4"
+var perfect_window_ms := DEFAULT_PERFECT_WINDOW_MS
+var good_window_ms := DEFAULT_GOOD_WINDOW_MS
 var free_move_direction := Vector2i.ZERO
 var free_move_timer := 0.0
 var facing_row := FACING_ROW_DOWN
@@ -58,6 +63,7 @@ func _ready() -> void:
 	region_enabled = true
 	_set_idle_frame(0)
 	grid.call("set_tempo", bpm, bpm_profile)
+	_sync_judgment_windows()
 	music.call("set_tempo", bpm)
 	last_clock_beat_index = int(music.call("get_track_beat_index"))
 	_update_position()
@@ -148,10 +154,69 @@ func _set_bpm(value: float, profile_name: String) -> void:
 	bpm = clampf(value, MIN_BPM, MAX_BPM)
 	beat_duration = 60.0 / bpm
 	bpm_profile = profile_name
+	_clamp_judgment_windows()
 	_set_animation_beat_duration(beat_duration)
 	music.call("set_tempo", bpm)
 	grid.call("set_tempo", bpm, bpm_profile)
 	grid.call("set_bpm_enabled", bpm_enabled)
+	_sync_judgment_windows()
+
+
+func get_rhythm_settings() -> Dictionary:
+	return {
+		"bpm": roundi(bpm),
+		"profile": bpm_profile,
+		"bpm_enabled": bpm_enabled,
+		"perfect_window_ms": perfect_window_ms,
+		"good_window_ms": good_window_ms,
+		"good_window_max_ms": _maximum_good_window_ms(),
+	}
+
+
+func adjust_rhythm_setting(setting: String, direction: int) -> void:
+	var step_direction := clampi(direction, -1, 1)
+	if step_direction == 0:
+		return
+	match setting:
+		"bpm":
+			var next_bpm := clampf(bpm + BPM_STEP * step_direction, MIN_BPM, MAX_BPM)
+			_set_bpm(next_bpm, _profile_name_for_bpm(next_bpm))
+		"perfect":
+			perfect_window_ms = clampi(
+				perfect_window_ms + JUDGMENT_WINDOW_STEP_MS * step_direction,
+				MIN_JUDGMENT_WINDOW_MS,
+				good_window_ms - JUDGMENT_WINDOW_STEP_MS
+			)
+			_sync_judgment_windows()
+		"good":
+			good_window_ms = clampi(
+				good_window_ms + JUDGMENT_WINDOW_STEP_MS * step_direction,
+				perfect_window_ms + JUDGMENT_WINDOW_STEP_MS,
+				_maximum_good_window_ms()
+			)
+			_sync_judgment_windows()
+
+
+func toggle_bpm_enabled() -> void:
+	_toggle_bpm_enabled()
+
+
+func _maximum_good_window_ms() -> int:
+	var half_spacing_midpoint_ms := 15000.0 / bpm
+	var strict_step_count := int(ceil(half_spacing_midpoint_ms / float(JUDGMENT_WINDOW_STEP_MS))) - 1
+	var non_overlapping_max := strict_step_count * JUDGMENT_WINDOW_STEP_MS
+	return mini(MAX_GOOD_WINDOW_MS, non_overlapping_max)
+
+
+func _clamp_judgment_windows() -> void:
+	good_window_ms = mini(good_window_ms, _maximum_good_window_ms())
+	perfect_window_ms = mini(perfect_window_ms, good_window_ms - JUDGMENT_WINDOW_STEP_MS)
+	perfect_window_ms = maxi(perfect_window_ms, MIN_JUDGMENT_WINDOW_MS)
+
+
+func _sync_judgment_windows() -> void:
+	if grid:
+		grid.call("set_judgment_windows", perfect_window_ms, good_window_ms)
 
 
 func _set_animation_beat_duration(value: float) -> void:
@@ -224,7 +289,7 @@ func _submit_rhythm_action(direction: Vector2i, attack: String) -> void:
 	var action_name := attack.to_upper()
 	if direction != Vector2i.ZERO:
 		action_name = "MOVE %s" % str(direction)
-	if timing_error > GOOD_WINDOW_SECONDS:
+	if timing_error > float(good_window_ms) / 1000.0:
 		grid.call("set_judgment", "MISS", slot_name)
 		if direction != Vector2i.ZERO:
 			_log_rhythm_movement_attempt(action_name, slot_name, action_slot_index, phase, timing_error, "MISS")
@@ -241,7 +306,7 @@ func _submit_rhythm_action(direction: Vector2i, attack: String) -> void:
 		return
 
 	last_accepted_action_slot_index = action_slot_index
-	var judgment := "PERFECT" if timing_error <= PERFECT_WINDOW_SECONDS else "GOOD"
+	var judgment := "PERFECT" if timing_error <= float(perfect_window_ms) / 1000.0 else "GOOD"
 	grid.call("set_judgment", judgment, slot_name)
 	if not attack.is_empty():
 		_perform_attack(attack)

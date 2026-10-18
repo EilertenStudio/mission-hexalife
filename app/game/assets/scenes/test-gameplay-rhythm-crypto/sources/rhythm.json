@@ -55,7 +55,29 @@
   "judgment": {
     "perfect_window_ms": 50,
     "good_window_ms": 120,
+    "adjustment_step_ms": 5,
+    "minimum_window_ms": 5,
+    "maximum_good_window_ms": 120,
+    "good_window_max_rule": "Good is strictly narrower than the midpoint between adjacent beat and half-beat slots: round down to the previous 5 ms step below 15000 / BPM, then cap at 120 ms.",
+    "control_menu_shortcut": ["ctrl+p", "j"],
     "labels": ["PERFECT", "GOOD", "MISS", "BLOCKED", "LOCKED", "FREE"]
+  },
+  "audio_beat_detection": {
+    "enabled_by_default": true,
+    "method": "real-time spectral-flux onset detection from the playing audio stream; no beatmap or authored beat timestamps",
+    "frequency_bands_hz": [[45, 180], [180, 900], [900, 3000]],
+    "candidate_rule": "detect a sudden increase in weighted spectral energy against an adaptive recent baseline, with a refractory interval to suppress duplicate peaks",
+    "output": "diagnostic beat candidate only",
+    "judgment_integration": "none",
+    "visualization": {
+      "indicator": "persistent cyan caret above the timing bar at the latest detected beat phase; it brightens on a new candidate",
+      "flash_seconds": 0.3,
+      "candidate_count_in_hud": true
+    },
+    "limitations": [
+      "onset detection identifies prominent attacks and does not reconstruct a complete beatmap or guarantee the musical downbeat",
+      "the spectral analysis window introduces a small detection delay"
+    ]
   },
   "visualization": {
     "hud_shows_bpm": true,
@@ -71,6 +93,6 @@
       "perfect_window_ms": 50
     },
     "audio_output": true,
-    "audio_content": "original synthesized dungeon groove; no separate metronome"
+    "audio_content": "Hard Dungeon by MintoDog, a licensed loopable dungeon track; no separate metronome"
   }
 }

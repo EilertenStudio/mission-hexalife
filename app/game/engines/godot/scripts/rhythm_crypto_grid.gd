@@ -15,9 +15,10 @@ const MOVEMENT_TILE_LINE := Color8(61, 67, 88)
 const OUTER_BORDER := Color8(99, 67, 99)
 const EFFECT_FRAME_COUNT := 4
 const BEAT_PULSE_FRACTION := 0.36
+const AUDIO_DETECTION_FLASH_SECONDS := 0.3
 const DEFAULT_ANIMATION_BPM := 120.0
-const GOOD_WINDOW_SECONDS := 0.12
-const PERFECT_WINDOW_SECONDS := 0.05
+const DEFAULT_GOOD_WINDOW_MS := 120
+const DEFAULT_PERFECT_WINDOW_MS := 50
 
 const OBJECT_CATALOG := {
 	"ion_crystal": {
@@ -58,6 +59,12 @@ var audio_volume_percent := 40
 var judgment_feedback := "READY"
 var judgment_slot := ""
 var judgment_feedback_timer := 0.0
+var good_window_ms := DEFAULT_GOOD_WINDOW_MS
+var perfect_window_ms := DEFAULT_PERFECT_WINDOW_MS
+var audio_beat_candidate_phase := -1.0
+var audio_beat_candidate_strength := 0.0
+var audio_beat_candidate_flash_timer := 0.0
+var audio_beat_candidate_count := 0
 
 
 func _ready() -> void:
@@ -93,6 +100,10 @@ func _process(delta: float) -> void:
 			judgment_slot = ""
 		should_redraw = true
 
+	if audio_beat_candidate_flash_timer > 0.0:
+		audio_beat_candidate_flash_timer = maxf(0.0, audio_beat_candidate_flash_timer - delta)
+		should_redraw = true
+
 	if should_redraw:
 		queue_redraw()
 
@@ -101,6 +112,12 @@ func set_tempo(value_bpm: float, profile_name: String = "") -> void:
 	bpm = value_bpm
 	bpm_profile = profile_name
 	_update_tempo_durations()
+	queue_redraw()
+
+
+func set_judgment_windows(perfect_ms: int, good_ms: int) -> void:
+	good_window_ms = maxi(good_ms, 10)
+	perfect_window_ms = clampi(perfect_ms, 5, good_window_ms - 5)
 	queue_redraw()
 
 
@@ -146,6 +163,14 @@ func set_judgment(label: String, slot_name: String = "") -> void:
 
 func set_audio_volume_percent(value: int) -> void:
 	audio_volume_percent = clampi(value, 0, 100)
+	queue_redraw()
+
+
+func set_audio_beat_candidate(phase: float, strength: float) -> void:
+	audio_beat_candidate_phase = clampf(phase, 0.0, 1.0)
+	audio_beat_candidate_strength = maxf(1.0, strength)
+	audio_beat_candidate_flash_timer = AUDIO_DETECTION_FLASH_SECONDS
+	audio_beat_candidate_count += 1
 	queue_redraw()
 
 
@@ -291,6 +316,8 @@ func _draw_hud() -> void:
 	var tempo_status := "%d BPM %s" % [roundi(bpm), bpm_profile] if bpm_enabled else "FREE (BPM OFF, NEXT %d)" % roundi(bpm)
 	var status_text := "%s  T%04d  STACK %d %s  VOL %d%%" % [tempo_status, turn_count, inventory.size(), top_item, audio_volume_percent]
 	draw_string(font, Vector2(14, 29), status_text, HORIZONTAL_ALIGNMENT_LEFT, 342, 7, Color8(177, 191, 217))
+	var detection_color := Color8(105, 236, 255) if audio_beat_candidate_flash_timer > 0.0 else Color8(100, 133, 153)
+	draw_string(font, Vector2(307, 29), "AUTO %03d" % audio_beat_candidate_count, HORIZONTAL_ALIGNMENT_LEFT, 67, 7, detection_color)
 	if bpm_enabled:
 		var pulse_strength := beat_pulse_remaining / beat_pulse_duration
 		var pulse_radius := 1.5 + pulse_strength * 2.0
@@ -308,8 +335,8 @@ func _draw_timing_bar() -> void:
 	var bar_rect := Rect2(Vector2(126, 274), Vector2(132, 8))
 	draw_rect(bar_rect, Color8(8, 12, 22), true)
 	draw_rect(bar_rect, Color8(112, 127, 151), false, 1.0)
-	var good_radius := minf(0.5, GOOD_WINDOW_SECONDS / beat_duration)
-	var perfect_radius := minf(good_radius, PERFECT_WINDOW_SECONDS / beat_duration)
+	var good_radius := minf(0.5, (float(good_window_ms) / 1000.0) / beat_duration)
+	var perfect_radius := minf(good_radius, (float(perfect_window_ms) / 1000.0) / beat_duration)
 	var good_width := good_radius * 2.0 * bar_rect.size.x
 	var perfect_width := perfect_radius * 2.0 * bar_rect.size.x
 	var half_beat_good_width := good_radius * bar_rect.size.x
@@ -329,6 +356,17 @@ func _draw_timing_bar() -> void:
 	var marker_position := 0.5 + timing_cycle_phase if timing_cycle_phase < 0.5 else timing_cycle_phase - 0.5
 	var marker_x := bar_rect.position.x + marker_position * bar_rect.size.x
 	draw_rect(Rect2(Vector2(marker_x - 1.0, bar_rect.position.y - 2.0), Vector2(2.0, 12.0)), Color8(244, 247, 255), true)
+	if audio_beat_candidate_count > 0 and audio_beat_candidate_phase >= 0.0:
+		var detected_position := 0.5 + audio_beat_candidate_phase if audio_beat_candidate_phase < 0.5 else audio_beat_candidate_phase - 0.5
+		var detected_x := bar_rect.position.x + detected_position * bar_rect.size.x
+		var flash := audio_beat_candidate_flash_timer / AUDIO_DETECTION_FLASH_SECONDS
+		var opacity := clampf(0.55 + flash * 0.3 + minf(audio_beat_candidate_strength - 1.0, 2.0) * 0.075, 0.55, 1.0)
+		var detection_color := Color(0.25, 0.95, 1.0, opacity)
+		draw_colored_polygon(PackedVector2Array([
+			Vector2(detected_x, bar_rect.position.y - 3.0),
+			Vector2(detected_x + 3.0, bar_rect.position.y - 6.0),
+			Vector2(detected_x - 3.0, bar_rect.position.y - 6.0),
+		]), detection_color)
 
 
 func _judgment_color() -> Color:

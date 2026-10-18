@@ -5,6 +5,7 @@
     "timeout": "until_next_key",
     "commands": {
       "d": "system_debug",
+      "j": "rhythm_control",
       "m": "scene_select",
       "r": "scene_reload",
       "c": "frame_copy"
@@ -71,6 +72,50 @@
           "label": "Test gameplay rhythm crypto",
           "key": "1",
           "scene": "res://scenes/test-gameplay-rhythm-crypto.tscn"
+        }
+      ]
+    },
+    "rhythm_control": {
+      "scope": "scene",
+      "title": "BPM e judgment",
+      "shortcut": ["ctrl+p", "j"],
+      "close_keys": ["escape"],
+      "navigation_keys": { "previous": "up", "next": "down" },
+      "adjustment_keys": { "decrease": "left", "increase": "right" },
+      "items": [
+        {
+          "id": "bpm",
+          "type": "integer_setting",
+          "label": "BPM",
+          "source": "rhythm.beat_clock.bpm",
+          "minimum": 40,
+          "maximum": 240,
+          "step": 5
+        },
+        {
+          "id": "perfect_window_ms",
+          "type": "integer_setting",
+          "label": "Finestra PERFECT",
+          "source": "rhythm.judgment.perfect_window_ms",
+          "minimum": 5,
+          "maximum": "good_window_ms - 5",
+          "step": 5
+        },
+        {
+          "id": "good_window_ms",
+          "type": "integer_setting",
+          "label": "Finestra GOOD",
+          "source": "rhythm.judgment.good_window_ms",
+          "minimum": "perfect_window_ms + 5",
+          "maximum": "min(120, strict_half_beat_slot_gap_cap)",
+          "step": 5
+        },
+        {
+          "id": "bpm_enabled",
+          "type": "toggle_action",
+          "label": "Vincolo BPM",
+          "source": "runtime.rhythm.beat_clock.enabled",
+          "key": "0"
         }
       ]
     }

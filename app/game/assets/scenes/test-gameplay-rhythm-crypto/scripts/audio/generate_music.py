@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the scene's canonical original arrangement as a looping PCM WAV."""
+"""Render the retained original arrangement as a looping PCM WAV."""
 
 from array import array
 import json
@@ -10,14 +10,15 @@ import wave
 
 
 SCENE_ROOT = Path(__file__).resolve().parents[2]
-SOURCE = SCENE_ROOT / "sources" / "music.json"
+SOURCE = SCENE_ROOT / "sources" / "music-original.json"
 
 
 def midi_frequency(note):
     names = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
     pitch = note[:-1]
     octave = int(note[-1])
-    semitone = names[pitch[0]] + (1 if "#" in pitch else 0)
+    accidental = 1 if "#" in pitch else -1 if "b" in pitch else 0
+    semitone = names[pitch[0]] + accidental
     number = (octave + 1) * 12 + semitone
     return 440.0 * 2.0 ** ((number - 69) / 12.0)
 
@@ -102,11 +103,20 @@ def render(music):
                          eighth * 0.84, midi_frequency(note), parts["lead"]["waveform"],
                          parts["lead"]["gain"])
 
-    for bar, notes in enumerate(parts["bass"]["notes_by_bar_quarters"]):
-        for beat_index, note in enumerate(notes):
-            add_tone(samples, sample_rate, bar * bar_duration + beat_index * beat,
-                     beat * 0.86, midi_frequency(note), parts["bass"]["waveform"],
-                     parts["bass"]["gain"])
+    bass = parts["bass"]
+    if "notes_by_bar_eighths" in bass:
+        for bar, notes in enumerate(bass["notes_by_bar_eighths"]):
+            for step, note in enumerate(notes):
+                if note:
+                    add_tone(samples, sample_rate, bar * bar_duration + step * eighth,
+                             eighth * 0.78, midi_frequency(note), bass["waveform"],
+                             bass["gain"])
+    else:
+        for bar, notes in enumerate(bass["notes_by_bar_quarters"]):
+            for beat_index, note in enumerate(notes):
+                add_tone(samples, sample_rate, bar * bar_duration + beat_index * beat,
+                         beat * 0.86, midi_frequency(note), bass["waveform"],
+                         bass["gain"])
 
     for bar, chord in enumerate(parts["pad"]["chords_by_bar"]):
         start = bar * bar_duration
@@ -124,7 +134,8 @@ def render(music):
         for step in drums["snare_steps_by_bar"][bar]:
             add_snare(samples, sample_rate, start + step * eighth, 0.12, noise)
         for step in drums["hat_steps_by_bar"][bar]:
-            add_hat(samples, sample_rate, start + step * eighth, 0.045, noise, previous_hat_noise)
+            hat_gain = 0.028 if step % 2 == 0 else 0.052
+            add_hat(samples, sample_rate, start + step * eighth, hat_gain, noise, previous_hat_noise)
 
     peak = max((abs(value) for value in samples), default=1.0)
     scale = music["synthesis"]["master_gain"] / max(peak, 1e-5)
