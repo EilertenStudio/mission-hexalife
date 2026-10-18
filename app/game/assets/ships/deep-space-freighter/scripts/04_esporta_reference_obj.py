@@ -168,7 +168,7 @@ for screen in bpy.data.screens:
             space.region_3d.view_rotation = (0.70710678, 0.70710678, 0, 0)
 if root.asset_data:
     root.asset_data.description = "Tavola ortografica piana, esportata in OBJ/MTL per Arcade."
-root["source_document"] = "SOURCE.md"
+root["source_document"] = "sources/description.json"
 root["iteration"] = "flat_reference_obj_for_arcade"
 bpy.context.preferences.filepaths.save_version = 0
 bpy.ops.wm.save_as_mainfile(filepath=str(BLEND_FILE))

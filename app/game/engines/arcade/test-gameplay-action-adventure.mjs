@@ -6,13 +6,14 @@ import { createInputParser, enterTerminal, leaveTerminal } from 'ascii-arcade/pl
 import { copyFrameToClipboard } from './frame-clipboard.mjs';
 import { createSystemOverlay } from './system-overlay.mjs';
 
-const sceneDir = new URL('../../assets/scenes/test-gameplay-action-adventure/', import.meta.url);
+const sceneDir = new URL('../../assets/scenes/test-gameplay-action-adventure/sources/', import.meta.url);
 const readJson = (path) => JSON.parse(readFileSync(new URL(path, sceneDir), 'utf8'));
-const manifest = readJson('scene.json');
+const manifest = readJson('description.json');
 const map = readJson(manifest.state.map).map;
 const interior = readJson(manifest.state.interior).room;
 const grid = readJson(manifest.state.grid);
 const character = readJson(manifest.state.character).player;
+character.animations = JSON.parse(readFileSync(new URL(character.animations_source, sceneDir), 'utf8')).animations;
 const controls = readJson(manifest.state.controls).movement;
 const camera = readJson(manifest.state.camera);
 const menus = readJson(manifest.state.menus);
@@ -170,7 +171,7 @@ function drawPlayer(now) {
   const row = directions[playerDirection].row;
   const animation = movement ? character.animations.walk : character.animations.idle;
   const frameOffset = movement
-    ? Math.min(animation.frame_count - 1, Math.floor(progress * animation.frame_count))
+    ? Math.min(animation.frame_count_columns - 1, Math.floor(progress * animation.frame_count_columns))
     : 0;
   const column = animation.start_column - 1 + frameOffset;
   const sourceLeft = column * spriteWidth;
@@ -251,7 +252,7 @@ function move(directionName) {
     from: [...playerTile],
     to: destination,
     startedAt: now,
-    duration: character.movement.walk_cycle_duration_seconds * 1000,
+    duration: character.animations.walk.cycle_duration_seconds * 1000,
   };
   draw(now);
 }

@@ -1,0 +1,21 @@
+{
+  "id": "cryogenic-room",
+  "subject_type": "set",
+  "description": "Scena 2D pixel art vista dall'interno, da altezza umana, verso la parete di fondo. Architettura e props sono composti in un fondale statico.",
+  "composition": {
+    "framing": "La vista non è incorniciata da un ingresso né da colonne laterali.",
+    "room": "Stanza metallica chiusa e larga, con pavimento in primo piano e pareti che convergono verso il fondo.",
+    "cryogenic_capsules": "Quattro capsule verticali, due lungo ciascuna parete laterale, distribuite a profondità diverse. Hanno guscio metallico chiaro, contorni scuri e vetro azzurro luminoso.",
+    "door": "Una porta scorrevole chiusa sulla parete di fondo.",
+    "terminal": "Un terminale di controllo con schermo ciano vicino alla porta.",
+    "exclusions": ["Personaggi", "testo leggibile", "interfaccia sovrapposta"]
+  },
+  "visual_style": {
+    "resolution_pixels": [160, 100],
+    "pixel_art": "Nitida, leggibile, composta da gruppi di pixel intenzionali, bordi a gradini e campiture compatte.",
+    "palette": "Grigi metallici e blu-grigi, contorni antracite e accenti ciano limitati a capsule, illuminazione e terminale.",
+    "camera": "Fissa dentro la stanza.",
+    "readability": "Un corridoio centrale libero e un'ampia porzione di pavimento mantengono leggibili profondità e distribuzione delle capsule."
+  },
+  "runtime_composition": "Un'unica immagine completa; capsule, porta e terminale non sono sprite separati nella scena runtime."
+}

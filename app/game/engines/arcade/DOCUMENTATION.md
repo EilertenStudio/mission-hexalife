@@ -1,8 +1,10 @@
 # Arcade
 
 `arcade:play` avvia la scena canonica
-[`test-gameplay-action-adventure`](../../assets/scenes/test-gameplay-action-adventure/).
-La scena mostra una mappa top-down fissa da 320×288 pixel, divisa in 10×9
+[`test-gameplay-action-adventure`](../../assets/scenes/test-gameplay-action-adventure/sources/description.json).
+La scena è descritta nei JSON di `sources/`; il manifest canonico è
+[`description.json`](../../assets/scenes/test-gameplay-action-adventure/sources/description.json).
+Mostra una mappa top-down fissa da 320×288 pixel, divisa in 10×9
 metatile da 32×32 pixel. Il disegno della mappa usa una griglia base da 16×16.
 
 I tasti `K`, `J`, `I` e `L` muovono Jerv rispettivamente in basso, a sinistra,
@@ -15,14 +17,16 @@ La mappa esterna e la stanza sono disegnate negli SVG in
 [`assets/rooms/action-adventure-field/exports/`](../../assets/rooms/action-adventure-field/exports/).
 Arcade non legge SVG direttamente: `map.json` e `interior.json` indicano le
 esportazioni PNG 320×288 derivate dai vettori. Jerv è uno sprite separato,
-definito in [`character.json`](../../assets/scenes/test-gameplay-action-adventure/character.json).
+definito in [`character.json`](../../assets/scenes/test-gameplay-action-adventure/sources/character.json).
+La disposizione e la cadenza delle animazioni sono definite in
+[`animations.json`](../../assets/characters/jerv/sources/animations.json).
 L'implementazione ritaglia dal PNG un frame RGBA da 32×32 e lo compone sul
 framebuffer con campionamento nearest.
 
 ## Overlay di sistema
 
 La configurazione dell'overlay è in
-[`menus.json`](../../assets/scenes/test-gameplay-action-adventure/menus.json);
+[`menus.json`](../../assets/scenes/test-gameplay-action-adventure/sources/menus.json);
 il controller comune è in [`system-overlay.mjs`](system-overlay.mjs).
 
 - `Ctrl+P`, poi `D`: apre Debug.

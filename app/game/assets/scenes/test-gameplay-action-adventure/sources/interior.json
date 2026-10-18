@@ -1,8 +1,8 @@
 {
   "room": {
     "id": "empty-house-interior",
-    "vector_asset": "../../rooms/action-adventure-field/exports/action-adventure-interior-empty.svg",
-    "raster_asset": "../../rooms/action-adventure-field/exports/action-adventure-interior-empty.png",
+    "vector_asset": "../../../rooms/action-adventure-field/exports/action-adventure-interior-empty.svg",
+    "raster_asset": "../../../rooms/action-adventure-field/exports/action-adventure-interior-empty.png",
     "size_pixels": [320, 288],
     "grid": {
       "columns": 10,

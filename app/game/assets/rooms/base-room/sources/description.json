@@ -1,0 +1,24 @@
+{
+  "id": "base-room",
+  "subject_type": "set",
+  "description": "Fondale architettonico vuoto di un ambiente fantascientifico, destinato a una scena 2D.",
+  "composition": {
+    "view": "Dall'ingresso verso la parete di fondo.",
+    "framing": "Ampia, centrata e simmetrica, con lieve prospettiva.",
+    "volume": "Pavimento, parete posteriore, pareti laterali e soffitto compongono un unico ambiente.",
+    "foreground": "Un'ampia porzione del pavimento resta visibile in primo piano.",
+    "contents": "La stanza è vuota e funziona da fondale per props separati."
+  },
+  "visual_style": {
+    "medium": "Pixel art netta, con pixel e gruppi di pixel intenzionali e visibili.",
+    "edges": "Contorni a gradini puliti e aree di colore piatte, leggibili a bassa risoluzione.",
+    "palette": "Grigi metallici e blu-grigi, contorni antracite e pochi accenti ciano sulle luci architettoniche.",
+    "lighting": "Neutra e semplice, con ombre definite da pochi passaggi di colore.",
+    "detail": "Pannelli, giunture e prospettiva del pavimento sono forme essenziali; niente grana o dettagli troppo minuti."
+  },
+  "canonical_constraints": [
+    "Mantenere forma, simmetria e punto di vista definiti dal concept v1.",
+    "Non includere capsule, terminali, arredi, persone, decorazioni, scritte o interfacce.",
+    "Mantenere forme nitide, senza sfumature, riflessi morbidi, glow, antialiasing o texture pittoriche."
+  ]
+}

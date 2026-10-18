@@ -1,0 +1,59 @@
+{
+  "id": "jerv",
+  "subject_type": "character",
+  "role": "engineer",
+  "identity": {
+    "species_common_name": "wolverine",
+    "species_scientific_name": "Gulo gulo",
+    "sex": "male",
+    "height_meters": 1.74
+  },
+  "body": {
+    "build": "Naturale, di robustezza media e non muscolosa.",
+    "proportions": "Spalle moderate, torace proporzionato, vita poco marcata e arti solidi di volume contenuto.",
+    "muscle_definition": "Braccia e cosce non sono voluminose né scolpite; le transizioni del corpo sono definite dal mantello e da ombre semplici."
+  },
+  "fur": {
+    "main_color": "Bruno ramato caldo.",
+    "lighter_areas": "Arancio ruggine su fronte, guance, collo, braccia e gambe.",
+    "muzzle_and_paws": "Marrone scuro.",
+    "ear_interior": "Ocra rosato.",
+    "tail_shadows": "Marrone scuro alla base e verso la punta."
+  },
+  "head": {
+    "shape": "Larga, con fronte pronunciata, guance pelose e muso sporgente.",
+    "nose": "Nero.",
+    "eyes": {
+      "iris_color": "verde",
+      "shape": "Stretti, spesso semichiusi.",
+      "eyebrows": "Scure e marcate."
+    },
+    "usual_expression": "Calma e sicura di sé, con un lieve sorriso.",
+    "supported_expressions": ["neutra", "sicura", "felice"],
+    "happy_expression": "Può mostrare i denti."
+  },
+  "ears": {
+    "shape": "Piccole e arrotondate, con profilo morbido e senza punte acute.",
+    "right_ear_rings_top_to_bottom": ["oro", "argento", "bronzo"],
+    "ring_placement": "Restano sul lato destro del personaggio nelle viste frontali e in tre quarti."
+  },
+  "tail": {
+    "shape": "Folto ma compatto, con profilo arrotondato.",
+    "size": "Moderato; termina circa a metà coscia e resta secondario rispetto alla silhouette del corpo."
+  },
+  "paws": {
+    "hands_and_feet": "Zampe scure con dita larghe e artigli neri.",
+    "palms": "Cuscinetti scuri."
+  },
+  "clothing": {
+    "clothes": false,
+    "footwear": false,
+    "body_covering": "Il pelo naturale ricopre torso, addome, bacino, braccia e gambe.",
+    "presentation": "Neutra e non sessualizzata; non mostrare anatomia esplicita."
+  },
+  "visual_style": {
+    "silhouette": "Riconoscibile per le proporzioni non muscolose, il muso scuro, gli occhi verdi, gli anelli dell'orecchio destro e la coda moderata.",
+    "pixel_art": "Campiture nette e pochi gruppi di pixel; niente singoli filamenti di pelo e ombre limitate.",
+    "small_sprite_readability": "Anche a 32×64 pixel restano distinguibili testa, orecchie, corpo, coda e zampe."
+  }
+}

@@ -1,40 +1,46 @@
-# Ruoli dei file e delle cartelle degli asset
+# Struttura e fonti degli asset
 
-Ogni cartella di asset può organizzare il lavoro con questa struttura:
+Un soggetto è un asset autonomo del progetto, per esempio un personaggio, un
+prop, un set o una scena. Organizzare ogni soggetto con queste cartelle,
+creandole quando servono:
 
 ```text
-<asset>/
-├── SOURCE.md
-├── ANIMATION.md
+<subject>/
 ├── concepts/
 ├── references/
 ├── exports/
+├── sources/
+│   ├── description.json
+│   ├── animations.json
+│   └── ...
 └── scripts/
     ├── blender/
     └── pixelorama/
 ```
 
-- `SOURCE.md` descrive in dettaglio l'identità, la funzione e lo stato
-  desiderato stabile dell'asset, con le informazioni necessarie a definirne
-  chiaramente forma e resa. È la fonte che l'agente interpreta per capire che
-  cosa rappresenta l'asset e come deve apparire. Non è una descrizione del task
-  corrente, un changelog delle revisioni o un indice dei file nella cartella.
-  In caso di divergenza, `SOURCE.md` prevale su concept, reference e
+- `sources/` contiene i JSON canonici che definiscono identità, funzione,
+  aspetto e comportamento stabile del soggetto. Usare file distinti per
+  argomento, come `description.json`, `animations.json`, `geometry.json` o
+  altri file specifici del soggetto.
+- `sources/description.json` descrive in dettaglio il soggetto e il suo stato
+  desiderato. Non è un changelog né un indice dei file presenti. In caso di
+  divergenza prevale sulla resa dei concept, sulle reference e sulle
   implementazioni degli script.
-- `ANIMATION.md` elenca per ogni animazione la colonna iniziale, il numero di
-  frame espresso in colonne, una breve descrizione dell'azione e la durata o
-  cadenza del ciclo quando definita. Non aggiungere altri dettagli o
-  informazioni generali sullo spritesheet.
+- `sources/animations.json`, quando applicabile, descrive ogni animazione con
+  colonna iniziale, numero di frame in colonne, azione e durata o cadenza
+  definite. Non aggiungere informazioni generali sullo spritesheet.
+- I JSON in `sources/` sono indipendenti dal motore. Gli engine li interpretano
+  e li implementano senza diventare una fonte autonoma dello stato desiderato.
 - `concepts/` raccoglie proposte ed esplorazioni visive. Non imporre vincoli
   preventivi di stile, tecnica o composizione ai concept.
-- `references/` raccoglie immagini reali provenienti da fonti esterne, usate
-  per rafforzare e contestualizzare `SOURCE.md`. Le reference informano il
-  lavoro, ma non sostituiscono né modificano da sole lo stato desiderato.
+- `references/` raccoglie immagini e documenti esterni che informano il lavoro,
+  ma non stabiliscono né modificano da soli lo stato desiderato.
 - `exports/` contiene gli asset finali prodotti per essere usati dal progetto.
 - `scripts/blender/` e `scripts/pixelorama/` contengono gli script, separati
-  per applicazione, che generano o aggiornano gli asset finali in `exports/`.
-  Gli script realizzano lo stato descritto in `SOURCE.md`: non diventano una
-  fonte autonoma dello stato desiderato.
+  per applicazione, che generano o aggiornano gli asset finali in `exports/` a
+  partire dalle fonti in `sources/`.
+- `SOURCE.md` e `ANIMATION.md` non sono più formati canonici: i loro contenuti
+  vanno registrati nei JSON pertinenti dentro `sources/`.
 
 # Convenzioni di naming per Blender
 

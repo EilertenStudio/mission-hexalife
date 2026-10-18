@@ -1,7 +1,7 @@
 {
   "map": {
-    "vector_asset": "../../rooms/action-adventure-field/exports/action-adventure-field-map.svg",
-    "raster_asset": "../../rooms/action-adventure-field/exports/action-adventure-field-map.png",
+    "vector_asset": "../../../rooms/action-adventure-field/exports/action-adventure-field-map.svg",
+    "raster_asset": "../../../rooms/action-adventure-field/exports/action-adventure-field-map.png",
     "size_pixels": [320, 288],
     "coordinate_origin": "top_left",
     "entrance": {

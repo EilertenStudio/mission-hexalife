@@ -1,0 +1,15 @@
+{
+  "player": {
+    "id": "jerv",
+    "sprite_sheet": "../../../characters/jerv/exports/jerv-topdown-animation-v1.png",
+    "animations_source": "../../../characters/jerv/sources/animations.json",
+    "frame_size_pixels": [32, 32],
+    "sprite_size_pixels": [32, 32],
+    "direction_rows_top_to_bottom": ["down", "left", "top", "right"],
+    "starting_tile": [8, 1],
+    "movement": {
+      "metatiles_per_keypress": 1,
+      "grid_boundary_behavior": "stop"
+    }
+  }
+}
