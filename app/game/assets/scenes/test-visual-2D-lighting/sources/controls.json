@@ -1,0 +1,31 @@
+{
+  "format_version": 1,
+  "character": {
+    "id": "jerv",
+    "sprite_sheet": "../../test-gameplay-rhythm-crypto/exports/jerv-tgrc-topdown-sheet.png",
+    "frame_size_pixels": [32, 32],
+    "starting_cell_bottom_left": [2, 4],
+    "starting_direction": "down",
+    "movement": "one immediate tile per fresh key press, constrained to the playable area",
+    "keys": [
+      { "key": "I", "direction": "up" },
+      { "key": "J", "direction": "left" },
+      { "key": "K", "direction": "down" },
+      { "key": "L", "direction": "right" }
+    ]
+  },
+  "abilities": {
+    "A": "black_hole_visual_cast",
+    "S": "white_hole_visual_cast",
+    "D": "gravity_star_visual_cast",
+    "Shift+A": "black_hole_full_cast_then_static_visual_loop",
+    "Shift+S": "white_hole_full_cast_then_static_visual_loop",
+    "Shift+D": "gravity_star_full_cast_then_static_visual_loop",
+    "Alt+A": "interrupt_black_hole_cast",
+    "Alt+S": "interrupt_white_hole_cast",
+    "Alt+D": "interrupt_gravity_star_cast",
+    "target": "the adjacent tile in Jerv's current facing direction",
+    "timing": "immediate on key press; no rhythm clock",
+    "behavior": "play the matching four-frame cast VFX and, for Black Hole and White Hole, Jerv's matching cast pose. Full-cast keys leave the matching decorative loop on the target tile after casting. Spells do not alter lighting, map, objects, inventory, or physics."
+  }
+}

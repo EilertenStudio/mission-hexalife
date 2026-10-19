@@ -1,0 +1,22 @@
+{
+  "id": "test-visual-2D-lighting",
+  "subject_type": "scene",
+  "name": "Test visual 2D lighting",
+  "format_version": 1,
+  "state_documents": {
+    "grid": "grid.json",
+    "lighting": "lighting.json",
+    "abilities": "abilities.json",
+    "controls": "controls.json",
+    "interface": "ui.json",
+    "menus": "menus.json"
+  },
+  "description": {
+    "purpose": "Scena tecnica per verificare una luce locale 2D in una stanza top-down completamente buia, con un personaggio mobile.",
+    "composition": "La viewport misura 496×288 pixel: a sinistra c’è una griglia top-down di 12×9 tile da 32×32 pixel, a destra una sidebar fissa larga 112 pixel. La stanza non ha luce ambientale. Pavimento e pareti sono appena distinguibili al buio e diventano leggibili soltanto dentro il falloff delle stelle. Un full cast di STAR occupa la cella centrale [5, 4] e riproduce in loop la sua animazione statica; la luce locale esiste finché il loop centrale è visibile. Il full cast D di Jerv può creare un secondo loop STAR e la sua luce locale sul tile bersaglio; Alt+D rimuove il loop e spegne quella luce. Jerv parte nella cella [2, 4], può muoversi liberamente nella stanza e riceve la luce quando entra in un raggio. La sidebar mostra lo stato della luce e la posizione di Jerv. Non ci sono musica, clock, judgment o meccaniche ritmiche.",
+    "lighting": "La sorgente locale centrale, color oro caldo, resta sempre presente. Il full cast D aggiunge una seconda sorgente locale mentre il loop statico STAR corrispondente è visibile; la sorgente segue il tile della spell. Ogni luce ha un falloff radiale morbido e marcato, illumina una porzione della stanza e decade fino al nero prima del perimetro. L’ambiente fuori dai raggi resta quasi completamente nero. I loop STAR conservano i pixel arancio e avorio; i raggi illuminano pavimento, muri e Jerv.",
+    "visual_style": "Pixel art top-down a risoluzione logica nativa, palette scura, griglia tenue, pareti perimetrali di pietra e forte contrasto tra nucleo della stella e ombra. La luce è liscia e radiale; gli sprite mantengono il campionamento nearest.",
+    "audio": "Nessun audio o musica.",
+    "gameplay": "Movimento libero tile-per-tile di Jerv con I, J, K e L. A, S e D avviano i cast visivi Black Hole, White Hole e STAR sul tile davanti a Jerv; Shift+A/S/D avvia il cast completo e lascia il loop decorativo corrispondente sul tile. Se un full cast ricrea un loop dello stesso tipo, il loop precedente scompare con il cast riprodotto al contrario mentre parte il nuovo cast. Il loop STAR creato con Shift+D emette una luce locale fino alla rimozione con Alt+D. Alt+A/S/D interrompe il cast o rimuove il loop con l'animazione inversa. Le spell non applicano fisica e non cambiano mappa, oggetti o inventario. Nessun BPM, judgment o turno ritmico."
+  }
+}

@@ -9,6 +9,11 @@ const AVAILABLE_SCENES := [
 		"label": "Test gameplay rhythm crypto",
 		"path": "res://scenes/test-gameplay-rhythm-crypto.tscn",
 	},
+	{
+		"key": KEY_2,
+		"label": "Test visual 2D lighting",
+		"path": "res://scenes/test-visual-2D-lighting.tscn",
+	},
 ]
 
 var active_menu := ""
@@ -52,6 +57,8 @@ func _input(event: InputEvent) -> void:
 		return
 
 	if _ctrl_modifier_pressed(key_event) and _event_matches_key(key_event, KEY_D):
+		if not _gameplay_debug_is_available():
+			return
 		if active_menu == "gameplay_prefix":
 			_close_menu()
 		else:
@@ -71,6 +78,13 @@ func _event_matches_key(event: InputEventKey, expected_key: Key) -> bool:
 
 func _ctrl_modifier_pressed(event: InputEventKey) -> bool:
 	return event.ctrl_pressed or Input.is_key_pressed(KEY_CTRL)
+
+
+func _gameplay_debug_is_available() -> bool:
+	var scene := get_tree().current_scene
+	if scene == null or not scene.has_method("supports_gameplay_debug"):
+		return true
+	return bool(scene.call("supports_gameplay_debug"))
 
 
 func _build_overlay() -> void:
@@ -162,15 +176,7 @@ func _handle_menu_key(key_event: InputEventKey) -> void:
 				KEY_1, KEY_KP_1:
 					_open_menu("rhythm_control")
 				KEY_2, KEY_KP_2:
-					_open_menu("spell_features")
-		"spell_features":
-			if key_event.keycode == KEY_1 or key_event.keycode == KEY_KP_1:
-				var controller := _get_spell_controller()
-				if controller != null and controller.has_method("select_spell_implementation"):
-					controller.call("select_spell_implementation", "V1")
-				_open_menu("spell_v1")
-		"spell_v1":
-			_handle_spell_v1_key(key_event.keycode)
+					_open_menu("spell_visuals")
 		"gameplay_prefix":
 			if _event_matches_key(key_event, KEY_G):
 				_open_menu("gameplay_menu")
@@ -212,26 +218,6 @@ func _handle_rhythm_control_key(key: int) -> void:
 		_refresh_menu()
 
 
-func _handle_spell_v1_key(key: int) -> void:
-	var controller := _get_spell_controller()
-	if controller == null:
-		return
-	match key:
-		KEY_1, KEY_KP_1:
-			if controller.has_method("toggle_spell_physics"):
-				controller.call("toggle_spell_physics")
-		KEY_2, KEY_KP_2:
-			if controller.has_method("toggle_spell_snap_on_physics_end"):
-				controller.call("toggle_spell_snap_on_physics_end")
-		KEY_3, KEY_KP_3:
-			if controller.has_method("toggle_spell_snap_during_physics"):
-				controller.call("toggle_spell_snap_during_physics")
-		KEY_4, KEY_KP_4:
-			if controller.has_method("toggle_spell_influence_visualization"):
-				controller.call("toggle_spell_influence_visualization")
-	_refresh_menu()
-
-
 func _open_menu(menu_id: String) -> void:
 	active_menu = menu_id
 	if menu_id == "rhythm_control":
@@ -263,12 +249,10 @@ func _refresh_menu() -> void:
 			content_label.text = "\n".join(lines)
 		"gameplay_menu":
 			title_label.text = "GAMEPLAY // CTRL+D → G"
-			content_label.text = "1   BPM / JUDGMENT\n2   SPELLS FEATURES\nESC   CHIUDI"
-		"spell_features":
-			title_label.text = "SPELLS FEATURES // CTRL+D → G → 2"
-			content_label.text = "1   V1 (IMPLEMENTAZIONE ATTIVA)\nESC   CHIUDI"
-		"spell_v1":
-			_refresh_spell_v1_menu()
+			content_label.text = "1   BPM / JUDGMENT\n2   SPELL // SOLO VFX\nESC   CHIUDI"
+		"spell_visuals":
+			title_label.text = "SPELL // SOLO VFX"
+			content_label.text = "A / SHIFT+A   BLACK HOLE\nS / SHIFT+S   WHITE HOLE\nD / SHIFT+D   STAR\n\nCAST VISIVO: NESSUN EFFETTO\nALT+A/S/D   INTERROMPI CAST\nESC   CHIUDI"
 		"gameplay_prefix":
 			title_label.text = "DEBUG GAMEPLAY // CTRL+D"
 			content_label.text = "G   GAMEPLAY\nESC   CHIUDI"
@@ -296,33 +280,11 @@ func _refresh_rhythm_control_menu() -> void:
 	content_label.text = "↑ / ↓   SELEZIONA\n← / →   REGOLA (5 BPM / 5 ms)\n%s\n\n0   VINCOLO BPM: %s\nESC   CHIUDI" % ["\n".join(entries), bpm_state]
 
 
-func _refresh_spell_v1_menu() -> void:
-	title_label.text = "SPELL FEATURES // V1"
-	var controller := _get_spell_controller()
-	if controller == null or not controller.has_method("get_spell_v1_settings"):
-		content_label.text = "CONFIGURAZIONE SPELL NON DISPONIBILE\nESC   CHIUDI"
-		return
-	var settings: Dictionary = controller.call("get_spell_v1_settings")
-	content_label.text = "1   FISICA SPELL: %s\n2   SNAP A FINE FISICA: %s\n3   SNAP DURANTE LA FISICA: %s\n4   VISTA INFLUENZE: %s\n\nESC   CHIUDI" % [
-		"ON" if settings["physics_enabled"] else "OFF",
-		"ON" if settings["snap_on_physics_end"] else "OFF",
-		"ON" if settings["snap_during_physics"] else "OFF",
-		"ON" if settings["influence_visualization"] else "OFF",
-	]
-
-
 func _get_rhythm_controller() -> Node:
 	var scene := get_tree().current_scene
 	if scene == null:
 		return null
 	return scene.find_child("Jerv", true, false)
-
-
-func _get_spell_controller() -> Node:
-	var scene := get_tree().current_scene
-	if scene == null:
-		return null
-	return scene.find_child("Grid", true, false)
 
 
 func _reload_scene() -> void:

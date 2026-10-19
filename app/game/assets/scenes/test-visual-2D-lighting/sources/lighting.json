@@ -1,0 +1,50 @@
+{
+  "format_version": 1,
+  "ambient": {
+    "enabled": false,
+    "color_rgb": [0, 0, 0],
+    "intensity": 0
+  },
+  "lights": [
+    {
+      "id": "gravity_star_light",
+      "source_subject": "gravity_star",
+      "type": "local_radial",
+      "position_cell_bottom_left": [5, 4],
+      "color_rgb": [255, 198, 104],
+      "radius_pixels": 168,
+      "intensity": 2.2,
+      "falloff": "smooth_quadratic",
+      "casts_shadows": false,
+      "enabled_while": "gravity_star_static_loop_is_visible",
+      "pulse": {
+        "enabled": true,
+        "amount": 0.08,
+        "period_seconds": 0.72
+      }
+    },
+    {
+      "id": "gravity_star_spell_light",
+      "source_subject": "gravity_star",
+      "type": "local_radial",
+      "position_follows_spell_cell": "gravity_star_full_cast_loop",
+      "color_rgb": [255, 198, 104],
+      "radius_pixels": 168,
+      "intensity": 2.2,
+      "falloff": "smooth_quadratic",
+      "casts_shadows": false,
+      "enabled_while": "gravity_star_full_cast_loop_is_visible",
+      "pulse": {
+        "enabled": true,
+        "amount": 0.08,
+        "period_seconds": 0.72
+      }
+    }
+  ],
+  "star_visual": {
+    "source_subject": "../../test-gameplay-rhythm-crypto/sources/vfx.json",
+    "animation": "gravity_star_static_loop",
+    "sprite_sheet": "../../test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-star.png",
+    "position_cell_bottom_left": [5, 4]
+  }
+}

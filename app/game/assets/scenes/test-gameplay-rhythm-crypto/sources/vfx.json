@@ -1,11 +1,17 @@
 {
   "subject_id": "prop-weapon-cosmic_ring",
-  "frame_size_pixels": [32, 32],
+  "frame_size_pixels": [
+    32,
+    32
+  ],
   "animations": {
     "black_hole_cast": {
       "layer": "BLACK HOLE",
       "sprite_sheet": "../exports/prop-weapon-cosmic_ring-black-hole.png",
-      "sheet_size_pixels": [256, 32],
+      "sheet_size_pixels": [
+        256,
+        32
+      ],
       "start_column": 1,
       "frame_count_columns": 4,
       "duration_beats": 1,
@@ -14,7 +20,10 @@
     "white_hole_cast": {
       "layer": "WHITE HOLE",
       "sprite_sheet": "../exports/prop-weapon-cosmic_ring-white-hole.png",
-      "sheet_size_pixels": [256, 32],
+      "sheet_size_pixels": [
+        256,
+        32
+      ],
       "start_column": 1,
       "frame_count_columns": 4,
       "duration_beats": 1,
@@ -23,9 +32,15 @@
     "black_hole_static_loop": {
       "layer": "BLACK HOLE",
       "sprite_sheet": "../exports/prop-weapon-cosmic_ring-black-hole.png",
-      "sheet_size_pixels": [256, 32],
+      "sheet_size_pixels": [
+        256,
+        32
+      ],
       "creation_animation": "black_hole_cast",
-      "removal_animation": {"animation": "black_hole_cast", "playback": "reverse"},
+      "removal_animation": {
+        "animation": "black_hole_cast",
+        "playback": "reverse"
+      },
       "start_column": 5,
       "frame_count_columns": 4,
       "frame_duration_seconds": 0.18,
@@ -35,9 +50,15 @@
     "white_hole_static_loop": {
       "layer": "WHITE HOLE",
       "sprite_sheet": "../exports/prop-weapon-cosmic_ring-white-hole.png",
-      "sheet_size_pixels": [256, 32],
+      "sheet_size_pixels": [
+        256,
+        32
+      ],
       "creation_animation": "white_hole_cast",
-      "removal_animation": {"animation": "white_hole_cast", "playback": "reverse"},
+      "removal_animation": {
+        "animation": "white_hole_cast",
+        "playback": "reverse"
+      },
       "start_column": 5,
       "frame_count_columns": 4,
       "frame_duration_seconds": 0.18,
@@ -47,7 +68,10 @@
     "gravity_star_cast": {
       "layer": "STAR",
       "sprite_sheet": "../exports/prop-weapon-cosmic_ring-star.png",
-      "sheet_size_pixels": [256, 32],
+      "sheet_size_pixels": [
+        256,
+        32
+      ],
       "start_column": 1,
       "frame_count_columns": 4,
       "duration_beats": 1,
@@ -56,9 +80,15 @@
     "gravity_star_static_loop": {
       "layer": "STAR",
       "sprite_sheet": "../exports/prop-weapon-cosmic_ring-star.png",
-      "sheet_size_pixels": [256, 32],
+      "sheet_size_pixels": [
+        256,
+        32
+      ],
       "creation_animation": "gravity_star_cast",
-      "removal_animation": {"animation": "gravity_star_cast", "playback": "reverse"},
+      "removal_animation": {
+        "animation": "gravity_star_cast",
+        "playback": "reverse"
+      },
       "start_column": 5,
       "frame_count_columns": 4,
       "frame_duration_seconds": 0.18,
@@ -66,5 +96,5 @@
       "action": "Un sole gravitazionale resta visivamente fisso sul tile: il disco rotondo ha un nucleo avorio, strati dorati e una corona arancio di raggi brevi; piccoli punti sulle orbite sottili cambiano posizione e alcune scintille esterne pulsano. Il moto continuo degli oggetti è definito in abilities.json."
     }
   },
-  "appearance": "La grafica usa pixel trasparenti su tela nativa da 32×32 e palette separate: nero, indaco e viola per il buco nero; bianco, ciano e oro pallido per il buco bianco; arancio, oro e avorio per la stella gravitazionale. Black Hole e White Hole hanno cast leggibili come impatti concentrati sul tile e loop statici con il fenomeno completo. La stella ha un disco solare rotondo, un nucleo chiaro e raggi corti; orbite e scintille restano dettagli secondari. Il loop anima solo gli accenti del VFX; la simulazione orbitale degli oggetti è specificata in abilities.json."
+  "appearance": "La grafica usa pixel trasparenti su tela nativa da 32×32 e palette separate: nero, indaco e viola per il buco nero; bianco, ciano e oro pallido per il buco bianco; arancio, oro e avorio per la stella gravitazionale. Black Hole e White Hole hanno cast leggibili come impatti concentrati sul tile e loop statici con il fenomeno completo. La stella ha un disco solare rotondo, un nucleo chiaro e raggi corti; orbite e scintille restano dettagli secondari. I loop completi restano animazioni decorative riutilizzabili; in questa scena i cast non creano campi, fisica o movimento degli oggetti."
 }

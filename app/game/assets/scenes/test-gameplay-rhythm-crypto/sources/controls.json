@@ -6,40 +6,50 @@
     "maximum_moves_per_slot": 1,
     "maximum_moves_per_beat": 2,
     "repeat_while_held": true,
-    "held_repeat_slots": ["beat"],
+    "held_repeat_slots": [
+      "beat"
+    ],
     "half_beat_extra_action_requires_new_input": true,
     "keys": [
-      { "key": "I", "direction": "up" },
-      { "key": "J", "direction": "left" },
-      { "key": "K", "direction": "down" },
-      { "key": "L", "direction": "right" }
+      {
+        "key": "I",
+        "direction": "up"
+      },
+      {
+        "key": "J",
+        "direction": "left"
+      },
+      {
+        "key": "K",
+        "direction": "down"
+      },
+      {
+        "key": "L",
+        "direction": "right"
+      }
     ]
   },
   "abilities": {
-    "A": "black_hole",
-    "S": "white_hole",
-    "Shift+A": "black_hole_static_loop",
-    "Shift+S": "white_hole_static_loop",
-    "D": "gravity_star_short_cast",
-    "Shift+D": "gravity_star_static",
-    "Alt+A": "interrupt_black_hole",
-    "Alt+S": "interrupt_white_hole",
-    "Alt+D": "interrupt_gravity_star",
+    "A": "black_hole_visual_cast",
+    "S": "white_hole_visual_cast",
+    "Shift+A": "black_hole_full_cast_visual_only",
+    "Shift+S": "white_hole_full_cast_visual_only",
+    "D": "gravity_star_visual_cast",
+    "Shift+D": "gravity_star_full_cast_visual_only",
+    "Alt+A": "interrupt_black_hole_cast",
+    "Alt+S": "interrupt_white_hole_cast",
+    "Alt+D": "interrupt_gravity_star_cast",
     "target": "the adjacent tile in Jerv's last facing direction",
-    "static_variant": "Shift+A/S/D plays the corresponding short cast animation first, then creates the complete loop on the target tile; the D short cast is visual only, with no gravity field; full Black Hole pulls nearby objects into its center and absorbs them into the inventory, while full White Hole launches nearby objects in random directions and continuously ejects items absorbed by Black Hole from the top of the inventory stack; while recasting a type, play the old instance's matching short cast animation in reverse as the new one plays forward; keep at most one instance of each type and replace only the existing same-type instance when its cast ends or is interrupted",
-    "static_instances_per_type": 1,
-    "black_hole_and_white_hole_can_coexist": true,
-    "use_movement_rhythm_judgment": true,
-    "maximum_accepted_actions_per_slot": 1,
-    "can_use_half_beat_slot": true,
-    "shift_static_resolve_window_seconds": 0.12,
-    "gravity_star_short_cast": "D plays the short gravity-star cast animation at the adjacent tile without placing a field or affecting objects",
-    "gravity_star_static": "Shift+D plays the full cast and places one gravity star on the adjacent tile; eligible objects orbit continuously without tile snapping by default; snapping on orbit exit is enabled by default",
-    "interruptions": "Alt+A interrupts only the Black Hole, Alt+S only the White Hole, and Alt+D only the gravity star; cancel the matching cast in progress or reverse-remove its static loop."
+    "timing": "abilities share the beat and half-beat judgment slots with movement",
+    "behavior": "all spell inputs trigger only the matching one-beat character/VFX cast; they never alter objects, inventory, map state, lighting, or physics"
   },
   "audio_volume": {
-    "volume_up": ["pageup"],
-    "volume_down": ["pagedown"],
+    "volume_up": [
+      "pageup"
+    ],
+    "volume_down": [
+      "pagedown"
+    ],
     "step_percent": 10,
     "minimum_percent": 0,
     "maximum_percent": 100

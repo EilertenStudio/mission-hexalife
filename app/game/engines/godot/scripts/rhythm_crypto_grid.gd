@@ -8,11 +8,6 @@ const GRID_ORIGIN := Vector2.ZERO
 const PLAYFIELD_SIZE := Vector2(384.0, 288.0)
 const SIDEBAR_WIDTH := 112.0
 const VIEWPORT_SIZE := Vector2(PLAYFIELD_SIZE.x + SIDEBAR_WIDTH, PLAYFIELD_SIZE.y)
-const INITIAL_STATIC_EFFECTS := [
-	{"effect": "black_hole", "cell": Vector2i(9, 2)},
-	{"effect": "white_hole", "cell": Vector2i(1, 1)},
-	{"effect": "gravity_star", "cell": Vector2i(4, 5)},
-]
 const OBJECT_ORBIT_INFLUENCE_RADIUS := 128.0
 const OBJECT_ORBIT_PERIOD_SECONDS := 6.0
 const OBJECT_CLEARANCE_FROM_WALLS := 8.0
@@ -83,11 +78,11 @@ var inventory: Array[Dictionary] = []
 var object_trace_sequence := 0
 var object_traces: Dictionary = {}
 var object_trace_events: Array[Dictionary] = []
-var active_spell_implementation := "V1"
-var spell_physics_enabled := true
+var active_spell_implementation := "VISUAL_ONLY"
+var spell_physics_enabled := false
 var snap_during_physics := false
 var snap_on_physics_end := true
-var show_spell_influence_debug := true
+var show_spell_influence_debug := false
 var physics_rng := RandomNumberGenerator.new()
 var static_effect_sequence := 0
 var target_cell := Vector2i(5, 3)
@@ -132,8 +127,6 @@ func _ready() -> void:
 		var item: Dictionary = objects[index]
 		_ensure_object_trace(item)
 		objects[index] = item
-	for initial_effect: Dictionary in INITIAL_STATIC_EFFECTS:
-		_place_static_effect(str(initial_effect["effect"]), initial_effect["cell"])
 	queue_redraw()
 
 
@@ -291,57 +284,27 @@ func set_target_cell(cell: Vector2i) -> void:
 
 
 func use_black_hole(cell: Vector2i, static_version: bool = false) -> void:
-	if static_version:
-		if _is_inside_grid(cell):
-			_start_static_effect_creation("black_hole", cell)
-	else:
+	if _is_inside_grid(cell):
 		_start_effect("black_hole", cell)
-	if not _is_inside_grid(cell):
-		action_feedback = "BLACK HOLE: FUORI GRIGLIA"
-	elif static_version:
-		action_feedback = "BLACK HOLE STATIC: INNESCA"
+		action_feedback = "BLACK HOLE: CAST"
 	else:
-		var object_index := _find_object_index_in_cell(cell)
-		if object_index < 0:
-			action_feedback = "BLACK HOLE: TILE VUOTO"
-		else:
-			var item: Dictionary = objects[object_index]
-			objects.remove_at(object_index)
-			item.erase("position")
-			item.erase("motion")
-			item.erase("orbit")
-			item.erase("last_white_hole_id")
-			inventory.append(item)
-			action_feedback = "ASSORBITO: %s" % _item_name(item)
+		action_feedback = "BLACK HOLE: FUORI GRIGLIA"
 	queue_redraw()
 
 
 func use_white_hole(cell: Vector2i, static_version: bool = false) -> void:
-	if static_version:
-		if _is_inside_grid(cell):
-			_start_static_effect_creation("white_hole", cell)
-	else:
+	if _is_inside_grid(cell):
 		_start_effect("white_hole", cell)
-	if inventory.is_empty():
-		action_feedback = "WHITE HOLE%s: INVENTARIO VUOTO" % (" STATIC" if static_version else "")
-	elif not _is_inside_grid(cell):
-		action_feedback = "WHITE HOLE: FUORI GRIGLIA"
-	elif _find_object_index_in_cell(cell) >= 0:
-		action_feedback = "WHITE HOLE%s: TILE OCCUPATO" % (" STATIC" if static_version else "")
+		action_feedback = "WHITE HOLE: CAST"
 	else:
-		var item: Dictionary = inventory.pop_back()
-		item["position"] = _cell_screen_position(cell) + CELL_SIZE * 0.5
-		item.erase("last_white_hole_id")
-		objects.append(item)
-		_update_active_static_fields()
-		action_feedback = "%sESPULSO: %s" % ["STATIC " if static_version else "", _item_name(item)]
+		action_feedback = "WHITE HOLE: FUORI GRIGLIA"
 	queue_redraw()
 
 
 func use_gravity_star(cell: Vector2i) -> void:
 	if _is_inside_grid(cell):
-		_start_static_effect_creation("gravity_star", cell)
-		action_feedback = "STELLA: POSIZIONATA"
+		_start_effect("gravity_star", cell)
+		action_feedback = "STELLA: CAST"
 	else:
 		action_feedback = "STELLA: FUORI GRIGLIA"
 	queue_redraw()
@@ -819,7 +782,7 @@ func get_spell_v1_settings() -> Dictionary:
 
 
 func select_spell_implementation(version: String) -> void:
-	if version != "V1":
+	if version != "VISUAL_ONLY":
 		return
 	active_spell_implementation = version
 	queue_redraw()

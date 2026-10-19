@@ -1,0 +1,36 @@
+{
+  "format_version": 1,
+  "sidebar": {
+    "width_pixels": 112,
+    "title": "2D LIGHT TEST",
+    "groups": [
+      {
+        "id": "lighting",
+        "title": "ILLUMINAZIONE",
+        "fields": [
+          { "id": "source", "label": "SOURCE", "value": "STAR / FULL CAST" },
+          { "id": "status", "label": "LIGHT", "value": "ON WHILE LOOP" },
+          { "id": "radius", "label": "RANGE", "value": "168 PX" }
+        ]
+      },
+      {
+        "id": "character",
+        "title": "MOVIMENTO",
+        "fields": [
+          { "id": "position", "label": "JERV", "value": "live grid coordinate" },
+          { "id": "controls", "label": "MOVE", "value": "I J K L" }
+        ]
+      },
+      {
+        "id": "spells",
+        "title": "SPELL VFX",
+        "fields": [
+          { "id": "black_hole", "label": "BLACK HOLE", "value": "A CAST / SHIFT+A LOOP" },
+          { "id": "white_hole", "label": "WHITE HOLE", "value": "S CAST / SHIFT+S LOOP" },
+          { "id": "gravity_star", "label": "STAR LIGHT", "value": "D CAST / SHIFT+D LIGHT LOOP" },
+          { "id": "cancel", "label": "CANCEL / REMOVE", "value": "ALT + SPELL KEY" }
+        ]
+      }
+    ]
+  }
+}

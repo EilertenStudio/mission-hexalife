@@ -86,6 +86,13 @@
           "label": "Test gameplay rhythm crypto",
           "key": "1",
           "scene": "res://scenes/test-gameplay-rhythm-crypto.tscn"
+        },
+        {
+          "id": "test-visual-2D-lighting",
+          "type": "scene_option",
+          "label": "Test visual 2D lighting",
+          "key": "2",
+          "scene": "res://scenes/test-visual-2D-lighting.tscn"
         }
       ]
     },
@@ -134,84 +141,15 @@
           ]
         },
         {
-          "id": "spell_features",
+          "id": "spell_visuals",
           "type": "submenu",
-          "label": "Spells Features",
+          "label": "Spell (solo VFX)",
           "key": "2",
           "shortcut": [
             "ctrl+d",
             "g",
             "2"
           ]
-        }
-      ]
-    },
-    "spell_features": {
-      "scope": "scene",
-      "title": "Spells Features",
-      "shortcut": [
-        "ctrl+d",
-        "g",
-        "2"
-      ],
-      "close_keys": [
-        "escape"
-      ],
-      "items": [
-        {
-          "id": "spell_v1",
-          "type": "submenu",
-          "label": "V1",
-          "key": "1",
-          "shortcut": [
-            "ctrl+d",
-            "g",
-            "2",
-            "1"
-          ]
-        }
-      ]
-    },
-    "spell_v1": {
-      "scope": "scene",
-      "title": "Spell Features V1",
-      "shortcut": [
-        "ctrl+d",
-        "g",
-        "2",
-        "1"
-      ],
-      "close_keys": [
-        "escape"
-      ],
-      "items": [
-        {
-          "id": "spell_physics_enabled",
-          "type": "toggle_action",
-          "label": "Fisica Spell",
-          "key": "1",
-          "default": true
-        },
-        {
-          "id": "snap_on_physics_end",
-          "type": "toggle_action",
-          "label": "Snap a fine fisica",
-          "key": "2",
-          "default": true
-        },
-        {
-          "id": "snap_during_physics",
-          "type": "toggle_action",
-          "label": "Snap durante la fisica",
-          "key": "3",
-          "default": false
-        },
-        {
-          "id": "spell_influence_visualization",
-          "type": "toggle_action",
-          "label": "Vista delle influenze",
-          "key": "4",
-          "default": true
         }
       ]
     },
@@ -268,6 +206,40 @@
           "label": "Vincolo BPM",
           "source": "runtime.rhythm.beat_clock.enabled",
           "key": "0"
+        }
+      ]
+    },
+    "spell_visuals": {
+      "scope": "scene",
+      "title": "Spell // solo VFX",
+      "shortcut": [
+        "ctrl+d",
+        "g",
+        "2"
+      ],
+      "close_keys": [
+        "escape"
+      ],
+      "items": [
+        {
+          "id": "black_hole_cast",
+          "type": "info",
+          "label": "A / SHIFT+A — BLACK HOLE: CAST VISIVO"
+        },
+        {
+          "id": "white_hole_cast",
+          "type": "info",
+          "label": "S / SHIFT+S — WHITE HOLE: CAST VISIVO"
+        },
+        {
+          "id": "gravity_star_cast",
+          "type": "info",
+          "label": "D / SHIFT+D — STAR: CAST VISIVO"
+        },
+        {
+          "id": "effects_disabled",
+          "type": "info",
+          "label": "NESSUN EFFETTO SU MAPPA, OGGETTI, LUCE O FISICA"
         }
       ]
     }
