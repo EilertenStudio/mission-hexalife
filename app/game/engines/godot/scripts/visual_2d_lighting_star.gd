@@ -16,6 +16,7 @@ const LIGHT_PULSE_AMOUNT := 0.08
 
 var animation_time := 0.0
 var current_frame := -1
+var radial_mode_enabled := true
 
 
 func _ready() -> void:
@@ -35,7 +36,12 @@ func _process(delta: float) -> void:
 	_update_loop_frame()
 	var pulse_phase := animation_time / LOOP_DURATION * TAU
 	local_light.energy = LIGHT_ENERGY + sin(pulse_phase) * LIGHT_PULSE_AMOUNT
-	local_light.enabled = star_sprite.visible
+	local_light.enabled = radial_mode_enabled and star_sprite.visible
+
+
+func set_radial_mode_enabled(enabled: bool) -> void:
+	radial_mode_enabled = enabled
+	local_light.enabled = radial_mode_enabled and star_sprite.visible
 
 
 func _update_loop_frame() -> void:

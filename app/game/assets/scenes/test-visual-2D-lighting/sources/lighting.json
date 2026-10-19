@@ -46,5 +46,46 @@
     "animation": "gravity_star_static_loop",
     "sprite_sheet": "../../test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-star.png",
     "position_cell_bottom_left": [5, 4]
+  },
+  "beam_experiment": {
+    "default_mode": "beam_2d_raytrace",
+    "mode_cycle": ["beam_2d_raytrace", "beam_2d_shader", "star_radial"],
+    "aim": {
+      "source": "center of the visible central gravity STAR at pixel [176, 144]",
+      "target": "mouse position within the playfield",
+      "initial_direction": "right, horizontally bisecting the room from the central STAR to the inner right wall",
+      "keep_last_direction_when_mouse_over_source": true
+    },
+    "beam": {
+      "color_rgb": [198, 239, 255],
+      "core_color_rgb": [245, 252, 255],
+      "cone_angle_degrees": 1.2,
+      "edge_falloff": "soft ray-traced lightmap",
+      "end": "clipped against the inside edge of the one-tile perimeter wall",
+      "wall_bounces": 1,
+      "impact": {
+        "enabled": true,
+        "style": "bright cyan-white halo on the wall at the clipped endpoint",
+        "radius_pixels": 15
+      }
+    },
+    "raytrace_implementation": {
+      "type": "2D software ray tracing with an additive low-resolution lightmap",
+      "lightmap_pixels_per_screen_pixel": 0.5,
+      "primary_rays": 19,
+      "bounce_rays": 42,
+      "bounces": 1,
+      "geometry": "axis-aligned inner bounds of the perimeter stone walls",
+      "description": "trace a narrow laser fan from the STAR to its first wall impact, then trace a cosine-weighted diffuse fan from that surface; accumulate direct and bounced radiance into the 2D lightmap"
+    },
+    "shader_comparison": {
+      "type": "screen-space CanvasItem shader",
+      "description": "draw a soft 2D cone without tracing secondary rays, as a comparison to the ray-traced lightmap"
+    },
+    "radial_baseline": {
+      "type": "existing animated PointLight2D on the central STAR",
+      "description": "baseline comparison with the soft radial falloff already in the scene"
+    },
+    "desktop_only": true
   }
 }

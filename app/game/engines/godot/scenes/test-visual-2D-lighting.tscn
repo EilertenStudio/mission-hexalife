@@ -8,13 +8,15 @@
 [ext_resource type="Script" path="res://scripts/visual_2d_lighting_jerv.gd" id="6_jerv_script"]
 [ext_resource type="Script" path="res://scripts/visual_2d_lighting_sidebar.gd" id="7_sidebar_script"]
 [ext_resource type="Script" path="res://scripts/visual_2d_lighting_spell_vfx.gd" id="8_spell_vfx_script"]
+[ext_resource type="Script" path="res://scripts/visual_2d_lighting_beam.gd" id="9_beam_script"]
+[ext_resource type="Script" path="res://scripts/visual_2d_lighting_raytrace.gd" id="10_raytrace_script"]
 
 [node name="TestVisual2DLighting" type="Node2D" unique_id=300000001]
 texture_filter = 1
 script = ExtResource("1_scene")
 
 [node name="Darkness" type="CanvasModulate" parent="." unique_id=300000002]
-color = Color(0.012, 0.014, 0.028, 1)
+color = Color(0.055, 0.06, 0.085, 1)
 
 [node name="Grid" type="Node2D" parent="." unique_id=300000003]
 texture_filter = 1
@@ -43,6 +45,19 @@ script = ExtResource("6_jerv_script")
 
 [node name="SpellVFX" type="Node2D" parent="." unique_id=300000010]
 script = ExtResource("8_spell_vfx_script")
+
+[node name="BeamOverlay" type="CanvasLayer" parent="." unique_id=300000015]
+layer = 1
+
+[node name="RayTraceLight" type="Sprite2D" parent="BeamOverlay" unique_id=300000019]
+texture_filter = 2
+script = ExtResource("10_raytrace_script")
+
+[node name="Beam" type="ColorRect" parent="BeamOverlay" unique_id=300000016]
+offset_right = 384.0
+offset_bottom = 288.0
+mouse_filter = 2
+script = ExtResource("9_beam_script")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=300000008]
 layer = 10

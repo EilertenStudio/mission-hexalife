@@ -172,11 +172,10 @@ func _handle_menu_key(key_event: InputEventKey) -> void:
 				KEY_C:
 					_copy_frame_to_clipboard()
 		"gameplay_menu":
-			match key_event.keycode:
-				KEY_1, KEY_KP_1:
-					_open_menu("rhythm_control")
-				KEY_2, KEY_KP_2:
-					_open_menu("spell_visuals")
+			if key_event.keycode in [KEY_1, KEY_KP_1]:
+				_open_menu("rhythm_control")
+			elif key_event.keycode in [KEY_2, KEY_KP_2]:
+				_open_menu("spell_visuals")
 		"gameplay_prefix":
 			if _event_matches_key(key_event, KEY_G):
 				_open_menu("gameplay_menu")

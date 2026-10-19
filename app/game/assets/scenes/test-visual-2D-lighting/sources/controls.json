@@ -27,5 +27,12 @@
     "target": "the adjacent tile in Jerv's current facing direction",
     "timing": "immediate on key press; no rhythm clock",
     "behavior": "play the matching four-frame cast VFX and, for Black Hole and White Hole, Jerv's matching cast pose. Full-cast keys leave the matching decorative loop on the target tile after casting. Spells do not alter lighting, map, objects, inventory, or physics."
+  },
+  "lighting_probe": {
+    "cycle_modes_key": "Tab",
+    "mode_order": ["2D ray-traced laser", "2D shader beam", "radial STAR light"],
+    "aim": "mouse position within the playfield; the beam starts at the central STAR and points toward the cursor",
+    "retained_direction": "if the mouse overlaps the STAR, keep the last valid direction",
+    "scope": "the mode switch changes only the lighting visualization; movement and spell controls remain active"
   }
 }

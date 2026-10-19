@@ -23,6 +23,7 @@ var cast_duration_seconds := FRAME_COUNT * FRAME_DURATION
 var persistent_instances: Dictionary = {}
 var retiring_instances: Array[Dictionary] = []
 var gravity_star_light: PointLight2D
+var radial_lights_enabled := true
 
 
 func _ready() -> void:
@@ -140,6 +141,11 @@ func get_status_text() -> String:
 	return "READY"
 
 
+func set_radial_lights_enabled(enabled: bool) -> void:
+	radial_lights_enabled = enabled
+	_sync_gravity_star_light()
+
+
 func get_debug_state() -> Dictionary:
 	return {
 		"active_spell": active_spell,
@@ -199,7 +205,7 @@ func _spell_label(spell: String) -> String:
 func _sync_gravity_star_light() -> void:
 	if gravity_star_light == null:
 		return
-	if not persistent_instances.has("gravity_star"):
+	if not radial_lights_enabled or not persistent_instances.has("gravity_star"):
 		gravity_star_light.enabled = false
 		return
 	var instance: Dictionary = persistent_instances["gravity_star"]
