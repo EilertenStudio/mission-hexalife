@@ -1,9 +1,7 @@
 extends CanvasLayer
 
-const DEFAULT_TARGET_FPS := 60
-const MIN_TARGET_FPS := 1
-const MAX_TARGET_FPS := 240
 const COPY_NOTICE_DURATION := 2.5
+const DEFAULT_TARGET_FPS := 60
 
 const AVAILABLE_SCENES := [
 	{
@@ -14,9 +12,6 @@ const AVAILABLE_SCENES := [
 ]
 
 var active_menu := ""
-var target_fps := DEFAULT_TARGET_FPS
-var use_linear_filter := false
-var fps_refresh_timer := 0.0
 var notice_timer := 0.0
 var rhythm_selected_item := 0
 
@@ -32,17 +27,9 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Engine.max_fps = DEFAULT_TARGET_FPS
 	_build_overlay()
-	get_tree().scene_changed.connect(_on_scene_changed)
-	_apply_texture_filter()
 
 
 func _process(delta: float) -> void:
-	fps_refresh_timer -= delta
-	if fps_refresh_timer <= 0.0:
-		fps_refresh_timer = 0.2
-		if active_menu == "system_debug" or active_menu == "rhythm_control":
-			_refresh_menu()
-
 	if notice_timer > 0.0:
 		notice_timer -= delta
 		if notice_timer <= 0.0:
@@ -56,11 +43,19 @@ func _input(event: InputEvent) -> void:
 	if not key_event.pressed or key_event.echo:
 		return
 
-	if key_event.ctrl_pressed and key_event.keycode == KEY_P:
-		if active_menu.is_empty():
-			_open_menu("shortcuts")
-		else:
+	if _ctrl_modifier_pressed(key_event) and _event_matches_key(key_event, KEY_P):
+		if active_menu == "system_settings":
 			_close_menu()
+		else:
+			_open_menu("system_settings")
+		get_viewport().set_input_as_handled()
+		return
+
+	if _ctrl_modifier_pressed(key_event) and _event_matches_key(key_event, KEY_D):
+		if active_menu == "gameplay_prefix":
+			_close_menu()
+		else:
+			_open_menu("gameplay_prefix")
 		get_viewport().set_input_as_handled()
 		return
 
@@ -68,6 +63,14 @@ func _input(event: InputEvent) -> void:
 		return
 	get_viewport().set_input_as_handled()
 	_handle_menu_key(key_event)
+
+
+func _event_matches_key(event: InputEventKey, expected_key: Key) -> bool:
+	return event.keycode == expected_key or event.physical_keycode == expected_key
+
+
+func _ctrl_modifier_pressed(event: InputEventKey) -> bool:
+	return event.ctrl_pressed or Input.is_key_pressed(KEY_CTRL)
 
 
 func _build_overlay() -> void:
@@ -146,39 +149,35 @@ func _handle_menu_key(key_event: InputEventKey) -> void:
 		return
 
 	match active_menu:
-		"shortcuts":
+		"system_settings":
 			match key_event.keycode:
-				KEY_D:
-					_open_menu("system_debug")
 				KEY_M:
 					_open_menu("scene_select")
 				KEY_R:
 					_reload_scene()
 				KEY_C:
 					_copy_frame_to_clipboard()
-				KEY_J:
+		"gameplay_menu":
+			match key_event.keycode:
+				KEY_1, KEY_KP_1:
 					_open_menu("rhythm_control")
-		"system_debug":
-			_handle_debug_key(key_event)
+				KEY_2, KEY_KP_2:
+					_open_menu("spell_features")
+		"spell_features":
+			if key_event.keycode == KEY_1 or key_event.keycode == KEY_KP_1:
+				var controller := _get_spell_controller()
+				if controller != null and controller.has_method("select_spell_implementation"):
+					controller.call("select_spell_implementation", "V1")
+				_open_menu("spell_v1")
+		"spell_v1":
+			_handle_spell_v1_key(key_event.keycode)
+		"gameplay_prefix":
+			if _event_matches_key(key_event, KEY_G):
+				_open_menu("gameplay_menu")
 		"scene_select":
 			_handle_scene_key(key_event.keycode)
 		"rhythm_control":
 			_handle_rhythm_control_key(key_event.keycode)
-
-
-func _handle_debug_key(key_event: InputEventKey) -> void:
-	var key := key_event.keycode
-	if key == KEY_P:
-		get_tree().paused = not get_tree().paused
-		_refresh_menu()
-	elif key == KEY_V:
-		use_linear_filter = not use_linear_filter
-		_apply_texture_filter()
-		_refresh_menu()
-	elif key == KEY_MINUS or key == KEY_BRACKETLEFT or key == KEY_KP_SUBTRACT:
-		_set_target_fps(target_fps - 1)
-	elif key == KEY_PLUS or key == KEY_EQUAL or key == KEY_BRACKETRIGHT or key == KEY_KP_ADD:
-		_set_target_fps(target_fps + 1)
 
 
 func _handle_scene_key(key: int) -> void:
@@ -213,6 +212,26 @@ func _handle_rhythm_control_key(key: int) -> void:
 		_refresh_menu()
 
 
+func _handle_spell_v1_key(key: int) -> void:
+	var controller := _get_spell_controller()
+	if controller == null:
+		return
+	match key:
+		KEY_1, KEY_KP_1:
+			if controller.has_method("toggle_spell_physics"):
+				controller.call("toggle_spell_physics")
+		KEY_2, KEY_KP_2:
+			if controller.has_method("toggle_spell_snap_on_physics_end"):
+				controller.call("toggle_spell_snap_on_physics_end")
+		KEY_3, KEY_KP_3:
+			if controller.has_method("toggle_spell_snap_during_physics"):
+				controller.call("toggle_spell_snap_during_physics")
+		KEY_4, KEY_KP_4:
+			if controller.has_method("toggle_spell_influence_visualization"):
+				controller.call("toggle_spell_influence_visualization")
+	_refresh_menu()
+
+
 func _open_menu(menu_id: String) -> void:
 	active_menu = menu_id
 	if menu_id == "rhythm_control":
@@ -232,14 +251,9 @@ func _refresh_menu() -> void:
 	if not is_instance_valid(title_label) or not is_instance_valid(content_label):
 		return
 	match active_menu:
-		"shortcuts":
-			title_label.text = "SYSTEM // CTRL+P"
-			content_label.text = "D   DEBUG SISTEMA\nJ   BPM / JUDGMENT\nM   CAMBIA SCENA\nR   RICARICA SCENA\nC   COPIA FRAME\nESC   CHIUDI"
-		"system_debug":
-			title_label.text = "DEBUG SISTEMA // ESC CHIUDE"
-			var filter_name := "LINEAR" if use_linear_filter else "NEAREST"
-			var pause_state := "IN PAUSA" if get_tree().paused else "ATTIVO"
-			content_label.text = "FPS EFFETTIVI: %d\n- / [   LIMITE FPS: %d\n+ / = / ]   LIMITE FPS: %d\nV   FILTRO TEXTURE: %s\nP   PAUSA / AVVIA: %s\nESC   CHIUDI" % [Engine.get_frames_per_second(), target_fps, target_fps, filter_name, pause_state]
+		"system_settings":
+			title_label.text = "SYSTEM SETTINGS // CTRL+P"
+			content_label.text = "M   CAMBIA SCENA\nR   RICARICA SCENA\nC   COPIA FRAME\nESC   CHIUDI"
 		"scene_select":
 			title_label.text = "CAMBIA SCENA // ESC CHIUDE"
 			var lines := PackedStringArray()
@@ -247,6 +261,17 @@ func _refresh_menu() -> void:
 				lines.append("%s   %s" % [OS.get_keycode_string(scene_option["key"]), scene_option["label"]])
 			lines.append("ESC   CHIUDI")
 			content_label.text = "\n".join(lines)
+		"gameplay_menu":
+			title_label.text = "GAMEPLAY // CTRL+D → G"
+			content_label.text = "1   BPM / JUDGMENT\n2   SPELLS FEATURES\nESC   CHIUDI"
+		"spell_features":
+			title_label.text = "SPELLS FEATURES // CTRL+D → G → 2"
+			content_label.text = "1   V1 (IMPLEMENTAZIONE ATTIVA)\nESC   CHIUDI"
+		"spell_v1":
+			_refresh_spell_v1_menu()
+		"gameplay_prefix":
+			title_label.text = "DEBUG GAMEPLAY // CTRL+D"
+			content_label.text = "G   GAMEPLAY\nESC   CHIUDI"
 		"rhythm_control":
 			_refresh_rhythm_control_menu()
 		_:
@@ -254,7 +279,7 @@ func _refresh_menu() -> void:
 
 
 func _refresh_rhythm_control_menu() -> void:
-	title_label.text = "RITMO // BPM E JUDGMENT"
+	title_label.text = "GAMEPLAY // BPM / JUDGMENT"
 	var controller := _get_rhythm_controller()
 	if controller == null or not controller.has_method("get_rhythm_settings"):
 		content_label.text = "CONTROLLO RITMICO NON DISPONIBILE\nESC   CHIUDI"
@@ -271,6 +296,21 @@ func _refresh_rhythm_control_menu() -> void:
 	content_label.text = "↑ / ↓   SELEZIONA\n← / →   REGOLA (5 BPM / 5 ms)\n%s\n\n0   VINCOLO BPM: %s\nESC   CHIUDI" % ["\n".join(entries), bpm_state]
 
 
+func _refresh_spell_v1_menu() -> void:
+	title_label.text = "SPELL FEATURES // V1"
+	var controller := _get_spell_controller()
+	if controller == null or not controller.has_method("get_spell_v1_settings"):
+		content_label.text = "CONFIGURAZIONE SPELL NON DISPONIBILE\nESC   CHIUDI"
+		return
+	var settings: Dictionary = controller.call("get_spell_v1_settings")
+	content_label.text = "1   FISICA SPELL: %s\n2   SNAP A FINE FISICA: %s\n3   SNAP DURANTE LA FISICA: %s\n4   VISTA INFLUENZE: %s\n\nESC   CHIUDI" % [
+		"ON" if settings["physics_enabled"] else "OFF",
+		"ON" if settings["snap_on_physics_end"] else "OFF",
+		"ON" if settings["snap_during_physics"] else "OFF",
+		"ON" if settings["influence_visualization"] else "OFF",
+	]
+
+
 func _get_rhythm_controller() -> Node:
 	var scene := get_tree().current_scene
 	if scene == null:
@@ -278,27 +318,11 @@ func _get_rhythm_controller() -> Node:
 	return scene.find_child("Jerv", true, false)
 
 
-func _set_target_fps(value: int) -> void:
-	target_fps = clampi(value, MIN_TARGET_FPS, MAX_TARGET_FPS)
-	Engine.max_fps = target_fps
-	_refresh_menu()
-
-
-func _apply_texture_filter() -> void:
+func _get_spell_controller() -> Node:
 	var scene := get_tree().current_scene
-	if scene != null:
-		_set_texture_filter_recursive(scene, CanvasItem.TEXTURE_FILTER_LINEAR if use_linear_filter else CanvasItem.TEXTURE_FILTER_NEAREST)
-
-
-func _set_texture_filter_recursive(node: Node, filter_mode: CanvasItem.TextureFilter) -> void:
-	if node is CanvasItem:
-		(node as CanvasItem).texture_filter = filter_mode
-	for child in node.get_children():
-		_set_texture_filter_recursive(child, filter_mode)
-
-
-func _on_scene_changed() -> void:
-	_apply_texture_filter()
+	if scene == null:
+		return null
+	return scene.find_child("Grid", true, false)
 
 
 func _reload_scene() -> void:

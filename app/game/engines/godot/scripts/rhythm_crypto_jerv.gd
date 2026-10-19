@@ -20,6 +20,7 @@ const MAX_GOOD_WINDOW_MS := 120
 const JUDGMENT_WINDOW_STEP_MS := 5
 const FREE_MOVE_INITIAL_DELAY := 0.22
 const FREE_MOVE_REPEAT_INTERVAL := 0.12
+const SHIFT_ABILITY_RESOLVE_WINDOW := 0.12
 const DEFAULT_ANIMATION_BEAT_DURATION := 60.0 / DEFAULT_BPM
 const BPM_PROFILE_KEYS := [KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6]
 const BPM_PROFILE_VALUES := [60.0, 80.0, 100.0, 120.0, 140.0, 160.0]
@@ -57,6 +58,9 @@ var attack_timer := 0.0
 var last_clock_beat_index := -1
 var last_accepted_action_slot_index := -1
 var movement_log_sequence := 0
+var pending_shift_ability := ""
+var pending_shift_ability_key := 0
+var pending_shift_ability_timer := 0.0
 
 
 func _ready() -> void:
@@ -73,6 +77,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	_update_pending_shift_ability(delta)
 	if not active_attack.is_empty():
 		_update_attack_animation(delta)
 	else:
@@ -91,6 +96,12 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	var key_event := event as InputEventKey
 	if not key_event.pressed or key_event.echo:
 		return
+	if key_event.alt_pressed and key_event.physical_keycode in [KEY_A, KEY_S, KEY_D]:
+		_interrupt_spell_for_key(key_event.physical_keycode)
+		get_viewport().set_input_as_handled()
+		return
+	if not pending_shift_ability.is_empty():
+		_resolve_pending_shift_ability()
 	if key_event.keycode == KEY_0 or key_event.physical_keycode == KEY_0:
 		_toggle_bpm_enabled()
 		get_viewport().set_input_as_handled()
@@ -100,6 +111,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		return
 	var direction := Vector2i.ZERO
 	var attack := ""
+	var queued_shift_ability := false
 	match key_event.physical_keycode:
 		KEY_I:
 			direction = Vector2i(0, 1)
@@ -109,17 +121,31 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			direction = Vector2i(0, -1)
 		KEY_L:
 			direction = Vector2i(1, 0)
+		KEY_D:
+			if key_event.shift_pressed:
+				_queue_shift_ability("gravity_star_static", KEY_D)
+				queued_shift_ability = true
+			else:
+				attack = "gravity_star_short_cast"
 		KEY_A:
-			attack = "black_hole_static" if key_event.shift_pressed else "black_hole"
+			if key_event.shift_pressed:
+				_queue_shift_ability("black_hole_static", KEY_A)
+				queued_shift_ability = true
+			else:
+				attack = "black_hole"
 		KEY_S:
-			attack = "white_hole_static" if key_event.shift_pressed else "white_hole"
+			if key_event.shift_pressed:
+				_queue_shift_ability("white_hole_static", KEY_S)
+				queued_shift_ability = true
+			else:
+				attack = "white_hole"
+
+	if queued_shift_ability:
+		get_viewport().set_input_as_handled()
+		return
 
 	if not attack.is_empty():
-		if bpm_enabled:
-			_submit_rhythm_action(Vector2i.ZERO, attack)
-		else:
-			grid.call("set_judgment", "FREE")
-			_perform_attack(attack)
+		_submit_player_attack(attack)
 	elif direction != Vector2i.ZERO:
 		_set_facing_direction(direction)
 		if bpm_enabled:
@@ -131,6 +157,61 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_perform_movement(direction, "key_free", "", -1, "FREE")
 	if not attack.is_empty() or direction != Vector2i.ZERO:
 		get_viewport().set_input_as_handled()
+
+
+func _queue_shift_ability(attack: String, key: int) -> void:
+	pending_shift_ability = attack
+	pending_shift_ability_key = key
+	pending_shift_ability_timer = SHIFT_ABILITY_RESOLVE_WINDOW
+
+
+func _clear_pending_shift_ability() -> void:
+	pending_shift_ability = ""
+	pending_shift_ability_key = 0
+	pending_shift_ability_timer = 0.0
+
+
+func _update_pending_shift_ability(delta: float) -> void:
+	if pending_shift_ability.is_empty():
+		return
+	pending_shift_ability_timer -= delta
+	var pending_key_is_held := Input.is_physical_key_pressed(pending_shift_ability_key)
+	if not pending_key_is_held or pending_shift_ability_timer <= 0.0:
+		_resolve_pending_shift_ability()
+
+
+func _resolve_pending_shift_ability() -> void:
+	if pending_shift_ability.is_empty():
+		return
+	var attack := pending_shift_ability
+	_clear_pending_shift_ability()
+	_submit_player_attack(attack)
+
+
+func _interrupt_spell_for_key(key: int) -> void:
+	var spell := "black_hole" if key == KEY_A else "white_hole" if key == KEY_S else "gravity_star"
+	var pending_spell := "black_hole" if pending_shift_ability_key == KEY_A else "white_hole" if pending_shift_ability_key == KEY_S else "gravity_star" if pending_shift_ability_key == KEY_D else ""
+	var pending_cast_was_cancelled := false
+	if not pending_shift_ability.is_empty():
+		if pending_spell == spell:
+			_clear_pending_shift_ability()
+			pending_cast_was_cancelled = true
+		else:
+			_resolve_pending_shift_ability()
+	grid.call("interrupt_static_effect", spell, pending_cast_was_cancelled)
+	if active_attack == spell:
+		active_attack = ""
+		active_attack_frame = 0
+		attack_timer = 0.0
+		_set_idle_frame(0)
+
+
+func _submit_player_attack(attack: String) -> void:
+	if bpm_enabled:
+		_submit_rhythm_action(Vector2i.ZERO, attack)
+	else:
+		grid.call("set_judgment", "FREE")
+		_perform_attack(attack)
 
 
 func _handle_tempo_key(key: int) -> bool:
@@ -473,6 +554,12 @@ func _update_attack_animation(delta: float) -> void:
 
 func _start_attack(attack: String) -> void:
 	var target_cell := _target_cell()
+	if attack == "gravity_star_short_cast":
+		grid.call("play_gravity_star_short_cast", target_cell)
+		return
+	if attack == "gravity_star_static":
+		grid.call("use_gravity_star", target_cell)
+		return
 	var is_black_hole := attack.begins_with("black_hole")
 	var static_version := attack.ends_with("_static")
 	if is_black_hole:

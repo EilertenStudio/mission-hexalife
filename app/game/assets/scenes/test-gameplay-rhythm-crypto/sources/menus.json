@@ -1,11 +1,11 @@
 {
   "format_version": 1,
   "shortcut_prefix": {
-    "keys": ["ctrl+p"],
+    "keys": [
+      "ctrl+p"
+    ],
     "timeout": "until_next_key",
     "commands": {
-      "d": "system_debug",
-      "j": "rhythm_control",
       "m": "scene_select",
       "r": "scene_reload",
       "c": "frame_copy"
@@ -15,56 +15,70 @@
     "scene_reload": {
       "type": "action",
       "label": "Ricarica scena",
-      "shortcut": ["ctrl+p", "r"]
+      "shortcut": [
+        "ctrl+p",
+        "r"
+      ]
     },
     "frame_copy": {
       "type": "action",
       "label": "Copia frame",
-      "shortcut": ["ctrl+p", "c"],
+      "shortcut": [
+        "ctrl+p",
+        "c"
+      ],
       "output": "clipboard_image/png"
     }
   },
   "menus": {
-    "system_debug": {
+    "system_settings": {
       "scope": "system",
-      "title": "Debug sistema",
-      "close_keys": ["escape"],
+      "title": "System Settings",
+      "shortcut": [
+        "ctrl+p"
+      ],
+      "close_keys": [
+        "escape"
+      ],
       "items": [
-        { "id": "measured_fps", "type": "read_only", "label": "FPS effettivi", "source": "runtime.measured_fps" },
         {
-          "id": "target_fps",
-          "type": "integer_setting",
-          "label": "Limite FPS",
-          "source": "runtime.target_fps",
-          "default": 60,
-          "minimum": 1,
-          "maximum": 240,
-          "step": 1,
-          "adjustment_keys": { "decrease": ["-", "["], "increase": ["+", "=", "]"] }
+          "id": "scene_select",
+          "type": "submenu",
+          "label": "Cambia scena",
+          "key": "m",
+          "shortcut": [
+            "ctrl+p",
+            "m"
+          ]
         },
         {
-          "id": "render_mode",
-          "type": "choice_setting",
-          "label": "Filtro texture",
-          "source": "runtime.texture_filter",
-          "default": "nearest",
-          "values": ["nearest", "linear"],
-          "cycle_key": "v"
+          "id": "scene_reload",
+          "type": "action",
+          "label": "Ricarica scena",
+          "key": "r",
+          "shortcut": [
+            "ctrl+p",
+            "r"
+          ]
         },
         {
-          "id": "frame_pause",
-          "type": "toggle_action",
-          "label": "Pausa / avvia scena",
-          "source": "runtime.paused",
-          "key": "p",
-          "default": false
+          "id": "frame_copy",
+          "type": "action",
+          "label": "Copia frame",
+          "key": "c",
+          "shortcut": [
+            "ctrl+p",
+            "c"
+          ]
         }
       ]
     },
     "scene_select": {
       "scope": "system",
       "title": "Cambia scena",
-      "close_keys": ["escape"],
+      "close_keys": [
+        "escape"
+      ],
       "items": [
         {
           "id": "test-gameplay-rhythm-crypto",
@@ -75,13 +89,151 @@
         }
       ]
     },
+    "gameplay_prefix": {
+      "scope": "scene",
+      "title": "Debug Gameplay",
+      "shortcut": [
+        "ctrl+d"
+      ],
+      "close_keys": [
+        "escape"
+      ],
+      "items": [
+        {
+          "id": "gameplay_menu",
+          "type": "submenu",
+          "label": "Gameplay",
+          "key": "g",
+          "shortcut": [
+            "ctrl+d",
+            "g"
+          ]
+        }
+      ]
+    },
+    "gameplay_menu": {
+      "scope": "scene",
+      "title": "Gameplay",
+      "shortcut": [
+        "ctrl+d",
+        "g"
+      ],
+      "close_keys": [
+        "escape"
+      ],
+      "items": [
+        {
+          "id": "rhythm_control",
+          "type": "submenu",
+          "label": "BPM / Judgment",
+          "key": "1",
+          "shortcut": [
+            "ctrl+d",
+            "g",
+            "1"
+          ]
+        },
+        {
+          "id": "spell_features",
+          "type": "submenu",
+          "label": "Spells Features",
+          "key": "2",
+          "shortcut": [
+            "ctrl+d",
+            "g",
+            "2"
+          ]
+        }
+      ]
+    },
+    "spell_features": {
+      "scope": "scene",
+      "title": "Spells Features",
+      "shortcut": [
+        "ctrl+d",
+        "g",
+        "2"
+      ],
+      "close_keys": [
+        "escape"
+      ],
+      "items": [
+        {
+          "id": "spell_v1",
+          "type": "submenu",
+          "label": "V1",
+          "key": "1",
+          "shortcut": [
+            "ctrl+d",
+            "g",
+            "2",
+            "1"
+          ]
+        }
+      ]
+    },
+    "spell_v1": {
+      "scope": "scene",
+      "title": "Spell Features V1",
+      "shortcut": [
+        "ctrl+d",
+        "g",
+        "2",
+        "1"
+      ],
+      "close_keys": [
+        "escape"
+      ],
+      "items": [
+        {
+          "id": "spell_physics_enabled",
+          "type": "toggle_action",
+          "label": "Fisica Spell",
+          "key": "1",
+          "default": true
+        },
+        {
+          "id": "snap_on_physics_end",
+          "type": "toggle_action",
+          "label": "Snap a fine fisica",
+          "key": "2",
+          "default": true
+        },
+        {
+          "id": "snap_during_physics",
+          "type": "toggle_action",
+          "label": "Snap durante la fisica",
+          "key": "3",
+          "default": false
+        },
+        {
+          "id": "spell_influence_visualization",
+          "type": "toggle_action",
+          "label": "Vista delle influenze",
+          "key": "4",
+          "default": true
+        }
+      ]
+    },
     "rhythm_control": {
       "scope": "scene",
-      "title": "BPM e judgment",
-      "shortcut": ["ctrl+p", "j"],
-      "close_keys": ["escape"],
-      "navigation_keys": { "previous": "up", "next": "down" },
-      "adjustment_keys": { "decrease": "left", "increase": "right" },
+      "title": "BPM / JUDGMENT",
+      "shortcut": [
+        "ctrl+d",
+        "g",
+        "1"
+      ],
+      "close_keys": [
+        "escape"
+      ],
+      "navigation_keys": {
+        "previous": "up",
+        "next": "down"
+      },
+      "adjustment_keys": {
+        "decrease": "left",
+        "increase": "right"
+      },
       "items": [
         {
           "id": "bpm",
@@ -120,5 +272,14 @@
       ]
     }
   },
-  "mutually_exclusive": true
+  "mutually_exclusive": true,
+  "gameplay_shortcut_prefix": {
+    "keys": [
+      "ctrl+d"
+    ],
+    "timeout": "until_next_key",
+    "commands": {
+      "g": "gameplay_menu"
+    }
+  }
 }

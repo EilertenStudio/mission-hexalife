@@ -1,22 +1,22 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3 uid="uid://p2j4j15kjypu"]
 
-[ext_resource type="Script" path="res://scripts/rhythm_crypto_grid.gd" id="1_grid"]
-[ext_resource type="Texture2D" path="res://assets/characters/jerv/jerv-tgrc-topdown-sheet.png" id="2_jerv_texture"]
-[ext_resource type="Script" path="res://scripts/rhythm_crypto_jerv.gd" id="3_jerv_script"]
-[ext_resource type="Script" path="res://scripts/rhythm_music.gd" id="4_music_script"]
-[ext_resource type="Texture2D" path="res://assets/mobs/mob-bat-sprite-sheet.png" id="5_bat_texture"]
-[ext_resource type="Script" path="res://scripts/rhythm_crypto_mob_bat.gd" id="6_bat_script"]
+[ext_resource type="Script" uid="uid://bsoj3hr28iwfk" path="res://scripts/rhythm_crypto_grid.gd" id="1_grid"]
+[ext_resource type="Texture2D" uid="uid://bey1nutrcyw2q" path="res://assets/characters/jerv/jerv-tgrc-topdown-sheet.png" id="2_jerv_texture"]
+[ext_resource type="Script" uid="uid://en5vkg37omfy" path="res://scripts/rhythm_crypto_jerv.gd" id="3_jerv_script"]
+[ext_resource type="Script" uid="uid://cr5fsf4odrcbo" path="res://scripts/rhythm_music.gd" id="4_music_script"]
+[ext_resource type="Texture2D" uid="uid://b7ed67134uuad" path="res://assets/mobs/mob-bat-sprite-sheet.png" id="5_bat_texture"]
+[ext_resource type="Script" uid="uid://b16pgcjvunfub" path="res://scripts/rhythm_crypto_mob_bat.gd" id="6_bat_script"]
 
-[node name="TestGameplayRhythmCrypto" type="Node2D"]
+[node name="TestGameplayRhythmCrypto" type="Node2D" unique_id=146837632]
 texture_filter = 1
 
-[node name="Grid" type="Node2D" parent="."]
+[node name="Grid" type="Node2D" parent="." unique_id=1300923571]
 script = ExtResource("1_grid")
 
-[node name="Music" type="Node" parent="."]
+[node name="Music" type="Node" parent="." unique_id=15981540]
 script = ExtResource("4_music_script")
 
-[node name="Jerv" type="Sprite2D" parent="."]
+[node name="Jerv" type="Sprite2D" parent="." unique_id=1066978829]
 texture_filter = 1
 position = Vector2(176, 144)
 texture = ExtResource("2_jerv_texture")
@@ -24,7 +24,7 @@ region_enabled = true
 region_rect = Rect2(0, 0, 32, 32)
 script = ExtResource("3_jerv_script")
 
-[node name="MobBat" type="Sprite2D" parent="."]
+[node name="MobBat" type="Sprite2D" parent="." unique_id=1886515771]
 texture_filter = 1
 texture = ExtResource("5_bat_texture")
 region_enabled = true

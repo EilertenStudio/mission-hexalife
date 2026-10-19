@@ -5,9 +5,37 @@
     "top_of_stack": "last item added",
     "capacity": "unlimited"
   },
+  "spell_implementation": {
+    "default": "V1",
+    "available": [
+      "V1"
+    ],
+    "physics": {
+      "default_enabled": true,
+      "disabled_behavior": "Keep static spell visuals and object positions, stop all active spell motion and orbit states, and pause White Hole inventory ejection. Re-enabling physics immediately re-evaluates active fields for every object.",
+      "tile_snapping": {
+        "during_physics": {
+          "default": false,
+          "behavior": "Snap each object affected by spell physics to the center of its current tile on every physics update."
+        },
+        "on_physics_end": {
+          "default": true,
+          "behavior": "Snap an object to the center of its current tile when its continuous spell motion ends or an orbit exits. Skip the snap when an active field takes over immediately."
+        },
+        "independent_settings": true
+      }
+    },
+    "debug": {
+      "influence_visualization": {
+        "default_enabled": true,
+        "behavior": "Draw the radius of influence around active Black Hole, White Hole, and Gravity Star fields in the play area. This visualization is a debug view and does not change spell physics."
+      }
+    }
+  },
   "black_hole": {
     "key": "A",
     "static_key": "Shift+A",
+    "interrupt_key": "Alt+A",
     "resolve": "immediately when the input is accepted inside the nearest beat or half-beat judgment window",
     "rhythm_judgment": "shared with movement; one accepted action per beat slot, with full-beat and half-beat slots",
     "maximum_accepted_actions_per_slot": 1,
@@ -15,6 +43,17 @@
     "target": "the adjacent tile in Jerv's last facing direction",
     "success": "remove the object from the target tile and push it onto the top of the inventory stack",
     "empty_target": "leave the inventory unchanged and show empty-target feedback",
+    "static_effect": {
+      "radius_pixels": 128,
+      "behavior": "Continuously attract in-range objects along a shrinking spiral around the center; orbiting motion remains active until the object is absorbed.",
+      "capture": "remove the object at the center and push it onto the top of the inventory stack",
+      "recast": "stop the previous pull when its static instance begins to disappear",
+      "capture_radius_pixels": 5,
+      "movement": "Continuous pixel motion with angular orbit and inward spiral; the radius decreases until capture. A new Black Hole motion replaces any current orbit or spell motion for the affected object.",
+      "inward_acceleration_pixels_per_second_squared": 36,
+      "maximum_inward_speed_pixels_per_second": 36,
+      "orbit_period_seconds": 2.5
+    },
     "visual": {
       "character_animation": "black_hole",
       "effect_animation": "black_hole_cast",
@@ -26,6 +65,7 @@
   "white_hole": {
     "key": "S",
     "static_key": "Shift+S",
+    "interrupt_key": "Alt+S",
     "resolve": "immediately when the input is accepted inside the nearest beat or half-beat judgment window",
     "rhythm_judgment": "shared with movement; one accepted action per beat slot, with full-beat and half-beat slots",
     "maximum_accepted_actions_per_slot": 1,
@@ -34,6 +74,24 @@
     "success": "pop the top item from the inventory stack and place it on the target tile",
     "empty_inventory": "leave the target tile unchanged and show empty-inventory feedback",
     "blocked_target": "if the target tile is occupied or outside the grid, keep the item on top of the inventory stack",
+    "static_effect": {
+      "radius_pixels": 128,
+      "behavior": "when the full loop appears, move every object in range to the center and launch it outward from there in a uniformly random direction",
+      "inventory_ejection": {
+        "source": "objects absorbed by Black Hole and held in the shared inventory stack",
+        "behavior": "while the full White Hole loop is active, eject the top inventory item from the White Hole center in a random direction, one item at a time until the stack is empty",
+        "interval_seconds": 0.35,
+        "stack_order": "LIFO"
+      },
+      "initial_speed_pixels_per_second": 160,
+      "deceleration_pixels_per_second_squared": 80,
+      "deceleration_starts_after_leaving_influence_radius_pixels": 128,
+      "wall_restitution": 0.55,
+      "settling": "objects slow to rest at their continuous position without tile snapping",
+      "wall_bounds": "the internal walkable room bounds, with 8 pixels of object clearance from the room edges",
+      "movement": "continuous pixel motion; a new White Hole launch replaces any current orbit or spell motion for the affected object",
+      "random_direction": "uniformly random angle over 0 to 2π, independently for each object"
+    },
     "visual": {
       "character_animation": "white_hole",
       "effect_animation": "white_hole_cast",
@@ -43,14 +101,101 @@
     }
   },
   "static_effects": {
-    "creation_sequence": "Shift+A/S plays the corresponding short cast animation first; when it finishes, the complete static loop appears at the target tile. If the same static type already exists, that instance plays its matching short cast animation in reverse while the new instance is cast.",
+    "creation_sequence": "Shift+A/S/D plays the corresponding short cast animation first; when it finishes, the complete static loop appears at the target tile. If the same static type already exists, that instance plays its matching short cast animation in reverse while the new instance is cast. D alone only plays the gravity-star animation and has no gameplay effect.",
     "maximum_instances_per_type": 1,
     "black_hole_and_white_hole_can_coexist": true,
-    "replacement": "A new static cast reverses the matching short cast animation at the old instance while playing it forward at the new target. The old instance is removed and the new loop is placed when the cast ends or is interrupted by another accepted action; the other type remains on the map."
+    "replacement": "A new static cast reverses the matching short cast animation at the old instance while playing it forward at the new target. The old instance is removed and the new loop is placed when the cast ends or is interrupted by another accepted action; the other type remains on the map.",
+    "maximum_instances_by_type": {
+      "black_hole": 1,
+      "white_hole": 1,
+      "gravity_star": 1
+    },
+    "gravity_star_can_coexist_with": [
+      "black_hole",
+      "white_hole"
+    ],
+    "initial_static_instances": [
+      {
+        "type": "black_hole",
+        "cell_bottom_left": [
+          9,
+          2
+        ]
+      },
+      {
+        "type": "white_hole",
+        "cell_bottom_left": [
+          1,
+          1
+        ]
+      },
+      {
+        "type": "gravity_star",
+        "cell_bottom_left": [
+          4,
+          5
+        ]
+      }
+    ],
+    "initial_instance_appearance": "all three effects begin in their full static loop state; the scene does not replay their creation casts on startup",
+    "motion_handoff": {
+      "behavior": "Re-evaluate active static fields continuously for every object, including objects already in motion or orbit; an in-range Black Hole takes priority and captures objects along an inward spiral, then a Gravity Star with a fixed 128 px influence radius preserves the entered orbital distance while constraining positions to the walkable room, then an unspent White Hole instance.",
+      "white_hole_repeat": "each field object is launched at most once by each White Hole loop instance; inventory items absorbed by Black Hole are emitted from the active White Hole one at a time every 0.35 seconds until the stack is empty"
+    }
   },
   "feedback": {
-    "target_tile": "outline the tile Jerv is facing",
-    "inventory": "show stack size and its top item above the grid",
-    "last_action": "show whether the object was absorbed, expelled, or the action had no effect"
+    "target_tile": "outline the tile Jerv is facing, print its bottom-left tile coordinate on the tile, and show the coordinate in the sidebar",
+    "inventory": "show stack size and its top item in the INVENTARIO sidebar group",
+    "last_action": "retain the latest absorbed, expelled, or no-effect result as runtime state; do not display it in the sidebar",
+    "object_trajectory": {
+      "default": "enabled",
+      "trail": "sample each moving object position every 45 ms and fade the trail after 1.5 seconds",
+      "coordinates": "current bottom-left tile coordinates remain available in runtime state; do not list them in the sidebar",
+      "jump_event": "record motion-state changes and per-frame position deltas larger than 12 pixels or 1.5 times the fastest expected frame displacement, whichever is greater; include previous and current screen-pixel coordinates; do not list events in the sidebar"
+    }
+  },
+  "gravity_star": {
+    "key": "D",
+    "static_key": "Shift+D",
+    "interrupt_key": "Alt+D",
+    "mode": "D is a visual-only short cast; Shift+D creates the static field",
+    "resolve": "D and Shift+D are resolved inside the nearest beat or half-beat judgment window",
+    "rhythm_judgment": "shared with movement and other abilities; one accepted action per beat slot, with full-beat and half-beat slots",
+    "maximum_accepted_actions_per_slot": 1,
+    "can_use_half_beat_slot": true,
+    "target": "the adjacent tile in Jerv's last facing direction",
+    "short_cast": {
+      "key": "D",
+      "behavior": "play gravity_star_cast at the adjacent target tile without placing a static loop or affecting objects"
+    },
+    "success": "Shift+D plays gravity_star_cast and places one gravity_star_static_loop at the target tile",
+    "effect": "Shift+D: objects within the fixed 128 px influence radius enter a continuous circular orbit when the star appears; preserve their current distance without radial projection. The orbit has a 6-second period and is independent of BPM; each orbit position is continuously constrained to the walkable room bounds.",
+    "orbital_motion": {
+      "model": "continuous angular orbit that preserves the entry radius, with each resulting position continuously constrained to the walkable room bounds",
+      "influence_radius_pixels": 128,
+      "period_seconds": 6,
+      "distance": "preserve each eligible object’s exact distance when it enters the 128 px influence radius; do not project it radially",
+      "movement": "continuous pixel positions without tile snapping by default, independent of BPM; clamp orbit positions continuously at walkable room edges",
+      "room_bounds": "the 128 px influence radius stays fixed; orbit positions are constrained to the walkable room bounds without radial projection or teleporting",
+      "zero_distance": "an object at the star's center remains there",
+      "tile_snapping": {
+        "during_physics": {
+          "default": false,
+          "controlled_by": "spell_implementation.physics.tile_snapping.during_physics"
+        },
+        "on_physics_end": {
+          "default": true,
+          "controlled_by": "spell_implementation.physics.tile_snapping.on_physics_end",
+          "field_handoff": "skip tile snapping when another active field takes over immediately, so the snap cannot push the object outside that field"
+        },
+        "independent_settings": true
+      }
+    },
+    "visual": {
+      "character_animation": "idle",
+      "effect_animation": "gravity_star_cast",
+      "static_effect_animation": "gravity_star_static_loop",
+      "effect_source": "vfx.json"
+    }
   }
 }

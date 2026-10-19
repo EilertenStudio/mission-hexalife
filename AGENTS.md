@@ -13,4 +13,3 @@
 - Prima di portare una nuova decisione narrativa in un engine, aggiorna il documento di riferimento: registra i fatti approvati in `NOTE.md`, i cambiamenti dei profili in `CHARACTERS.md` e le proposte ancora da valutare in `ROADMAP.md`.
 - Tratta i file degli engine come implementazioni della storia, non come fonte autonoma del canone. Mantieni coerenti eventi, prospettiva, ruoli e informazioni approvati; adatta la forma tecnica al motore scelto.
 - Se una scena richiede una decisione ancora aperta o contraddice i documenti, conserva il `TBD` e segnalalo invece di risolverlo implicitamente.
-- Consulta il `DOCUMENTATION.md` dell’engine per le istruzioni tecniche, mantenendo separate le regole del motore dalle decisioni narrative.

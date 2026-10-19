@@ -50,7 +50,7 @@ temporary_dir = Path(temporary_dir)
 with zipfile.ZipFile(source, "r") as original:
     source_project = json.loads(original.read("data.json"))
     layer_names = [layer["name"].strip().upper() for layer in source_project.get("layers", [])]
-    expected_layers = ["BLACK HOLE", "WHITE HOLE"]
+    expected_layers = ["BLACK HOLE", "WHITE HOLE", "STAR"]
     if (source_project.get("size_x"), source_project.get("size_y")) != (32, 32):
         raise SystemExit("Il canvas PXO deve essere 32x32")
     if len(source_project.get("frames", [])) != 8:
@@ -61,6 +61,7 @@ with zipfile.ZipFile(source, "r") as original:
     for layer_index, (layer_name, file_stem) in enumerate([
         ("BLACK HOLE", "prop-weapon-cosmic_ring-black-hole"),
         ("WHITE HOLE", "prop-weapon-cosmic_ring-white-hole"),
+        ("STAR", "prop-weapon-cosmic_ring-star"),
     ]):
         project = copy.deepcopy(source_project)
         selected_layer = copy.deepcopy(project["layers"][layer_index])
@@ -107,7 +108,7 @@ with zipfile.ZipFile(source, "r") as original:
                 )
 PY
 
-for color in black-hole white-hole; do
+for color in black-hole white-hole star; do
 	file_stem="prop-weapon-cosmic_ring-$color"
 	"$PIXELORAMA_BIN" --headless --quit-after 60 -- --export --spritesheet "$temporary_dir/$file_stem.pxo"
 	/usr/bin/python3 - "$output_dir/$file_stem.png" <<'PY'
@@ -129,5 +130,5 @@ done
 rm -f "$output_dir/prop-weapon-cosmic_ring-sheet.png"
 rm -f "$godot_vfx_dir/prop-weapon-cosmic_ring-sheet.png" "$godot_vfx_dir/prop-weapon-cosmic_ring-sheet.png.import"
 
-printf 'Esportate le sheet VFX separate (8 frame 32x32 ciascuna): %s\n' "$output_dir"
+printf 'Esportate le tre sheet VFX separate (8 frame 32x32 ciascuna): %s\n' "$output_dir"
 printf 'Aggiornate le copie Godot: %s\n' "$godot_vfx_dir"

@@ -25,7 +25,7 @@
       "sprite_sheet": "../exports/prop-weapon-cosmic_ring-black-hole.png",
       "sheet_size_pixels": [256, 32],
       "creation_animation": "black_hole_cast",
-      "removal_animation": { "animation": "black_hole_cast", "playback": "reverse" },
+      "removal_animation": {"animation": "black_hole_cast", "playback": "reverse"},
       "start_column": 5,
       "frame_count_columns": 4,
       "frame_duration_seconds": 0.18,
@@ -37,13 +37,34 @@
       "sprite_sheet": "../exports/prop-weapon-cosmic_ring-white-hole.png",
       "sheet_size_pixels": [256, 32],
       "creation_animation": "white_hole_cast",
-      "removal_animation": { "animation": "white_hole_cast", "playback": "reverse" },
+      "removal_animation": {"animation": "white_hole_cast", "playback": "reverse"},
       "start_column": 5,
       "frame_count_columns": 4,
       "frame_duration_seconds": 0.18,
       "loop": true,
       "action": "Un buco bianco completo e sospeso resta nello stesso punto; il nucleo luminoso pulsa leggermente e quattro bagliori sull'anello orbitale si spostano di una posizione a ogni frame."
+    },
+    "gravity_star_cast": {
+      "layer": "STAR",
+      "sprite_sheet": "../exports/prop-weapon-cosmic_ring-star.png",
+      "sheet_size_pixels": [256, 32],
+      "start_column": 1,
+      "frame_count_columns": 4,
+      "duration_beats": 1,
+      "action": "Una scintilla si concentra sul tile bersaglio e si apre in un piccolo sole: disco rotondo a strati arancio e oro, nucleo chiaro e raggi corti a pixel. Il quarto frame mostra la forma stabile che resterà sulla mappa."
+    },
+    "gravity_star_static_loop": {
+      "layer": "STAR",
+      "sprite_sheet": "../exports/prop-weapon-cosmic_ring-star.png",
+      "sheet_size_pixels": [256, 32],
+      "creation_animation": "gravity_star_cast",
+      "removal_animation": {"animation": "gravity_star_cast", "playback": "reverse"},
+      "start_column": 5,
+      "frame_count_columns": 4,
+      "frame_duration_seconds": 0.18,
+      "loop": true,
+      "action": "Un sole gravitazionale resta visivamente fisso sul tile: il disco rotondo ha un nucleo avorio, strati dorati e una corona arancio di raggi brevi; piccoli punti sulle orbite sottili cambiano posizione e alcune scintille esterne pulsano. Il moto continuo degli oggetti è definito in abilities.json."
     }
   },
-  "appearance": "La grafica usa pixel trasparenti su tela nativa da 32×32, silhouette circolari compatte e palette separate: nero, indaco e viola per il buco nero; bianco, ciano e oro pallido per il buco bianco. Le animazioni di cast sono leggibili come impatti concentrati sul tile; le varianti statiche mostrano invece il fenomeno completo, con disco orbitale, nucleo e piccoli accenti stellari."
+  "appearance": "La grafica usa pixel trasparenti su tela nativa da 32×32 e palette separate: nero, indaco e viola per il buco nero; bianco, ciano e oro pallido per il buco bianco; arancio, oro e avorio per la stella gravitazionale. Black Hole e White Hole hanno cast leggibili come impatti concentrati sul tile e loop statici con il fenomeno completo. La stella ha un disco solare rotondo, un nucleo chiaro e raggi corti; orbite e scintille restano dettagli secondari. Il loop anima solo gli accenti del VFX; la simulazione orbitale degli oggetti è specificata in abilities.json."
 }
