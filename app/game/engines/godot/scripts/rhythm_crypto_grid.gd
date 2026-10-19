@@ -1,11 +1,12 @@
 extends Node2D
 
-const COLUMNS := 10
-const ROWS := 7
+const COLUMNS := 12
+const ROWS := 9
 const CELL_SIZE := Vector2(32.0, 32.0)
 const GRAPHIC_GRID_SIZE := Vector2(16.0, 16.0)
-const GRID_ORIGIN := Vector2(32.0, 32.0)
-const SPRITE_SHEET: Texture2D = preload("res://assets/characters/jerv/jerv-tgrc-topdown-sheet.png")
+const GRID_ORIGIN := Vector2.ZERO
+const BLACK_HOLE_SHEET: Texture2D = preload("res://assets/vfx/prop-weapon-cosmic_ring-black-hole.png")
+const WHITE_HOLE_SHEET: Texture2D = preload("res://assets/vfx/prop-weapon-cosmic_ring-white-hole.png")
 
 const BACKGROUND := Color8(5, 7, 16)
 const FLOOR := Color8(13, 16, 29)
@@ -13,7 +14,15 @@ const FLOOR_ALTERNATE := Color8(17, 20, 35)
 const GRID_LINE := Color8(43, 49, 69)
 const MOVEMENT_TILE_LINE := Color8(61, 67, 88)
 const OUTER_BORDER := Color8(99, 67, 99)
+const WALL_MORTAR := Color8(8, 11, 19)
+const WALL_BLOCK := Color8(31, 38, 52)
+const WALL_BLOCK_ALT := Color8(37, 44, 58)
+const WALL_EDGE_LIGHT := Color8(62, 72, 88)
+const WALL_EDGE_SHADOW := Color8(17, 22, 33)
 const EFFECT_FRAME_COUNT := 4
+const CAST_START_COLUMN := 0
+const STATIC_LOOP_START_COLUMN := 4
+const STATIC_LOOP_FRAME_DURATION := 0.18
 const BEAT_PULSE_FRACTION := 0.36
 const AUDIO_DETECTION_FLASH_SECONDS := 0.3
 const DEFAULT_ANIMATION_BPM := 120.0
@@ -41,12 +50,16 @@ const OBJECT_CATALOG := {
 
 var objects_by_cell: Dictionary = {}
 var inventory: Array[Dictionary] = []
-var target_cell := Vector2i(4, 2)
+var target_cell := Vector2i(5, 3)
 var action_feedback := "PRONTO"
 var active_effect := ""
 var effect_cell := Vector2i.ZERO
 var effect_frame := 0
 var effect_timer := 0.0
+var static_effects: Dictionary = {}
+var retiring_static_effects: Dictionary = {}
+var pending_static_effect := ""
+var pending_static_effect_cell := Vector2i.ZERO
 var bpm := 120.0
 var bpm_enabled := true
 var bpm_profile := "P4"
@@ -70,9 +83,9 @@ var audio_beat_candidate_count := 0
 
 func _ready() -> void:
 	objects_by_cell = {
-		Vector2i(4, 2): {"id": "ion_crystal"},
-		Vector2i(6, 3): {"id": "brass_gear"},
-		Vector2i(2, 4): {"id": "echo_orb"},
+		Vector2i(5, 3): {"id": "ion_crystal"},
+		Vector2i(7, 4): {"id": "brass_gear"},
+		Vector2i(3, 5): {"id": "echo_orb"},
 	}
 	queue_redraw()
 
@@ -86,8 +99,33 @@ func _process(delta: float) -> void:
 			active_effect = ""
 			effect_frame = 0
 			effect_timer = 0.0
+			_finish_pending_static_effect()
 		else:
 			effect_frame = next_frame
+		should_redraw = true
+
+	if not static_effects.is_empty():
+		var static_loop_duration := STATIC_LOOP_FRAME_DURATION * EFFECT_FRAME_COUNT
+		for effect_variant in static_effects.keys():
+			var static_state: Dictionary = static_effects[effect_variant]
+			var static_timer := float(static_state["timer"]) + delta
+			static_state["timer"] = static_timer
+			static_state["frame"] = int(fmod(static_timer, static_loop_duration) / STATIC_LOOP_FRAME_DURATION)
+			static_effects[effect_variant] = static_state
+		should_redraw = true
+
+	if not retiring_static_effects.is_empty():
+		for effect_variant in retiring_static_effects.keys():
+			var effect_name := str(effect_variant)
+			var retiring_state: Dictionary = retiring_static_effects[effect_name]
+			var retiring_timer := float(retiring_state["timer"]) + delta
+			var reverse_frame := int(retiring_timer / effect_frame_duration)
+			if reverse_frame >= EFFECT_FRAME_COUNT:
+				retiring_static_effects.erase(effect_name)
+			else:
+				retiring_state["timer"] = retiring_timer
+				retiring_state["frame"] = EFFECT_FRAME_COUNT - reverse_frame - 1
+				retiring_static_effects[effect_name] = retiring_state
 		should_redraw = true
 
 	if beat_pulse_remaining > 0.0:
@@ -133,11 +171,23 @@ func set_bpm_enabled(enabled: bool) -> void:
 func _update_tempo_durations() -> void:
 	var effect_phase := effect_timer / beat_duration
 	var pulse_phase := beat_pulse_remaining / beat_pulse_duration
+	var retiring_phases: Dictionary = {}
 	var animation_bpm := bpm if bpm_enabled else DEFAULT_ANIMATION_BPM
+	for effect_variant in retiring_static_effects.keys():
+		var old_retiring_name := str(effect_variant)
+		var old_retiring_state: Dictionary = retiring_static_effects[old_retiring_name]
+		retiring_phases[old_retiring_name] = float(old_retiring_state["timer"]) / beat_duration
 	beat_duration = 60.0 / animation_bpm
 	effect_frame_duration = beat_duration / EFFECT_FRAME_COUNT
 	beat_pulse_duration = beat_duration * BEAT_PULSE_FRACTION
 	effect_timer = effect_phase * beat_duration
+	for effect_variant in retiring_phases.keys():
+		var new_retiring_name := str(effect_variant)
+		var new_retiring_state: Dictionary = retiring_static_effects[new_retiring_name]
+		var retiring_phase := float(retiring_phases[new_retiring_name])
+		new_retiring_state["timer"] = retiring_phase * beat_duration
+		new_retiring_state["frame"] = EFFECT_FRAME_COUNT - int(new_retiring_state["timer"] / effect_frame_duration) - 1
+		retiring_static_effects[new_retiring_name] = new_retiring_state
 	if bpm_enabled:
 		beat_pulse_remaining = pulse_phase * beat_pulse_duration
 	if not active_effect.is_empty():
@@ -182,32 +232,40 @@ func set_target_cell(cell: Vector2i) -> void:
 	queue_redraw()
 
 
-func use_black_hole(cell: Vector2i) -> void:
-	_start_effect("black_hole", cell)
+func use_black_hole(cell: Vector2i, static_version: bool = false) -> void:
+	if static_version:
+		if _is_inside_grid(cell):
+			_start_static_effect_creation("black_hole", cell)
+	else:
+		_start_effect("black_hole", cell)
 	if not _is_inside_grid(cell):
 		action_feedback = "BLACK HOLE: FUORI GRIGLIA"
 	elif not objects_by_cell.has(cell):
-		action_feedback = "BLACK HOLE: TILE VUOTO"
+		action_feedback = "BLACK HOLE%s: TILE VUOTO" % (" STATIC" if static_version else "")
 	else:
 		var item: Dictionary = objects_by_cell[cell]
 		objects_by_cell.erase(cell)
 		inventory.append(item)
-		action_feedback = "ASSORBITO: %s" % _item_name(item)
+		action_feedback = "%sASSORBITO: %s" % ["STATIC " if static_version else "", _item_name(item)]
 	queue_redraw()
 
 
-func use_white_hole(cell: Vector2i) -> void:
-	_start_effect("white_hole", cell)
+func use_white_hole(cell: Vector2i, static_version: bool = false) -> void:
+	if static_version:
+		if _is_inside_grid(cell):
+			_start_static_effect_creation("white_hole", cell)
+	else:
+		_start_effect("white_hole", cell)
 	if inventory.is_empty():
-		action_feedback = "WHITE HOLE: INVENTARIO VUOTO"
+		action_feedback = "WHITE HOLE%s: INVENTARIO VUOTO" % (" STATIC" if static_version else "")
 	elif not _is_inside_grid(cell):
 		action_feedback = "WHITE HOLE: FUORI GRIGLIA"
 	elif objects_by_cell.has(cell):
-		action_feedback = "WHITE HOLE: TILE OCCUPATO"
+		action_feedback = "WHITE HOLE%s: TILE OCCUPATO" % (" STATIC" if static_version else "")
 	else:
 		var item: Dictionary = inventory.pop_back()
 		objects_by_cell[cell] = item
-		action_feedback = "ESPULSO: %s" % _item_name(item)
+		action_feedback = "%sESPULSO: %s" % ["STATIC " if static_version else "", _item_name(item)]
 	queue_redraw()
 
 
@@ -219,13 +277,50 @@ func _start_effect(effect: String, cell: Vector2i) -> void:
 	queue_redraw()
 
 
+func _place_static_effect(effect: String, cell: Vector2i) -> void:
+	static_effects[effect] = {
+		"cell": cell,
+		"frame": 0,
+		"timer": 0.0,
+	}
+	queue_redraw()
+
+
+func _start_static_effect_creation(effect: String, cell: Vector2i) -> void:
+	_begin_static_effect_removal(effect)
+	pending_static_effect = effect
+	pending_static_effect_cell = cell
+	_start_effect(effect, cell)
+
+
+func _begin_static_effect_removal(effect: String) -> void:
+	if not static_effects.has(effect):
+		return
+	var previous_state: Dictionary = static_effects[effect]
+	static_effects.erase(effect)
+	retiring_static_effects[effect] = {
+		"cell": previous_state["cell"],
+		"frame": EFFECT_FRAME_COUNT - 1,
+		"timer": 0.0,
+	}
+
+
+func _finish_pending_static_effect() -> void:
+	if pending_static_effect.is_empty():
+		return
+	_place_static_effect(pending_static_effect, pending_static_effect_cell)
+	pending_static_effect = ""
+	pending_static_effect_cell = Vector2i.ZERO
+
+
 func has_active_effect() -> bool:
 	return not active_effect.is_empty()
 
 
 func cancel_active_effect() -> void:
-	if active_effect.is_empty():
+	if active_effect.is_empty() and pending_static_effect.is_empty() and retiring_static_effects.is_empty():
 		return
+	_finish_pending_static_effect()
 	active_effect = ""
 	effect_frame = 0
 	effect_timer = 0.0
@@ -235,24 +330,15 @@ func cancel_active_effect() -> void:
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, Vector2(384.0, 288.0)), BACKGROUND, true)
 
-	var graphic_columns := COLUMNS * int(CELL_SIZE.x / GRAPHIC_GRID_SIZE.x)
-	var graphic_rows := ROWS * int(CELL_SIZE.y / GRAPHIC_GRID_SIZE.y)
-	for row in range(graphic_rows):
-		for column in range(graphic_columns):
-			var cell_position := GRID_ORIGIN + Vector2(column, row) * GRAPHIC_GRID_SIZE
-			var cell_rect := Rect2(cell_position, GRAPHIC_GRID_SIZE)
-			var floor_color := FLOOR_ALTERNATE if (column + row) % 2 == 1 else FLOOR
-			draw_rect(cell_rect, floor_color, true)
-			draw_rect(cell_rect, GRID_LINE, false, 1.0)
+	for row in range(1, ROWS - 1):
+		for column in range(1, COLUMNS - 1):
+			_draw_floor_tile(Vector2i(column, row))
 
-	var grid_size := Vector2(COLUMNS, ROWS) * CELL_SIZE
-	for column in range(COLUMNS + 1):
-		var x := GRID_ORIGIN.x + column * CELL_SIZE.x
-		draw_line(Vector2(x, GRID_ORIGIN.y), Vector2(x, GRID_ORIGIN.y + grid_size.y), MOVEMENT_TILE_LINE, 1.0)
-	for row in range(ROWS + 1):
-		var y := GRID_ORIGIN.y + row * CELL_SIZE.y
-		draw_line(Vector2(GRID_ORIGIN.x, y), Vector2(GRID_ORIGIN.x + grid_size.x, y), MOVEMENT_TILE_LINE, 1.0)
-	draw_rect(Rect2(GRID_ORIGIN - Vector2(2.0, 2.0), grid_size + Vector2(4.0, 4.0)), OUTER_BORDER, false, 2.0)
+	for row in range(ROWS):
+		for column in range(COLUMNS):
+			var cell := Vector2i(column, ROWS - row - 1)
+			if _is_wall_cell(cell):
+				_draw_wall_tile(cell)
 
 	if _is_inside_grid(target_cell):
 		var target_rect := Rect2(_cell_screen_position(target_cell), CELL_SIZE)
@@ -266,6 +352,48 @@ func _draw() -> void:
 	_draw_active_effect()
 	_draw_hud()
 	_draw_timing_bar()
+
+
+func _draw_floor_tile(cell: Vector2i) -> void:
+	var tile_origin := _cell_screen_position(cell)
+	for graphic_row in range(2):
+		for graphic_column in range(2):
+			var graphic_position := tile_origin + Vector2(graphic_column, graphic_row) * GRAPHIC_GRID_SIZE
+			var shade := cell.x + cell.y + graphic_column + graphic_row
+			var floor_color := FLOOR_ALTERNATE if shade % 2 == 1 else FLOOR
+			draw_rect(Rect2(graphic_position, GRAPHIC_GRID_SIZE), floor_color, true)
+			draw_rect(Rect2(graphic_position, GRAPHIC_GRID_SIZE), GRID_LINE, false, 1.0)
+	draw_rect(Rect2(tile_origin, CELL_SIZE), MOVEMENT_TILE_LINE, false, 1.0)
+
+
+func _draw_wall_tile(cell: Vector2i) -> void:
+	var tile_origin := _cell_screen_position(cell)
+	draw_rect(Rect2(tile_origin, CELL_SIZE), WALL_MORTAR, true)
+	var vertical_split := 15 if posmod(cell.x + cell.y, 2) == 0 else 17
+	var horizontal_split := 15 if posmod(cell.y, 2) == 0 else 17
+	var block_rects := [
+		Rect2(tile_origin + Vector2(1, 1), Vector2(vertical_split - 1, horizontal_split - 1)),
+		Rect2(tile_origin + Vector2(vertical_split + 1, 1), Vector2(30 - vertical_split, horizontal_split - 1)),
+		Rect2(tile_origin + Vector2(1, horizontal_split + 1), Vector2(vertical_split - 1, 30 - horizontal_split)),
+		Rect2(tile_origin + Vector2(vertical_split + 1, horizontal_split + 1), Vector2(30 - vertical_split, 30 - horizontal_split)),
+	]
+	for block_index in range(block_rects.size()):
+		var block: Rect2 = block_rects[block_index]
+		var shade := cell.x * 3 + cell.y * 5 + block_index
+		var block_color := WALL_BLOCK_ALT if posmod(shade, 3) == 0 else WALL_BLOCK
+		draw_rect(block, block_color, true)
+		draw_line(block.position, Vector2(block.end.x - 1, block.position.y), WALL_EDGE_LIGHT, 1.0)
+		draw_line(block.position, Vector2(block.position.x, block.end.y - 1), WALL_EDGE_LIGHT, 1.0)
+		draw_line(Vector2(block.position.x + 1, block.end.y - 1), Vector2(block.end.x - 1, block.end.y - 1), WALL_EDGE_SHADOW, 1.0)
+		draw_line(Vector2(block.end.x - 1, block.position.y + 1), Vector2(block.end.x - 1, block.end.y - 1), WALL_EDGE_SHADOW, 1.0)
+	if posmod(cell.x * 7 + cell.y * 11, 9) == 0:
+		var crack_start := tile_origin + Vector2(8 + posmod(cell.x * 3, 9), 7 + posmod(cell.y * 5, 11))
+		draw_line(crack_start, crack_start + Vector2(3, 3), WALL_EDGE_SHADOW, 1.0)
+		draw_line(crack_start + Vector2(3, 3), crack_start + Vector2(5, 2), WALL_EDGE_SHADOW, 1.0)
+
+
+func _is_wall_cell(cell: Vector2i) -> bool:
+	return cell.x == 0 or cell.x == COLUMNS - 1 or cell.y == 0 or cell.y == ROWS - 1
 
 
 func _draw_object(cell: Vector2i, item: Dictionary) -> void:
@@ -292,27 +420,36 @@ func _draw_object(cell: Vector2i, item: Dictionary) -> void:
 
 
 func _draw_active_effect() -> void:
-	if active_effect.is_empty() or not _is_inside_grid(effect_cell):
-		return
+	for effect_variant in ["black_hole", "white_hole"]:
+		var static_name := str(effect_variant)
+		if not static_effects.has(static_name):
+			continue
+		var static_state: Dictionary = static_effects[static_name]
+		var cell: Vector2i = static_state["cell"]
+		if _is_inside_grid(cell):
+			_draw_effect_frame(static_name, cell, int(static_state["frame"]), true)
+	if not active_effect.is_empty() and _is_inside_grid(effect_cell):
+		_draw_effect_frame(active_effect, effect_cell, effect_frame, false)
+	for effect_variant in retiring_static_effects.keys():
+		var retiring_name := str(effect_variant)
+		var retiring_state: Dictionary = retiring_static_effects[retiring_name]
+		var cell: Vector2i = retiring_state["cell"]
+		if _is_inside_grid(cell):
+			_draw_effect_frame(retiring_name, cell, int(retiring_state["frame"]), false)
 
-	var effect_row := 4 if active_effect == "black_hole" else 5
-	var start_column := 2 if active_effect == "black_hole" else 6
-	var source_rect := Rect2(
-		Vector2((start_column + effect_frame) * 32, effect_row * 32),
-		Vector2(32, 32)
-	)
-	draw_texture_rect_region(
-		SPRITE_SHEET,
-		Rect2(_cell_screen_position(effect_cell), CELL_SIZE),
-		source_rect
-	)
+
+func _draw_effect_frame(effect: String, cell: Vector2i, frame: int, static_version: bool) -> void:
+	var sprite_sheet := BLACK_HOLE_SHEET if effect == "black_hole" else WHITE_HOLE_SHEET
+	var start_column := STATIC_LOOP_START_COLUMN if static_version else CAST_START_COLUMN
+	var source_rect := Rect2(Vector2((start_column + frame) * 32, 0), Vector2(32, 32))
+	draw_texture_rect_region(sprite_sheet, Rect2(_cell_screen_position(cell), CELL_SIZE), source_rect)
 
 
 func _draw_hud() -> void:
 	draw_rect(Rect2(Vector2(8, 5), Vector2(368, 27)), Color8(8, 11, 24, 242), true)
 	draw_rect(Rect2(Vector2(8, 5), Vector2(368, 27)), OUTER_BORDER, false, 1.0)
 	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(14, 17), "IJKL MOVE  A/S HOLES  1-6 BPM  [ +5 ] -5  0 BPM ON/OFF  PGUP/DN VOL", HORIZONTAL_ALIGNMENT_LEFT, 350, 8, Color8(217, 223, 239))
+	draw_string(font, Vector2(14, 17), "IJKL MOVE A/S CAST SHIFT+A/S LOOP  1-6 BPM [ ] 0 BPM PGUP/DN VOL", HORIZONTAL_ALIGNMENT_LEFT, 350, 8, Color8(217, 223, 239))
 	var top_item := "VUOTO" if inventory.is_empty() else _item_name(inventory.back())
 	var tempo_status := "%d BPM %s" % [roundi(bpm), bpm_profile] if bpm_enabled else "FREE (BPM OFF, NEXT %d)" % roundi(bpm)
 	var status_text := "%s  T%04d  STACK %d %s  VOL %d%%" % [tempo_status, turn_count, inventory.size(), top_item, audio_volume_percent]
@@ -392,7 +529,7 @@ func _judgment_color() -> Color:
 
 
 func _is_inside_grid(cell: Vector2i) -> bool:
-	return cell.x >= 0 and cell.x < COLUMNS and cell.y >= 0 and cell.y < ROWS
+	return cell.x > 0 and cell.x < COLUMNS - 1 and cell.y > 0 and cell.y < ROWS - 1
 
 
 func _cell_screen_position(cell: Vector2i) -> Vector2:

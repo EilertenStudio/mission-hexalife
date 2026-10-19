@@ -81,6 +81,19 @@ Il cambio aggiorna la velocità della traccia, gli intervalli delle animazioni e
 la barra di timing. Il prototipo cambia il BPM modificando `pitch_scale`:
 insieme al tempo cambia anche l'intonazione della musica.
 
+`A` e `S` attivano rispettivamente Black Hole e White Hole con il VFX breve di
+quattro frame. `Shift+A` e `Shift+S` risolvono la stessa azione e riproducono
+prima il rispettivo VFX breve; al termine compare il buco completo in loop sul
+tile bersaglio. Se un'altra azione accettata interrompe il cast, il loop viene
+creato in quel momento. Può restare sulla mappa al massimo un buco nero e un
+buco bianco; possono coesistere. Quando si ricrea un tipo già presente, la
+vecchia istanza riproduce all'indietro il cast breve mentre la nuova viene
+lanciata in avanti; al termine resta il nuovo loop dello stesso tipo. I loop
+restano visibili mentre Jerv si muove. Le
+due sheet dei VFX sono esportate separatamente dai layer
+`BLACK HOLE` e `WHITE HOLE` del progetto Pixelorama
+`prop-weapon-cosmic_ring-sheet.pxo`.
+
 `0` attiva o disattiva il vincolo BPM. Quando è disattivato, la musica continua,
 il clock dei turni e la barra di timing si fermano, mentre IJKL e A/S eseguono
 le azioni subito alla pressione. Tenere premuto un movimento lo ripete dopo

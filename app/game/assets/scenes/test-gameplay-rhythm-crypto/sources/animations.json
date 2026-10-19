@@ -11,13 +11,13 @@
       "start_column": 3,
       "frame_count_columns": 4,
       "duration_beats": 1,
-      "action": "Jerv carica il braccialetto destro e apre un buco nero sul tile davanti a sé. Il vortice si espande, attira e assorbe l'oggetto presente; infine si contrae."
+      "action": "Jerv porta in avanti il braccio destro e carica il braccialetto della gravità, mantenendo la posa d'attacco mentre il potere viene attivato."
     },
     "white_hole": {
       "start_column": 7,
       "frame_count_columns": 4,
       "duration_beats": 1,
-      "action": "Jerv carica il braccialetto destro e apre un buco bianco sul tile davanti a sé. Il nucleo luminoso si espande e proietta sul tile l'oggetto che si trova in cima all'inventario."
+      "action": "Jerv porta in avanti il braccio destro e carica il braccialetto della gravità, mantenendo la posa d'attacco mentre il potere viene attivato."
     }
   }
 }

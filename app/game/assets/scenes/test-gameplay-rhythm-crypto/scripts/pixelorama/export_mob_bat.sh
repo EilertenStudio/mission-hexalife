@@ -30,7 +30,9 @@ if [[ ! -x "$PIXELORAMA_BIN" ]]; then
 fi
 
 mkdir -p "$(dirname -- "$OUTPUT_PNG")" "$(dirname -- "$GODOT_PNG")" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME"
-temporary_dir="$(mktemp -d "${TMPDIR:-/tmp}/mob-bat-pixelorama-export.XXXXXX")"
+temporary_root="/tmp/els-gmx"
+mkdir -p "$temporary_root"
+temporary_dir="$(mktemp -d "$temporary_root/mob-bat-pixelorama-export.XXXXXX")"
 trap 'rm -rf "$temporary_dir"' EXIT
 temporary_pxo="$temporary_dir/mob-bat-sprite-sheet.pxo"
 

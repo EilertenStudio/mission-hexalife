@@ -1,13 +1,13 @@
 extends Sprite2D
 
-const COLUMNS := 10
-const ROWS := 7
+const COLUMNS := 12
+const ROWS := 9
 const CELL_SIZE := 32.0
-const GRID_ORIGIN := Vector2(32.0, 32.0)
+const GRID_ORIGIN := Vector2.ZERO
 const FLAP_FRAME_COUNT := 2
 const DEFAULT_BPM := 120.0
 
-var grid_cell := Vector2i(8, 5)
+var grid_cell := Vector2i(9, 6)
 var bpm := DEFAULT_BPM
 var bpm_enabled := true
 var frame_duration := 0.25
@@ -71,7 +71,7 @@ func occupies_cell(cell: Vector2i) -> bool:
 
 
 func _is_inside_grid(cell: Vector2i) -> bool:
-	return cell.x >= 0 and cell.x < COLUMNS and cell.y >= 0 and cell.y < ROWS
+	return cell.x > 0 and cell.x < COLUMNS - 1 and cell.y > 0 and cell.y < ROWS - 1
 
 
 func _update_position() -> void:

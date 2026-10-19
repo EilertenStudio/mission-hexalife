@@ -31,7 +31,9 @@ if [[ ! -x "$PIXELORAMA_BIN" ]]; then
 fi
 
 mkdir -p "$(dirname -- "$OUTPUT_PNG")" "$(dirname -- "$GODOT_PNG")" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME"
-temporary_dir="$(mktemp -d "${TMPDIR:-/tmp}/jerv-pixelorama-export.XXXXXX")"
+temporary_root="/tmp/els-gmx"
+mkdir -p "$temporary_root"
+temporary_dir="$(mktemp -d "$temporary_root/jerv-pixelorama-export.XXXXXX")"
 trap 'rm -rf "$temporary_dir"' EXIT
 temporary_pxo="$temporary_dir/jerv-tgrc-topdown-sheet.pxo"
 
@@ -44,7 +46,7 @@ import sys
 import zipfile
 
 source, destination, output_dir = sys.argv[1:]
-row_layers = ["DOWN", "LEFT", "TOP", "RIGHT", "BLACK HOLE FX", "WHITE HOLE FX"]
+row_layers = ["DOWN", "LEFT", "TOP", "RIGHT"]
 with zipfile.ZipFile(source, "r") as original:
     with zipfile.ZipFile(destination, "w") as configured:
         project = None
@@ -60,7 +62,7 @@ with zipfile.ZipFile(source, "r") as original:
             raise SystemExit("Il PXO deve contenere 2 frame idle, 4 Black Hole e 4 White Hole")
         layer_indices = {layer["name"].strip().upper(): index for index, layer in enumerate(project["layers"])}
         if set(layer_indices) != set(row_layers) or len(project["layers"]) != len(row_layers):
-            raise SystemExit("Il PXO deve contenere DOWN, LEFT, TOP, RIGHT, BLACK HOLE FX e WHITE HOLE FX")
+            raise SystemExit("Il PXO di Jerv deve contenere solo DOWN, LEFT, TOP e RIGHT")
 
         frames = []
         frame_sources = []
@@ -91,8 +93,8 @@ with zipfile.ZipFile(source, "r") as original:
                 "file_format": "0",
                 "current_tab": "1",
                 "orientation": "0",
-                "lines_count": "6",
-                "number_of_frames": "60",
+                "lines_count": "4",
+                "number_of_frames": "40",
                 "frame_current_tag": "0",
                 "export_layers": "0",
                 "resize": "100",
@@ -128,10 +130,10 @@ with open(path, "rb") as image:
 if header[:8] != b"\x89PNG\r\n\x1a\n":
 	raise SystemExit(f"Export non valido: {path} non è una PNG")
 size = struct.unpack(">II", header[16:24])
-if size != (320, 192):
-    raise SystemExit(f"Dimensioni inattese per la sprite sheet: {size[0]}x{size[1]} (atteso 320x192)")
+if size != (320, 128):
+    raise SystemExit(f"Dimensioni inattese per la sprite sheet: {size[0]}x{size[1]} (atteso 320x128)")
 PY
 
 cp "$OUTPUT_PNG" "$GODOT_PNG"
-printf 'Esportata %s (320x192, IDLE e attacchi Black Hole / White Hole)\n' "$OUTPUT_PNG"
+printf 'Esportata %s (320x128, pose e animazioni di Jerv)\n' "$OUTPUT_PNG"
 printf 'Aggiornata copia Godot: %s\n' "$GODOT_PNG"

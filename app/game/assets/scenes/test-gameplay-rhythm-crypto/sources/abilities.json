@@ -7,6 +7,7 @@
   },
   "black_hole": {
     "key": "A",
+    "static_key": "Shift+A",
     "resolve": "immediately when the input is accepted inside the nearest beat or half-beat judgment window",
     "rhythm_judgment": "shared with movement; one accepted action per beat slot, with full-beat and half-beat slots",
     "maximum_accepted_actions_per_slot": 1,
@@ -16,14 +17,15 @@
     "empty_target": "leave the inventory unchanged and show empty-target feedback",
     "visual": {
       "character_animation": "black_hole",
-      "effect_row_index_zero_based": 4,
-      "effect_start_column": 3,
-      "effect_frame_count": 4,
-      "effect_duration_beats": 1
+      "effect_animation": "black_hole_cast",
+      "static_creation_animation": "black_hole_cast",
+      "static_effect_animation": "black_hole_static_loop",
+      "effect_source": "vfx.json"
     }
   },
   "white_hole": {
     "key": "S",
+    "static_key": "Shift+S",
     "resolve": "immediately when the input is accepted inside the nearest beat or half-beat judgment window",
     "rhythm_judgment": "shared with movement; one accepted action per beat slot, with full-beat and half-beat slots",
     "maximum_accepted_actions_per_slot": 1,
@@ -34,11 +36,17 @@
     "blocked_target": "if the target tile is occupied or outside the grid, keep the item on top of the inventory stack",
     "visual": {
       "character_animation": "white_hole",
-      "effect_row_index_zero_based": 5,
-      "effect_start_column": 7,
-      "effect_frame_count": 4,
-      "effect_duration_beats": 1
+      "effect_animation": "white_hole_cast",
+      "static_creation_animation": "white_hole_cast",
+      "static_effect_animation": "white_hole_static_loop",
+      "effect_source": "vfx.json"
     }
+  },
+  "static_effects": {
+    "creation_sequence": "Shift+A/S plays the corresponding short cast animation first; when it finishes, the complete static loop appears at the target tile. If the same static type already exists, that instance plays its matching short cast animation in reverse while the new instance is cast.",
+    "maximum_instances_per_type": 1,
+    "black_hole_and_white_hole_can_coexist": true,
+    "replacement": "A new static cast reverses the matching short cast animation at the old instance while playing it forward at the new target. The old instance is removed and the new loop is placed when the cast ends or is interrupted by another accepted action; the other type remains on the map."
   },
   "feedback": {
     "target_tile": "outline the tile Jerv is facing",

@@ -1,9 +1,9 @@
 extends Sprite2D
 
-const COLUMNS := 10
-const ROWS := 7
+const COLUMNS := 12
+const ROWS := 9
 const CELL_SIZE := 32.0
-const GRID_ORIGIN := Vector2(32.0, 32.0)
+const GRID_ORIGIN := Vector2.ZERO
 const IDLE_FRAME_COUNT := 2
 const IDLE_FRAME_BEATS := 2.0
 const ATTACK_FRAME_COUNT := 4
@@ -33,8 +33,8 @@ const FACING_ROW_RIGHT := 3
 @onready var music: Node = get_parent().get_node("Music")
 @onready var mob_bat: Node = get_parent().get_node("MobBat")
 
-var player_column := 4
-var player_row_from_bottom := 3
+var player_column := 5
+var player_row_from_bottom := 4
 var bpm := DEFAULT_BPM
 var bpm_enabled := true
 var beat_duration := 60.0 / DEFAULT_BPM
@@ -110,9 +110,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_L:
 			direction = Vector2i(1, 0)
 		KEY_A:
-			attack = "black_hole"
+			attack = "black_hole_static" if key_event.shift_pressed else "black_hole"
 		KEY_S:
-			attack = "white_hole"
+			attack = "white_hole_static" if key_event.shift_pressed else "white_hole"
 
 	if not attack.is_empty():
 		if bpm_enabled:
@@ -473,14 +473,16 @@ func _update_attack_animation(delta: float) -> void:
 
 func _start_attack(attack: String) -> void:
 	var target_cell := _target_cell()
-	if attack == "black_hole":
-		grid.call("use_black_hole", target_cell)
+	var is_black_hole := attack.begins_with("black_hole")
+	var static_version := attack.ends_with("_static")
+	if is_black_hole:
+		grid.call("use_black_hole", target_cell, static_version)
 	else:
-		grid.call("use_white_hole", target_cell)
+		grid.call("use_white_hole", target_cell, static_version)
 
 	idle_frame = 0
 	idle_frame_timer = 0.0
-	active_attack = attack
+	active_attack = "black_hole" if is_black_hole else "white_hole"
 	active_attack_frame = 0
 	attack_timer = 0.0
 	_set_attack_frame()
@@ -555,7 +557,7 @@ func _can_move(direction: Vector2i) -> bool:
 
 
 func _is_inside_grid(cell: Vector2i) -> bool:
-	return cell.x >= 0 and cell.x < COLUMNS and cell.y >= 0 and cell.y < ROWS
+	return cell.x > 0 and cell.x < COLUMNS - 1 and cell.y > 0 and cell.y < ROWS - 1
 
 
 func _target_cell() -> Vector2i:

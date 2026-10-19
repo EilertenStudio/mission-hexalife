@@ -7,7 +7,7 @@
       "sprite_sheet": "../exports/mob-bat-sprite-sheet.png",
       "sprite_sheet_size_pixels": [64, 32],
       "frame_size_pixels": [32, 32],
-      "initial_cell_bottom_left": [8, 5],
+      "initial_cell_bottom_left": [9, 6],
       "view": "top_down_facing_down",
       "appearance": "Creatura originale in pixel art 32×32 con corpo centrale piccolo e scuro, due orecchie appuntite, occhi ambra e ali viola larghe dalla sagoma angolare. La tavolozza usa pochi viola scuri e medi, contorno quasi nero e due pixel caldi per gli occhi. Le ali sono la parte più ampia e leggibile della silhouette; il corpo resta compatto. Le due pose mantengono posizione e dimensione del corpo e cambiano solo l'apertura delle ali.",
       "rendering": {
@@ -21,7 +21,7 @@
         "moves_per_full_beat": 1,
         "half_beat_moves": 0,
         "candidate_directions": ["up", "left", "down", "right"],
-        "destination_rules": "Sceglie casualmente tra le celle cardinali adiacenti che restano dentro la griglia e non sono occupate da Jerv. Gli oggetti dimostrativi non bloccano il movimento.",
+        "destination_rules": "Sceglie casualmente tra le celle cardinali adiacenti della sola area calpestabile interna e non occupate da Jerv. I blocchi perimetrali sono pareti e gli oggetti dimostrativi non bloccano il movimento.",
         "no_valid_destination": "stay",
         "grid_edges": "stop_no_wrap",
         "bpm_disabled": "Il clock dei beat è fermo e il pipistrello non si muove; l'animazione delle ali continua al tempo di riferimento di 120 BPM."

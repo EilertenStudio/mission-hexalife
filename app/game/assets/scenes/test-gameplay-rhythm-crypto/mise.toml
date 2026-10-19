@@ -5,3 +5,7 @@ run = "bash \"$(git rev-parse --show-toplevel)/app/game/assets/scenes/test-gamep
 [tasks.export-bat]
 description = "Esporta la sprite sheet del pipistrello dal PXO per Godot"
 run = "bash \"$(git rev-parse --show-toplevel)/app/game/assets/scenes/test-gameplay-rhythm-crypto/scripts/pixelorama/export_mob_bat.sh\""
+
+[tasks.export-cosmic-ring]
+description = "Esporta le sheet VFX separate di Black Hole e White Hole dal PXO per Godot"
+run = "bash \"$(git rev-parse --show-toplevel)/app/game/assets/scenes/test-gameplay-rhythm-crypto/scripts/pixelorama/export_cosmic_ring_sheet.sh\""

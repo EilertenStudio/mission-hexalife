@@ -18,7 +18,12 @@
   "abilities": {
     "A": "black_hole",
     "S": "white_hole",
+    "Shift+A": "black_hole_static_loop",
+    "Shift+S": "white_hole_static_loop",
     "target": "the adjacent tile in Jerv's last facing direction",
+    "static_variant": "play the corresponding short cast animation first, then create the complete visual loop on the target tile; while recasting a type, play the old instance's matching short cast animation in reverse as the new one plays forward; keep at most one instance of each type, allow one Black Hole and one White Hole to coexist, and replace only the existing same-type instance when the cast ends or is interrupted by another accepted action",
+    "static_instances_per_type": 1,
+    "black_hole_and_white_hole_can_coexist": true,
     "use_movement_rhythm_judgment": true,
     "maximum_accepted_actions_per_slot": 1,
     "can_use_half_beat_slot": true
