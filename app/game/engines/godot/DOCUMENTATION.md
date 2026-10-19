@@ -55,10 +55,14 @@ La barra mostra le finestre GOOD e PERFECT al centro per il beat intero e ai due
 bordi per il mezzo beat; la larghezza segue i valori configurati nel menu e le
 stesse finestre usate per valutare gli input. Il marker arriva al centro sul
 beat intero, attraversa il lato destro e riappare a sinistra a metà beat, quindi
-torna al centro. La scala delle zone viene ricalcolata rispetto alla durata del
-beat al BPM selezionato. Il clock audio usa `AudioStreamPlayer` e una compensazione
+torna al centro. Tacche rosse fisse segnano i punti obiettivo: centro per il beat
+intero e bordi per l'half-beat. La scala delle zone viene ricalcolata rispetto
+alla durata del beat al BPM selezionato. Il clock audio usa `AudioStreamPlayer` e una compensazione
 basata sulla posizione di mix e sulla latenza d'uscita; latenza del dispositivo,
 frame rate e tempi d'input possono comunque introdurre scarti percepibili.
+Se un frame salta più beat, il clock si riallinea al beat audio corrente e non
+riesegue i turni mancanti in un'unica raffica di passi; `[CLOCK RESYNC]` registra
+quanti beat sono stati saltati.
 
 La scena mostra anche `AUTO`, un rilevatore diagnostico di attacchi ricavato
 direttamente dallo spettro della traccia. Godot instrada il player attraverso un
@@ -84,11 +88,23 @@ le azioni subito alla pressione. Tenere premuto un movimento lo ripete dopo
 corrispondente a 120 BPM; riattivando il vincolo, il clock si riallinea al beat
 della musica.
 
-Anche le animazioni seguono il beat: ogni frame IDLE dura due beat; gli attacchi
-di Jerv e i relativi effetti sul tile durano un beat, distribuito sui quattro
-frame. L'impulso visivo del beat occupa il 36% della durata corrente. La scena
-non contiene nemici né comportamenti avversari: il combattimento è limitato
-all'uso ritmico di Black Hole e White Hole sugli oggetti dimostrativi.
+Anche le animazioni seguono il beat: ogni frame IDLE di Jerv dura due beat; gli
+attacchi e gli effetti sul tile durano un beat, distribuito sui quattro frame.
+La sprite sheet di Jerv e quella del pipistrello sono progetti Pixelorama
+editabili nella cartella `exports` della scena; il task `export-bat` esporta i
+due frame del pipistrello e aggiorna la copia usata da Godot.
+
+Il pipistrello rosso parte dalla cella `[8, 5]` e, a ogni beat intero, sceglie
+casualmente una cella cardinale adiacente interna alla griglia che non sia
+occupata da Jerv. Questo riprende il movimento casuale cardinale del pipistrello
+rosso di Crypt of the NecroDancer; non si muove sul mezzo beat. Le caselle
+esterne non sono destinazioni e non c'è avvolgimento dei bordi. Se non ha una
+destinazione valida resta fermo. Gli oggetti dimostrativi non lo bloccano.
+Jerv non può entrare nella cella occupata dal pipistrello; non sono implementati
+attacchi, collisioni con danni o salute. Quando il vincolo BPM è disattivato, il
+clock si ferma e il pipistrello non si sposta; il battito delle ali continua
+alla velocità di riferimento di 120 BPM. A tempo attivo i due frame delle ali
+si alternano a metà beat.
 
 Le animazioni non bloccano l'avanzamento dei turni. Se un beat scade senza
 azioni del giocatore, l'animazione in corso continua; quando una nuova azione

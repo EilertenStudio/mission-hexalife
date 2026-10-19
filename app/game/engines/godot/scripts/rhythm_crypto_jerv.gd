@@ -31,6 +31,7 @@ const FACING_ROW_RIGHT := 3
 
 @onready var grid: Node = get_parent().get_node("Grid")
 @onready var music: Node = get_parent().get_node("Music")
+@onready var mob_bat: Node = get_parent().get_node("MobBat")
 
 var player_column := 4
 var player_row_from_bottom := 3
@@ -65,6 +66,7 @@ func _ready() -> void:
 	grid.call("set_tempo", bpm, bpm_profile)
 	_sync_judgment_windows()
 	music.call("set_tempo", bpm)
+	mob_bat.call("set_tempo", bpm, bpm_enabled)
 	last_clock_beat_index = int(music.call("get_track_beat_index"))
 	_update_position()
 	_update_target_cell()
@@ -159,6 +161,7 @@ func _set_bpm(value: float, profile_name: String) -> void:
 	music.call("set_tempo", bpm)
 	grid.call("set_tempo", bpm, bpm_profile)
 	grid.call("set_bpm_enabled", bpm_enabled)
+	mob_bat.call("set_tempo", bpm, bpm_enabled)
 	_sync_judgment_windows()
 
 
@@ -241,6 +244,7 @@ func _toggle_bpm_enabled() -> void:
 	var animation_duration := beat_duration if bpm_enabled else DEFAULT_ANIMATION_BEAT_DURATION
 	_set_animation_beat_duration(animation_duration)
 	grid.call("set_bpm_enabled", bpm_enabled)
+	mob_bat.call("set_tempo", bpm, bpm_enabled)
 
 
 func _profile_name_for_bpm(value: float) -> String:
@@ -248,9 +252,13 @@ func _profile_name_for_bpm(value: float) -> String:
 	return "P%d" % (profile_index + 1) if profile_index >= 0 else "CUSTOM"
 
 
-func _advance_turn() -> void:
+func _advance_turn(allow_held_movement: bool = true) -> void:
 	turn_count += 1
 	grid.call("advance_turn", turn_count)
+	mob_bat.call("advance_beat", Vector2i(player_column, player_row_from_bottom))
+	if not allow_held_movement:
+		return
+
 	var beat_action_slot_index := turn_count * 2
 	if last_accepted_action_slot_index == beat_action_slot_index:
 		return
@@ -269,13 +277,18 @@ func _advance_turn() -> void:
 func _sync_clock_to_music(allow_held_movement: bool = true) -> void:
 	var track_beat_index := int(music.call("get_track_beat_index"))
 	var beats_per_loop := int(music.call("get_beats_per_loop"))
-	while last_clock_beat_index != track_beat_index:
-		last_clock_beat_index = (last_clock_beat_index + 1) % beats_per_loop
-		if allow_held_movement:
-			_advance_turn()
-		else:
-			turn_count += 1
-			grid.call("advance_turn", turn_count)
+	if last_clock_beat_index == track_beat_index:
+		return
+	var elapsed_beats := posmod(track_beat_index - last_clock_beat_index, beats_per_loop)
+	last_clock_beat_index = track_beat_index
+	if elapsed_beats > 1:
+		print(
+			"[CLOCK RESYNC] skipped_beats=%d target_beat_index=%d" % [
+				elapsed_beats - 1,
+				track_beat_index,
+			]
+		)
+	_advance_turn(allow_held_movement)
 
 
 func _submit_rhythm_action(direction: Vector2i, attack: String) -> void:
@@ -339,6 +352,8 @@ func _perform_movement(
 	_set_facing_direction(direction)
 	_reset_idle_animation()
 	var moved := _move_one_cell(direction)
+	if not moved:
+		grid.call("set_judgment", "BLOCKED", slot_name)
 	var to_cell := Vector2i(player_column, player_row_from_bottom)
 	movement_log_sequence += 1
 	var phase_text := "OFF"
@@ -522,7 +537,8 @@ func _read_direction() -> Vector2i:
 func _move_one_cell(direction: Vector2i) -> bool:
 	var next_column := player_column + direction.x
 	var next_row := player_row_from_bottom + direction.y
-	if next_column >= 0 and next_column < COLUMNS and next_row >= 0 and next_row < ROWS:
+	var next_cell := Vector2i(next_column, next_row)
+	if _is_inside_grid(next_cell) and not bool(mob_bat.call("occupies_cell", next_cell)):
 		player_column = next_column
 		player_row_from_bottom = next_row
 		_update_position()
@@ -534,7 +550,12 @@ func _move_one_cell(direction: Vector2i) -> bool:
 func _can_move(direction: Vector2i) -> bool:
 	var next_column := player_column + direction.x
 	var next_row := player_row_from_bottom + direction.y
-	return next_column >= 0 and next_column < COLUMNS and next_row >= 0 and next_row < ROWS
+	var next_cell := Vector2i(next_column, next_row)
+	return _is_inside_grid(next_cell) and not bool(mob_bat.call("occupies_cell", next_cell))
+
+
+func _is_inside_grid(cell: Vector2i) -> bool:
+	return cell.x >= 0 and cell.x < COLUMNS and cell.y >= 0 and cell.y < ROWS
 
 
 func _target_cell() -> Vector2i:

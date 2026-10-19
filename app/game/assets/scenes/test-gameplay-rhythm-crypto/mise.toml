@@ -1,3 +1,7 @@
 [tasks.export]
 description = "Esporta la sprite sheet di Jerv dal PXO"
 run = "bash \"$(git rev-parse --show-toplevel)/app/game/assets/scenes/test-gameplay-rhythm-crypto/scripts/pixelorama/export_topdown_sheet.sh\""
+
+[tasks.export-bat]
+description = "Esporta la sprite sheet del pipistrello dal PXO per Godot"
+run = "bash \"$(git rev-parse --show-toplevel)/app/game/assets/scenes/test-gameplay-rhythm-crypto/scripts/pixelorama/export_mob_bat.sh\""

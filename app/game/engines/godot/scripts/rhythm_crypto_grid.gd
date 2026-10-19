@@ -19,6 +19,7 @@ const AUDIO_DETECTION_FLASH_SECONDS := 0.3
 const DEFAULT_ANIMATION_BPM := 120.0
 const DEFAULT_GOOD_WINDOW_MS := 120
 const DEFAULT_PERFECT_WINDOW_MS := 50
+const TIMING_TARGET_RED := Color8(255, 72, 84)
 
 const OBJECT_CATALOG := {
 	"ion_crystal": {
@@ -356,6 +357,11 @@ func _draw_timing_bar() -> void:
 	var marker_position := 0.5 + timing_cycle_phase if timing_cycle_phase < 0.5 else timing_cycle_phase - 0.5
 	var marker_x := bar_rect.position.x + marker_position * bar_rect.size.x
 	draw_rect(Rect2(Vector2(marker_x - 1.0, bar_rect.position.y - 2.0), Vector2(2.0, 12.0)), Color8(244, 247, 255), true)
+	var half_beat_left_x := bar_rect.position.x + 1.0
+	var half_beat_right_x := bar_rect.end.x - 1.0
+	draw_rect(Rect2(Vector2(half_beat_left_x - 1.0, zone_y), Vector2(2.0, zone_height)), TIMING_TARGET_RED, true)
+	draw_rect(Rect2(Vector2(center_x - 1.5, zone_y), Vector2(3.0, zone_height)), TIMING_TARGET_RED, true)
+	draw_rect(Rect2(Vector2(half_beat_right_x - 1.0, zone_y), Vector2(2.0, zone_height)), TIMING_TARGET_RED, true)
 	if audio_beat_candidate_count > 0 and audio_beat_candidate_phase >= 0.0:
 		var detected_position := 0.5 + audio_beat_candidate_phase if audio_beat_candidate_phase < 0.5 else audio_beat_candidate_phase - 0.5
 		var detected_x := bar_rect.position.x + detected_position * bar_rect.size.x

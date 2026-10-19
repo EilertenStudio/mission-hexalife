@@ -1,0 +1,11 @@
+{
+  "subject_id": "red_bat",
+  "animations": {
+    "flap": {
+      "start_column": 1,
+      "frame_count_columns": 2,
+      "duration_beats": 1,
+      "action": "Il pipistrello alterna le ali tra la posa aperta e quella abbassata. Il ciclo continua sia quando resta fermo sia mentre si sposta; a 120 BPM ciascun frame dura mezzo beat."
+    }
+  }
+}

@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/rhythm_crypto_grid.gd" id="1_grid"]
 [ext_resource type="Texture2D" path="res://assets/characters/jerv/jerv-tgrc-topdown-sheet.png" id="2_jerv_texture"]
 [ext_resource type="Script" path="res://scripts/rhythm_crypto_jerv.gd" id="3_jerv_script"]
 [ext_resource type="Script" path="res://scripts/rhythm_music.gd" id="4_music_script"]
+[ext_resource type="Texture2D" path="res://assets/mobs/mob-bat-sprite-sheet.png" id="5_bat_texture"]
+[ext_resource type="Script" path="res://scripts/rhythm_crypto_mob_bat.gd" id="6_bat_script"]
 
 [node name="TestGameplayRhythmCrypto" type="Node2D"]
 texture_filter = 1
@@ -21,3 +23,10 @@ texture = ExtResource("2_jerv_texture")
 region_enabled = true
 region_rect = Rect2(0, 0, 32, 32)
 script = ExtResource("3_jerv_script")
+
+[node name="MobBat" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("5_bat_texture")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+script = ExtResource("6_bat_script")

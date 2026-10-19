@@ -6,7 +6,8 @@
     "graphic_grid_size_pixels": [16, 16],
     "origin_bottom_left_pixels": [32, 32],
     "walkable_cells": "all",
-    "boundary_behavior": "stop"
+    "boundary_behavior": "stop",
+    "actor_occupancy": "Jerv e il pipistrello rosso non possono condividere una cella. Il movimento del giocatore verso la cella attualmente occupata dal pipistrello è BLOCCATO. Gli oggetti dimostrativi non bloccano i due soggetti."
   },
   "objects": {
     "capacity_per_cell": 1,

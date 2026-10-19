@@ -25,7 +25,13 @@
       "animation_reference_bpm": 120
     },
     "audio_enabled": true,
-    "music_enabled": true
+    "music_enabled": true,
+    "frame_stall_recovery": {
+      "policy": "resync_to_current_audio_beat",
+      "max_turns_processed_per_frame": 1,
+      "missed_beats": "skip_instead_of_replaying_as_a_burst",
+      "diagnostic_log": "report_count_of_skipped_beats"
+    }
   },
   "turns": {
     "turns_per_beat": 1,
@@ -89,6 +95,12 @@
       "judgment_zone": "green segment centered on the full beat and matching segments at both bar edges for the half-beat",
       "marker_motion": "travels left to right and wraps to the left at the half-beat",
       "beat_alignment": "marker reaches the centered zone on every full beat and the edge zones at each half-beat",
+      "target_indicators": {
+        "color_rgb": [255, 72, 84],
+        "beat_position": "bar center",
+        "half_beat_positions": ["left edge", "right edge"],
+        "shape": "fixed vertical ticks on the bar"
+      },
       "good_window_ms": 120,
       "perfect_window_ms": 50
     },
