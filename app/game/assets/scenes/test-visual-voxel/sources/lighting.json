@@ -1,0 +1,22 @@
+{
+  "format_version": 1,
+  "environment": {
+    "background_color_rgb": [226, 231, 232],
+    "ambient_color_rgb": [188, 190, 192],
+    "ambient_energy": 0.72,
+    "tonemap": "filmic",
+    "glow_enabled": false,
+    "glow_intensity": 0.0,
+    "glow_bloom": 0.0
+  },
+  "lights": [
+    {
+      "id": "soft_daylight_key",
+      "type": "directional",
+      "color_rgb": [255, 247, 224],
+      "energy": 1.55,
+      "rotation_degrees": [-48, -32, 0],
+      "shadows": true
+    }
+  ]
+}

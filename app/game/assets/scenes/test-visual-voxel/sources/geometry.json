@@ -1,0 +1,96 @@
+{
+  "format_version": 1,
+  "coordinate_system": {
+    "up": "y",
+    "handedness": "right",
+    "origin": "center of the floor at its bottom face",
+    "unit": "meters"
+  },
+  "voxel_size_meters": 0.125,
+  "room": {
+    "footprint_voxels": [72, 72],
+    "floor": {
+      "thickness_voxels": 3,
+      "layout_seed": 271828,
+      "slab_width_voxels": [6, 11],
+      "slab_depth_voxels": [6, 10],
+      "slab_asset": {
+        "id": "stone_floor_slab",
+        "unit_size_voxels": [1, 1, 1],
+        "default_size_voxels": [8, 3, 8],
+        "surface_material_id": "stone_main",
+        "joint_material_id": "stone_joint",
+        "core_material_id": "stone_deep"
+      },
+      "surface_material_ids": ["stone_main", "stone_mid", "stone_light", "stone_shadow"],
+      "joint_material_id": "stone_joint",
+      "core_material_id": "stone_deep"
+    },
+    "walls": {
+      "layout": "two_solid_rear_walls_open_toward_camera",
+      "layout_seed": 314159,
+      "corner_connection": "left_wall_starts_at_the_inside_face_of_back_wall",
+      "block_asset": {
+        "id": "stone_masonry_block",
+        "unit_size_voxels": [1, 1, 1],
+        "default_size_voxels": [5, 3, 6],
+        "joint_border_voxels": 1,
+        "surface_material_id": "stone_main",
+        "joint_material_id": "stone_joint",
+        "core_material_id": "stone_deep"
+      },
+      "arrangement": [
+        {
+          "id": "back_wall",
+          "length_axis": "x",
+          "boundary": "negative_z",
+          "thickness_direction": "positive_z"
+        },
+        {
+          "id": "left_wall",
+          "length_axis": "z",
+          "boundary": "negative_x",
+          "thickness_direction": "positive_x"
+        }
+      ],
+      "height_voxels": 40,
+      "thickness_voxels": 6,
+      "block_width_voxels": [5, 10],
+      "course_height_voxels": [3, 5],
+      "surface_relief_voxels": 1,
+      "surface_material_ids": ["stone_main", "stone_mid", "stone_light", "stone_shadow"],
+      "joint_material_id": "stone_joint"
+    },
+    "debris": {
+      "loose_stone_asset": {
+        "id": "loose_stone",
+        "default_size_voxels": [5, 3, 4],
+        "seed": 1901,
+        "surface_material_ids": ["stone_main", "stone_mid", "stone_light", "stone_shadow"],
+        "core_material_id": "stone_deep"
+      },
+      "rubble_cluster_asset": {
+        "id": "stone_rubble_cluster",
+        "default_size_voxels": [12, 4, 10],
+        "fragment_count": 6,
+        "seed": 2901,
+        "surface_material_ids": ["stone_main", "stone_mid", "stone_light", "stone_shadow"],
+        "core_material_id": "stone_deep"
+      },
+      "loose_stones": [
+        { "id": "loose_stone_01", "position_voxels": [-26, -24], "size_voxels": [5, 3, 4], "seed": 1901 },
+        { "id": "loose_stone_02", "position_voxels": [22, -26], "size_voxels": [6, 3, 4], "seed": 1902 },
+        { "id": "loose_stone_03", "position_voxels": [-26, 9], "size_voxels": [4, 2, 4], "seed": 1903 },
+        { "id": "loose_stone_04", "position_voxels": [23, 21], "size_voxels": [5, 3, 5], "seed": 1904 },
+        { "id": "loose_stone_05", "position_voxels": [3, 27], "size_voxels": [6, 3, 4], "seed": 1905 },
+        { "id": "loose_stone_06", "position_voxels": [27, -3], "size_voxels": [4, 2, 3], "seed": 1906 },
+        { "id": "loose_stone_07", "position_voxels": [-11, 20], "size_voxels": [5, 2, 4], "seed": 1907 }
+      ],
+      "rubble_clusters": [
+        { "id": "rubble_cluster_01", "position_voxels": [-19, 25], "seed": 2901 },
+        { "id": "rubble_cluster_02", "position_voxels": [20, 5], "seed": 2902 },
+        { "id": "rubble_cluster_03", "position_voxels": [7, -25], "seed": 2903 }
+      ]
+    }
+  }
+}

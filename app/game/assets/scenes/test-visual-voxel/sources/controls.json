@@ -1,0 +1,8 @@
+{
+  "format_version": 1,
+  "interaction": {
+    "enabled": false,
+    "camera": "fixed",
+    "description": "La scena è un diorama statico senza interazioni o controlli di gameplay."
+  }
+}

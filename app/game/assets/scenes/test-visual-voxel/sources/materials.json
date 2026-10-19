@@ -1,0 +1,11 @@
+{
+  "format_version": 1,
+  "materials": {
+    "stone_deep": { "color_rgb": [43, 49, 53], "roughness": 0.99 },
+    "stone_shadow": { "color_rgb": [59, 66, 70], "roughness": 0.98 },
+    "stone_main": { "color_rgb": [79, 87, 91], "roughness": 0.96 },
+    "stone_mid": { "color_rgb": [99, 106, 109], "roughness": 0.95 },
+    "stone_light": { "color_rgb": [119, 125, 127], "roughness": 0.94 },
+    "stone_joint": { "color_rgb": [48, 55, 59], "roughness": 1.0 }
+  }
+}

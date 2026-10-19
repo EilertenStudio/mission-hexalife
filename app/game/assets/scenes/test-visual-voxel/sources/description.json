@@ -1,0 +1,21 @@
+{
+  "format_version": 1,
+  "id": "test-visual-voxel",
+  "subject_type": "scene",
+  "name": "Test visual voxel",
+  "state_documents": {
+    "geometry": "geometry.json",
+    "materials": "materials.json",
+    "lighting": "lighting.json",
+    "camera": "camera.json",
+    "controls": "controls.json"
+  },
+  "description": {
+    "purpose": "Prova di composizione voxel 3D in forma di diorama, con pavimento e mura di pietra arricchiti da pietre sciolte e macerie.",
+    "composition": "Una pianta quadrata di circa 9×9 metri è composta da lastre di pietra voxel. Due mura piene si incontrano ad angolo sui lati posteriori e lasciano il fronte aperto verso la camera. Le mura sono composte da blocchi di pietra di dimensioni variabili, con giunti scuri e rilievi voxel contenuti. Pietre singole e piccoli cumuli di macerie sono sparsi lungo il perimetro interno del pavimento. La camera ortografica fissa a tre quarti mostra il pavimento e le superfici interne delle due mura, inquadrando tutta la composizione.",
+    "visual_style": "Voxel cubici da 0,125 metri, pietra grigia neutra e ruvida, variazioni contenute tra i blocchi e illuminazione chiara e neutra. Sfondo uniforme chiaro per isolare il diorama.",
+    "objects": "La scena contiene il pavimento, le due mura piene, pietre sciolte e piccoli cumuli di macerie. Non contiene aperture, arredi, personaggi, nemici, piante o effetti.",
+    "rendering": "Viewport verticale 720×1024, proiezione ortografica e renderer Forward+. Ombre realtime da una luce direzionale morbida.",
+    "audio": "Nessun audio."
+  }
+}
