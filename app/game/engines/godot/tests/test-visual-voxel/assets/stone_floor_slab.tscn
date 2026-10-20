@@ -10,7 +10,7 @@ albedo_color = Color(0.1882353, 0.21568628, 0.23137255, 1)
 resource_name = "Stone Floor Voxel Mesh"
 size = Vector3(0.125, 0.125, 0.125)
 
-[sub_resource type="MultiMesh" id="MultiMesh_j3dct"]
+[sub_resource type="MultiMesh" id="MultiMesh_668qe"]
 resource_name = "JointVoxels MultiMesh"
 transform_format = 1
 custom_aabb = AABB(-0.5, -0.1875, -0.5, 1, 0.375, 1)
@@ -23,7 +23,7 @@ resource_name = "stone_deep material"
 albedo_color = Color(0.16862746, 0.19215687, 0.20784314, 1)
 roughness = 0.99
 
-[sub_resource type="MultiMesh" id="MultiMesh_wdxs8"]
+[sub_resource type="MultiMesh" id="MultiMesh_phrf2"]
 resource_name = "CoreVoxels MultiMesh"
 transform_format = 1
 custom_aabb = AABB(-0.375, -0.1875, -0.375, 0.75, 0.25, 0.75)
@@ -36,7 +36,7 @@ resource_name = "stone_main material"
 albedo_color = Color(0.30980393, 0.34117648, 0.35686275, 1)
 roughness = 0.96
 
-[sub_resource type="MultiMesh" id="MultiMesh_a8xdu"]
+[sub_resource type="MultiMesh" id="MultiMesh_j3dct"]
 resource_name = "SurfaceVoxels MultiMesh"
 transform_format = 1
 custom_aabb = AABB(-0.375, 0.0625, -0.375, 0.75, 0.125, 0.75)
@@ -49,12 +49,12 @@ script = ExtResource("1_generator")
 
 [node name="JointVoxels" type="MultiMeshInstance3D" parent="." unique_id=552726733]
 material_override = SubResource("StandardMaterial3D_668qe")
-multimesh = SubResource("MultiMesh_j3dct")
+multimesh = SubResource("MultiMesh_668qe")
 
 [node name="CoreVoxels" type="MultiMeshInstance3D" parent="." unique_id=487019712]
 material_override = SubResource("StandardMaterial3D_kackl")
-multimesh = SubResource("MultiMesh_wdxs8")
+multimesh = SubResource("MultiMesh_phrf2")
 
 [node name="SurfaceVoxels" type="MultiMeshInstance3D" parent="." unique_id=993500150]
 material_override = SubResource("StandardMaterial3D_dmytf")
-multimesh = SubResource("MultiMesh_a8xdu")
+multimesh = SubResource("MultiMesh_j3dct")

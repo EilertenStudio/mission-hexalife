@@ -2,7 +2,7 @@
   "format_version": 1,
   "projection": {
     "type": "orthographic",
-    "vertical_size_meters": 20.5
+    "vertical_size_meters": 23.5
   },
   "initial_view": {
     "mode": "fixed",

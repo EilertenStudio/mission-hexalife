@@ -73,19 +73,30 @@ func _configure_environment(definition: Dictionary) -> void:
 func _build_lighting(light_definitions: Array) -> void:
 	for definition_variant in light_definitions:
 		var definition: Dictionary = definition_variant
-		if str(definition.get("type", "")) != "directional":
+		if definition.has("anchor"):
 			continue
 		var light_name := str(definition.get("id", "soft_daylight_key"))
 		if get_node_or_null(NodePath(light_name)) != null:
 			continue
-		var directional := DirectionalLight3D.new()
-		directional.name = light_name
-		directional.rotation_degrees = _vector3_from_array(definition.get("rotation_degrees", [-48, -32, 0]))
-		directional.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS
-		directional.light_color = _color_from_rgb(definition.get("color_rgb", [255, 247, 224]))
-		directional.light_energy = float(definition.get("energy", 1.55))
-		directional.shadow_enabled = bool(definition.get("shadows", true))
-		add_child(directional)
+		match str(definition.get("type", "")):
+			"directional":
+				var directional := DirectionalLight3D.new()
+				directional.name = light_name
+				directional.rotation_degrees = _vector3_from_array(definition.get("rotation_degrees", [-48, -32, 0]))
+				directional.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS
+				directional.light_color = _color_from_rgb(definition.get("color_rgb", [168, 192, 228]))
+				directional.light_energy = float(definition.get("energy", 0.62))
+				directional.shadow_enabled = bool(definition.get("shadows", true))
+				add_child(directional)
+			"omni":
+				var omni := OmniLight3D.new()
+				omni.name = light_name
+				omni.position = _vector3_from_array(definition.get("position_meters", [0.0, 2.0, 0.0]))
+				omni.light_color = _color_from_rgb(definition.get("color_rgb", [130, 165, 220]))
+				omni.light_energy = float(definition.get("energy", 0.5))
+				omni.omni_range = float(definition.get("range_meters", 5.0))
+				omni.shadow_enabled = bool(definition.get("shadows", false))
+				add_child(omni)
 
 
 func _vector3_from_array(values: Array) -> Vector3:

@@ -11,11 +11,11 @@
     "controls": "controls.json"
   },
   "description": {
-    "purpose": "Prova di composizione voxel 3D in forma di diorama, con pavimento e mura di pietra arricchiti da pietre sciolte e macerie.",
-    "composition": "Una pianta quadrata di circa 9×9 metri è composta da lastre di pietra voxel. Due mura piene si incontrano ad angolo sui lati posteriori e lasciano il fronte aperto verso la camera. Le mura sono composte da blocchi di pietra di dimensioni variabili, con giunti scuri e rilievi voxel contenuti. Pietre singole e piccoli cumuli di macerie sono sparsi lungo il perimetro interno del pavimento. La camera ortografica fissa a tre quarti mostra il pavimento e le superfici interne delle due mura, inquadrando tutta la composizione.",
-    "visual_style": "Voxel cubici da 0,125 metri, pietra grigia neutra e ruvida, variazioni contenute tra i blocchi e illuminazione chiara e neutra. Sfondo uniforme chiaro per isolare il diorama.",
-    "objects": "La scena contiene il pavimento, le due mura piene, pietre sciolte e piccoli cumuli di macerie. Non contiene aperture, arredi, personaggi, nemici, piante o effetti.",
-    "rendering": "Viewport verticale 720×1024, proiezione ortografica e renderer Forward+. Ombre realtime da una luce direzionale morbida.",
+    "purpose": "Prova di composizione voxel 3D in forma di diorama: rovine di pietra, un accampamento acceso e due passaggi leggibili.",
+    "composition": "Una pianta quadrata di circa 9×9 metri è composta da lastre di pietra voxel. Due mura posteriori formano un angolo e lasciano il fronte aperto verso la camera. Un arco nella parete sinistra conduce a una scala discendente; un secondo arco nella parete di fondo apre su un corridoio con porta spalancata. Jerv, riconoscibile dai capelli castani e dall'abbigliamento verde del riferimento, è seduto su un sacco a pelo davanti al falò. Una chest aperta e traboccante di tesori si trova oltre il fuoco. Pietre, muschio e pochi ciuffi di vegetazione arricchiscono il perimetro senza affollare il campo centrale.",
+    "visual_style": "Voxel cubici da 0,125 metri, pietra grigia ruvida e legno consumato. La luce d'ambiente fredda contrasta con sorgenti calde presso gli archi, le torce e il falò. Fumo leggero sale dalle fiamme. Sfondo uniforme chiaro per isolare il diorama.",
+    "objects": "La scena contiene pavimento e muri in pietra, due archi, corridoio sinistro con scala, corridoio di fondo con porta aperta, pietre sciolte e macerie, Jerv seduto sul sacco a pelo, falò con luce e fumo, chest aperta con monete e gemme, quattro torce fumanti, chiazze di muschio e pochi ciuffi d'erba.",
+    "rendering": "Viewport verticale 720×1024, proiezione ortografica e renderer Forward+. Ombre realtime dalla luce direzionale fredda e luci locali calde.",
     "audio": "Nessun audio."
   }
 }

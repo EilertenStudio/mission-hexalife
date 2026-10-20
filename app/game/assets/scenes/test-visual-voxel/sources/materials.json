@@ -6,6 +6,24 @@
     "stone_main": { "color_rgb": [79, 87, 91], "roughness": 0.96 },
     "stone_mid": { "color_rgb": [99, 106, 109], "roughness": 0.95 },
     "stone_light": { "color_rgb": [119, 125, 127], "roughness": 0.94 },
-    "stone_joint": { "color_rgb": [48, 55, 59], "roughness": 1.0 }
+    "stone_joint": { "color_rgb": [48, 55, 59], "roughness": 1.0 },
+    "wood_dark": { "color_rgb": [73, 43, 29], "roughness": 0.94 },
+    "wood_main": { "color_rgb": [126, 76, 40], "roughness": 0.92 },
+    "wood_light": { "color_rgb": [170, 111, 55], "roughness": 0.9 },
+    "jerv_cloth": { "color_rgb": [52, 107, 83], "roughness": 0.95 },
+    "jerv_cloth_light": { "color_rgb": [81, 144, 103], "roughness": 0.94 },
+    "jerv_cloth_dark": { "color_rgb": [34, 72, 63], "roughness": 0.98 },
+    "jerv_hair": { "color_rgb": [91, 47, 30], "roughness": 0.96 },
+    "jerv_hair_light": { "color_rgb": [152, 79, 37], "roughness": 0.92 },
+    "jerv_skin": { "color_rgb": [214, 151, 104], "roughness": 0.9 },
+    "jerv_boot": { "color_rgb": [66, 48, 37], "roughness": 0.98 },
+    "moss": { "color_rgb": [67, 105, 57], "roughness": 0.98 },
+    "moss_light": { "color_rgb": [107, 142, 72], "roughness": 0.94 },
+    "gem_ruby": { "color_rgb": [204, 49, 43], "roughness": 0.35, "metallic": 0.08, "emission_rgb": [106, 14, 10], "emission_energy": 0.3 },
+    "gem_sapphire": { "color_rgb": [58, 125, 203], "roughness": 0.3, "metallic": 0.12, "emission_rgb": [11, 45, 122], "emission_energy": 0.28 },
+    "gold": { "color_rgb": [229, 176, 63], "roughness": 0.48, "metallic": 0.2 },
+    "fire_amber": { "color_rgb": [255, 105, 20], "roughness": 0.55, "emission_rgb": [255, 67, 8], "emission_energy": 2.4 },
+    "fire_gold": { "color_rgb": [255, 207, 65], "roughness": 0.48, "emission_rgb": [255, 145, 21], "emission_energy": 3.2 },
+    "torch_flame": { "color_rgb": [255, 182, 43], "roughness": 0.5, "emission_rgb": [255, 105, 16], "emission_energy": 2.8 }
   }
 }

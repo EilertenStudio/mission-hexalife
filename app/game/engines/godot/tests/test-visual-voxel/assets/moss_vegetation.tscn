@@ -1,0 +1,84 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/test-visual-voxel/assets/moss_vegetation.gd" id="1_generator"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ekbc"]
+resource_name = "moss material"
+albedo_color = Color(0.2627451, 0.4117647, 0.22352941, 1)
+roughness = 0.98
+
+[sub_resource type="BoxMesh" id="BoxMesh_pwvw1"]
+resource_name = "MossBed voxel block"
+material = SubResource("StandardMaterial3D_1ekbc")
+size = Vector3(0.875, 0.125, 0.625)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4dkn1"]
+resource_name = "moss_light material"
+albedo_color = Color(0.41960785, 0.5568628, 0.28235295, 1)
+roughness = 0.94
+
+[sub_resource type="BoxMesh" id="BoxMesh_psv0b"]
+resource_name = "GrassBlade_00 voxel block"
+material = SubResource("StandardMaterial3D_4dkn1")
+size = Vector3(0.125, 0.5, 0.125)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4x0bc"]
+resource_name = "GrassBlade_01 voxel block"
+material = SubResource("StandardMaterial3D_1ekbc")
+size = Vector3(0.125, 0.375, 0.125)
+
+[sub_resource type="BoxMesh" id="BoxMesh_l73dy"]
+resource_name = "GrassBlade_02 voxel block"
+material = SubResource("StandardMaterial3D_4dkn1")
+size = Vector3(0.125, 0.25, 0.125)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fximb"]
+resource_name = "GrassBlade_03 voxel block"
+material = SubResource("StandardMaterial3D_1ekbc")
+size = Vector3(0.125, 0.5, 0.125)
+
+[sub_resource type="BoxMesh" id="BoxMesh_vfnvp"]
+resource_name = "GrassBlade_04 voxel block"
+material = SubResource("StandardMaterial3D_4dkn1")
+size = Vector3(0.125, 0.375, 0.125)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_np8qt"]
+resource_name = "stone_shadow material"
+albedo_color = Color(0.23137255, 0.25882354, 0.27450982, 1)
+roughness = 0.98
+
+[sub_resource type="BoxMesh" id="BoxMesh_c4pp2"]
+resource_name = "MossStone voxel block"
+material = SubResource("StandardMaterial3D_np8qt")
+size = Vector3(0.25, 0.25, 0.25)
+
+[node name="MossVegetation" type="Node3D" unique_id=295067141]
+script = ExtResource("1_generator")
+
+[node name="MossBed" type="MeshInstance3D" parent="." unique_id=914656342]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0625, 0)
+mesh = SubResource("BoxMesh_pwvw1")
+
+[node name="GrassBlade_00" type="MeshInstance3D" parent="." unique_id=1553766856]
+transform = Transform3D(0.99995804, 0.009158184, 0, -0.009158184, 0.99995804, 0, 0, 0, 1, -0.25, 0.3125, 0.125)
+mesh = SubResource("BoxMesh_psv0b")
+
+[node name="GrassBlade_01" type="MeshInstance3D" parent="." unique_id=1728878808]
+transform = Transform3D(0.99426013, 0.10698992, 0, -0.10698992, 0.99426013, 0, 0, 0, 1, -0.25, 0.25, 0)
+mesh = SubResource("BoxMesh_4x0bc")
+
+[node name="GrassBlade_02" type="MeshInstance3D" parent="." unique_id=1825134672]
+transform = Transform3D(0.9972013, -0.0747633, 0, 0.0747633, 0.9972013, 0, 0, 0, 1, 0.125, 0.1875, -0.25)
+mesh = SubResource("BoxMesh_l73dy")
+
+[node name="GrassBlade_03" type="MeshInstance3D" parent="." unique_id=1017404824]
+transform = Transform3D(0.998972, 0.04533127, 0, -0.04533127, 0.998972, 0, 0, 0, 1, 0.375, 0.3125, 0.25)
+mesh = SubResource("BoxMesh_fximb")
+
+[node name="GrassBlade_04" type="MeshInstance3D" parent="." unique_id=847564407]
+transform = Transform3D(0.96166366, -0.2742316, 0, 0.2742316, 0.96166366, 0, 0, 0, 1, 0.25, 0.25, 0)
+mesh = SubResource("BoxMesh_vfnvp")
+
+[node name="MossStone" type="MeshInstance3D" parent="." unique_id=854670837]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.125, -0.125)
+mesh = SubResource("BoxMesh_c4pp2")

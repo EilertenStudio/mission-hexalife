@@ -59,7 +59,61 @@
       "course_height_voxels": [3, 5],
       "surface_relief_voxels": 1,
       "surface_material_ids": ["stone_main", "stone_mid", "stone_light", "stone_shadow"],
-      "joint_material_id": "stone_joint"
+      "joint_material_id": "stone_joint",
+      "apertures": [
+        {
+          "id": "left_stair_arch",
+          "wall": "left_wall",
+          "along_voxels": 42,
+          "width_voxels": 16,
+          "height_voxels": 24,
+          "arch_depth_voxels": 6,
+          "passage_asset": "descending_passage",
+          "torch_along_offsets_voxels": [-13, 13]
+        },
+        {
+          "id": "back_open_door_arch",
+          "wall": "back_wall",
+          "along_voxels": 54,
+          "width_voxels": 16,
+          "height_voxels": 24,
+          "arch_depth_voxels": 6,
+          "passage_asset": "open_door_passage",
+          "torch_along_offsets_voxels": [-13, 13]
+        }
+      ],
+      "passage_assets": {
+        "descending_passage": {
+          "clear_width_voxels": 10,
+          "length_voxels": 24,
+          "wall_height_voxels": 9,
+          "wall_thickness_voxels": 2,
+          "wall_segment_length_voxels": 6,
+          "wall_start_clearance_voxels": 4,
+          "step_count": 7,
+          "step_rise_voxels": 2,
+          "step_depth_voxels": 3,
+          "step_start_voxels": 2,
+          "step_width_voxels": 10,
+          "threshold_depth_voxels": 3
+        },
+        "open_door_passage": {
+          "clear_width_voxels": 10,
+          "length_voxels": 24,
+          "wall_height_voxels": 14,
+          "wall_thickness_voxels": 2,
+          "wall_segment_length_voxels": 6,
+          "corridor_start_clearance_voxels": 4,
+          "door_frame_half_width_voxels": 6,
+          "door_frame_height_voxels": 18,
+          "door_lintel_center_y_voxels": 19,
+          "door_position_voxels": 23,
+          "door_leaf_width_voxels": 8,
+          "door_leaf_height_voxels": 16,
+          "door_leaf_thickness_voxels": 1,
+          "door_hinge_x_voxels": -4.5
+        }
+      }
     },
     "debris": {
       "loose_stone_asset": {
@@ -88,8 +142,24 @@
       ],
       "rubble_clusters": [
         { "id": "rubble_cluster_01", "position_voxels": [-19, 25], "seed": 2901 },
-        { "id": "rubble_cluster_02", "position_voxels": [20, 5], "seed": 2902 },
+        { "id": "rubble_cluster_02", "position_voxels": [28, -16], "seed": 2902 },
         { "id": "rubble_cluster_03", "position_voxels": [7, -25], "seed": 2903 }
+      ]
+    },
+    "camp_layout": {
+      "campfire": { "position_voxels": [0, 0], "seed": 4101 },
+      "jerv": { "position_voxels": [-14, -4], "rotation_y_degrees": 0 },
+      "treasure_chest": { "position_voxels": [20, 4], "rotation_y_degrees": -12 },
+      "asset_geometry": {
+        "campfire": { "ring_stone_count": 10, "ring_radius_voxels": [4.0, 5.2], "ring_stone_size_voxels": [2.4, 3.5] },
+        "jerv_camp": { "sleeping_bag_size_voxels": [13, 1, 18], "character_height_voxels": 18 },
+        "treasure_chest": { "footprint_voxels": [14, 10], "lid_open_angle_degrees": -90 },
+        "moss_vegetation": { "patch_size_voxels": [7, 1, 5], "blade_count": 5, "blade_height_voxels": [2, 4] }
+      },
+      "vegetation": [
+        { "id": "moss_patch_01", "position_voxels": [-28, -25], "rotation_y_degrees": 10, "seed": 5101 },
+        { "id": "moss_patch_02", "position_voxels": [-27, 23], "rotation_y_degrees": -16, "seed": 5102 },
+        { "id": "moss_patch_03", "position_voxels": [26, -25], "rotation_y_degrees": 25, "seed": 5103 }
       ]
     }
   }

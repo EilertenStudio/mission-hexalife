@@ -1,0 +1,174 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/test-visual-voxel/assets/archway.gd" id="1_generator"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fea00"]
+resource_name = "stone_main material"
+albedo_color = Color(0.30980393, 0.34117648, 0.35686275, 1)
+roughness = 0.96
+
+[sub_resource type="BoxMesh" id="BoxMesh_4m2vp"]
+resource_name = "Jamb_-1_00 voxel block"
+material = SubResource("StandardMaterial3D_fea00")
+size = Vector3(0.25, 0.375, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xyp7o"]
+resource_name = "Jamb_1_00 voxel block"
+material = SubResource("StandardMaterial3D_fea00")
+size = Vector3(0.25, 0.375, 0.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5647d"]
+resource_name = "stone_mid material"
+albedo_color = Color(0.3882353, 0.41568628, 0.42745098, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_5k171"]
+resource_name = "Jamb_-1_01 voxel block"
+material = SubResource("StandardMaterial3D_5647d")
+size = Vector3(0.25, 0.375, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1slrn"]
+resource_name = "Jamb_1_01 voxel block"
+material = SubResource("StandardMaterial3D_5647d")
+size = Vector3(0.25, 0.375, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_t2jx7"]
+resource_name = "Jamb_-1_02 voxel block"
+material = SubResource("StandardMaterial3D_fea00")
+size = Vector3(0.25, 0.375, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_brvf3"]
+resource_name = "Jamb_1_02 voxel block"
+material = SubResource("StandardMaterial3D_fea00")
+size = Vector3(0.25, 0.375, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_b57cc"]
+resource_name = "Jamb_-1_03 voxel block"
+material = SubResource("StandardMaterial3D_5647d")
+size = Vector3(0.25, 0.375, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3qqtc"]
+resource_name = "Jamb_1_03 voxel block"
+material = SubResource("StandardMaterial3D_5647d")
+size = Vector3(0.25, 0.375, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_w2fhu"]
+resource_name = "Jamb_-1_04 voxel block"
+material = SubResource("StandardMaterial3D_fea00")
+size = Vector3(0.25, 0.375, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3dfrh"]
+resource_name = "Jamb_1_04 voxel block"
+material = SubResource("StandardMaterial3D_fea00")
+size = Vector3(0.25, 0.375, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4ged3"]
+resource_name = "Jamb_-1_05 voxel block"
+material = SubResource("StandardMaterial3D_5647d")
+size = Vector3(0.25, 0.125, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fjxtk"]
+resource_name = "Jamb_1_05 voxel block"
+material = SubResource("StandardMaterial3D_5647d")
+size = Vector3(0.25, 0.125, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_i3qen"]
+resource_name = "Voussoir_00 voxel block"
+material = SubResource("StandardMaterial3D_5647d")
+size = Vector3(0.25, 0.5, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nho8v"]
+resource_name = "Voussoir_01 voxel block"
+material = SubResource("StandardMaterial3D_fea00")
+size = Vector3(0.25, 0.5, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xexep"]
+resource_name = "Voussoir_02 voxel block"
+material = SubResource("StandardMaterial3D_5647d")
+size = Vector3(0.25, 0.25, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ad1kb"]
+resource_name = "Voussoir_03 voxel block"
+material = SubResource("StandardMaterial3D_fea00")
+size = Vector3(0.25, 0.25, 0.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ecapd"]
+resource_name = "stone_light material"
+albedo_color = Color(0.46666667, 0.49019608, 0.49803922, 1)
+roughness = 0.94
+
+[sub_resource type="BoxMesh" id="BoxMesh_xo75h"]
+resource_name = "Voussoir_04 voxel block"
+material = SubResource("StandardMaterial3D_ecapd")
+size = Vector3(1, 0.25, 0.75)
+
+[node name="Archway" type="Node3D" unique_id=1073852688]
+script = ExtResource("1_generator")
+
+[node name="Jamb_-1_00" type="MeshInstance3D" parent="." unique_id=1933403390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 0.1875, 0)
+mesh = SubResource("BoxMesh_4m2vp")
+
+[node name="Jamb_1_00" type="MeshInstance3D" parent="." unique_id=1297422246]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 0.1875, 0)
+mesh = SubResource("BoxMesh_xyp7o")
+
+[node name="Jamb_-1_01" type="MeshInstance3D" parent="." unique_id=1164589784]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 0.5625, 0)
+mesh = SubResource("BoxMesh_5k171")
+
+[node name="Jamb_1_01" type="MeshInstance3D" parent="." unique_id=1539538956]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 0.5625, 0)
+mesh = SubResource("BoxMesh_1slrn")
+
+[node name="Jamb_-1_02" type="MeshInstance3D" parent="." unique_id=568381818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 0.9375, 0)
+mesh = SubResource("BoxMesh_t2jx7")
+
+[node name="Jamb_1_02" type="MeshInstance3D" parent="." unique_id=716484094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 0.9375, 0)
+mesh = SubResource("BoxMesh_brvf3")
+
+[node name="Jamb_-1_03" type="MeshInstance3D" parent="." unique_id=1503606796]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 1.3125, 0)
+mesh = SubResource("BoxMesh_b57cc")
+
+[node name="Jamb_1_03" type="MeshInstance3D" parent="." unique_id=1023136538]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 1.3125, 0)
+mesh = SubResource("BoxMesh_3qqtc")
+
+[node name="Jamb_-1_04" type="MeshInstance3D" parent="." unique_id=1435052441]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 1.6875, 0)
+mesh = SubResource("BoxMesh_w2fhu")
+
+[node name="Jamb_1_04" type="MeshInstance3D" parent="." unique_id=1484667223]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 1.6875, 0)
+mesh = SubResource("BoxMesh_3dfrh")
+
+[node name="Jamb_-1_05" type="MeshInstance3D" parent="." unique_id=817198502]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 1.9375, 0)
+mesh = SubResource("BoxMesh_4ged3")
+
+[node name="Jamb_1_05" type="MeshInstance3D" parent="." unique_id=527278326]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 1.9375, 0)
+mesh = SubResource("BoxMesh_fjxtk")
+
+[node name="Voussoir_00" type="MeshInstance3D" parent="." unique_id=790843702]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.625, 2.25, 0)
+mesh = SubResource("BoxMesh_i3qen")
+
+[node name="Voussoir_01" type="MeshInstance3D" parent="." unique_id=1468703892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.625, 2.25, 0)
+mesh = SubResource("BoxMesh_nho8v")
+
+[node name="Voussoir_02" type="MeshInstance3D" parent="." unique_id=553988656]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 2.625, 0)
+mesh = SubResource("BoxMesh_xexep")
+
+[node name="Voussoir_03" type="MeshInstance3D" parent="." unique_id=737244439]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2.625, 0)
+mesh = SubResource("BoxMesh_ad1kb")
+
+[node name="Voussoir_04" type="MeshInstance3D" parent="." unique_id=531587973]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.875, 0)
+mesh = SubResource("BoxMesh_xo75h")

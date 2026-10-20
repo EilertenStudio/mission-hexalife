@@ -1,0 +1,244 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/test-visual-voxel/assets/campfire.gd" id="1_generator"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e81x3"]
+resource_name = "stone_light material"
+albedo_color = Color(0.46666667, 0.49019608, 0.49803922, 1)
+roughness = 0.94
+
+[sub_resource type="BoxMesh" id="BoxMesh_kdr0g"]
+resource_name = "FireRingStone_01 voxel block"
+material = SubResource("StandardMaterial3D_e81x3")
+size = Vector3(0.31758392, 0.15879196, 0.31758392)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_380rf"]
+resource_name = "stone_mid material"
+albedo_color = Color(0.3882353, 0.41568628, 0.42745098, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_t83ms"]
+resource_name = "FireRingStone_02 voxel block"
+material = SubResource("StandardMaterial3D_380rf")
+size = Vector3(0.32396677, 0.16198339, 0.32396677)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qsmdh"]
+resource_name = "stone_main material"
+albedo_color = Color(0.30980393, 0.34117648, 0.35686275, 1)
+roughness = 0.96
+
+[sub_resource type="BoxMesh" id="BoxMesh_eskxr"]
+resource_name = "FireRingStone_03 voxel block"
+material = SubResource("StandardMaterial3D_qsmdh")
+size = Vector3(0.33304447, 0.16652223, 0.33304447)
+
+[sub_resource type="BoxMesh" id="BoxMesh_j5mel"]
+resource_name = "FireRingStone_04 voxel block"
+material = SubResource("StandardMaterial3D_380rf")
+size = Vector3(0.32788655, 0.16394328, 0.32788655)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5yam1"]
+resource_name = "FireRingStone_05 voxel block"
+material = SubResource("StandardMaterial3D_e81x3")
+size = Vector3(0.3832267, 0.19161335, 0.3832267)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dh2ij"]
+resource_name = "FireRingStone_06 voxel block"
+material = SubResource("StandardMaterial3D_380rf")
+size = Vector3(0.37523046, 0.18761523, 0.37523046)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3vgsk"]
+resource_name = "FireRingStone_07 voxel block"
+material = SubResource("StandardMaterial3D_qsmdh")
+size = Vector3(0.37039262, 0.18519631, 0.37039262)
+
+[sub_resource type="BoxMesh" id="BoxMesh_25s25"]
+resource_name = "FireRingStone_08 voxel block"
+material = SubResource("StandardMaterial3D_380rf")
+size = Vector3(0.4247699, 0.21238495, 0.4247699)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rgbo6"]
+resource_name = "FireRingStone_09 voxel block"
+material = SubResource("StandardMaterial3D_e81x3")
+size = Vector3(0.32150084, 0.16075042, 0.32150084)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ldq7w"]
+resource_name = "FireRingStone_10 voxel block"
+material = SubResource("StandardMaterial3D_380rf")
+size = Vector3(0.40801334, 0.20400667, 0.40801334)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ic8hr"]
+resource_name = "wood_dark material"
+albedo_color = Color(0.28627452, 0.16862746, 0.11372549, 1)
+roughness = 0.94
+
+[sub_resource type="BoxMesh" id="BoxMesh_52a4c"]
+resource_name = "CharredLog_01 voxel block"
+material = SubResource("StandardMaterial3D_ic8hr")
+size = Vector3(0.25, 0.25, 1.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hg3oc"]
+resource_name = "wood_main material"
+albedo_color = Color(0.49411765, 0.29803923, 0.15686275, 1)
+roughness = 0.92
+
+[sub_resource type="BoxMesh" id="BoxMesh_fjbh7"]
+resource_name = "CharredLog_02 voxel block"
+material = SubResource("StandardMaterial3D_hg3oc")
+size = Vector3(0.25, 0.25, 1.125)
+
+[sub_resource type="BoxMesh" id="BoxMesh_awkyb"]
+resource_name = "FireBed voxel block"
+material = SubResource("StandardMaterial3D_ic8hr")
+size = Vector3(0.5, 0.25, 0.625)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wjvkm"]
+resource_name = "fire_amber material"
+albedo_color = Color(1, 0.4117647, 0.078431375, 1)
+roughness = 0.55
+emission_enabled = true
+emission = Color(1, 0.2627451, 0.03137255, 1)
+emission_energy_multiplier = 2.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_86jjj"]
+resource_name = "FlameOuter_A voxel block"
+material = SubResource("StandardMaterial3D_wjvkm")
+size = Vector3(0.375, 0.625, 0.375)
+
+[sub_resource type="BoxMesh" id="BoxMesh_r84ij"]
+resource_name = "FlameOuter_B voxel block"
+material = SubResource("StandardMaterial3D_wjvkm")
+size = Vector3(0.25, 0.5, 0.375)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2w0to"]
+resource_name = "fire_gold material"
+albedo_color = Color(1, 0.8117647, 0.25490198, 1)
+roughness = 0.48
+emission_enabled = true
+emission = Color(1, 0.5686275, 0.08235294, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_f2pka"]
+resource_name = "FlameCore voxel block"
+material = SubResource("StandardMaterial3D_2w0to")
+size = Vector3(0.2125, 0.55, 0.225)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xiy3i"]
+resource_name = "torch_flame material"
+albedo_color = Color(1, 0.7137255, 0.16862746, 1)
+roughness = 0.5
+emission_enabled = true
+emission = Color(1, 0.4117647, 0.0627451, 1)
+emission_energy_multiplier = 2.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_gxo0r"]
+resource_name = "FlameTip voxel block"
+material = SubResource("StandardMaterial3D_xiy3i")
+size = Vector3(0.125, 0.25, 0.125)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fducy"]
+direction = Vector3(0, 1, 0)
+spread = 18.0
+initial_velocity_min = 0.12
+initial_velocity_max = 0.38
+gravity = Vector3(0, 0.05, 0)
+scale_min = 0.75
+scale_max = 1.45
+color = Color(0.30980393, 0.3019608, 0.2901961, 0.45882353)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d0fip"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.30980393, 0.3019608, 0.2901961, 0.88)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fyhum"]
+material = SubResource("StandardMaterial3D_d0fip")
+size = Vector3(0.125, 0.125, 0.125)
+
+[node name="Campfire" type="Node3D" unique_id=392731383]
+script = ExtResource("1_generator")
+
+[node name="FireRingStone_01" type="MeshInstance3D" parent="." unique_id=1323960497]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5379872, 0.07939598, 0)
+mesh = SubResource("BoxMesh_kdr0g")
+
+[node name="FireRingStone_02" type="MeshInstance3D" parent="." unique_id=538145075]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48509437, 0.08099169, 0.3524417)
+mesh = SubResource("BoxMesh_t83ms")
+
+[node name="FireRingStone_03" type="MeshInstance3D" parent="." unique_id=343771409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16158386, 0.08326112, 0.497304)
+mesh = SubResource("BoxMesh_eskxr")
+
+[node name="FireRingStone_04" type="MeshInstance3D" parent="." unique_id=93592779]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16831562, 0.08197164, 0.5180222)
+mesh = SubResource("BoxMesh_j5mel")
+
+[node name="FireRingStone_05" type="MeshInstance3D" parent="." unique_id=528300275]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42109558, 0.09580667, 0.30594385)
+mesh = SubResource("BoxMesh_5yam1")
+
+[node name="FireRingStone_06" type="MeshInstance3D" parent="." unique_id=658395404]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5405903, 0.093807615, 6.6203215e-17)
+mesh = SubResource("BoxMesh_dh2ij")
+
+[node name="FireRingStone_07" type="MeshInstance3D" parent="." unique_id=210715787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4517543, 0.092598155, -0.3282187)
+mesh = SubResource("BoxMesh_3vgsk")
+
+[node name="FireRingStone_08" type="MeshInstance3D" parent="." unique_id=2049784565]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19819908, 0.10619248, -0.60999405)
+mesh = SubResource("BoxMesh_25s25")
+
+[node name="FireRingStone_09" type="MeshInstance3D" parent="." unique_id=1343357698]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17166704, 0.08037521, -0.5283368)
+mesh = SubResource("BoxMesh_rgbo6")
+
+[node name="FireRingStone_10" type="MeshInstance3D" parent="." unique_id=97852013]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5128822, 0.102003336, -0.3726307)
+mesh = SubResource("BoxMesh_ldq7w")
+
+[node name="CharredLog_01" type="MeshInstance3D" parent="." unique_id=428031255]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0.125, 0)
+mesh = SubResource("BoxMesh_52a4c")
+
+[node name="CharredLog_02" type="MeshInstance3D" parent="." unique_id=195060556]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0.1875, 0)
+mesh = SubResource("BoxMesh_fjbh7")
+
+[node name="FireBed" type="MeshInstance3D" parent="." unique_id=762091638]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("BoxMesh_awkyb")
+
+[node name="FlameOuter_A" type="MeshInstance3D" parent="." unique_id=1751591651]
+transform = Transform3D(0.9781476, 0.2079117, 0, -0.2079117, 0.9781476, 0, 0, 0, 1, -0.125, 0.625, 0)
+mesh = SubResource("BoxMesh_86jjj")
+
+[node name="FlameOuter_B" type="MeshInstance3D" parent="." unique_id=1906482776]
+transform = Transform3D(0.9612617, -0.27563736, 0, 0.27563736, 0.9612617, 0, 0, 0, 1, 0.125, 0.5, 0.0625)
+mesh = SubResource("BoxMesh_r84ij")
+
+[node name="FlameCore" type="MeshInstance3D" parent="." unique_id=940994844]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.525, 0)
+mesh = SubResource("BoxMesh_f2pka")
+
+[node name="FlameTip" type="MeshInstance3D" parent="." unique_id=1431873060]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+mesh = SubResource("BoxMesh_gxo0r")
+
+[node name="Firelight" type="OmniLight3D" parent="." unique_id=462014507]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, 0)
+light_color = Color(1, 0.5058824, 0.19215687, 1)
+light_energy = 2.25
+omni_range = 6.5
+
+[node name="CampfireSmoke" type="GPUParticles3D" parent="." unique_id=1302288204]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
+amount = 18
+lifetime = 2.7
+preprocess = 0.7
+randomness = 0.28
+visibility_aabb = AABB(-0.8, -0.5, -0.8, 1.6, 2.8, 1.6)
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_fducy")
+draw_pass_1 = SubResource("BoxMesh_fyhum")

@@ -11,7 +11,7 @@ roughness = 0.98
 resource_name = "Stone Rubble Voxel Mesh"
 size = Vector3(0.125, 0.125, 0.125)
 
-[sub_resource type="MultiMesh" id="MultiMesh_kyvyu"]
+[sub_resource type="MultiMesh" id="MultiMesh_wn63q"]
 resource_name = "Voxels_stone_shadow MultiMesh"
 transform_format = 1
 custom_aabb = AABB(-0.3125, 0, -0.5625, 0.875, 0.375, 1.125)
@@ -24,7 +24,7 @@ resource_name = "stone_light material"
 albedo_color = Color(0.46666667, 0.49019608, 0.49803922, 1)
 roughness = 0.94
 
-[sub_resource type="MultiMesh" id="MultiMesh_bf5vd"]
+[sub_resource type="MultiMesh" id="MultiMesh_4gttt"]
 resource_name = "Voxels_stone_light MultiMesh"
 transform_format = 1
 custom_aabb = AABB(-0.1875, 0, -0.5625, 0.875, 0.375, 1.125)
@@ -37,7 +37,7 @@ resource_name = "stone_mid material"
 albedo_color = Color(0.3882353, 0.41568628, 0.42745098, 1)
 roughness = 0.95
 
-[sub_resource type="MultiMesh" id="MultiMesh_u5qyc"]
+[sub_resource type="MultiMesh" id="MultiMesh_kyvyu"]
 resource_name = "Voxels_stone_mid MultiMesh"
 transform_format = 1
 custom_aabb = AABB(-0.3125, 0, -0.4375, 0.875, 0.375, 0.75)
@@ -50,7 +50,7 @@ resource_name = "stone_deep material"
 albedo_color = Color(0.16862746, 0.19215687, 0.20784314, 1)
 roughness = 0.99
 
-[sub_resource type="MultiMesh" id="MultiMesh_k016c"]
+[sub_resource type="MultiMesh" id="MultiMesh_tpp0t"]
 resource_name = "Voxels_stone_deep MultiMesh"
 transform_format = 1
 custom_aabb = AABB(-0.1875, 0.125, -0.4375, 0.75, 0.125, 0.5)
@@ -63,7 +63,7 @@ resource_name = "stone_main material"
 albedo_color = Color(0.30980393, 0.34117648, 0.35686275, 1)
 roughness = 0.96
 
-[sub_resource type="MultiMesh" id="MultiMesh_06set"]
+[sub_resource type="MultiMesh" id="MultiMesh_bf5vd"]
 resource_name = "Voxels_stone_main MultiMesh"
 transform_format = 1
 custom_aabb = AABB(-0.3125, 0, -0.4375, 1, 0.375, 1)
@@ -76,20 +76,20 @@ script = ExtResource("1_generator")
 
 [node name="Voxels_stone_shadow" type="MultiMeshInstance3D" parent="." unique_id=511089081]
 material_override = SubResource("StandardMaterial3D_wn63q")
-multimesh = SubResource("MultiMesh_kyvyu")
+multimesh = SubResource("MultiMesh_wn63q")
 
 [node name="Voxels_stone_light" type="MultiMeshInstance3D" parent="." unique_id=1422181222]
 material_override = SubResource("StandardMaterial3D_tpp0t")
-multimesh = SubResource("MultiMesh_bf5vd")
+multimesh = SubResource("MultiMesh_4gttt")
 
 [node name="Voxels_stone_mid" type="MultiMeshInstance3D" parent="." unique_id=167296318]
 material_override = SubResource("StandardMaterial3D_60nnd")
-multimesh = SubResource("MultiMesh_u5qyc")
+multimesh = SubResource("MultiMesh_kyvyu")
 
 [node name="Voxels_stone_deep" type="MultiMeshInstance3D" parent="." unique_id=971728803]
 material_override = SubResource("StandardMaterial3D_g1b5m")
-multimesh = SubResource("MultiMesh_k016c")
+multimesh = SubResource("MultiMesh_tpp0t")
 
 [node name="Voxels_stone_main" type="MultiMeshInstance3D" parent="." unique_id=2035527367]
 material_override = SubResource("StandardMaterial3D_2rlaq")
-multimesh = SubResource("MultiMesh_06set")
+multimesh = SubResource("MultiMesh_bf5vd")
