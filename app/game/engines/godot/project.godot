@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="mission-hexalife"
-run/main_scene="res://scenes/test-visual-2D-lighting.tscn"
-config/features=PackedStringArray("4.7", "GL Compatibility")
+run/main_scene="res://tests/test-visual-shaders/test-visual-shaders.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -22,10 +22,10 @@ DebugOverlay="*res://scripts/debug_overlay.gd"
 
 [display]
 
-window/size/viewport_width=496
-window/size/viewport_height=288
-window/size/window_width_override=992
-window/size/window_height_override=576
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
@@ -40,5 +40,4 @@ enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method.mobile="forward_plus"
