@@ -66,9 +66,9 @@ Fonti e progetti citati nelle note, nei profili dei personaggi e nella documenta
 - [*Mouthwashing*, presentazione ufficiale di Critical Reflex](https://www.criticalreflex.com/mouthwashing) — riferimento indicato dall'autore per atmosfera pesante, sospetti, cose non dette e dissapori che diventano problemi concreti. La diramazione della scialuppa resta esclusa per evitare una somiglianza specifica.
 - [*The Alters*, presentazione ufficiale di 11 bit studios](https://11bitstudios.com/games/the-alters/) — riferimento indicato dall'autore per delega, dipendenza dal team e tensione tra i vantaggi della collaborazione e la preoccupazione di affidarsi agli altri.
 
-## Engine e formati testuali
+## Formati e strumenti di scrittura interattiva
 
-Le descrizioni operative restano nelle guide locali di [Ink](engines/ink/DOCUMENTATION.md), [Dialog](engines/dialog/DOCUMENTATION.md) e [Tweego](engines/tweego/DOCUMENTATION.md).
+Le istruzioni operative per Ink sono nella [guida locale](DOCUMENTATION.md).
 
 ### Ink
 

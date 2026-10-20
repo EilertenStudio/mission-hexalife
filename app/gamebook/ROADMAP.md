@@ -1,6 +1,6 @@
 # Roadmap della storia
 
-Questa roadmap guida la scrittura di un **gioco narrativo breve**, interamente ambientato sulla nave. Il riferimento per i fatti confermati è [NOTE.md](NOTE.md); [CHARACTERS.md](CHARACTERS.md) distingue profili confermati e ipotesi. Le proposte in questa pagina non aggiungono fatti canonici. Per ora si progettano scene e scelte indipendentemente da Ink, Dialog e Tweego.
+Questa roadmap guida la scrittura di un **gioco narrativo breve**, interamente ambientato sulla nave. Il riferimento per i fatti confermati è [NOTE.md](NOTE.md); [CHARACTERS.md](CHARACTERS.md) distingue profili confermati e ipotesi. Le proposte in questa pagina non aggiungono fatti canonici. Per ora si progettano scene e scelte prima di tradurle in Ink.
 
 ## Metodo
 
@@ -56,6 +56,6 @@ Ordine proposto per sbloccare la prima tranche senza progettare già tutto il gi
 
 La durata dell'isolamento del centro di comando e la scansione dei giorni si scelgono dopo una prova giocabile: il ritmo deve nascere dalle azioni che consumano tempo e dalle iniziative autonome della crew, non da un numero deciso prima della prova.
 
-La [prima prova in Ink](engines/ink/story.ink) usa provvisoriamente turni da sei ore, apre comunque il centro di comando tramite l'iniziativa della crew se il giocatore non riesce prima e arriva alla manovra sugli asteroidi al dodicesimo turno. Questi valori servono a valutare il ritmo e non fissano la cronologia definitiva. La prova termina dopo il secondo snodo, prima dei tre finali della storia completa.
+La [prima prova in Ink](story.ink) usa provvisoriamente turni da sei ore, apre comunque il centro di comando tramite l'iniziativa della crew se il giocatore non riesce prima e arriva alla manovra sugli asteroidi al dodicesimo turno. Questi valori servono a valutare il ritmo e non fissano la cronologia definitiva. La prova termina dopo il secondo snodo, prima dei tre finali della storia completa.
 
 Solo dopo queste decisioni si stende l'apertura in paragrafi lineari. La sequenza e la motivazione dei personaggi sono più urgenti del nome del minerale alimentare, della spiegazione completa del viaggio o della prosa dei finali. Le informazioni indispensabili al finale vanno poi seminate abbastanza presto da influenzare le scelte del giocatore, incluso il passato dell'Ingegnere.

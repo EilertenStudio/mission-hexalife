@@ -191,7 +191,7 @@ Questi tratti sono **provvisori e non canonici**. Per ogni ruolo sono stati prep
 
 **Criterio di selezione dopo la prova:** un tratto vale la pena di fissare se cambia una battuta, una richiesta o una decisione osservabile; se interagisce con un altro personaggio; e se resta plausibile anche quando la situazione peggiora. Evitare che diventi un intercalare ripetuto o che cancelli le scelte morali del giocatore. Il sorteggio non decide motivazioni, colpe o fatti della trama.
 
-La prima prova dei tratti è nei dialoghi di [story.ink](engines/ink/story.ink): l'Ingegnere reagisce al proprio risveglio e al silenzio del Capitano, il Medico valuta il rischio senza imporre subito una visita, il Primo Ufficiale si appoggia alla procedura, lo Scienziato mostra un comportamento misurabile del fungo e il Capitano resta presente in un ordine tecnico breve. Il testo è materiale da valutare, non conferma dei tratti.
+La prima prova dei tratti è nei dialoghi di [story.ink](story.ink): l'Ingegnere reagisce al proprio risveglio e al silenzio del Capitano, il Medico valuta il rischio senza imporre subito una visita, il Primo Ufficiale si appoggia alla procedura, lo Scienziato mostra un comportamento misurabile del fungo e il Capitano resta presente in un ordine tecnico breve. Il testo è materiale da valutare, non conferma dei tratti.
 
 ## Riferimenti per costruire lo Scienziato
 

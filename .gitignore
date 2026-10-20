@@ -3,4 +3,4 @@
 nvim.log
 __pycache__/
 *.blend1
-app/gamebook/engines/ink/dist/
+app/gamebook/dist/
