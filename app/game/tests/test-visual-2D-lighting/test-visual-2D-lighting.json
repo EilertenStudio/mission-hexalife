@@ -1,0 +1,491 @@
+{
+  "abilities": {
+    "format_version": 1,
+    "spell_implementation": {
+      "default": "visual_only",
+      "physics_enabled": false,
+      "decorative_full_cast_loops": true,
+      "maximum_persistent_loops_per_spell": 1,
+      "gameplay_effects": "no physics, object, inventory, or map changes; only a gravity STAR full-cast loop emits the local light specified in lighting.json, without changing the existing center STAR light"
+    },
+    "target": "the adjacent tile in Jerv's current facing direction",
+    "cast": {
+      "frame_count": 4,
+      "frame_duration_seconds": 0.18,
+      "duration_seconds": 0.72,
+      "timing": "immediate on key press, independent of a beat clock",
+      "full_cast": "plays the four-frame cast VFX, then leaves that spell's decorative static loop on the target tile; a gravity STAR loop also emits its defined local light",
+      "same_spell_recreation": "when a full cast recreates an existing loop of the same spell, the previous loop is removed with the reversed cast animation while the new cast begins",
+      "interruption": "Alt plus the spell key cancels its active cast; if its static loop is present, the reverse cast animation removes it"
+    },
+    "black_hole": {
+      "key": "A",
+      "full_cast_key": "Shift+A",
+      "interrupt_key": "Alt+A",
+      "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-black-hole.png",
+      "animation": "black_hole_cast",
+      "loop_animation": "black_hole_static_loop",
+      "character_pose": "black_hole"
+    },
+    "white_hole": {
+      "key": "S",
+      "full_cast_key": "Shift+S",
+      "interrupt_key": "Alt+S",
+      "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-white-hole.png",
+      "animation": "white_hole_cast",
+      "loop_animation": "white_hole_static_loop",
+      "character_pose": "white_hole"
+    },
+    "gravity_star": {
+      "key": "D",
+      "full_cast_key": "Shift+D",
+      "interrupt_key": "Alt+D",
+      "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-star.png",
+      "animation": "gravity_star_cast",
+      "loop_animation": "gravity_star_static_loop",
+      "full_cast_light": "gravity_star_spell_light while the static loop is visible",
+      "character_pose": "idle"
+    }
+  },
+  "controls": {
+    "format_version": 1,
+    "character": {
+      "id": "jerv",
+      "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/jerv-tgrc-topdown-sheet.png",
+      "frame_size_pixels": [
+        32,
+        32
+      ],
+      "starting_cell_bottom_left": [
+        2,
+        4
+      ],
+      "starting_direction": "down",
+      "movement": "one immediate tile per fresh key press, constrained to the playable area",
+      "keys": [
+        {
+          "key": "I",
+          "direction": "up"
+        },
+        {
+          "key": "J",
+          "direction": "left"
+        },
+        {
+          "key": "K",
+          "direction": "down"
+        },
+        {
+          "key": "L",
+          "direction": "right"
+        }
+      ]
+    },
+    "abilities": {
+      "A": "black_hole_visual_cast",
+      "S": "white_hole_visual_cast",
+      "D": "gravity_star_visual_cast",
+      "Shift+A": "black_hole_full_cast_then_static_visual_loop",
+      "Shift+S": "white_hole_full_cast_then_static_visual_loop",
+      "Shift+D": "gravity_star_full_cast_then_static_visual_loop",
+      "Alt+A": "interrupt_black_hole_cast",
+      "Alt+S": "interrupt_white_hole_cast",
+      "Alt+D": "interrupt_gravity_star_cast",
+      "target": "the adjacent tile in Jerv's current facing direction",
+      "timing": "immediate on key press; no rhythm clock",
+      "behavior": "play the matching four-frame cast VFX and, for Black Hole and White Hole, Jerv's matching cast pose. Full-cast keys leave the matching decorative loop on the target tile after casting. Spells do not alter lighting, map, objects, inventory, or physics."
+    },
+    "lighting_probe": {
+      "cycle_modes_key": "Tab",
+      "mode_order": [
+        "2D ray-traced laser",
+        "2D shader beam",
+        "radial STAR light"
+      ],
+      "aim": "mouse position within the playfield; the beam starts at the central STAR and points toward the cursor",
+      "retained_direction": "if the mouse overlaps the STAR, keep the last valid direction",
+      "scope": "the mode switch changes only the lighting visualization; movement and spell controls remain active"
+    }
+  },
+  "description": {
+    "id": "test-visual-2D-lighting",
+    "subject_type": "scene",
+    "name": "Test visual 2D lighting",
+    "format_version": 1,
+    "context_sections": {
+      "grid": "res://tests/test-visual-2D-lighting/test-visual-2D-lighting.json#grid",
+      "lighting": "res://tests/test-visual-2D-lighting/test-visual-2D-lighting.json#lighting",
+      "abilities": "res://tests/test-visual-2D-lighting/test-visual-2D-lighting.json#abilities",
+      "controls": "res://tests/test-visual-2D-lighting/test-visual-2D-lighting.json#controls",
+      "interface": "res://tests/test-visual-2D-lighting/test-visual-2D-lighting.json#ui",
+      "menus": "res://tests/test-visual-2D-lighting/test-visual-2D-lighting.json#menus"
+    },
+    "description": {
+      "purpose": "Scena tecnica per confrontare un laser 2D con lightmap ray-traced software, un fascio shader e la luce STAR radiale in una stanza top-down buia.",
+      "composition": "La viewport misura 496×288 pixel: a sinistra c’è una griglia top-down di 12×9 tile da 32×32 pixel, a destra una sidebar fissa larga 112 pixel. La stanza ha ambient light quasi nulla. Un full cast di STAR occupa la cella centrale [5, 4] e riproduce in loop la sua animazione statica. Jerv parte nella cella [2, 4] e può muoversi liberamente nella stanza. La modalità predefinita traccia un laser stretto dal centro della STAR verso il muro destro, tagliando a metà la stanza; il mouse può orientarlo e l'impatto termina sul lato interno del perimetro. Il ray tracer genera un rimbalzo diffuso dalla parete colpita. Premere Tab alterna in sequenza ray tracing 2D, shader 2D e luce STAR radiale. La sidebar mostra la modalità, la posizione di Jerv e lo stato delle spell. Non ci sono musica, clock, judgment o meccaniche ritmiche.",
+      "lighting": "La modalità ray-traced disattiva le luci radiali, traccia una stretta ventola di raggi dal nucleo STAR al primo muro colpito e calcola da lì un rimbalzo diffuso con raggi secondari. L'energia accumulata viene scritta in una lightmap 2D additiva a metà risoluzione; l'alone d'impatto evidenzia la collisione. La geometria di tracing sono i limiti interni dei muri perimetrali. La modalità shader mostra invece un cono morbido senza rimbalzi. La modalità STAR usa la PointLight2D calda, animata e radiale già presente. La stanza conserva un livello base molto debole per rendere distinguibili pavimento, muri e silhouette. La direzione iniziale è orizzontale verso destra e resta invariata finché il mouse non si muove; se il cursore è sopra la sorgente conserva l'ultima direzione valida. Le spell STAR mantengono i loro VFX; la PointLight2D locale è visibile solo nella modalità radiale.",
+      "visual_style": "Pixel art top-down a risoluzione logica nativa, palette scura, griglia tenue, pareti perimetrali di pietra e forte contrasto. Il laser usa un nucleo bianco-ciano sottile e un rimbalzo diffuso azzurro; gli sprite mantengono il campionamento nearest.",
+      "audio": "Nessun audio o musica.",
+      "gameplay": "Tab alterna ray tracing 2D, fascio 2D shader e STAR radiale. Il mouse punta il laser dalla STAR verso un punto della stanza; la direzione resta memorizzata se il cursore copre la sorgente. Movimento tile-per-tile di Jerv con I, J, K e L. A, S e D avviano i cast visivi Black Hole, White Hole e STAR sul tile davanti a Jerv; Shift+A/S/D avvia il cast completo e lascia il loop decorativo corrispondente sul tile. Se un full cast ricrea un loop dello stesso tipo, il loop precedente scompare con il cast riprodotto al contrario mentre parte il nuovo cast. Alt+A/S/D interrompe il cast o rimuove il loop con l'animazione inversa. Le spell non applicano fisica e non cambiano mappa, oggetti o inventario. Nessun BPM, judgment o turno ritmico."
+    }
+  },
+  "grid": {
+    "format_version": 1,
+    "grid": {
+      "columns": 12,
+      "rows": 9,
+      "cell_size_pixels": [
+        32,
+        32
+      ],
+      "origin_bottom_left_pixels": [
+        0,
+        0
+      ],
+      "playfield_size_pixels": [
+        384,
+        288
+      ],
+      "playable_area": {
+        "columns": [
+          1,
+          10
+        ],
+        "rows_bottom_left": [
+          1,
+          7
+        ],
+        "size": [
+          10,
+          7
+        ]
+      },
+      "walls": {
+        "perimeter_thickness_tiles": 1,
+        "walkable": false,
+        "appearance": "dark_stone_masonry"
+      },
+      "boundary_behavior": "stop"
+    },
+    "appearance": {
+      "unlit_background_rgb": [
+        0,
+        0,
+        2
+      ],
+      "unlit_floor_rgb": [
+        32,
+        34,
+        44
+      ],
+      "unlit_floor_alternate_rgb": [
+        38,
+        40,
+        51
+      ],
+      "unlit_grid_line_rgb": [
+        60,
+        65,
+        82
+      ],
+      "unlit_wall_mortar_rgb": [
+        10,
+        12,
+        20
+      ],
+      "unlit_wall_block_rgb": [
+        39,
+        43,
+        57
+      ],
+      "unlit_wall_block_alternate_rgb": [
+        46,
+        50,
+        65
+      ],
+      "unlit_wall_edge_rgb": [
+        74,
+        80,
+        96
+      ],
+      "graphic_subdivision_pixels": [
+        16,
+        16
+      ],
+      "wall_blocks_per_tile": [
+        2,
+        2
+      ],
+      "floor_pattern": "continuous alternating checkerboard of 16-pixel subdivisions aligned to the playfield origin",
+      "floor_grid": "fine outline at 16-pixel subdivisions, visible mainly under local light"
+    }
+  },
+  "lighting": {
+    "format_version": 1,
+    "ambient": {
+      "enabled": false,
+      "color_rgb": [
+        0,
+        0,
+        0
+      ],
+      "intensity": 0
+    },
+    "lights": [
+      {
+        "id": "gravity_star_light",
+        "source_subject": "gravity_star",
+        "type": "local_radial",
+        "position_cell_bottom_left": [
+          5,
+          4
+        ],
+        "color_rgb": [
+          255,
+          198,
+          104
+        ],
+        "radius_pixels": 168,
+        "intensity": 2.2,
+        "falloff": "smooth_quadratic",
+        "casts_shadows": false,
+        "enabled_while": "gravity_star_static_loop_is_visible",
+        "pulse": {
+          "enabled": true,
+          "amount": 0.08,
+          "period_seconds": 0.72
+        }
+      },
+      {
+        "id": "gravity_star_spell_light",
+        "source_subject": "gravity_star",
+        "type": "local_radial",
+        "position_follows_spell_cell": "gravity_star_full_cast_loop",
+        "color_rgb": [
+          255,
+          198,
+          104
+        ],
+        "radius_pixels": 168,
+        "intensity": 2.2,
+        "falloff": "smooth_quadratic",
+        "casts_shadows": false,
+        "enabled_while": "gravity_star_full_cast_loop_is_visible",
+        "pulse": {
+          "enabled": true,
+          "amount": 0.08,
+          "period_seconds": 0.72
+        }
+      }
+    ],
+    "star_visual": {
+      "source_subject": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#vfx",
+      "animation": "gravity_star_static_loop",
+      "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-star.png",
+      "position_cell_bottom_left": [
+        5,
+        4
+      ]
+    },
+    "beam_experiment": {
+      "default_mode": "beam_2d_raytrace",
+      "mode_cycle": [
+        "beam_2d_raytrace",
+        "beam_2d_shader",
+        "star_radial"
+      ],
+      "aim": {
+        "source": "center of the visible central gravity STAR at pixel [176, 144]",
+        "target": "mouse position within the playfield",
+        "initial_direction": "right, horizontally bisecting the room from the central STAR to the inner right wall",
+        "keep_last_direction_when_mouse_over_source": true
+      },
+      "beam": {
+        "color_rgb": [
+          198,
+          239,
+          255
+        ],
+        "core_color_rgb": [
+          245,
+          252,
+          255
+        ],
+        "cone_angle_degrees": 1.2,
+        "edge_falloff": "soft ray-traced lightmap",
+        "end": "clipped against the inside edge of the one-tile perimeter wall",
+        "wall_bounces": 1,
+        "impact": {
+          "enabled": true,
+          "style": "bright cyan-white halo on the wall at the clipped endpoint",
+          "radius_pixels": 15
+        }
+      },
+      "raytrace_implementation": {
+        "type": "2D software ray tracing with an additive low-resolution lightmap",
+        "lightmap_pixels_per_screen_pixel": 0.5,
+        "primary_rays": 19,
+        "bounce_rays": 42,
+        "bounces": 1,
+        "geometry": "axis-aligned inner bounds of the perimeter stone walls",
+        "description": "trace a narrow laser fan from the STAR to its first wall impact, then trace a cosine-weighted diffuse fan from that surface; accumulate direct and bounced radiance into the 2D lightmap"
+      },
+      "shader_comparison": {
+        "type": "screen-space CanvasItem shader",
+        "description": "draw a soft 2D cone without tracing secondary rays, as a comparison to the ray-traced lightmap"
+      },
+      "radial_baseline": {
+        "type": "existing animated PointLight2D on the central STAR",
+        "description": "baseline comparison with the soft radial falloff already in the scene"
+      },
+      "desktop_only": true
+    }
+  },
+  "menus": {
+    "format_version": 1,
+    "shortcut_prefix": {
+      "keys": [
+        "ctrl+p"
+      ],
+      "timeout": "until_next_key",
+      "commands": {
+        "m": "scene_select",
+        "r": "scene_reload",
+        "c": "frame_copy"
+      }
+    },
+    "gameplay_debug_menu": false,
+    "menus": {
+      "system_settings": {
+        "scope": "system",
+        "title": "System Settings",
+        "shortcut": [
+          "ctrl+p"
+        ],
+        "close_keys": [
+          "escape"
+        ],
+        "items": [
+          {
+            "id": "scene_select",
+            "type": "submenu",
+            "label": "Cambia scena",
+            "key": "m"
+          },
+          {
+            "id": "scene_reload",
+            "type": "action",
+            "label": "Ricarica scena",
+            "key": "r"
+          },
+          {
+            "id": "frame_copy",
+            "type": "action",
+            "label": "Copia frame",
+            "key": "c"
+          }
+        ]
+      },
+      "scene_select": {
+        "scope": "system",
+        "title": "Cambia scena",
+        "close_keys": [
+          "escape"
+        ],
+        "items": [
+          {
+            "id": "test-gameplay-rhythm-crypto",
+            "type": "scene_option",
+            "label": "Test gameplay rhythm crypto",
+            "key": "1",
+            "scene": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.tscn"
+          },
+          {
+            "id": "test-visual-2D-lighting",
+            "type": "scene_option",
+            "label": "Test visual 2D lighting",
+            "key": "2",
+            "scene": "res://tests/test-visual-2D-lighting/test-visual-2D-lighting.tscn"
+          }
+        ]
+      }
+    }
+  },
+  "ui": {
+    "format_version": 1,
+    "sidebar": {
+      "width_pixels": 112,
+      "title": "2D RAYTRACE",
+      "groups": [
+        {
+          "id": "lighting",
+          "title": "LIGHT MODE",
+          "fields": [
+            {
+              "id": "mode",
+              "label": "MODE",
+              "value": "2D RAYTRACE / 2D SHADER / STAR"
+            },
+            {
+              "id": "aim",
+              "label": "AIM",
+              "value": "MOUSE"
+            },
+            {
+              "id": "cycle",
+              "label": "CYCLE",
+              "value": "TAB"
+            },
+            {
+              "id": "bounce",
+              "label": "BOUNCE",
+              "value": "1 WALL"
+            }
+          ]
+        },
+        {
+          "id": "character",
+          "title": "MOVIMENTO",
+          "fields": [
+            {
+              "id": "position",
+              "label": "JERV",
+              "value": "live grid coordinate"
+            },
+            {
+              "id": "controls",
+              "label": "MOVE",
+              "value": "I J K L"
+            }
+          ]
+        },
+        {
+          "id": "spells",
+          "title": "SPELL VFX",
+          "fields": [
+            {
+              "id": "black_hole",
+              "label": "BLACK HOLE",
+              "value": "A CAST / SHIFT+A LOOP"
+            },
+            {
+              "id": "white_hole",
+              "label": "WHITE HOLE",
+              "value": "S CAST / SHIFT+S LOOP"
+            },
+            {
+              "id": "gravity_star",
+              "label": "STAR LIGHT",
+              "value": "D CAST / SHIFT+D LIGHT LOOP"
+            },
+            {
+              "id": "cancel",
+              "label": "CANCEL / REMOVE",
+              "value": "ALT + SPELL KEY"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

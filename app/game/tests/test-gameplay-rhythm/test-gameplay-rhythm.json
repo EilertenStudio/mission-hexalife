@@ -1,0 +1,724 @@
+{
+  "character": {
+    "player": {
+      "id": "jerv",
+      "sprite_sheet": "../../assets/characters/jerv/exports/jerv-topdown-animation-v1.png",
+      "animations_context": "res://assets/characters/jerv/jerv.json#animations",
+      "frame_size_pixels": [
+        32,
+        32
+      ],
+      "sprite_size_pixels": [
+        32,
+        32
+      ],
+      "direction_rows_top_to_bottom": [
+        "down",
+        "left",
+        "top",
+        "right"
+      ],
+      "starting_cell_bottom_left": [
+        4,
+        3
+      ],
+      "anchor": "cell_center",
+      "animation_playback": {
+        "animation": "walk",
+        "mode": "continuous_loop",
+        "time_source": "song_clock",
+        "independent_of_movement": true,
+        "movement_effect": "visual_only"
+      }
+    }
+  },
+  "controls": {
+    "movement": {
+      "one_cell_per_accepted_press": true,
+      "keys": [
+        {
+          "key": "K",
+          "direction": "down"
+        },
+        {
+          "key": "J",
+          "direction": "left"
+        },
+        {
+          "key": "I",
+          "direction": "top"
+        },
+        {
+          "key": "L",
+          "direction": "right"
+        }
+      ]
+    },
+    "keys": {
+      "toggle_playback": [
+        "space"
+      ],
+      "restart_loop": [
+        "r"
+      ],
+      "volume_up": [
+        "pageup"
+      ],
+      "volume_down": [
+        "pagedown"
+      ],
+      "quit": [
+        "q",
+        "escape"
+      ]
+    },
+    "system_overlay": "res://tests/test-gameplay-rhythm/test-gameplay-rhythm.json#menus"
+  },
+  "description": {
+    "id": "test-gameplay-rhythm",
+    "subject_type": "scene",
+    "name": "Test gameplay rhythm",
+    "format_version": 1,
+    "description": {
+      "purpose": "Scena di prova ritmica con un breve brano originale, una griglia top-down e Jerv controllato a tempo.",
+      "composition": "Loop elettronico chiptune di otto battute in La minore, con lead, basso, pad e percussioni sintetiche.",
+      "visualization": "Una griglia regolare 10×7 di celle da 16×16 pixel occupa il centro del framebuffer, con un margine scuro e una fascia inferiore per la judgment bar. Le celle sono pavimento uniforme in ardesia scura, alternate appena per leggibilità, con linee sottili che rendono chiara la griglia. Jerv appare sopra la griglia usando il suo spritesheet top-down 32×32 pixel.",
+      "movement": "K, J, I e L indicano rispettivamente basso, sinistra, alto e destra. Ogni input direzionale viene valutato rispetto al beat più vicino; un input PERFECT o GOOD sposta Jerv istantaneamente di una cella, al massimo una volta per beat. Gli input MISS non muovono il personaggio. Jerv continua a riprodurre in loop la propria animazione WALK, sincronizzata al tempo della scena, anche mentre resta fermo. I bordi della griglia fermano il movimento.",
+      "judgment_bar": "Una barra orizzontale sotto la griglia attraversa una volta ogni beat. La zona verde GOOD e il centro verde PERFECT sono centrati sulla posizione raggiunta al beat; il playhead arriva al centro a ogni beat. La barra mostra il giudizio dell'ultimo input.",
+      "playback": "Il brano parte al 40% del volume e si ripete. PagSu e PagGiù regolano il volume a passi del 10%; la barra spaziatrice mette in pausa o riprende; R riavvia il loop e riporta Jerv alla cella iniziale.",
+      "scope": "La prova include movimento su griglia e giudizi temporali essenziali, senza punteggi, combattimento, inventario o narrativa."
+    },
+    "coordinate_system": {
+      "up": "y",
+      "handedness": "right",
+      "origin": "bottom_left",
+      "unit": "pixel"
+    },
+    "rendering": {
+      "projection": "orthographic",
+      "frame_size_pixels": [
+        192,
+        144
+      ],
+      "sampling": "nearest"
+    },
+    "reference_implementation": null,
+    "context_sections": {
+      "music": "res://tests/test-gameplay-rhythm/test-gameplay-rhythm.json#music",
+      "controls": "res://tests/test-gameplay-rhythm/test-gameplay-rhythm.json#controls",
+      "grid": "res://tests/test-gameplay-rhythm/test-gameplay-rhythm.json#grid",
+      "character": "res://tests/test-gameplay-rhythm/test-gameplay-rhythm.json#character",
+      "rhythm": "res://tests/test-gameplay-rhythm/test-gameplay-rhythm.json#rhythm",
+      "visualization": "res://tests/test-gameplay-rhythm/test-gameplay-rhythm.json#visualization",
+      "menus": "res://tests/test-gameplay-rhythm/test-gameplay-rhythm.json#menus"
+    }
+  },
+  "grid": {
+    "grid": {
+      "columns": 10,
+      "rows": 7,
+      "cell_size_pixels": [
+        16,
+        16
+      ],
+      "origin_bottom_left_pixels": [
+        16,
+        16
+      ],
+      "walkable_cells": "all",
+      "boundary_behavior": "stop"
+    },
+    "appearance": {
+      "background_rgb": [
+        5,
+        7,
+        16
+      ],
+      "floor_rgb": [
+        13,
+        16,
+        29
+      ],
+      "alternate_floor_rgb": [
+        17,
+        20,
+        35
+      ],
+      "grid_line_rgb": [
+        43,
+        49,
+        69
+      ],
+      "outer_border_rgb": [
+        99,
+        67,
+        99
+      ]
+    }
+  },
+  "menus": {
+    "format_version": 1,
+    "shortcut_prefix": {
+      "keys": [
+        "ctrl+p"
+      ],
+      "timeout": "until_next_key",
+      "commands": {
+        "d": "system_debug",
+        "m": "scene_select",
+        "r": "scene_reload",
+        "c": "frame_copy"
+      }
+    },
+    "menus": {
+      "system_debug": {
+        "scope": "system",
+        "title": "Debug sistema",
+        "close_keys": [
+          "escape"
+        ],
+        "items": [
+          {
+            "id": "measured_fps",
+            "type": "read_only",
+            "label": "FPS effettivi",
+            "source": "runtime.measured_fps"
+          },
+          {
+            "id": "target_fps",
+            "type": "integer_setting",
+            "label": "Limite FPS",
+            "source": "runtime.target_fps",
+            "default": 24,
+            "minimum": 1,
+            "maximum": 30,
+            "step": 1,
+            "adjustment_keys": {
+              "decrease": [
+                "-",
+                "["
+              ],
+              "increase": [
+                "+",
+                "=",
+                "]"
+              ]
+            }
+          },
+          {
+            "id": "render_mode",
+            "type": "choice_setting",
+            "label": "Modalità di resa",
+            "source": "runtime.render_mode",
+            "default": "half-block",
+            "values": [
+              "half-block",
+              "shape-glyph"
+            ],
+            "cycle_key": "v"
+          },
+          {
+            "id": "frame_pause",
+            "type": "toggle_action",
+            "label": "Pausa / avvia scena",
+            "source": "runtime.paused",
+            "key": "p",
+            "default": false
+          }
+        ]
+      },
+      "scene_select": {
+        "scope": "system",
+        "title": "Cambia scena",
+        "close_keys": [
+          "escape"
+        ],
+        "items": [
+          {
+            "id": "test-gameplay-rhythm",
+            "type": "scene_option",
+            "label": "Test gameplay rhythm",
+            "key": "1",
+            "scene": "test-gameplay-rhythm"
+          },
+          {
+            "id": "test-gameplay-action-adventure",
+            "type": "scene_option",
+            "label": "Test gameplay action adventure",
+            "key": "2",
+            "scene": "test-gameplay-action-adventure"
+          }
+        ]
+      }
+    },
+    "global_actions": {
+      "quit": {
+        "keys": [
+          "q",
+          "escape"
+        ],
+        "active_when": "menus_closed"
+      }
+    },
+    "mutually_exclusive": true
+  },
+  "music": {
+    "id": "rhythm-loop-a-minor",
+    "tempo_bpm": 112,
+    "time_signature": [
+      4,
+      4
+    ],
+    "key": "A minor",
+    "bar_count": 8,
+    "subdivisions_per_beat": 2,
+    "loop_export": "res://tests/test-gameplay-rhythm/exports/rhythm-loop.wav",
+    "playback": {
+      "default_volume_percent": 40,
+      "volume_step_percent": 10,
+      "minimum_volume_percent": 0,
+      "maximum_volume_percent": 100
+    },
+    "synthesis": {
+      "sample_rate_hz": 22050,
+      "master_gain": 0.82,
+      "style": "Melodia chiptune pulse, basso triangle, pad triangle e batteria sintetica asciutta."
+    },
+    "parts": {
+      "lead": {
+        "waveform": "pulse",
+        "gain": 0.15,
+        "notes_by_bar_eighths": [
+          [
+            "A4",
+            null,
+            "E5",
+            "C5",
+            null,
+            "E5",
+            "A5",
+            "E5"
+          ],
+          [
+            "F4",
+            "C5",
+            "A4",
+            "C5",
+            "F5",
+            "C5",
+            "A4",
+            null
+          ],
+          [
+            "G4",
+            "D5",
+            "B4",
+            "D5",
+            "G5",
+            "D5",
+            "B4",
+            "D5"
+          ],
+          [
+            "E4",
+            "B4",
+            "G4",
+            "B4",
+            "E5",
+            "B4",
+            "G4",
+            null
+          ],
+          [
+            "A4",
+            "C5",
+            "E5",
+            "G5",
+            "A5",
+            "G5",
+            "E5",
+            "C5"
+          ],
+          [
+            "F4",
+            "A4",
+            "C5",
+            "E5",
+            "F5",
+            "E5",
+            "C5",
+            "A4"
+          ],
+          [
+            "G4",
+            "B4",
+            "D5",
+            "F5",
+            "G5",
+            "F5",
+            "D5",
+            "B4"
+          ],
+          [
+            "E4",
+            "G4",
+            "B4",
+            "D5",
+            "E5",
+            "D5",
+            "B4",
+            "G4"
+          ]
+        ]
+      },
+      "bass": {
+        "waveform": "triangle",
+        "gain": 0.2,
+        "notes_by_bar_quarters": [
+          [
+            "A2",
+            "A2",
+            "E3",
+            "E3"
+          ],
+          [
+            "F2",
+            "F2",
+            "C3",
+            "C3"
+          ],
+          [
+            "G2",
+            "G2",
+            "D3",
+            "D3"
+          ],
+          [
+            "E2",
+            "E2",
+            "B2",
+            "B2"
+          ],
+          [
+            "A2",
+            "A2",
+            "E3",
+            "E3"
+          ],
+          [
+            "F2",
+            "F2",
+            "C3",
+            "C3"
+          ],
+          [
+            "G2",
+            "G2",
+            "D3",
+            "D3"
+          ],
+          [
+            "E2",
+            "E2",
+            "B2",
+            "B2"
+          ]
+        ]
+      },
+      "pad": {
+        "waveform": "triangle",
+        "gain": 0.035,
+        "chords_by_bar": [
+          [
+            "A3",
+            "C4",
+            "E4"
+          ],
+          [
+            "F3",
+            "A3",
+            "C4"
+          ],
+          [
+            "G3",
+            "B3",
+            "D4"
+          ],
+          [
+            "E3",
+            "G3",
+            "B3"
+          ],
+          [
+            "A3",
+            "C4",
+            "E4"
+          ],
+          [
+            "F3",
+            "A3",
+            "C4"
+          ],
+          [
+            "G3",
+            "B3",
+            "D4"
+          ],
+          [
+            "E3",
+            "G3",
+            "B3"
+          ]
+        ]
+      },
+      "drums": {
+        "kick_steps_by_bar": [
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            3,
+            4,
+            6
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            3,
+            4,
+            6
+          ]
+        ],
+        "snare_steps_by_bar": [
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ]
+        ],
+        "hat_steps_by_bar": [
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        ]
+      }
+    }
+  },
+  "rhythm": {
+    "beat_source": "res://tests/test-gameplay-rhythm/test-gameplay-rhythm.json#music",
+    "movement": {
+      "cells_per_accepted_input": 1,
+      "schedule": "nearest_beat",
+      "motion": "instantaneous_tile_step",
+      "maximum_moves_per_beat": 1,
+      "outside_good_window": "miss_no_move"
+    },
+    "judgment": {
+      "perfect_window_ms": 50,
+      "good_window_ms": 120,
+      "labels": [
+        "PERFECT",
+        "GOOD",
+        "MISS",
+        "BLOCKED",
+        "LOCKED",
+        "PAUSED"
+      ]
+    },
+    "bar": {
+      "orientation": "horizontal",
+      "position_bottom_left_pixels": [
+        48,
+        4
+      ],
+      "size_pixels": [
+        96,
+        8
+      ],
+      "cycle": "one_beat",
+      "direction": "left_to_right",
+      "judgment_zones": "centered_on_beat",
+      "beat_position": "center",
+      "colors_rgb": {
+        "track": [
+          19,
+          19,
+          33
+        ],
+        "border": [
+          74,
+          71,
+          91
+        ],
+        "good_zone": [
+          39,
+          91,
+          88
+        ],
+        "perfect_zone": [
+          88,
+          177,
+          153
+        ],
+        "playhead": [
+          242,
+          190,
+          90
+        ],
+        "perfect": [
+          126,
+          225,
+          180
+        ],
+        "good": [
+          79,
+          205,
+          194
+        ],
+        "miss": [
+          237,
+          67,
+          133
+        ]
+      }
+    }
+  },
+  "visualization": {
+    "frame_size_pixels": [
+      192,
+      144
+    ],
+    "static": false,
+    "sampling": "nearest",
+    "background_rgb": [
+      5,
+      7,
+      16
+    ]
+  }
+}

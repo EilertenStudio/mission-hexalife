@@ -1,8 +1,22 @@
-# ==== MISE | MONOREPO ==============================================
+# ==== MISE | GAME ==================================================
 monorepo_root = true
+
+[tools]
+godot = "4.7.2-stable"
+uv = "0.12.15"
 
 [monorepo]
 config_roots = [
   "assets",
-  "engines/*"
+  "tests"
 ]
+
+[tasks.play]
+description = "Avvia il progetto Godot"
+dir = "{{ config_root }}"
+run = "godot --path ."
+
+[tasks.editor]
+description = "Apre l'editor Godot sul progetto"
+dir = "{{ config_root }}"
+run = "godot --editor --path ."

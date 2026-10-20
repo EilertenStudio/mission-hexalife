@@ -22,7 +22,7 @@ description = "Rigenera il blockout P0 dalle reference ortografiche mantenendo a
 run = "blender -b ships/deep-space-freighter/prop-deep_space_freighter-modeling.blend --python ships/deep-space-freighter/scripts/03_genera_geometria.py"
 
 [tasks."export:deep-space-freighter-reference"]
-description = "Esporta la reference piana nave in OBJ/MTL/PNG per Arcade"
+description = "Esporta la reference piana nave in OBJ/MTL/PNG"
 run = "blender -b ships/deep-space-freighter/prop-deep_space_freighter-modeling.blend --python ships/deep-space-freighter/scripts/04_esporta_reference_obj.py"
 
 [tasks."reference:deep-space-freighter"]
@@ -30,5 +30,5 @@ description = "Rimuove le GEO e allinea le quattro reference ortografiche nel fi
 run = "blender -b ships/deep-space-freighter/prop-deep_space_freighter-modeling.blend --python ships/deep-space-freighter/scripts/02_inserisci_references.py"
 
 [tasks."export:cryogenic-room-camera"]
-description = "Sincronizza la camera Blender con lo stato letto da Arcade"
+description = "Sincronizza la camera Blender con lo stato della scena"
 run = "blender -b rooms/cryogenic-room/set-cryogenic_room-modeling.blend --python rooms/cryogenic-room/scripts/03_esporta_camera.py"

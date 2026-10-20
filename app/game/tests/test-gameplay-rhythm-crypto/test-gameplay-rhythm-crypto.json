@@ -1,0 +1,1591 @@
+{
+  "abilities": {
+    "inventory": {
+      "starts_empty": true,
+      "organization": "LIFO stack",
+      "spell_interaction": "disabled; spells never add, remove, or move objects"
+    },
+    "spell_implementation": {
+      "default": "visual_only",
+      "available": [
+        "visual_only"
+      ],
+      "physics": {
+        "default_enabled": false,
+        "available": false
+      },
+      "persistent_fields": false,
+      "influence_visualization": false
+    },
+    "shared_input": {
+      "resolve": "inside the nearest beat or half-beat judgment window; at most one accepted action per slot",
+      "target": "the adjacent tile in Jerv's last facing direction",
+      "visual_duration_beats": 1,
+      "gameplay_effects": "none; do not change the map, objects, inventory, or physics state"
+    },
+    "black_hole": {
+      "key": "A",
+      "full_cast_key": "Shift+A",
+      "interrupt_key": "Alt+A",
+      "visual": "play Jerv's black_hole pose and the four-frame black_hole_cast VFX on the adjacent tile",
+      "effect": "visual cast only; no attraction, absorption, inventory changes, or persistent field"
+    },
+    "white_hole": {
+      "key": "S",
+      "full_cast_key": "Shift+S",
+      "interrupt_key": "Alt+S",
+      "visual": "play Jerv's white_hole pose and the four-frame white_hole_cast VFX on the adjacent tile",
+      "effect": "visual cast only; no repulsion, launch, inventory ejection, or persistent field"
+    },
+    "gravity_star": {
+      "key": "D",
+      "full_cast_key": "Shift+D",
+      "interrupt_key": "Alt+D",
+      "visual": "play the four-frame gravity_star_cast VFX on the adjacent tile",
+      "effect": "visual cast only; no orbit, illumination field, or persistent loop"
+    },
+    "interruptions": "Alt+A, Alt+S, and Alt+D cancel the matching cast animation while it is playing."
+  },
+  "animations": {
+    "subject_id": "jerv",
+    "animations": {
+      "idle": {
+        "start_column": 1,
+        "frame_count_columns": 2,
+        "frame_duration_beats": 2,
+        "action": "Jerv mantiene la posa nella direzione corrente. Nel secondo frame busto, mantello e testa si sollevano leggermente mentre coda e zampe restano ancorate, creando un lieve molleggio. L'animazione è disponibile per tutte e quattro le direzioni."
+      },
+      "black_hole": {
+        "start_column": 3,
+        "frame_count_columns": 4,
+        "duration_beats": 1,
+        "action": "Jerv porta in avanti il braccio destro e carica il braccialetto della gravità, mantenendo la posa d'attacco mentre il potere viene attivato."
+      },
+      "white_hole": {
+        "start_column": 7,
+        "frame_count_columns": 4,
+        "duration_beats": 1,
+        "action": "Jerv porta in avanti il braccio destro e carica il braccialetto della gravità, mantenendo la posa d'attacco mentre il potere viene attivato."
+      }
+    }
+  },
+  "character": {
+    "player": {
+      "id": "jerv",
+      "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/jerv-tgrc-topdown-sheet.png",
+      "sheet_size_pixels": [
+        320,
+        128
+      ],
+      "frame_size_pixels": [
+        32,
+        32
+      ],
+      "frame_column_origins_top_left_pixels": [
+        0,
+        32,
+        64,
+        96,
+        128,
+        160,
+        192,
+        224,
+        256,
+        288
+      ],
+      "frame_row_origins_top_left_pixels": [
+        0,
+        32,
+        64,
+        96
+      ],
+      "sprite_size_pixels": [
+        32,
+        32
+      ],
+      "sprite_style": "Pixel art 32×32 con palette ristretta, campiture piatte e pochi dettagli grandi e leggibili.",
+      "available_animations": [
+        "idle",
+        "black_hole",
+        "white_hole"
+      ],
+      "direction_rows_top_to_bottom": [
+        "down",
+        "left",
+        "up",
+        "right"
+      ],
+      "displayed_pose": "front_down",
+      "starting_cell_bottom_left": [
+        5,
+        4
+      ],
+      "anchor": "cell_center",
+      "right_upper_arm_bracelet": "Una sottile linea gialla rappresenta il braccialetto della gravità.",
+      "movement": "I, J, K e L indicano rispettivamente alto, sinistra, basso e destra. Ogni nuova pressione muove Jerv subito se cade nella finestra del beat intero o del mezzo beat più vicino; è accettata una azione per slot, fino a due passi per beat. Una direzione tenuta ripete un passo sui beat interi; il passo extra sul mezzo beat richiede una nuova pressione. Jerv mantiene l'ultimo orientamento da fermo e riproduce l'animazione idle di due frame nella riga corrispondente.",
+      "attacks": "L'attivazione dei braccialetti illumina il braccio destro mentre la relativa posa d'attacco di Jerv viene riprodotta; il VFX di buco nero o buco bianco viene mostrato separatamente sul tile davanti a lui."
+    }
+  },
+  "controls": {
+    "movement": {
+      "one_cell_per_accepted_input": true,
+      "schedule": "nearest_beat_or_half_beat",
+      "action_slots_per_beat": 2,
+      "maximum_moves_per_slot": 1,
+      "maximum_moves_per_beat": 2,
+      "repeat_while_held": true,
+      "held_repeat_slots": [
+        "beat"
+      ],
+      "half_beat_extra_action_requires_new_input": true,
+      "keys": [
+        {
+          "key": "I",
+          "direction": "up"
+        },
+        {
+          "key": "J",
+          "direction": "left"
+        },
+        {
+          "key": "K",
+          "direction": "down"
+        },
+        {
+          "key": "L",
+          "direction": "right"
+        }
+      ]
+    },
+    "abilities": {
+      "A": "black_hole_visual_cast",
+      "S": "white_hole_visual_cast",
+      "Shift+A": "black_hole_full_cast_visual_only",
+      "Shift+S": "white_hole_full_cast_visual_only",
+      "D": "gravity_star_visual_cast",
+      "Shift+D": "gravity_star_full_cast_visual_only",
+      "Alt+A": "interrupt_black_hole_cast",
+      "Alt+S": "interrupt_white_hole_cast",
+      "Alt+D": "interrupt_gravity_star_cast",
+      "target": "the adjacent tile in Jerv's last facing direction",
+      "timing": "abilities share the beat and half-beat judgment slots with movement",
+      "behavior": "all spell inputs trigger only the matching one-beat character/VFX cast; they never alter objects, inventory, map state, lighting, or physics"
+    },
+    "audio_volume": {
+      "volume_up": [
+        "pageup"
+      ],
+      "volume_down": [
+        "pagedown"
+      ],
+      "step_percent": 10,
+      "minimum_percent": 0,
+      "maximum_percent": 100
+    },
+    "tempo": {
+      "enabled_by_default": true,
+      "toggle_key": "0",
+      "profiles": {
+        "1": 60,
+        "2": 80,
+        "3": 100,
+        "4": 120,
+        "5": 140,
+        "6": 160
+      },
+      "increase_key": "[",
+      "decrease_key": "]",
+      "step_bpm": 5,
+      "minimum_bpm": 40,
+      "maximum_bpm": 240,
+      "disabled_mode": {
+        "clock": "stopped",
+        "music": "continues at selected tempo",
+        "actions": "resolve immediately on key press",
+        "held_movement_repeat_seconds": {
+          "initial_delay": 0.22,
+          "interval": 0.12
+        },
+        "animation_reference_bpm": 120
+      }
+    }
+  },
+  "description": {
+    "id": "test-gameplay-rhythm-crypto",
+    "subject_type": "scene",
+    "name": "Test gameplay rhythm crypto",
+    "format_version": 1,
+    "description": {
+      "purpose": "Scena 2D per verificare il movimento ritmico di Jerv, i VFX delle spell senza effetti di gameplay e un nemico mobile su griglia in Godot.",
+      "composition": "La mappa top-down occupa l’area di gioco da 384×288 pixel sul lato sinistro di una viewport da 496×288 pixel. Un anello perimetrale continuo di blocchi di pietra scura incornicia l’area calpestabile interna; i giunti e i bordi a gradino fanno leggere il muro come muratura modulare, mentre il pavimento mantiene una griglia grafica discreta. L’area interna contiene Jerv, un pipistrello viola e tre oggetti geometrici. Le spell non sono presenti sulla mappa all’avvio: A/S/D e le rispettive combinazioni con Shift riproducono soltanto le animazioni di Jerv e i VFX di cast sul tile bersaglio, senza campi persistenti o cerchi d’influenza. La sidebar fissa da 112 pixel raggruppa soltanto RITMO, MOVIMENTO e INVENTARIO: il gruppo RITMO mostra BPM, judgment, volume e rilevamento automatico; MOVIMENTO mostra Jerv e la coordinata del bersaglio; INVENTARIO mostra la dimensione dello stack e l’elemento in cima. La sidebar non elenca spell, traiettorie o ultimi eventi. Le tracce degli oggetti restano disegnate nell’area di gioco per rendere leggibile il loro spostamento. In basso nella mappa, una barra mostra il beat intero al centro e il mezzo beat ai due estremi. Ctrl+P apre System Settings con M per cambiare scena, R per ricaricarla e C per copiare il frame; Ctrl+D → G apre Gameplay: 1 apre BPM / Judgment e 2 mostra i comandi Spell, limitati ai cast visivi senza effetti.",
+      "grid": "La mappa logica occupa 12 colonne per 9 righe di tile da 32×32 pixel, con origine in basso a sinistra [0, 0], e riempie l'area di gioco da 384×288 pixel sul lato sinistro della viewport. La sidebar non riduce né copre la mappa. L'anello esterno, spesso un tile, è composto da 38 celle di muro non calpestabili. L'area giocabile interna misura 10×7 tile; ciascun tile da 32×32 è suddiviso visivamente in quattro blocchi grafici da 16×16. I blocchi perimetrali usano una base di pietra scura, giunti sfalsati, luce sul bordo superiore e sinistro, ombra sul bordo opposto e rare crepe. Le celle interne restano un pavimento scuro con variazioni cromatiche leggere e contorni sottili. Gli oggetti non bloccano il movimento. Jerv e il pipistrello non possono condividere una cella.",
+      "character": "Jerv usa jerv-tgrc-topdown-sheet.png, una sheet PNG trasparente da 320×128 pixel composta da celle 32×32. Le quattro righe mostrano le direzioni basso, sinistra, alto e destra; le colonne contengono soltanto idle e pose/animazioni d'attacco di Jerv. La pixel art usa palette ristrette e campiture nette; conserva mantello verde, protezione toracica, cintura con borsello, occhi verdi e la linea gialla del braccialetto sul braccio destro. I VFX Black Hole, White Hole e stella gravitazionale sono separati dalla sheet del personaggio e descritti in vfx.json. Tutti gli sprite sono mostrati a dimensione nativa con campionamento nearest.",
+      "movement": "I, J, K e L indicano rispettivamente alto, sinistra, basso e destra. Ogni nuovo input viene valutato rispetto al beat intero o al mezzo beat più vicino. È consentita un’azione per ciascuna posizione ritmica, quindi fino a due azioni per beat: una sul beat e una sul mezzo beat. Le finestre iniziali sono PERFECT ±50 ms e GOOD ±120 ms. La finestra GOOD si riduce automaticamente all’aumentare del BPM e resta strettamente sotto la soglia che farebbe sovrapporre gli slot di beat e mezzo beat; Ctrl+D → G → 1 apre il menu Gameplay BPM / Judgment, che permette di regolare entrambe. Jerv si sposta subito di una cella. Oltre la finestra GOOD è MISS e non muove Jerv. Tenere premuta una direzione ripete il passo sui beat interi; per l’azione aggiuntiva sul mezzo beat serve un nuovo input. Lo spostamento resta discreto e istantaneo tile per tile; gli input ai bordi sono BLOCKED.",
+      "tempo": "Il clock parte da 120 BPM e usa la musica come sorgente; 0 disattiva il vincolo ritmico senza fermare la musica. I tasti da 1 a 6 selezionano profili da 60, 80, 100, 120, 140 e 160 BPM. [ aumenta e ] diminuisce il BPM di 5, entro i limiti 40–240. Ctrl+D → G → 1 apre il menu Gameplay BPM / Judgment per regolare BPM, finestre PERFECT e GOOD con incrementi di 5 e attivare o disattivare il vincolo BPM. Il limite massimo della finestra GOOD è 120 ms e viene abbassato se necessario per non sovrapporre gli slot. La traccia Hard Dungeon ha tempo nativo di 140 BPM e la velocità segue il BPM selezionato tramite pitch scale. A BPM disattivato, movimento e abilità sono immediati e il movimento tenuto si ripete liberamente; le animazioni usano il riferimento di 120 BPM.",
+      "abilities": "A/S/D e Shift+A/S/D attivano i cast visivi di Black Hole, White Hole e STAR, condividendo le finestre ritmiche del movimento; le combinazioni Shift mostrano il cast corrispondente senza creare loop persistenti. Alt+A/S/D interrompono il cast visivo corrispondente. Nessuna spell muove oggetti, modifica l’inventario, altera la mappa o applica fisica. La STAR non crea un campo d’illuminazione in questa scena.",
+      "enemy": "Un pipistrello rosso originale in pixel art 32×32 vola nell'area calpestabile interna. Si sposta di una cella cardinale scelta casualmente a ogni beat intero, non in risposta ai mezzi beat. Le celle occupate dai blocchi perimetrali e quella occupata da Jerv non sono destinazioni valide; non attraversa le pareti e resta fermo se non ha una destinazione valida. Gli oggetti dimostrativi non bloccano il pipistrello. Jerv non può entrare nella cella attualmente occupata dal pipistrello. Il pipistrello non attacca e non causa danni.",
+      "scope": "La scena contiene campo, griglia, tre oggetti dimostrativi, Jerv, un pipistrello rosso mobile, clock musicale a 120 BPM con regolazione del tempo, menu Gameplay BPM / Judgment, finestre PERFECT/GOOD regolabili senza sovrapposizione tra slot, giudizi PERFECT/GOOD/MISS, il loop dungeon elettronico Hard Dungeon (CC0, tempo nativo 140 BPM), barra di timing e cast visivi di Black Hole, White Hole e STAR. Tutti i cast durano un beat e hanno solo resa visiva: non esistono campi persistenti, movimento degli oggetti, modifiche dell’inventario, luce o fisica delle spell. Le tracce degli oggetti restano disponibili, ma gli oggetti non sono influenzati dalle spell. Ctrl+P apre System Settings: M cambia scena, R ricarica, C copia il frame. Ctrl+D → G → 1 apre BPM / Judgment; Ctrl+D → G → 2 mostra i controlli e lo stato dei soli VFX spell."
+    },
+    "coordinate_system": {
+      "up": "y",
+      "handedness": "right",
+      "origin": "bottom_left",
+      "unit": "pixel"
+    },
+    "rendering": {
+      "projection": "orthographic",
+      "frame_size_pixels": [
+        496,
+        288
+      ],
+      "sampling": "nearest"
+    },
+    "reference_implementation": "app/game/tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.tscn",
+    "context_sections": {
+      "grid": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#grid",
+      "character": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#character",
+      "animations": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#animations",
+      "mobs": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#mobs",
+      "mob_animations": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#mob-animations",
+      "controls": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#controls",
+      "abilities": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#abilities",
+      "vfx": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#vfx",
+      "rhythm": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#rhythm",
+      "music": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#music",
+      "music_original": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#music-original",
+      "menus": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#menus"
+    }
+  },
+  "grid": {
+    "grid": {
+      "columns": 12,
+      "rows": 9,
+      "cell_size_pixels": [
+        32,
+        32
+      ],
+      "graphic_grid_size_pixels": [
+        16,
+        16
+      ],
+      "origin_bottom_left_pixels": [
+        0,
+        0
+      ],
+      "playable_area": {
+        "columns": [
+          1,
+          10
+        ],
+        "rows_bottom_left": [
+          1,
+          7
+        ],
+        "size": [
+          10,
+          7
+        ]
+      },
+      "wall_cells_bottom_left": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          10,
+          0
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          11,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          11,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          11,
+          4
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          11,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          11,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          11,
+          7
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ],
+        [
+          10,
+          8
+        ],
+        [
+          11,
+          8
+        ]
+      ],
+      "walkable_cells": "playable_area_only",
+      "boundary_behavior": "stop",
+      "actor_occupancy": "Jerv e il pipistrello rosso non possono condividere una cella. Il movimento del giocatore verso la cella attualmente occupata dal pipistrello è BLOCCATO. Gli oggetti dimostrativi non bloccano i due soggetti."
+    },
+    "objects": {
+      "capacity_per_cell": 1,
+      "movement_blocked": false,
+      "initial": [
+        {
+          "id": "ion_crystal",
+          "name": "Cristallo ionico",
+          "shape": "diamond",
+          "color_rgb": [
+            91,
+            220,
+            255
+          ],
+          "cell_bottom_left": [
+            5,
+            3
+          ]
+        },
+        {
+          "id": "brass_gear",
+          "name": "Ingranaggio d'ottone",
+          "shape": "gear",
+          "color_rgb": [
+            244,
+            177,
+            79
+          ],
+          "cell_bottom_left": [
+            7,
+            4
+          ]
+        },
+        {
+          "id": "echo_orb",
+          "name": "Sfera d'eco",
+          "shape": "orb",
+          "color_rgb": [
+            194,
+            145,
+            255
+          ],
+          "cell_bottom_left": [
+            3,
+            5
+          ]
+        }
+      ]
+    },
+    "appearance": {
+      "background_rgb": [
+        5,
+        7,
+        16
+      ],
+      "floor_rgb": [
+        13,
+        16,
+        29
+      ],
+      "alternate_floor_rgb": [
+        17,
+        20,
+        35
+      ],
+      "grid_line_rgb": [
+        43,
+        49,
+        69
+      ],
+      "movement_tile_line_rgb": [
+        61,
+        67,
+        88
+      ],
+      "outer_border_rgb": [
+        99,
+        67,
+        99
+      ],
+      "wall_masonry": {
+        "block_size_pixels": [
+          16,
+          16
+        ],
+        "mortar_rgb": [
+          8,
+          11,
+          19
+        ],
+        "block_base_rgb": [
+          31,
+          38,
+          52
+        ],
+        "block_alternate_rgb": [
+          37,
+          44,
+          58
+        ],
+        "edge_highlight_rgb": [
+          62,
+          72,
+          88
+        ],
+        "edge_shadow_rgb": [
+          17,
+          22,
+          33
+        ],
+        "pattern": "Ogni tile da 32×32 è formato da quattro blocchi da 16×16 con giunti sfalsati; variazioni discrete di tono, bordi a gradino e poche crepe mantengono leggibile la muratura senza rumore visivo."
+      }
+    }
+  },
+  "menus": {
+    "format_version": 1,
+    "shortcut_prefix": {
+      "keys": [
+        "ctrl+p"
+      ],
+      "timeout": "until_next_key",
+      "commands": {
+        "m": "scene_select",
+        "r": "scene_reload",
+        "c": "frame_copy"
+      }
+    },
+    "global_actions": {
+      "scene_reload": {
+        "type": "action",
+        "label": "Ricarica scena",
+        "shortcut": [
+          "ctrl+p",
+          "r"
+        ]
+      },
+      "frame_copy": {
+        "type": "action",
+        "label": "Copia frame",
+        "shortcut": [
+          "ctrl+p",
+          "c"
+        ],
+        "output": "clipboard_image/png"
+      }
+    },
+    "menus": {
+      "system_settings": {
+        "scope": "system",
+        "title": "System Settings",
+        "shortcut": [
+          "ctrl+p"
+        ],
+        "close_keys": [
+          "escape"
+        ],
+        "items": [
+          {
+            "id": "scene_select",
+            "type": "submenu",
+            "label": "Cambia scena",
+            "key": "m",
+            "shortcut": [
+              "ctrl+p",
+              "m"
+            ]
+          },
+          {
+            "id": "scene_reload",
+            "type": "action",
+            "label": "Ricarica scena",
+            "key": "r",
+            "shortcut": [
+              "ctrl+p",
+              "r"
+            ]
+          },
+          {
+            "id": "frame_copy",
+            "type": "action",
+            "label": "Copia frame",
+            "key": "c",
+            "shortcut": [
+              "ctrl+p",
+              "c"
+            ]
+          }
+        ]
+      },
+      "scene_select": {
+        "scope": "system",
+        "title": "Cambia scena",
+        "close_keys": [
+          "escape"
+        ],
+        "items": [
+          {
+            "id": "test-gameplay-rhythm-crypto",
+            "type": "scene_option",
+            "label": "Test gameplay rhythm crypto",
+            "key": "1",
+            "scene": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.tscn"
+          },
+          {
+            "id": "test-visual-2D-lighting",
+            "type": "scene_option",
+            "label": "Test visual 2D lighting",
+            "key": "2",
+            "scene": "res://tests/test-visual-2D-lighting/test-visual-2D-lighting.tscn"
+          }
+        ]
+      },
+      "gameplay_prefix": {
+        "scope": "scene",
+        "title": "Debug Gameplay",
+        "shortcut": [
+          "ctrl+d"
+        ],
+        "close_keys": [
+          "escape"
+        ],
+        "items": [
+          {
+            "id": "gameplay_menu",
+            "type": "submenu",
+            "label": "Gameplay",
+            "key": "g",
+            "shortcut": [
+              "ctrl+d",
+              "g"
+            ]
+          }
+        ]
+      },
+      "gameplay_menu": {
+        "scope": "scene",
+        "title": "Gameplay",
+        "shortcut": [
+          "ctrl+d",
+          "g"
+        ],
+        "close_keys": [
+          "escape"
+        ],
+        "items": [
+          {
+            "id": "rhythm_control",
+            "type": "submenu",
+            "label": "BPM / Judgment",
+            "key": "1",
+            "shortcut": [
+              "ctrl+d",
+              "g",
+              "1"
+            ]
+          },
+          {
+            "id": "spell_visuals",
+            "type": "submenu",
+            "label": "Spell (solo VFX)",
+            "key": "2",
+            "shortcut": [
+              "ctrl+d",
+              "g",
+              "2"
+            ]
+          }
+        ]
+      },
+      "rhythm_control": {
+        "scope": "scene",
+        "title": "BPM / JUDGMENT",
+        "shortcut": [
+          "ctrl+d",
+          "g",
+          "1"
+        ],
+        "close_keys": [
+          "escape"
+        ],
+        "navigation_keys": {
+          "previous": "up",
+          "next": "down"
+        },
+        "adjustment_keys": {
+          "decrease": "left",
+          "increase": "right"
+        },
+        "items": [
+          {
+            "id": "bpm",
+            "type": "integer_setting",
+            "label": "BPM",
+            "source": "rhythm.beat_clock.bpm",
+            "minimum": 40,
+            "maximum": 240,
+            "step": 5
+          },
+          {
+            "id": "perfect_window_ms",
+            "type": "integer_setting",
+            "label": "Finestra PERFECT",
+            "source": "rhythm.judgment.perfect_window_ms",
+            "minimum": 5,
+            "maximum": "good_window_ms - 5",
+            "step": 5
+          },
+          {
+            "id": "good_window_ms",
+            "type": "integer_setting",
+            "label": "Finestra GOOD",
+            "source": "rhythm.judgment.good_window_ms",
+            "minimum": "perfect_window_ms + 5",
+            "maximum": "min(120, strict_half_beat_slot_gap_cap)",
+            "step": 5
+          },
+          {
+            "id": "bpm_enabled",
+            "type": "toggle_action",
+            "label": "Vincolo BPM",
+            "source": "runtime.rhythm.beat_clock.enabled",
+            "key": "0"
+          }
+        ]
+      },
+      "spell_visuals": {
+        "scope": "scene",
+        "title": "Spell // solo VFX",
+        "shortcut": [
+          "ctrl+d",
+          "g",
+          "2"
+        ],
+        "close_keys": [
+          "escape"
+        ],
+        "items": [
+          {
+            "id": "black_hole_cast",
+            "type": "info",
+            "label": "A / SHIFT+A — BLACK HOLE: CAST VISIVO"
+          },
+          {
+            "id": "white_hole_cast",
+            "type": "info",
+            "label": "S / SHIFT+S — WHITE HOLE: CAST VISIVO"
+          },
+          {
+            "id": "gravity_star_cast",
+            "type": "info",
+            "label": "D / SHIFT+D — STAR: CAST VISIVO"
+          },
+          {
+            "id": "effects_disabled",
+            "type": "info",
+            "label": "NESSUN EFFETTO SU MAPPA, OGGETTI, LUCE O FISICA"
+          }
+        ]
+      }
+    },
+    "mutually_exclusive": true,
+    "gameplay_shortcut_prefix": {
+      "keys": [
+        "ctrl+d"
+      ],
+      "timeout": "until_next_key",
+      "commands": {
+        "g": "gameplay_menu"
+      }
+    }
+  },
+  "mob-animations": {
+    "subject_id": "red_bat",
+    "animations": {
+      "flap": {
+        "start_column": 1,
+        "frame_count_columns": 2,
+        "duration_beats": 1,
+        "action": "Il pipistrello alterna le ali tra la posa aperta e quella abbassata. Il ciclo continua sia quando resta fermo sia mentre si sposta; a 120 BPM ciascun frame dura mezzo beat."
+      }
+    }
+  },
+  "mobs": {
+    "mobs": [
+      {
+        "id": "red_bat",
+        "name": "Pipistrello rosso",
+        "role": "Nemico mobile usato per provare il movimento autonomo sincronizzato al beat.",
+        "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/mob-bat-sprite-sheet.png",
+        "sprite_sheet_size_pixels": [
+          64,
+          32
+        ],
+        "frame_size_pixels": [
+          32,
+          32
+        ],
+        "initial_cell_bottom_left": [
+          9,
+          6
+        ],
+        "view": "top_down_facing_down",
+        "appearance": "Creatura originale in pixel art 32×32 con corpo centrale piccolo e scuro, due orecchie appuntite, occhi ambra e ali viola larghe dalla sagoma angolare. La tavolozza usa pochi viola scuri e medi, contorno quasi nero e due pixel caldi per gli occhi. Le ali sono la parte più ampia e leggibile della silhouette; il corpo resta compatto. Le due pose mantengono posizione e dimensione del corpo e cambiano solo l'apertura delle ali.",
+        "rendering": {
+          "sprite_size_pixels": [
+            32,
+            32
+          ],
+          "anchor": "cell_center",
+          "sampling": "nearest"
+        },
+        "movement": {
+          "pattern": "random_cardinal",
+          "turn_schedule": "once_on_each_full_beat",
+          "moves_per_full_beat": 1,
+          "half_beat_moves": 0,
+          "candidate_directions": [
+            "up",
+            "left",
+            "down",
+            "right"
+          ],
+          "destination_rules": "Sceglie casualmente tra le celle cardinali adiacenti della sola area calpestabile interna e non occupate da Jerv. I blocchi perimetrali sono pareti e gli oggetti dimostrativi non bloccano il movimento.",
+          "no_valid_destination": "stay",
+          "grid_edges": "stop_no_wrap",
+          "bpm_disabled": "Il clock dei beat è fermo e il pipistrello non si muove; l'animazione delle ali continua al tempo di riferimento di 120 BPM."
+        },
+        "contact": {
+          "shared_cell_with_player": false,
+          "player_move_into_bat_tile": "BLOCKED",
+          "attack": false,
+          "damage": false
+        }
+      }
+    ]
+  },
+  "music-original": {
+    "id": "dungeon-pulse-original",
+    "tempo_bpm": 120,
+    "time_signature": [
+      4,
+      4
+    ],
+    "key": "D minor",
+    "bar_count": 8,
+    "subdivisions_per_beat": 2,
+    "loop_export": "res://tests/test-gameplay-rhythm-crypto/exports/dungeon-pulse-original.wav",
+    "playback": {
+      "default_volume_percent": 40,
+      "volume_step_percent": 10,
+      "minimum_volume_percent": 0,
+      "maximum_volume_percent": 100,
+      "tempo_follows_scene_bpm": true,
+      "loop": true
+    },
+    "synthesis": {
+      "sample_rate_hz": 22050,
+      "master_gain": 0.82,
+      "style": "Brano originale dungeon dance chiptune: groove funk in quattro quarti, kick dritto con anticipi occasionali, rullante secco sul backbeat, hi-hat in ottavi, basso sincopato e lead pulse brillante in tonalità minore."
+    },
+    "parts": {
+      "lead": {
+        "waveform": "pulse",
+        "gain": 0.14,
+        "notes_by_bar_eighths": [
+          [
+            "D5",
+            null,
+            "F5",
+            "A4",
+            "C5",
+            null,
+            "A4",
+            "F5"
+          ],
+          [
+            "D5",
+            "F5",
+            null,
+            "A5",
+            "G5",
+            "F5",
+            "D5",
+            null
+          ],
+          [
+            "C5",
+            null,
+            "A4",
+            "G4",
+            "F4",
+            "G4",
+            null,
+            "Bb4"
+          ],
+          [
+            "C5",
+            "E5",
+            "G4",
+            null,
+            "Bb4",
+            "G4",
+            "E4",
+            null
+          ],
+          [
+            "D5",
+            null,
+            "F5",
+            "A4",
+            "C5",
+            "Bb4",
+            "A4",
+            "F4"
+          ],
+          [
+            "G4",
+            "Bb4",
+            null,
+            "D5",
+            "F5",
+            "D5",
+            "C5",
+            "Bb4"
+          ],
+          [
+            "Bb4",
+            null,
+            "D5",
+            "F4",
+            "G4",
+            "A4",
+            "G4",
+            "D4"
+          ],
+          [
+            "A4",
+            "C5",
+            "Eb5",
+            null,
+            "G5",
+            "F5",
+            "Eb5",
+            "D5"
+          ]
+        ]
+      },
+      "bass": {
+        "waveform": "triangle",
+        "gain": 0.18,
+        "notes_by_bar_eighths": [
+          [
+            "D2",
+            null,
+            "D2",
+            "A2",
+            "D3",
+            null,
+            "A2",
+            "C3"
+          ],
+          [
+            "D2",
+            null,
+            "A2",
+            "D3",
+            "F3",
+            null,
+            "A2",
+            null
+          ],
+          [
+            "Bb1",
+            null,
+            "Bb2",
+            "F2",
+            "Bb2",
+            null,
+            "F2",
+            "A2"
+          ],
+          [
+            "C2",
+            null,
+            "G2",
+            "C3",
+            "E3",
+            null,
+            "G2",
+            "Bb2"
+          ],
+          [
+            "D2",
+            null,
+            "D2",
+            "A2",
+            "D3",
+            "F3",
+            "A2",
+            null
+          ],
+          [
+            "G1",
+            null,
+            "G2",
+            "D2",
+            "G2",
+            null,
+            "D2",
+            "F2"
+          ],
+          [
+            "Bb1",
+            null,
+            "Bb2",
+            "F2",
+            "Bb2",
+            "D3",
+            "F2",
+            null
+          ],
+          [
+            "A1",
+            null,
+            "A2",
+            "E2",
+            "A2",
+            null,
+            "C#3",
+            "E3"
+          ]
+        ]
+      },
+      "pad": {
+        "waveform": "triangle",
+        "gain": 0.028,
+        "chords_by_bar": [
+          [
+            "D3",
+            "F3",
+            "A3",
+            "C4"
+          ],
+          [
+            "D3",
+            "F3",
+            "A3"
+          ],
+          [
+            "Bb2",
+            "D3",
+            "F3",
+            "A3"
+          ],
+          [
+            "C3",
+            "E3",
+            "G3",
+            "Bb3"
+          ],
+          [
+            "D3",
+            "F3",
+            "A3"
+          ],
+          [
+            "G2",
+            "Bb2",
+            "D3",
+            "F3"
+          ],
+          [
+            "Bb2",
+            "D3",
+            "F3"
+          ],
+          [
+            "A2",
+            "C#3",
+            "E3",
+            "G3"
+          ]
+        ]
+      },
+      "drums": {
+        "kick_steps_by_bar": [
+          [
+            0,
+            2,
+            4,
+            6
+          ],
+          [
+            0,
+            2,
+            4,
+            6,
+            7
+          ],
+          [
+            0,
+            2,
+            3,
+            4,
+            6
+          ],
+          [
+            0,
+            2,
+            4,
+            6,
+            7
+          ],
+          [
+            0,
+            2,
+            4,
+            6
+          ],
+          [
+            0,
+            2,
+            4,
+            5,
+            6
+          ],
+          [
+            0,
+            2,
+            4,
+            6,
+            7
+          ],
+          [
+            0,
+            2,
+            3,
+            4,
+            6
+          ]
+        ],
+        "snare_steps_by_bar": [
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            6
+          ]
+        ],
+        "hat_steps_by_bar": [
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        ]
+      }
+    }
+  },
+  "music": {
+    "id": "hard-dungeon",
+    "asset": "res://tests/test-gameplay-rhythm-crypto/exports/hard-dungeon-bpm140.ogg",
+    "tempo_bpm": 140,
+    "beats_per_bar": 4,
+    "beat_count": 288,
+    "duration_seconds": 123.428571,
+    "loop": true,
+    "source": {
+      "title": "Hard Dungeon",
+      "creator": "MintoDog",
+      "license": "CC0",
+      "page": "https://opengameart.org/content/hard-dungeon",
+      "download": "https://opengameart.org/sites/default/files/hard_dungeon_bpm140_0.ogg"
+    },
+    "playback": {
+      "default_volume_percent": 40,
+      "volume_step_percent": 10,
+      "minimum_volume_percent": 0,
+      "maximum_volume_percent": 100,
+      "tempo_follows_scene_bpm": true,
+      "tempo_adjustment": "pitch_scale",
+      "loop": true
+    }
+  },
+  "rhythm": {
+    "beat_clock": {
+      "bpm": 120,
+      "seconds_per_beat": 0.5,
+      "beat_source": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.json#music",
+      "starts_on_scene_ready": true,
+      "enabled_by_default": true,
+      "toggle_key": "0",
+      "bpm_range": [
+        40,
+        240
+      ],
+      "manual_step_bpm": 5,
+      "profiles": [
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ],
+      "profile_keys": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "manual_adjustment_keys": {
+        "increase": "[",
+        "decrease": "]"
+      },
+      "disabled_mode": {
+        "clock_stops": true,
+        "music_continues": true,
+        "actions_resolve_immediately": true,
+        "held_movement_repeat_seconds": {
+          "initial_delay": 0.22,
+          "interval": 0.12
+        },
+        "animation_reference_bpm": 120
+      },
+      "audio_enabled": true,
+      "music_enabled": true,
+      "frame_stall_recovery": {
+        "policy": "resync_to_current_audio_beat",
+        "max_turns_processed_per_frame": 1,
+        "missed_beats": "skip_instead_of_replaying_as_a_burst",
+        "diagnostic_log": "report_count_of_skipped_beats"
+      }
+    },
+    "turns": {
+      "turns_per_beat": 1,
+      "action_slots_per_beat": 2,
+      "maximum_accepted_actions_per_slot": 1,
+      "slot_positions": [
+        "beat",
+        "half_beat"
+      ],
+      "first_turn_after_seconds": 0.5,
+      "advances_without_input": true,
+      "movement_cells_per_beat": 2,
+      "commands_resolve_on_input_within_judgment_window": true,
+      "one_accepted_action_per_slot": true,
+      "maximum_accepted_actions_per_beat": 2,
+      "animation_flow": {
+        "continue_across_beats_without_player_action": true,
+        "cancel_active_animation_when_new_action_is_accepted": true,
+        "new_action_starts_immediately_within_beat_window": true
+      },
+      "held_movement": "one move on each full beat while a direction remains held; the half-beat extra action requires a new input"
+    },
+    "movement": {
+      "schedule": "nearest_beat_or_half_beat",
+      "motion": "instantaneous_tile_step",
+      "maximum_moves_per_slot": 1,
+      "maximum_moves_per_beat": 2,
+      "outside_good_window": "miss_no_move"
+    },
+    "judgment": {
+      "perfect_window_ms": 50,
+      "good_window_ms": 120,
+      "adjustment_step_ms": 5,
+      "minimum_window_ms": 5,
+      "maximum_good_window_ms": 120,
+      "good_window_max_rule": "Good is strictly narrower than the midpoint between adjacent beat and half-beat slots: round down to the previous 5 ms step below 15000 / BPM, then cap at 120 ms.",
+      "control_menu_shortcut": [
+        "ctrl+p",
+        "j"
+      ],
+      "labels": [
+        "PERFECT",
+        "GOOD",
+        "MISS",
+        "BLOCKED",
+        "LOCKED",
+        "FREE"
+      ]
+    },
+    "audio_beat_detection": {
+      "enabled_by_default": true,
+      "method": "real-time spectral-flux onset detection from the playing audio stream; no beatmap or authored beat timestamps",
+      "frequency_bands_hz": [
+        [
+          45,
+          180
+        ],
+        [
+          180,
+          900
+        ],
+        [
+          900,
+          3000
+        ]
+      ],
+      "candidate_rule": "detect a sudden increase in weighted spectral energy against an adaptive recent baseline, with a refractory interval to suppress duplicate peaks",
+      "output": "diagnostic beat candidate only",
+      "judgment_integration": "none",
+      "visualization": {
+        "indicator": "persistent cyan caret above the timing bar at the latest detected beat phase; it brightens on a new candidate",
+        "flash_seconds": 0.3,
+        "candidate_count_in_hud": true
+      },
+      "limitations": [
+        "onset detection identifies prominent attacks and does not reconstruct a complete beatmap or guarantee the musical downbeat",
+        "the spectral analysis window introduces a small detection delay"
+      ]
+    },
+    "visualization": {
+      "hud_shows_bpm": true,
+      "hud_shows_turn_count": true,
+      "beat_pulse_fraction_of_beat": 0.36,
+      "timing_bar": {
+        "orientation": "horizontal",
+        "placement": "centered below the grid",
+        "judgment_zone": "green segment centered on the full beat and matching segments at both bar edges for the half-beat",
+        "marker_motion": "travels left to right and wraps to the left at the half-beat",
+        "beat_alignment": "marker reaches the centered zone on every full beat and the edge zones at each half-beat",
+        "target_indicators": {
+          "color_rgb": [
+            255,
+            72,
+            84
+          ],
+          "beat_position": "bar center",
+          "half_beat_positions": [
+            "left edge",
+            "right edge"
+          ],
+          "shape": "fixed vertical ticks on the bar"
+        },
+        "good_window_ms": 120,
+        "perfect_window_ms": 50
+      },
+      "audio_output": true,
+      "audio_content": "Hard Dungeon by MintoDog, a licensed loopable dungeon track; no separate metronome"
+    }
+  },
+  "vfx": {
+    "subject_id": "prop-weapon-cosmic_ring",
+    "frame_size_pixels": [
+      32,
+      32
+    ],
+    "animations": {
+      "black_hole_cast": {
+        "layer": "BLACK HOLE",
+        "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-black-hole.png",
+        "sheet_size_pixels": [
+          256,
+          32
+        ],
+        "start_column": 1,
+        "frame_count_columns": 4,
+        "duration_beats": 1,
+        "action": "Una singolarità viola-nera si apre sul tile bersaglio: linee di materia e frammenti luminosi convergono verso un nucleo scuro, quindi il bordo gravitazionale si richiude."
+      },
+      "white_hole_cast": {
+        "layer": "WHITE HOLE",
+        "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-white-hole.png",
+        "sheet_size_pixels": [
+          256,
+          32
+        ],
+        "start_column": 1,
+        "frame_count_columns": 4,
+        "duration_beats": 1,
+        "action": "Un nucleo bianco si accende sul tile bersaglio e sprigiona un anello ciano e oro che si espande a scatti, espellendo luce e materia prima di attenuarsi."
+      },
+      "black_hole_static_loop": {
+        "layer": "BLACK HOLE",
+        "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-black-hole.png",
+        "sheet_size_pixels": [
+          256,
+          32
+        ],
+        "creation_animation": "black_hole_cast",
+        "removal_animation": {
+          "animation": "black_hole_cast",
+          "playback": "reverse"
+        },
+        "start_column": 5,
+        "frame_count_columns": 4,
+        "frame_duration_seconds": 0.18,
+        "loop": true,
+        "action": "Un buco nero completo e sospeso resta nello stesso punto; il disco di accrescimento e i piccoli punti stellari ruotano lentamente intorno al nucleo scuro."
+      },
+      "white_hole_static_loop": {
+        "layer": "WHITE HOLE",
+        "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-white-hole.png",
+        "sheet_size_pixels": [
+          256,
+          32
+        ],
+        "creation_animation": "white_hole_cast",
+        "removal_animation": {
+          "animation": "white_hole_cast",
+          "playback": "reverse"
+        },
+        "start_column": 5,
+        "frame_count_columns": 4,
+        "frame_duration_seconds": 0.18,
+        "loop": true,
+        "action": "Un buco bianco completo e sospeso resta nello stesso punto; il nucleo luminoso pulsa leggermente e quattro bagliori sull'anello orbitale si spostano di una posizione a ogni frame."
+      },
+      "gravity_star_cast": {
+        "layer": "STAR",
+        "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-star.png",
+        "sheet_size_pixels": [
+          256,
+          32
+        ],
+        "start_column": 1,
+        "frame_count_columns": 4,
+        "duration_beats": 1,
+        "action": "Una scintilla si concentra sul tile bersaglio e si apre in un piccolo sole: disco rotondo a strati arancio e oro, nucleo chiaro e raggi corti a pixel. Il quarto frame mostra la forma stabile che resterà sulla mappa."
+      },
+      "gravity_star_static_loop": {
+        "layer": "STAR",
+        "sprite_sheet": "res://tests/test-gameplay-rhythm-crypto/exports/prop-weapon-cosmic_ring-star.png",
+        "sheet_size_pixels": [
+          256,
+          32
+        ],
+        "creation_animation": "gravity_star_cast",
+        "removal_animation": {
+          "animation": "gravity_star_cast",
+          "playback": "reverse"
+        },
+        "start_column": 5,
+        "frame_count_columns": 4,
+        "frame_duration_seconds": 0.18,
+        "loop": true,
+        "action": "Un sole gravitazionale resta visivamente fisso sul tile: il disco rotondo ha un nucleo avorio, strati dorati e una corona arancio di raggi brevi; piccoli punti sulle orbite sottili cambiano posizione e alcune scintille esterne pulsano. Il moto continuo degli oggetti è definito in abilities.json."
+      }
+    },
+    "appearance": "La grafica usa pixel trasparenti su tela nativa da 32×32 e palette separate: nero, indaco e viola per il buco nero; bianco, ciano e oro pallido per il buco bianco; arancio, oro e avorio per la stella gravitazionale. Black Hole e White Hole hanno cast leggibili come impatti concentrati sul tile e loop statici con il fenomeno completo. La stella ha un disco solare rotondo, un nucleo chiaro e raggi corti; orbite e scintille restano dettagli secondari. I loop completi restano animazioni decorative riutilizzabili; in questa scena i cast non creano campi, fisica o movimento degli oggetti."
+  }
+}

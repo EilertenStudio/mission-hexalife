@@ -1,51 +1,34 @@
-# Struttura e fonti degli asset
+# Struttura degli asset
 
-Un soggetto è un asset autonomo del progetto, per esempio un personaggio, un
-prop, un set o una scena. Organizzare ogni soggetto con queste cartelle,
-creandole quando servono:
+Ogni asset autonomo appartiene a un dominio e vive in
+`app/game/assets/<dominio>/<nome-asset>/`, per esempio un personaggio in
+`characters/`, una stanza in `rooms/` o una nave in `ships/`.
+
+Una cartella asset può contenere:
 
 ```text
-<subject>/
-├── concepts/
-├── references/
-├── exports/
-├── sources/
-│   ├── description.json
-│   ├── animations.json
-│   └── ...
-└── scripts/
-    ├── blender/
-    ├── pixelorama/
-    └── audio/
+<nome-asset>/
+├── concepts/       # proposte ed esplorazioni
+├── references/     # materiale di riferimento
+├── exports/        # file finali usati dal progetto
+├── scripts/<tool>/ # strumenti di authoring e generazione
+├── <asset>.tscn    # identità Godot dell'elemento componibile
+├── <asset>.tres    # risorse Godot associate, se utili
+└── <asset>.json    # contesto facoltativo per l'Agent
 ```
 
-- `sources/` contiene i JSON canonici che definiscono identità, funzione,
-  aspetto e comportamento stabile del soggetto. Usare file distinti per
-  argomento, come `description.json`, `animations.json`, `geometry.json` o
-  altri file specifici del soggetto.
-- `sources/description.json` descrive in dettaglio il soggetto e il suo stato
-  desiderato. Non è un changelog né un indice dei file presenti. In caso di
-  divergenza prevale sulla resa dei concept, sulle reference e sulle
-  implementazioni degli script.
-- `sources/animations.json`, quando applicabile, descrive ogni animazione con
-  colonna iniziale, numero di frame in colonne, azione e durata o cadenza
-  definite. Non aggiungere informazioni generali sullo spritesheet.
-- I JSON in `sources/` sono indipendenti dal motore. Gli engine li interpretano
-  e li implementano senza diventare una fonte autonoma dello stato desiderato.
-- `concepts/` raccoglie proposte ed esplorazioni visive. Non imporre vincoli
-  preventivi di stile, tecnica o composizione ai concept.
-- `references/` raccoglie immagini e documenti esterni che informano il lavoro,
-  ma non stabiliscono né modificano da soli lo stato desiderato.
-- `exports/` contiene gli asset finali prodotti per essere usati dal progetto.
-- `scripts/blender/` e `scripts/pixelorama/` contengono gli script, separati
-  per applicazione, che generano o aggiornano gli asset finali in `exports/` a
-  partire dalle fonti in `sources/`.
-- `scripts/audio/` contiene gli script che generano o aggiornano gli asset
-  audio finali in `exports/` a partire dalle fonti in `sources/`.
-- `SOURCE.md` e `ANIMATION.md` non sono più formati canonici: i loro contenuti
-  vanno registrati nei JSON pertinenti dentro `sources/`.
-
-# Convenzioni di naming per Blender
+- I file Godot definiscono identità, composizione e comportamento dell'asset.
+  Associare script `.gd` o shader `.gdshader` quando servono a controllarli o
+  estenderli.
+- `concepts/` raccoglie esplorazioni visive; `references/` raccoglie materiale
+  esterno. Nessuna delle due cartelle determina da sola l'asset finale.
+- `exports/` contiene i file finali prodotti per l'uso nel progetto. Gli
+  strumenti in `scripts/<tool>/` possono generarli o aggiornarli a partire dai
+  sorgenti nativi dello strumento, dalle reference o dai file Godot.
+- Il JSON facoltativo `<nome-asset>.json` fornisce contesto all'Agent. Non è la
+  sorgente dell'identità Godot e non va usato come configurazione runtime; gli
+  strumenti offline possono leggerlo per produrre export.
+## Convenzioni di naming per Blender
 
 Per collection, oggetti e altri datablock nei file `.blend`, seguire la
 [convenzione di Blender Studio](https://studio.blender.org/tools/naming-conventions/in-file-prefixes):

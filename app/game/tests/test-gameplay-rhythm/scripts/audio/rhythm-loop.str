@@ -1,0 +1,49 @@
+// Adattamento live-coding del contesto test-gameplay-rhythm.json per https://strudel.cc/
+// Un ciclo corrisponde a una battuta in 4/4; il pattern completo è di 8 battute.
+// La lead usa square come approssimazione dell'onda pulse. La batteria usa
+// i sample bd/sd/hh incorporati in Strudel, quindi il timbro differisce dal WAV.
+
+setcpm(112 / 4)
+
+const lead = cat(
+  note("a4 ~ e5 c5 ~ e5 a5 e5"),
+  note("f4 c5 a4 c5 f5 c5 a4 ~"),
+  note("g4 d5 b4 d5 g5 d5 b4 d5"),
+  note("e4 b4 g4 b4 e5 b4 g4 ~"),
+  note("a4 c5 e5 g5 a5 g5 e5 c5"),
+  note("f4 a4 c5 e5 f5 e5 c5 a4"),
+  note("g4 b4 d5 f5 g5 f5 d5 b4"),
+  note("e4 g4 b4 d5 e5 d5 b4 g4")
+).sound("square").gain(0.15)
+
+const bass = cat(
+  note("a2 a2 e3 e1"),
+  note("f2 f2 c3 c3"),
+  note("g2 g2 d3 d3"),
+  note("e2 e2 b2 b2"),
+  note("a2 a2 e3 e3"),
+  note("f2 f2 c3 c3"),
+  note("g2 g2 d3 d3"),
+  note("e2 e2 b2 b1")
+).sound("triangle").gain(0.2)
+
+const pad = cat(
+  note("[a3,c4,e4]"),
+  note("[f3,a3,c4]"),
+  note("[g3,b3,d4]"),
+  note("[e3,g3,b3]"),
+  note("[a3,c4,e4]"),
+  note("[f3,a3,c4]"),
+  note("[g3,b3,d4]"),
+  note("[e3,g3,b3]")
+).sound("triangle").attack(0.08).sustain(0.55).release(0.18).gain(0.035)
+
+const kickMain = sound("bd ~ ~ ~ bd ~ ~ ~").gain(0.31)
+const kickFill = sound("bd ~ ~ bd bd ~ bd ~").gain(0.31)
+const kick = cat(kickMain, kickMain, kickMain, kickFill,
+  kickMain, kickMain, kickMain, kickFill)
+
+const snare = sound("~ ~ sd ~ ~ ~ sd ~").gain(0.12)
+const hats = sound("hh*8").gain(0.045).decay(0.055).sustain(0)
+
+stack(lead, bass, pad, kick, snare, hats)

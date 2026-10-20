@@ -1,14 +1,39 @@
-# Regole per gli engine di gioco
+# Struttura del progetto Godot
 
-## Stato desiderato della scena
+`app/game/` è la root del progetto Godot reale. `project.godot` contiene le
+impostazioni globali e la scena di avvio; `addons/` contiene i plugin e
+`scripts/` gli script condivisi dal progetto.
 
-- I file in `app/game/assets/scenes/<nome-scena>/sources/` sono la fonte canonica e indipendente dal motore per lo stato desiderato delle scene: descrizione, geometria, oggetti, materiali, illuminazione, vista iniziale, controlli e configurazione dei menu condivisi.
-- Ogni implementazione dentro `app/game/engines/**` deve seguire questi file. Prima di cambiare una scena in un engine, aggiorna lo stato in `assets/scenes/<nome-scena>/sources/` e poi adatta l'implementazione.
-- Non introdurre nell'engine dettagli visivi o comportamentali della scena che non siano descritti nei file di `sources/`. Il contenuto, le impostazioni e le interazioni desiderate dei menu condivisi di sistema e camera vanno definiti nei documenti della scena; layout, HUD e adattamenti dei comandi alle API dell'engine possono restare nell'implementazione.
-- Prima di aggiungere una scena a `engines/**`, crea i relativi file in `assets/scenes/<nome-scena>/sources/`, incluso `description.json`.
+```text
+app/game/
+├── assets/<dominio>/<asset>/  # elementi componibili riutilizzabili
+├── scenes/<scena>/            # scene di gioco
+├── tests/<test>/              # scene PoC isolate
+├── addons/                    # plugin Godot
+├── scripts/                   # script condivisi
+└── project.godot
+```
 
-## Formato delle scene
+- `assets/` raccoglie gli elementi di gioco componibili e li organizza per
+  dominio, per esempio `characters/`, `rooms/` o `ships/`. Le regole
+  specifiche degli asset sono in `assets/AGENTS.md`.
+- `scenes/` contiene le scene di gioco. Una scena combina asset riutilizzabili
+  e definisce le impostazioni dell'engine proprie della composizione.
+- `tests/` contiene scene di prova e PoC autonome, con asset e script locali
+  quando servono. Restano separate dagli asset riutilizzabili e dalle scene di
+  gioco.
 
-- Ogni cartella `assets/scenes/<nome-scena>/` organizza il soggetto in `concepts/`, `references/`, `exports/` e `sources/`. `sources/description.json` identifica la scena e collega i suoi documenti di stato, oltre ai file specifici per geometria, luci, camera, controlli e menu quando presenti.
-- I documenti sono JSON indipendente dal linguaggio, con coordinate Y-up, colori RGB interi da 0 a 255 e misure nelle unità locali della scena.
-- `test-gameplay-rhythm` è la scena predefinita di Arcade; `test-gameplay-action-adventure` resta disponibile dal selettore scena. Arcade è l'implementazione di riferimento, non una seconda fonte canonica.
+## Sorgenti Godot
+
+- I file Godot sono la sorgente identitaria dell'elemento: usare scene `.tscn`
+  e risorse `.tres` per rappresentare nodi, composizione e impostazioni; gli
+  script `.gd` e gli shader `.gdshader` associati controllano o estendono il
+  comportamento e la resa.
+- Modificare direttamente la scena o la risorsa Godot che rappresenta
+  l'elemento.
+- È ammesso un sidecar `<nome-elemento>.json` accanto alla scena o all'asset
+  per spiegare il contesto all'Agent. È documentazione di supporto: non è una
+  fonte di configurazione runtime e non prevale sui file Godot. Gli strumenti
+  offline possono leggerlo per generare export.
+- Creare nuove scene di gioco in `scenes/<nome-scena>/` e nuove prove isolate
+  in `tests/<nome-test>/`. Non collocare PoC in `assets/` o `scenes/`.

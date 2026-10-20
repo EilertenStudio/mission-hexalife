@@ -1,4 +1,4 @@
-"""Riduce il file nave alla reference piana ed esporta OBJ/MTL per Arcade."""
+"""Riduce il file nave alla reference piana ed esporta OBJ/MTL."""
 
 import json
 from pathlib import Path
@@ -167,9 +167,9 @@ for screen in bpy.data.screens:
             space.region_3d.view_distance = 24
             space.region_3d.view_rotation = (0.70710678, 0.70710678, 0, 0)
 if root.asset_data:
-    root.asset_data.description = "Tavola ortografica piana, esportata in OBJ/MTL per Arcade."
-root["source_document"] = "sources/description.json"
-root["iteration"] = "flat_reference_obj_for_arcade"
+    root.asset_data.description = "Tavola ortografica piana, esportata in OBJ/MTL."
+root["context_document"] = "deep-space-freighter.json"
+root["iteration"] = "flat_reference_obj"
 bpy.context.preferences.filepaths.save_version = 0
 bpy.ops.wm.save_as_mainfile(filepath=str(BLEND_FILE))
 
@@ -181,7 +181,7 @@ require("vt " in obj_text, "L'OBJ non contiene coordinate UV")
 obj_vertices = [tuple(map(float, line.split()[1:4]))
                 for line in obj_text.splitlines() if line.startswith("v ")]
 require(len(obj_vertices) == 4 and all(abs(z) < 1e-6 for _, _, z in obj_vertices),
-        "Il quad esportato deve essere frontale nel piano XY di Arcade")
+        "Il quad esportato deve restare frontale nel piano XY")
 require(f"map_Kd {TEXTURE_NAME}" in mtl_file.read_text(),
         "Il MTL non dichiara la texture PNG")
 print(f"Oggetto Blender: {MESH_NAME} ({plane_width:.2f} x {plane_height:.2f})")

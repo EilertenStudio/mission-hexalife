@@ -1,0 +1,25 @@
+{
+  "description": {
+    "id": "deep-space-freighter",
+    "subject_type": "prop",
+    "asset_category": "vehicle",
+    "asset_role": "Blockout geometrico esterno dello scafo di una nave per navigazione interplanetaria e mining orbitale.",
+    "desired_shape": {
+      "volumes": "Corpo centrale longitudinale, masse anteriori e posteriori distinte, strutture laterali e transizioni di sezione coerenti con le reference ortografiche.",
+      "symmetry": "Simmetrica rispetto al piano longitudinale della nave.",
+      "sections": "Semplici e sfaccettate; lunghezza, larghezza e altezza seguono le proporzioni visibili nelle viste disponibili.",
+      "silhouette_readability": "La nave è riconoscibile nelle viste laterale, superiore, frontale e posteriore."
+    },
+    "scope": "Blockout esterno essenziale, modificabile e facile da correggere.",
+    "exclusions": [
+      "Scanner",
+      "ugelli",
+      "geometrie interne",
+      "pannellature",
+      "griglie",
+      "bulloni",
+      "dettagli tecnici"
+    ],
+    "reference_usage": "Le reference ortografiche guidano la forma senza sostituire questa descrizione come stato desiderato."
+  }
+}
