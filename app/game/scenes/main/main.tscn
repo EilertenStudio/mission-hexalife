@@ -1,14 +1,17 @@
 [gd_scene format=3 uid="uid://cur6wpa2oce0m"]
 
 [ext_resource type="PackedScene" path="res://features/debug/scene_manager/scene_manager.tscn" id="1_debug_scene_manager"]
+[ext_resource type="PackedScene" path="res://scenes/title_screen/title_screen.tscn" id="2_title_screen"]
 
 [node name="Main" type="Node" unique_id=452463769]
 
 [node name="Persistent" type="Node" parent="." unique_id=1607666517]
 
-[node name="SceneManager" parent="Persistent" instance=ExtResource("1_debug_scene_manager")]
+[node name="SceneManager" parent="Persistent" unique_id=1837955616 instance=ExtResource("1_debug_scene_manager")]
 
 [node name="World" type="Node" parent="." unique_id=1127403223]
+
+[node name="TitleScreen" parent="World" unique_id=1546845709 instance=ExtResource("2_title_screen")]
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=913991046]
 

@@ -1,33 +1,7 @@
 extends CanvasLayer
 
 const COPY_NOTICE_DURATION := 2.5
-const AVAILABLE_SCENES := [
-	{
-		"key": KEY_1,
-		"label": "Gameplay Ink",
-		"path": "res://tests/test-gameplay-ink/test-gameplay-ink.tscn",
-	},
-	{
-		"key": KEY_2,
-		"label": "Gameplay Rhythm Crypto",
-		"path": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.tscn",
-	},
-	{
-		"key": KEY_3,
-		"label": "Visual 2D Lighting",
-		"path": "res://tests/test-visual-2D-lighting/test-visual-2D-lighting.tscn",
-	},
-	{
-		"key": KEY_4,
-		"label": "Visual Shaders",
-		"path": "res://tests/test-visual-shaders/test-visual-shaders.tscn",
-	},
-	{
-		"key": KEY_5,
-		"label": "Visual Voxel Diorama",
-		"path": "res://tests/test-visual-voxel/test_visual_voxel_diorama.tscn",
-	},
-]
+const AVAILABLE_SCENES := []
 
 @export_group("Leader shortcut")
 @export var leader_key: Key = KEY_P
@@ -35,6 +9,7 @@ const AVAILABLE_SCENES := [
 @export var leader_alt := false
 @export var leader_shift := false
 @export var leader_meta := false
+@export_file("*.tscn") var default_scene_path := "res://scenes/title_screen/title_screen.tscn"
 
 @onready var _shade: ColorRect = $Overlay/Shade
 @onready var _center: CenterContainer = $Overlay/MenuCenter
@@ -50,7 +25,11 @@ var _notice_timer := 0.0
 
 func _ready() -> void:
 	layer = 100
+	visible = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	if _world.get_child_count() > 0:
+		_active_scene_path = _world.get_child(0).scene_file_path
+	_shade.hide()
 	_center.hide()
 	_refresh_menu()
 
@@ -60,6 +39,8 @@ func _process(delta: float) -> void:
 		_notice_timer -= delta
 		if _notice_timer <= 0.0:
 			_notice.hide()
+			if _active_menu.is_empty():
+				visible = false
 
 
 func _input(event: InputEvent) -> void:
@@ -112,8 +93,7 @@ func _handle_menu_key(event: InputEventKey) -> void:
 				_copy_frame_to_clipboard()
 	elif _active_menu == "scene_select":
 		if event.keycode == KEY_0 or event.keycode == KEY_KP_0:
-			_clear_world()
-			_open_menu("scene_manager")
+			_load_scene(default_scene_path)
 			return
 		for scene_option in AVAILABLE_SCENES:
 			if event.keycode == scene_option["key"] or event.physical_keycode == scene_option["key"]:
@@ -127,6 +107,7 @@ func _key_matches(event: InputEventKey, expected_key: Key) -> bool:
 
 func _open_menu(menu_id: String) -> void:
 	_active_menu = menu_id
+	visible = true
 	_shade.show()
 	_center.show()
 	_refresh_menu()
@@ -136,6 +117,7 @@ func _close_menu() -> void:
 	_active_menu = ""
 	_shade.hide()
 	_center.hide()
+	visible = _notice_timer > 0.0
 
 
 func _refresh_menu() -> void:
@@ -145,7 +127,7 @@ func _refresh_menu() -> void:
 			_content.text = "R   RICARICA SCENA\nM   CAMBIA SCENA\nC   COPIA FRAME\nESC   CHIUDI"
 		"scene_select":
 			_title.text = "CAMBIA SCENA // ESC INDIETRO"
-			var lines := PackedStringArray(["0   MAIN / SCENA VUOTA"])
+			var lines := PackedStringArray(["0   TITLE SCREEN"])
 			for scene_option in AVAILABLE_SCENES:
 				lines.append("%s   %s" % [OS.get_keycode_string(scene_option["key"]), scene_option["label"]])
 			lines.append("ESC   INDIETRO")
@@ -228,6 +210,7 @@ func _copy_frame_to_clipboard() -> void:
 
 
 func _show_notice(message: String) -> void:
+	visible = true
 	_notice.text = message
 	_notice.show()
 	_notice_timer = COPY_NOTICE_DURATION

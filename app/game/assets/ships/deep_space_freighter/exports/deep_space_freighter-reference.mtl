@@ -1,0 +1,12 @@
+# Blender 5.2.2 LTS MTL File: 'deep_space_freighter.blend'
+# www.blender.org
+
+newmtl MAT-deep_space_freighter-reference_image
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Ke deep_space_freighter-orthographic_reference-v002.png
+map_Kd deep_space_freighter-orthographic_reference-v002.png

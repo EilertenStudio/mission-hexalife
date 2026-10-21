@@ -51,8 +51,6 @@ scelte normali e sticky, tag. Il compilatore rifiuta in modo esplicito opcode,
 versioni o Ink list non supportati. Funzioni Ink, thread, `EXTERNAL`, list e
 altre estensioni non sono incluse in questa PoC.
 
-La scena dimostrativa e il verificatore della storia sono in
-`app/game/tests/test-gameplay-ink/`. Il JSON compilato è un artefatto ignorato
-da Git. Nella sala criogenica la PoC include hotspot sulla capsula in primo
-piano, sul terminale e sulla porta; gli hotspot seguono le scelte disponibili
-e le opzioni interne al terminale restano scelte testuali.
+Le scene PoC usate durante la sperimentazione sono state rimosse dal progetto
+principale. Per usare il plugin in una scena reale, configura il percorso del
+JSON compilato nello Inspector oppure passalo a `load_story(path)`.

@@ -12,9 +12,9 @@ scelta diventa più concreta.
 principale configurata come avvio del progetto e compone `TitleScreen` dentro
 `World`, oltre al menu debug persistente. Il Title Screen combina asset separati
 per il fondale spaziale, i pianeti e la nave. I servizi di gioco e le stanze
-verranno aggiunti quando saranno implementati. La scena
-`tests/test-gameplay-ink/` resta una PoC autonoma, non la scena principale né la
-struttura definitiva del gioco.
+verranno aggiunti quando saranno implementati. Le scene di prova verranno
+aggiunte in `tests/` quando serviranno; al momento la scena di avvio è il
+Title Screen.
 
 Per il canone narrativo fanno fede `app/gamebook/NOTE.md`, `ENVIRONMENT.md` e
 `PROPS.md`. Le decisioni narrative aperte restano TBD finché non vengono

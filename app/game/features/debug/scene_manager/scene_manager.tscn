@@ -15,6 +15,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [node name="SceneManager" type="CanvasLayer"]
+visible = false
 script = ExtResource("1_script")
 
 [node name="Overlay" type="Control" parent="."]

@@ -7,8 +7,7 @@ uv = "0.12.15"
 
 [monorepo]
 config_roots = [
-  "assets",
-  "tests/test-gameplay-rhythm-crypto"
+  "assets"
 ]
 
 [tasks.play]

@@ -10,7 +10,7 @@ signal runtime_error(message: String)
 const InkStoryRuntime = preload("res://addons/ink_scene_director/ink_story_runtime.gd")
 const CUE_KINDS := ["scene", "actor", "camera", "audio"]
 
-@export_file("*.json") var story_json_path := "res://tests/test-gameplay-ink/generated/mission-hexalife.json"
+@export_file("*.json") var story_json_path := ""
 
 var _runtime: RefCounted = InkStoryRuntime.new()
 var _cue_handlers: Dictionary = {
