@@ -4,3 +4,4 @@ nvim.log
 __pycache__/
 *.blend1
 app/gamebook/dist/
+.tmp/
