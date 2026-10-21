@@ -1,13 +1,16 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://dav8o7odulhdq"]
 
-[ext_resource type="Script" path="res://scenes/title_screen/title_screen.gd" id="1_script"]
-
+[ext_resource type="Script" uid="uid://chxno3qq1dxj2" path="res://scenes/title_screen/title_screen.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://assets/environments/space_universe/space_universe.tscn" id="2_background"]
 [ext_resource type="PackedScene" path="res://assets/planets/ice_blue_world/ice_blue_world.tscn" id="3_ice_world"]
 [ext_resource type="PackedScene" path="res://assets/planets/teal_ocean_world/teal_ocean_world.tscn" id="4_teal_world"]
 [ext_resource type="PackedScene" path="res://assets/ships/deep_space_freighter/deep_space_freighter.tscn" id="5_ship"]
+[ext_resource type="Shader" uid="uid://ow7wedwgoriv" path="res://scenes/title_screen/title_screen_atmosphere.gdshader" id="6_atmosphere"]
 
-[node name="TitleScreen" type="Control"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_atmosphere"]
+shader = ExtResource("6_atmosphere")
+
+[node name="TitleScreen" type="Control" unique_id=838537308]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,7 +20,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_script")
 
-[node name="Letterbox" type="ColorRect" parent="."]
+[node name="Letterbox" type="ColorRect" parent="." unique_id=994666372]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,45 +30,52 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.0156863, 0.027451, 0.0666667, 1)
 
-[node name="Composition" type="Control" parent="."]
-layout_mode = 0
+[node name="Composition" type="Control" parent="." unique_id=139313963]
+clip_contents = true
+anchors_preset = 0
+offset_top = 17.1658
 offset_right = 1990.0
 offset_bottom = 1066.0
+scale = Vector2(0.643216, 0.643216)
 mouse_filter = 2
 
-[node name="SpaceUniverse" parent="Composition" instance=ExtResource("2_background")]
+[node name="SpaceUniverse" parent="Composition" unique_id=1537700661 instance=ExtResource("2_background")]
+layout_mode = 1
+
+[node name="IceBlueWorld" parent="Composition" unique_id=56746250 instance=ExtResource("3_ice_world")]
+modulate = Color(0.28, 0.4, 0.54, 1)
+offset_left = 790.0
+offset_top = -120.0
+offset_right = 2210.0
+offset_bottom = 1260.0
+
+[node name="TealOceanWorld" parent="Composition" unique_id=1902767971 instance=ExtResource("4_teal_world")]
+modulate = Color(0.42, 0.56, 0.68, 1)
+offset_left = -660.0
+offset_top = 453.0
+offset_right = 708.0
+offset_bottom = 1731.0
+
+[node name="FreighterBackground" parent="Composition" unique_id=1198970806 instance=ExtResource("5_ship")]
+modulate = Color(0.58, 0.66, 0.74, 0.74)
+offset_left = 1300.0
+offset_top = 690.0
+offset_right = 1965.0
+offset_bottom = 1140.0
+
+[node name="FreighterForeground" parent="Composition" unique_id=403190088 instance=ExtResource("5_ship")]
+modulate = Color(0.76, 0.81, 0.85, 0.92)
+offset_left = 330.0
+offset_top = 117.0
+offset_right = 1610.0
+offset_bottom = 720.0
+
+[node name="Atmosphere" type="ColorRect" parent="Composition" unique_id=1427020349]
+material = SubResource("ShaderMaterial_atmosphere")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="IceBlueWorld" parent="Composition" instance=ExtResource("3_ice_world")]
-layout_mode = 0
-offset_left = 450.0
-offset_top = 40.0
-offset_right = 1390.0
-offset_bottom = 950.0
-
-[node name="TealOceanWorld" parent="Composition" instance=ExtResource("4_teal_world")]
-layout_mode = 0
-offset_left = -380.0
-offset_top = 330.0
-offset_right = 380.0
-offset_bottom = 1040.0
-
-[node name="FreighterBackground" parent="Composition" instance=ExtResource("5_ship")]
-layout_mode = 0
-offset_left = 810.0
-offset_top = 470.0
-offset_right = 1280.0
-offset_bottom = 647.0
-modulate = Color(0.76, 0.84, 0.9, 0.88)
-
-[node name="FreighterForeground" parent="Composition" instance=ExtResource("5_ship")]
-layout_mode = 0
-offset_left = 180.0
-offset_top = 130.0
-offset_right = 1070.0
-offset_bottom = 466.0
+mouse_filter = 2
