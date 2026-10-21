@@ -16,8 +16,9 @@ app/game/
 ```
 
 - `assets/` raccoglie gli elementi di gioco componibili e li organizza per
-  dominio, per esempio `characters/`, `rooms/` o `ships/`. Le regole
-  specifiche degli asset sono in `assets/AGENTS.md`.
+  dominio, per esempio `characters/`, `rooms/` o `ships/`. La convenzione
+  condivisa per cartelle, file e sorgenti è in `CONVENTIONS.md`; le istruzioni
+  operative per gli agenti che modificano asset sono in `assets/AGENTS.md`.
 - `scenes/` contiene le scene di gioco. Una scena combina asset riutilizzabili
   e definisce le impostazioni dell'engine proprie della composizione.
 - `tests/` contiene scene di prova e PoC autonome, con asset e script locali

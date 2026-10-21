@@ -9,10 +9,12 @@ scelta diventa più concreta.
 ## Stato e perimetro
 
 `app/game/` è il progetto Godot reale. `scenes/main/main.tscn` è la scena
-principale configurata come avvio del progetto. Al momento è uno shell con i
-rami `Persistent`, `World` e `UI`; i servizi di gioco e le stanze verranno
-aggiunti quando saranno implementati. La scena `tests/test-gameplay-ink/` resta
-una PoC autonoma, non la scena principale né la struttura definitiva del gioco.
+principale configurata come avvio del progetto e compone `TitleScreen` dentro
+`World`, oltre al menu debug persistente. Il Title Screen combina asset separati
+per il fondale spaziale, i pianeti e la nave. I servizi di gioco e le stanze
+verranno aggiunti quando saranno implementati. La scena
+`tests/test-gameplay-ink/` resta una PoC autonoma, non la scena principale né la
+struttura definitiva del gioco.
 
 Per il canone narrativo fanno fede `app/gamebook/NOTE.md`, `ENVIRONMENT.md` e
 `PROPS.md`. Le decisioni narrative aperte restano TBD finché non vengono
@@ -111,7 +113,9 @@ automaticamente l'architettura completa del prodotto.
 ## Struttura dei sorgenti
 
 La struttura delle cartelle è definita in `app/game/AGENTS.md` e segue questi
-ruoli:
+ruoli. La naming convention condivisa per gli asset è in `CONVENTIONS.md`:
+usa la tassonomia del gioco nei percorsi e riserva i prefissi Blender alle
+collection e ai datablock interni ai file `.blend`.
 
 ```text
 app/game/
@@ -132,13 +136,11 @@ istanziali dai compositori responsabili della loro durata. Consultare
 `AGENTS.md` e `assets/AGENTS.md` per le regole operative complete, inclusa la
 generazione del node tree.
 
-## Convenzioni dei nomi
+## Convenzioni dei nomi nel codice Godot
 
-Usare le convenzioni idiomatiche di Godot per rendere i nomi prevedibili e
-facili da cercare:
+Per classi, nodi e identificatori interni agli script Godot usare le
+convenzioni idiomatiche dell'engine:
 
-- **File e cartelle:** `snake_case`, per esempio `main.tscn`,
-  `cryogenic_room/` e `ink_story_runtime.gd`.
 - **Classi e tipi:** `PascalCase`, per esempio `Main` e `InkStoryDirector`.
 - **Nodi nella scena:** `PascalCase`, con nomi brevi che descrivono il ruolo,
   per esempio `World`, `UI`, `Terminal` e `ActionDialogBox`.
@@ -148,9 +150,8 @@ facili da cercare:
 - **Segnali:** `snake_case`; usare il passato quando descrivono un evento
   avvenuto, per esempio `door_opened`.
 
-Mantenere i nomi dei nodi coerenti con quelli delle scene e dei componenti
-esistenti. Se una convenzione del progetto diverge da quella standard di Godot,
-documentare qui la motivazione e applicarla con coerenza.
+Per cartelle e file degli asset seguire invece `CONVENTIONS.md`. Mantenere i
+nomi dei nodi coerenti con quelli delle scene e dei componenti esistenti.
 
 ## Come evolvere questa guida
 
