@@ -12,3 +12,8 @@ run = "sh scripts/play-color.sh"
 description = "Esporta la storia come pagina web statica in dist/"
 dir = "{{ config_root }}"
 run = "sh scripts/export-web.sh"
+
+[tasks.compile-godot]
+description = "Compila story.ink nel JSON usato dalla PoC Godot"
+dir = "{{ config_root }}"
+run = "mkdir -p ../game/tests/test-gameplay-ink/generated && inklecate -o ../game/tests/test-gameplay-ink/generated/mission-hexalife.json story.ink"

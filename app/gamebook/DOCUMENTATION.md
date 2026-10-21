@@ -14,16 +14,16 @@
 
 ## Prima prova giocabile
 
-- [story.ink](story.ink) contiene l'apertura giocabile, dal risveglio dell'Ingegnere alla manovra sugli asteroidi. Il turno di sei ore e la scadenza al dodicesimo turno sono parametri di prova, non decisioni canoniche.
+- [story.ink](story.ink) contiene la PoC Godot, dal dialogo introduttivo all'uscita dalla sala criogenica. I knot successivi sono materiale di sviluppo e non fanno parte del percorso giocabile corrente.
 - Dalla radice del progetto, con i runtime mise tenuti in `.local/` come richiesto da `AGENTS.md`:
 
   ```sh
   MISE_GLOBAL_CONFIG_FILE="$PWD/mise.toml" MISE_CACHE_DIR="$PWD/.local/mise/cache" MISE_STATE_DIR="$PWD/.local/mise/state" MISE_DATA_DIR="$PWD/.local/mise/data" mise -C app/gamebook run --raw --skip-tools play
   ```
 
-Il task `play` compila la storia con l'`inklecate` della toolchain e la esegue nel terminale con un renderer a colori basato su [inkjs](https://github.com/y-lohse/inkjs). L'introduzione spiega le regole e i colori delle informazioni di gioco. Per scegliere un'azione si digita il suo numero; `q` chiude la partita.
+Il task `play` compila la storia con l'`inklecate` della toolchain e la esegue nel terminale con un renderer basato su [inkjs](https://github.com/y-lohse/inkjs). Per scegliere un'azione si digita il suo numero; `q` chiude la partita. La UI Godot usa invece gli hotspot e i pulsanti della scena di test.
 
-Il renderer usa colori ANSI a 256 tonalità: grigio azzurro per la narrazione, ciano per il QC, rosso per gli allarmi, grigio attenuato per lo stato della nave, giallo per le scelte che consumano un turno e verde per quelle che non lo consumano. I personaggi hanno colori distinti; quando un ruolo compare nella narrazione o in una scelta, il colore si applica soltanto al nome del ruolo.
+Il renderer del terminale applica colori ANSI ai tag Ink presenti nel testo. La PoC attuale non usa turni o scelte operative a tempo.
 
 ### Checkpoint per la revisione
 

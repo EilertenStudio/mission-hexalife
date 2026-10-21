@@ -18,7 +18,7 @@ Questo documento raccoglie i pilastri stabiliti e le domande ancora aperte. I ru
 - La storia si svolge interamente a bordo della nave spaziale; non ci sono scene ambientate sui pianeti.
 - Il giocatore segue soltanto la prospettiva dell'Ingegnere: apprende gli eventi fuori dalla sua vista attraverso persone, registri e osservazioni successive.
 - L'Ingegnere è un protagonista parlante: le sue risposte e comunicazioni possono comparire come battute esplicite. Il giocatore sceglie che cosa dire nei passaggi in cui la risposta esprime una posizione o cambia i rapporti con la crew.
-- Le informazioni sul carico, sulla crisi terrestre e sugli scopi della missione non vengono esposte nell'apertura. L'Ingegnere le conosce già, mentre il giocatore le ricostruisce indagando e cogliendo il sottotesto dei dialoghi.
+- La nuova direzione approvata per la PoC presenta in un unico dialogo iniziale il contesto generale della missione e le regole del gameplay. Non anticipa il mistero, le intenzioni segrete o i retroscena personali, che restano da scoprire durante la storia.
 
 ### Equipaggio e conflitto
 

@@ -8,7 +8,7 @@ uv = "0.12.15"
 [monorepo]
 config_roots = [
   "assets",
-  "tests"
+  "tests/test-gameplay-rhythm-crypto"
 ]
 
 [tasks.play]
@@ -20,3 +20,8 @@ run = "godot --path ."
 description = "Apre l'editor Godot sul progetto"
 dir = "{{ config_root }}"
 run = "godot --editor --path ."
+
+[tasks."export:web"]
+description = "Esporta il gioco per Web e lo serve sulla rete locale"
+dir = "{{ config_root }}"
+run = "./scripts/web.sh"

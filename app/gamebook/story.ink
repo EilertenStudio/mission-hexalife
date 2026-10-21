@@ -39,23 +39,14 @@ VAR rapporto_letto = false
 -> istruzioni
 
 === istruzioni ===
-MISSIONE HEXALIFE — Prima prova giocabile
-
-Giochi dal punto di vista dell'Ingegnere. Per scegliere un'azione, digita il suo numero nel terminale oppure premi il pulsante nella pagina web. Nel terminale, digita q per uscire.
-
-Alcune azioni fanno avanzare il tempo; altre servono a osservare, leggere o parlare. In questa prova un turno equivale a circa sei ore. La crew continua ad agire mentre tu prendi decisioni, e gli eventi principali arrivano anche se non hai finito di prepararti.
-
-Colori del terminale:
-Grigio azzurro: narrazione, ambienti e azioni compiute.
-Ciano: messaggi e dati del QC. # ui:qc
-Rosso: allarmi e pericoli immediati. # ui:allarme
-Grigio attenuato: stato della nave e tempo rimasto. # ui:stato
-Verde: scelta che non fa avanzare il tempo. # ui:scelta_gratuita
-Giallo: scelta che consuma un turno. # ui:scelta_turno
-
-* [Iniziare la storia.] -> risveglio
+MISSIONE HEXALIFE — Prima prova giocabile. Sulla Terra, 22 miliardi di persone vivono in un pianeta ormai incapace di sostentarle. I governi hanno inviato più navi a razziare risorse da altri pianeti, soprattutto per produrre cibo. L'equipaggio ha riportato a bordo un corpo alieno; durante la criogenesi, un parassita fungino si è attivato e ha invaso la nave, assorbendo energia dai reattori. Il QC ha svegliato la crew e segnala un possibile incontro con asteroidi: senza energia non potrà correggere la rotta. Sei l'Ingegnere: conosci la storia solo attraverso ciò che puoi vedere e ricostruire. Le parole compaiono progressivamente e il testo prosegue da solo fino alla prossima azione richiesta. Clicca gli oggetti per interagire. Osservare e leggere non fa avanzare il tempo, gli interventi operativi sì. In questa prova esplori la sala criogenica, consulti il terminale e raggiungi il corridoio. # ui:intro
+-> risveglio
 
 === risveglio ===
+# ui:narrative_section
+# scene:cryogenic_room
+# camera:wide
+# audio:alarm
 Il suono arriva prima dei pensieri. Apri gli occhi: una luce rossa pulsa oltre il vetro della capsula, e la sirena le risponde a ogni intervallo.
 
 Spingi il coperchio. Non si muove. La leva rossa è sopra la tua testa. La afferri e tiri con entrambe le mani. Il vetro si solleva di colpo; l'aria pressurizzata sibila dalle bocchette laterali.
@@ -110,15 +101,25 @@ La previsione dipende dall'energia disponibile per calcolare e correggere la rot
 -> terminale_crio
 
 === riavvio_crio ===
+# ui:narrative_section
 Il terminale si spegne di colpo. Un istante dopo si spengono anche la luce rossa e la sirena. Nel buio senti soltanto il tuo respiro e un clic dietro la parete.
 
 La riserva locale si riavvia. Le luci bianche tornano una alla volta; sul terminale compare «ALIMENTAZIONE AUSILIARIA ATTIVA». La spia della porta passa al verde. I reattori restano in avaria.
 -> uscita_crio
 
 === uscita_crio ===
-* [Aprire la porta e uscire nel corridoio.] -> corridoio_medico
+* [Aprire la porta e uscire nel corridoio.] -> fine_poc
+
+=== fine_poc ===
+# ui:narrative_section
+# scene:corridor
+La porta si apre sul corridoio. La sirena resta alle tue spalle; una figura attende oltre la soglia.
+-> DONE
+
 
 === corridoio_medico ===
+# scene:corridor
+# camera:wide
 Appena apri la porta, il Medico ti viene incontro dal corridoio. Si ferma abbastanza vicino da controllarti le pupille con una piccola lampada. Aspetta che tu smetta di strizzare gli occhi.
 
 «La tua capsula ha segnalato valori irregolari. Seguimi con gli occhi.» La luce si sposta da un lato all'altro. «Bene. Adesso lascia lo stipite.» # char:medico
@@ -140,6 +141,8 @@ Il Medico segue con gli occhi la mano che stacchi dalla parete. «Puoi andare. S
 -> sala_motori
 
 === sala_motori ===
+# scene:engine_room
+# camera:wide
 La porta si chiude alle tue spalle. Senti i reattori funzionare a intermittenza.
 
 Nella sala motori, una trama pallida cresce attorno alle canaline sotto tensione. I reattori erogano energia; qualcosa la intercetta.
@@ -179,6 +182,8 @@ Nel corridoio centrale, il terminale accanto alla porta del centro di comando è
 -> ponte
 
 === ponte ===
+# scene:bridge
+# camera:wide
 { turno >= collisione:
     -> asteroidi
 }

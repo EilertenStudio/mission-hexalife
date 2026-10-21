@@ -1,3 +1,5 @@
 # Godot 4+ specific ignores
 .godot/
+/tests/test-gameplay-ink/generated/
+/dist/web/
 /android/

@@ -16,7 +16,7 @@ Le fasi sono **porte di lavoro**, non capitoli del gioco: si può tornare indiet
 | 4. Regole e orologio | Vincoli di energia, fungo, QC e accessi; azioni che consumano tempo; calendario degli snodi e delle azioni della crew. | Il pericolo è comprensibile e la preparazione del giocatore cambia conseguenze osservabili. | Parziale |
 | 5. Indagine | Per ogni verità da scoprire: tracce, luoghi, testimoni, interpretazione iniziale e verifica successiva. | Il giocatore può distinguere l'invasione dall'omicidio e dedurre il colpevole prima della rivelazione. | Da fare |
 | 6. Ossatura giocabile | Sequenza di scene brevi, scelte con costi leggibili, stati che persistono e condizioni dei tre finali. | Ogni scelta significativa cambia una risorsa, una relazione, una prova o la preparazione a uno snodo. | Prima prova parziale in Ink; finali da progettare |
-| 7. Prime scene | Paragrafi semplici dal punto di vista dell'Ingegnere, fino all'accesso al centro di comando. | Il giocatore conosce l'emergenza, compie una scelta e vede una prima conseguenza senza spiegazioni retroattive. | Prima bozza giocabile in Ink |
+| 7. Prime scene | Paragrafi semplici dal punto di vista dell'Ingegnere, fino all'accesso al centro di comando. | Il giocatore conosce l'emergenza, compie una scelta e vede una prima conseguenza senza spiegazioni retroattive. | Bozza Ink più ampia; PoC Godot corrente fino all'uscita dalla sala criogenica |
 | 8. Espansione | Dialoghi, dettagli sensoriali, variazioni di scena e stesura dei finali. | Tutte le informazioni necessarie restano disponibili nei percorsi previsti e il tono mantiene pressione crescente. | Dopo l'ossatura |
 
 ### Perché questo ordine
@@ -42,6 +42,19 @@ Queste sono **schede di funzione**, non scene già scritte. Le scelte indicate s
 | Silenzio e successione | Il Capitano smette di rispondere; il fungo blocca il centro di comando. Il Primo Ufficiale assume il comando provvisorio e risolve la breve confusione operativa. | Ultimo contatto verificabile con il Capitano, priorità in conflitto e reazioni individuali. |
 | Accesso e prima indagine | La crew cerca di entrare. Il fungo resta la spiegazione iniziale; il Medico può riconoscere l'agente con un'analisi e l'Ingegnere può trovare la manomissione del sistema. | Almeno due approcci praticabili per l'accesso, con costi diversi; ordine possibile delle scoperte e decisioni su cosa rivelare. |
 
+### Struttura dell'apertura e limite della PoC
+
+La direzione approvata presenta contesto e gameplay in un unico dialogo prima del risveglio. L'esposizione usa i fatti generali della missione e le regole di interazione, senza anticipare il mistero, le intenzioni segrete o i retroscena individuali. Questa scelta aggiorna l'apertura senza chiudere gli altri punti TBD.
+
+1. **Dialogo introduttivo unico:** spiega prospettiva dell'Ingegnere, obiettivo generale della missione, stato d'emergenza e interazioni della PoC. Le parole vengono scritte progressivamente; i paragrafi si accumulano nel nodo corrente e la narrazione prosegue automaticamente fino alla prossima azione richiesta al giocatore. Al cambio di nodo il testo precedente viene rimosso.
+2. **Risveglio:** l'Ingegnere si libera dalla capsula durante l'allarme e cerca di riprendere lucidità.
+3. **Esplorazione della sala:** il giocatore può esaminare la capsula, consultare messaggio, mappa e avviso del QC sul terminale, e provare la porta bloccata.
+4. **Blackout e uscita:** dopo le prime osservazioni, il riavvio della riserva locale spegne la sirena, ripristina le luci e sblocca la porta. L'uscita nel corridoio conclude la PoC Godot corrente.
+
+L'incontro con il Medico e gli eventi successivi restano parte della storia pianificata, ma fuori dal percorso giocabile di questa iterazione.
+
+L'ordine esatto di risveglio degli altri membri, le motivazioni ancora aperte e i dettagli tecnici segnati TBD restano da definire nelle fasi successive.
+
 Per ciascuna scheda, prima della prosa compilare: **luogo e momento; cosa vuole l'Ingegnere; cosa fanno gli altri; informazione disponibile; azione che fa avanzare il tempo; conseguenza immediata; effetto che ritorna più tardi**. Ispezioni e dialoghi di approfondimento restano senza costo temporale, come stabilito nelle note. Le azioni a tempo devono essere segnalate in modo comprensibile al giocatore.
 
 ## Decisioni necessarie adesso
@@ -56,6 +69,6 @@ Ordine proposto per sbloccare la prima tranche senza progettare già tutto il gi
 
 La durata dell'isolamento del centro di comando e la scansione dei giorni si scelgono dopo una prova giocabile: il ritmo deve nascere dalle azioni che consumano tempo e dalle iniziative autonome della crew, non da un numero deciso prima della prova.
 
-La [prima prova in Ink](story.ink) usa provvisoriamente turni da sei ore, apre comunque il centro di comando tramite l'iniziativa della crew se il giocatore non riesce prima e arriva alla manovra sugli asteroidi al dodicesimo turno. Questi valori servono a valutare il ritmo e non fissano la cronologia definitiva. La prova termina dopo il secondo snodo, prima dei tre finali della storia completa.
+La bozza completa in [story.ink](story.ink) contiene ancora materiale per le scene successive. Il percorso avviato dalla PoC Godot termina invece all'uscita dalla sala criogenica; i turni e gli snodi della bozza più ampia non fanno parte della prova corrente.
 
 Solo dopo queste decisioni si stende l'apertura in paragrafi lineari. La sequenza e la motivazione dei personaggi sono più urgenti del nome del minerale alimentare, della spiegazione completa del viaggio o della prosa dei finali. Le informazioni indispensabili al finale vanno poi seminate abbastanza presto da influenzare le scelte del giocatore, incluso il passato dell'Ingegnere.

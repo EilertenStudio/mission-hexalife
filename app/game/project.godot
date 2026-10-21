@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="mission-hexalife"
-run/main_scene="res://tests/test-visual-shaders/test-visual-shaders.tscn"
+run/main_scene="res://tests/test-gameplay-ink/test-gameplay-ink.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -31,7 +31,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg", "res://addons/ink_scene_director/plugin.cfg")
 
 [filesystem]
 

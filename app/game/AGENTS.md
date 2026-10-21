@@ -37,3 +37,10 @@ app/game/
   offline possono leggerlo per generare export.
 - Creare nuove scene di gioco in `scenes/<nome-scena>/` e nuove prove isolate
   in `tests/<nome-test>/`. Non collocare PoC in `assets/` o `scenes/`.
+- Quando uno script materializza il node tree di una scena o PoC, aggiungere
+  all'Inspector un pulsante `GENERATE` tramite `@export_tool_button` in uno
+  script `@tool`, inizializzando la proprietà con un `Callable` valido già nel
+  valore dichiarato. La generazione deve essere ripetibile senza duplicare
+  nodi, assegnare `owner` alla scena root per rendere persistenti i nodi e
+  marcare la scena come non salvata; verificare che l'avvio runtime riusi il
+  tree materializzato senza ricrearlo o duplicarlo.
