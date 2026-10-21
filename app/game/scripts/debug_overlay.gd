@@ -1,40 +1,14 @@
 extends CanvasLayer
 
-const COPY_NOTICE_DURATION := 2.5
 const DEFAULT_TARGET_FPS := 60
 
-const AVAILABLE_SCENES := [
-	{
-		"key": KEY_1,
-		"label": "Test gameplay rhythm crypto",
-		"path": "res://tests/test-gameplay-rhythm-crypto/test-gameplay-rhythm-crypto.tscn",
-	},
-	{
-		"key": KEY_2,
-		"label": "Test visual 2D lighting",
-		"path": "res://tests/test-visual-2D-lighting/test-visual-2D-lighting.tscn",
-	},
-	{
-		"key": KEY_3,
-		"label": "Test visual voxel",
-		"path": "res://tests/test-visual-voxel/test-visual-voxel.tscn",
-	},
-	{
-		"key": KEY_4,
-		"label": "Test visual shaders",
-		"path": "res://tests/test-visual-shaders/test-visual-shaders.tscn",
-	},
-]
-
 var active_menu := ""
-var notice_timer := 0.0
 var rhythm_selected_item := 0
 
 var shade: ColorRect
 var menu_panel: PanelContainer
 var title_label: Label
 var content_label: Label
-var notice_label: Label
 
 
 func _ready() -> void:
@@ -44,26 +18,11 @@ func _ready() -> void:
 	_build_overlay()
 
 
-func _process(delta: float) -> void:
-	if notice_timer > 0.0:
-		notice_timer -= delta
-		if notice_timer <= 0.0:
-			notice_label.hide()
-
-
 func _input(event: InputEvent) -> void:
 	if not event is InputEventKey:
 		return
 	var key_event := event as InputEventKey
 	if not key_event.pressed or key_event.echo:
-		return
-
-	if _ctrl_modifier_pressed(key_event) and _event_matches_key(key_event, KEY_P):
-		if active_menu == "system_settings":
-			_close_menu()
-		else:
-			_open_menu("system_settings")
-		get_viewport().set_input_as_handled()
 		return
 
 	if _ctrl_modifier_pressed(key_event) and _event_matches_key(key_event, KEY_D):
@@ -151,18 +110,6 @@ func _build_overlay() -> void:
 	content_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	layout.add_child(content_label)
 
-	notice_label = Label.new()
-	notice_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	notice_label.offset_left = 8
-	notice_label.offset_top = 7
-	notice_label.offset_right = -8
-	notice_label.offset_bottom = 26
-	notice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	notice_label.add_theme_color_override("font_color", Color8(172, 239, 199))
-	notice_label.add_theme_font_size_override("font_size", 11)
-	notice_label.hide()
-	root.add_child(notice_label)
-
 	center.hide()
 	_refresh_menu()
 
@@ -173,14 +120,6 @@ func _handle_menu_key(key_event: InputEventKey) -> void:
 		return
 
 	match active_menu:
-		"system_settings":
-			match key_event.keycode:
-				KEY_M:
-					_open_menu("scene_select")
-				KEY_R:
-					_reload_scene()
-				KEY_C:
-					_copy_frame_to_clipboard()
 		"gameplay_menu":
 			if key_event.keycode in [KEY_1, KEY_KP_1]:
 				_open_menu("rhythm_control")
@@ -189,21 +128,8 @@ func _handle_menu_key(key_event: InputEventKey) -> void:
 		"gameplay_prefix":
 			if _event_matches_key(key_event, KEY_G):
 				_open_menu("gameplay_menu")
-		"scene_select":
-			_handle_scene_key(key_event.keycode)
 		"rhythm_control":
 			_handle_rhythm_control_key(key_event.keycode)
-
-
-func _handle_scene_key(key: int) -> void:
-	for scene_option in AVAILABLE_SCENES:
-		if key == scene_option["key"]:
-			_close_menu()
-			get_tree().paused = false
-			var result := get_tree().change_scene_to_file(scene_option["path"])
-			if result != OK:
-				_show_notice("SCENA NON DISPONIBILE")
-			return
 
 
 func _handle_rhythm_control_key(key: int) -> void:
@@ -246,16 +172,6 @@ func _refresh_menu() -> void:
 	if not is_instance_valid(title_label) or not is_instance_valid(content_label):
 		return
 	match active_menu:
-		"system_settings":
-			title_label.text = "SYSTEM SETTINGS // CTRL+P"
-			content_label.text = "M   CAMBIA SCENA\nR   RICARICA SCENA\nC   COPIA FRAME\nESC   CHIUDI"
-		"scene_select":
-			title_label.text = "CAMBIA SCENA // ESC CHIUDE"
-			var lines := PackedStringArray()
-			for scene_option in AVAILABLE_SCENES:
-				lines.append("%s   %s" % [OS.get_keycode_string(scene_option["key"]), scene_option["label"]])
-			lines.append("ESC   CHIUDI")
-			content_label.text = "\n".join(lines)
 		"gameplay_menu":
 			title_label.text = "GAMEPLAY // CTRL+D → G"
 			content_label.text = "1   BPM / JUDGMENT\n2   SPELL // SOLO VFX\nESC   CHIUDI"
@@ -294,49 +210,3 @@ func _get_rhythm_controller() -> Node:
 	if scene == null:
 		return null
 	return scene.find_child("Jerv", true, false)
-
-
-func _reload_scene() -> void:
-	_close_menu()
-	get_tree().paused = false
-	get_tree().reload_current_scene()
-
-
-func _copy_frame_to_clipboard() -> void:
-	_close_menu()
-	await RenderingServer.frame_post_draw
-	var image := get_viewport().get_texture().get_image()
-	var png_data := image.save_png_to_buffer()
-	if png_data.is_empty():
-		_show_notice("IMPOSSIBILE CATTURARE IL FRAME")
-		return
-
-	var commands: Array[Dictionary] = []
-	if OS.has_environment("WAYLAND_DISPLAY"):
-		commands = [
-			{"path": "wl-copy", "args": PackedStringArray(["--type", "image/png"])},
-			{"path": "xclip", "args": PackedStringArray(["-selection", "clipboard", "-t", "image/png", "-i"])},
-		]
-	else:
-		commands = [
-			{"path": "xclip", "args": PackedStringArray(["-selection", "clipboard", "-t", "image/png", "-i"])},
-			{"path": "wl-copy", "args": PackedStringArray(["--type", "image/png"])},
-		]
-
-	for command in commands:
-		var process := OS.execute_with_pipe(command["path"], command["args"], false)
-		if not process.has("stdio") or process["stdio"] == null:
-			continue
-		var input_pipe: FileAccess = process["stdio"]
-		input_pipe.store_buffer(png_data)
-		input_pipe.close()
-		_show_notice("FRAME COPIATO NEGLI APPUNTI")
-		return
-
-	_show_notice("CLIPBOARD IMMAGINE NON DISPONIBILE: INSTALLA WL-COPY O XCLIP")
-
-
-func _show_notice(message: String) -> void:
-	notice_label.text = message
-	notice_label.show()
-	notice_timer = COPY_NOTICE_DURATION

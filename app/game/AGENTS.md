@@ -9,6 +9,7 @@ app/game/
 ├── assets/<dominio>/<asset>/  # elementi componibili riutilizzabili
 ├── scenes/<scena>/            # scene di gioco
 ├── tests/<test>/              # scene PoC isolate
+├── features/<dominio>/<feature>/ # funzionalità coese con scene e script
 ├── addons/                    # plugin Godot
 ├── scripts/                   # script condivisi
 └── project.godot
@@ -22,6 +23,10 @@ app/game/
 - `tests/` contiene scene di prova e PoC autonome, con asset e script locali
   quando servono. Restano separate dagli asset riutilizzabili e dalle scene di
   gioco.
+- `features/` contiene funzionalità coese che associano scene e script, per
+  esempio `features/debug/scene_manager/`. Istanziare la scena della feature
+  nel compositore che ne governa la durata; non renderla un autoload senza una
+  necessità globale.
 
 ## Sorgenti Godot
 
