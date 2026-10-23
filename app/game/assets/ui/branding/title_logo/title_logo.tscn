@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/branding/title_logo/title_logo.svg" id="1_logo"]
+
+[node name="TitleLogo" type="TextureRect"]
+layout_mode = 0
+mouse_filter = 2
+texture = ExtResource("1_logo")
+expand_mode = 1
+stretch_mode = 5

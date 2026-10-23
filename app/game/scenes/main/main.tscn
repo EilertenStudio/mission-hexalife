@@ -1,11 +1,17 @@
 [gd_scene format=3 uid="uid://cur6wpa2oce0m"]
 
+[ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main_script"]
 [ext_resource type="PackedScene" path="res://features/debug/scene_manager/scene_manager.tscn" id="1_debug_scene_manager"]
 [ext_resource type="PackedScene" path="res://scenes/title_screen/title_screen.tscn" id="2_title_screen"]
+[ext_resource type="PackedScene" path="res://features/core/scene_flow/scene_flow.tscn" id="3_scene_flow"]
+[ext_resource type="PackedScene" path="res://features/ui/pause_menu/pause_menu.tscn" id="4_pause_menu"]
 
 [node name="Main" type="Node" unique_id=452463769]
+script = ExtResource("1_main_script")
 
 [node name="Persistent" type="Node" parent="." unique_id=1607666517]
+
+[node name="SceneFlow" parent="Persistent" instance=ExtResource("3_scene_flow")]
 
 [node name="SceneManager" parent="Persistent" unique_id=1837955616 instance=ExtResource("1_debug_scene_manager")]
 
@@ -22,3 +28,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="PauseMenu" parent="UI" instance=ExtResource("4_pause_menu")]

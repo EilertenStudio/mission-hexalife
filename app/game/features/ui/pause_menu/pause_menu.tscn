@@ -1,0 +1,166 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://features/ui/pause_menu/pause_menu.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://assets/ui/fonts/pixelify_sans/pixelify_sans.ttf" id="2_pixelify_sans"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.027451, 0.047059, 0.086275, 0.97)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.321569, 0.580392, 0.658824, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.047059, 0.082353, 0.129412, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.145098, 0.278431, 0.341176, 1)
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.078431, 0.156863, 0.188235, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.360784, 0.792157, 0.67451, 1)
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+bg_color = Color(0.090196, 0.227451, 0.231373, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.360784, 0.792157, 0.67451, 1)
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_disabled"]
+bg_color = Color(0.035294, 0.054902, 0.082353, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.176471, 0.215686, 1)
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+
+[node name="PauseMenu" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1_script")
+
+[node name="Overlay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Shade" type="ColorRect" parent="Overlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.007843, 0.015686, 0.035294, 0.78)
+mouse_filter = 0
+
+[node name="Center" type="CenterContainer" parent="Overlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="MenuPanel" type="PanelContainer" parent="Overlay/Center"]
+custom_minimum_size = Vector2(440, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margins" type="MarginContainer" parent="Overlay/Center/MenuPanel"]
+theme_override_constants/margin_left = 26
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 26
+theme_override_constants/margin_bottom = 24
+
+[node name="Layout" type="VBoxContainer" parent="Overlay/Center/MenuPanel/Margins"]
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Overlay/Center/MenuPanel/Margins/Layout"]
+theme_override_colors/font_color = Color(0.54902, 0.905882, 0.945098, 1)
+theme_override_fonts/font = ExtResource("2_pixelify_sans")
+theme_override_font_sizes/font_size = 30
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="Overlay/Center/MenuPanel/Margins/Layout"]
+custom_minimum_size = Vector2(0, 48)
+theme_override_colors/font_color = Color(0.921569, 0.94902, 0.960784, 1)
+theme_override_colors/font_hover_color = Color(0.360784, 0.941176, 0.760784, 1)
+theme_override_colors/font_pressed_color = Color(0.360784, 0.941176, 0.760784, 1)
+theme_override_fonts/font = ExtResource("2_pixelify_sans")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+text = "RESUME"
+focus_mode = 2
+
+[node name="OptionsButton" type="Button" parent="Overlay/Center/MenuPanel/Margins/Layout"]
+custom_minimum_size = Vector2(0, 48)
+theme_override_colors/font_color = Color(0.921569, 0.94902, 0.960784, 1)
+theme_override_colors/font_disabled_color = Color(0.470588, 0.52549, 0.560784, 1)
+theme_override_fonts/font = ExtResource("2_pixelify_sans")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "OPTIONS"
+disabled = true
+focus_mode = 0
+
+[node name="CreditsButton" type="Button" parent="Overlay/Center/MenuPanel/Margins/Layout"]
+custom_minimum_size = Vector2(0, 48)
+theme_override_colors/font_color = Color(0.921569, 0.94902, 0.960784, 1)
+theme_override_colors/font_disabled_color = Color(0.470588, 0.52549, 0.560784, 1)
+theme_override_fonts/font = ExtResource("2_pixelify_sans")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "CREDITS"
+disabled = true
+focus_mode = 0
+
+[node name="ReturnToTitleButton" type="Button" parent="Overlay/Center/MenuPanel/Margins/Layout"]
+custom_minimum_size = Vector2(0, 48)
+theme_override_colors/font_color = Color(0.921569, 0.94902, 0.960784, 1)
+theme_override_colors/font_hover_color = Color(0.360784, 0.941176, 0.760784, 1)
+theme_override_colors/font_pressed_color = Color(0.360784, 0.941176, 0.760784, 1)
+theme_override_fonts/font = ExtResource("2_pixelify_sans")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+text = "RETURN TO TITLE SCREEN"
+focus_mode = 2

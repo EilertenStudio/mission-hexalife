@@ -50,3 +50,10 @@ app/game/
   nodi, assegnare `owner` alla scena root per rendere persistenti i nodi e
   marcare la scena come non salvata; verificare che l'avvio runtime riusi il
   tree materializzato senza ricrearlo o duplicarlo.
+
+## `ARCHITECTURE.md`
+
+- Non modificare `ARCHITECTURE.md` senza autorizzazione esplicita dell'utente.
+  Per ora deve essere soltanto una guida alla struttura di cartelle e file del
+  progetto; non usarlo per documentare lo stato delle implementazioni o il
+  comportamento corrente delle funzionalità.

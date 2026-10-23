@@ -16,7 +16,7 @@ const AVAILABLE_SCENES := []
 @onready var _title: Label = $Overlay/MenuCenter/MenuPanel/Margins/Layout/Title
 @onready var _content: Label = $Overlay/MenuCenter/MenuPanel/Margins/Layout/Content
 @onready var _notice: Label = $Overlay/Notice
-@onready var _world: Node = get_node("../../World")
+@onready var _scene_flow: Node = get_node("../SceneFlow")
 
 var _active_menu := ""
 var _active_scene_path := ""
@@ -27,8 +27,7 @@ func _ready() -> void:
 	layer = 100
 	visible = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	if _world.get_child_count() > 0:
-		_active_scene_path = _world.get_child(0).scene_file_path
+	_active_scene_path = str(_scene_flow.get("current_scene_path"))
 	_shade.hide()
 	_center.hide()
 	_refresh_menu()
@@ -149,26 +148,16 @@ func _leader_shortcut_text() -> String:
 
 
 func _load_scene(scene_path: String) -> void:
-	var packed_scene := load(scene_path) as PackedScene
-	if packed_scene == null:
+	if not bool(_scene_flow.call("change_scene", scene_path)):
 		_show_notice("SCENA NON DISPONIBILE")
 		return
 
-	_clear_world()
-	var scene_instance := packed_scene.instantiate()
-	_world.add_child(scene_instance)
-	_active_scene_path = scene_path
+	_active_scene_path = str(_scene_flow.get("current_scene_path"))
 	_close_menu()
 
 
-func _clear_world() -> void:
-	for child in _world.get_children():
-		_world.remove_child(child)
-		child.queue_free()
-	_active_scene_path = ""
-
-
 func _reload_scene() -> void:
+	_active_scene_path = str(_scene_flow.get("current_scene_path"))
 	if _active_scene_path.is_empty():
 		get_tree().reload_current_scene()
 		return
