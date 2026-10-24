@@ -1,7 +1,13 @@
 extends CanvasLayer
 
 const COPY_NOTICE_DURATION := 2.5
-const AVAILABLE_SCENES := []
+const AVAILABLE_SCENES := [
+	{
+		"key": KEY_G,
+		"label": "PLAYGROUND: SURFACE TAPS",
+		"path": "res://tests/playground/playground.tscn",
+	}
+]
 
 @export_group("Leader shortcut")
 @export var leader_key: Key = KEY_P

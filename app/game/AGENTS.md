@@ -29,6 +29,20 @@ app/game/
   nel compositore che ne governa la durata; non renderla un autoload senza una
   necessità globale.
 
+## Contesto di design e funzionalità
+
+- Consultare [GDD.md](GDD.md) per le decisioni sull'esperienza del gioco finale
+  e [FEATURES.md](FEATURES.md) prima di lavorare sulle funzionalità: contiene
+  capacità disponibili, limiti, meccaniche candidate e priorità.
+- Le priorità del catalogo non selezionano automaticamente il lavoro della
+  prossima iterazione e non approvano una meccanica per il gioco finale.
+- Quando cambia concretamente una funzionalità, aggiornare in `FEATURES.md`
+  lo stato tecnico, i limiti e i riferimenti pertinenti. Distinguere il supporto
+  di un plugin dalla disponibilità della relativa esperienza per il giocatore;
+  una funzionalità parziale o una PoC rimossa non è un sistema completo.
+- Il canone narrativo resta nei documenti di `app/gamebook/`, secondo le regole
+  del progetto.
+
 ## Sorgenti Godot
 
 - I file Godot sono la sorgente identitaria dell'elemento: usare scene `.tscn`

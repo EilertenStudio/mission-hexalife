@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<defs>
+ <linearGradient id="wall" x2="0" y2="1"><stop stop-color="#101c30"/><stop offset="1" stop-color="#1b3447"/></linearGradient>
+ <linearGradient id="floor" x2="0" y2="1"><stop stop-color="#29404a"/><stop offset="1" stop-color="#101d2a"/></linearGradient>
+ <linearGradient id="glass" x2="1" y2="1"><stop stop-color="#142e43"/><stop offset=".52" stop-color="#397687"/><stop offset="1" stop-color="#182841"/></linearGradient>
+ <linearGradient id="beam" x2="1"><stop stop-color="#44d6bc" stop-opacity=".85"/><stop offset="1" stop-color="#44d6bc" stop-opacity="0"/></linearGradient>
+ <pattern id="panel" width="80" height="64" patternUnits="userSpaceOnUse"><path d="M0 63.5H80M79.5 0V64" stroke="#426072" stroke-opacity=".19"/><circle cx="7" cy="8" r="1.5" fill="#76b5b5" fill-opacity=".28"/></pattern>
+</defs>
+<rect width="1280" height="720" fill="url(#wall)"/>
+<rect width="1280" height="560" fill="url(#panel)"/>
+<path d="M0 72H1280M0 79H1280" stroke="#314d61" stroke-width="3" opacity=".75"/>
+<path d="M40 0V70M60 0V70M1210 0V70M1230 0V70" stroke="#54727d" stroke-width="5" opacity=".6"/>
+<path d="M0 535H1280V720H0Z" fill="url(#floor)"/>
+<path d="M0 536H1280" stroke="#52cfb3" stroke-opacity=".8" stroke-width="3"/>
+<path d="M0 540H1280" stroke="#98f6de" stroke-opacity=".23" stroke-width="14"/>
+<path d="M0 720 500 540M250 720 620 540M600 720 740 540M950 720 860 540M1280 690 1000 540" stroke="#71908e" stroke-opacity=".16" stroke-width="2"/>
+<path d="M515 128H733V156H515Z" fill="#0b1724" stroke="#4c6d75" stroke-width="3"/>
+<path d="M530 140H705" stroke="url(#beam)" stroke-width="7"/>
+<path d="M930 0V125Q930 151 956 151H1280M982 0V93Q982 116 1005 116H1280" fill="none" stroke="#395565" stroke-width="8"/>
+<path d="M1005 117H1270" stroke="#4fc9b1" stroke-opacity=".65" stroke-width="2"/>
+<path d="M1070 76H1225V100H1070Z" fill="#101e2a" stroke="#526872" stroke-width="2"/>
+<g fill="#70d9bc"><circle cx="1092" cy="88" r="3"/><circle cx="1110" cy="88" r="3"/><circle cx="1128" cy="88" r="3"/></g>
+<ellipse cx="744" cy="620" rx="475" ry="48" fill="#06111c" opacity=".45"/>
+<ellipse cx="1080" cy="600" rx="150" ry="30" fill="#06111c" opacity=".38"/>
+</svg>

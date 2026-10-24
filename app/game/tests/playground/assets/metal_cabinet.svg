@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="430" viewBox="0 0 340 430">
+<defs><linearGradient id="steel" x2="1"><stop stop-color="#263b4a"/><stop offset=".23" stop-color="#70818a"/><stop offset=".46" stop-color="#364c5a"/><stop offset=".75" stop-color="#203545"/><stop offset="1" stop-color="#60747a"/></linearGradient><linearGradient id="door" x2="0" y2="1"><stop stop-color="#667982"/><stop offset=".55" stop-color="#3c5260"/><stop offset="1" stop-color="#253b49"/></linearGradient></defs>
+<path d="M28 27 300 16 318 398 13 404Z" fill="#111e2b" stroke="#09131e" stroke-width="12"/>
+<path d="M35 31 294 23 307 390 24 394Z" fill="url(#steel)" stroke="#9aacae" stroke-opacity=".6" stroke-width="3"/>
+<path d="M55 52 176 48 180 373 43 376Z" fill="url(#door)" stroke="#172a36" stroke-width="5"/>
+<path d="M188 48 278 45 290 370 192 373Z" fill="#344a59" stroke="#172a36" stroke-width="5"/>
+<path d="M71 71 158 68M204 68 267 67" stroke="#b0bec0" stroke-opacity=".48" stroke-width="3"/>
+<path d="M160 190H175V245H160Z" fill="#121f2b" stroke="#adc0bd" stroke-width="3"/><path d="M166 203V233" stroke="#78d4bf" stroke-width="3"/>
+<path d="M244 188H258V241H244Z" fill="#121f2b" stroke="#adc0bd" stroke-width="3"/><path d="M251 201V229" stroke="#78d4bf" stroke-width="3"/>
+<circle cx="61" cy="362" r="5" fill="#96e3c9"/><circle cx="270" cy="358" r="5" fill="#96e3c9"/>
+<path d="M27 394 16 415M303 390 315 410" stroke="#a7babb" stroke-width="8"/>
+</svg>

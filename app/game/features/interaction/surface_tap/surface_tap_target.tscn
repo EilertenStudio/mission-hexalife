@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://features/interaction/surface_tap/surface_tap_target.gd" id="1_script"]
+
+[node name="SurfaceTapTarget" type="Sprite2D"]
+texture_filter = 1
+script = ExtResource("1_script")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+max_distance = 1800.0
+attenuation = 1.0

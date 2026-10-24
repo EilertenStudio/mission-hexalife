@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="310" viewBox="0 0 660 310">
+<defs><linearGradient id="wood" x2="0" y2="1"><stop stop-color="#8a654e"/><stop offset=".2" stop-color="#6d4b3e"/><stop offset="1" stop-color="#382f35"/></linearGradient><linearGradient id="edge" x2="0" y2="1"><stop stop-color="#bb8e69"/><stop offset="1" stop-color="#63473d"/></linearGradient></defs>
+<path d="M70 189 101 205V300L70 286ZM581 186 550 204V300L581 284Z" fill="#28303a" stroke="#18232e" stroke-width="6"/>
+<path d="M22 79 78 45 616 51 646 85 616 203 50 206 14 174Z" fill="url(#wood)" stroke="#202733" stroke-width="9" stroke-linejoin="round"/>
+<path d="M22 79 78 45 616 51 646 85 620 113 51 118 14 174Z" fill="url(#edge)" stroke="#d1a178" stroke-width="2" stroke-opacity=".54"/>
+<path d="M54 77Q180 57 315 74T599 76M42 93Q224 82 389 94T620 88M71 105Q258 98 551 105M60 164Q220 151 393 165T604 157" fill="none" stroke="#47363a" stroke-width="4" opacity=".44"/>
+<path d="M102 60Q125 95 104 111M483 60Q462 85 489 109" fill="none" stroke="#c49770" stroke-width="3" opacity=".46"/>
+<path d="M32 178 52 205H617L637 177" fill="none" stroke="#d0a07a" stroke-width="3" opacity=".55"/>
+<circle cx="68" cy="88" r="5" fill="#25333d"/><circle cx="591" cy="91" r="5" fill="#25333d"/>
+</svg>
