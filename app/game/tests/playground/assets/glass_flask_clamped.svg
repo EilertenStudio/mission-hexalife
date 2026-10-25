@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="170" viewBox="0 0 120 170">
+  <defs>
+    <linearGradient id="glass" x2="1">
+      <stop stop-color="#a9f4df" stop-opacity=".7"/>
+      <stop offset=".32" stop-color="#51bdb4" stop-opacity=".36"/>
+      <stop offset=".72" stop-color="#bdf7df" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#40a6a9" stop-opacity=".72"/>
+    </linearGradient>
+    <linearGradient id="liquid" x2="0" y2="1">
+      <stop stop-color="#74deb2"/>
+      <stop offset="1" stop-color="#267e8b"/>
+    </linearGradient>
+    <linearGradient id="steel" x2="1">
+      <stop stop-color="#d6e5df"/>
+      <stop offset=".5" stop-color="#526d7a"/>
+      <stop offset="1" stop-color="#c7d9d0"/>
+    </linearGradient>
+  </defs>
+  <path d="M43 13H77V54L96 76Q104 86 101 102L91 146Q88 158 76 159H44Q32 158 29 146L19 102Q16 86 24 76L43 54Z" fill="url(#glass)" stroke="#b4f4e1" stroke-width="4"/>
+  <path d="M26 105Q60 96 95 105L87 143Q84 151 76 151H44Q36 151 33 143Z" fill="url(#liquid)" opacity=".78"/>
+  <path d="M45 19V52L28 77M77 61 93 81" fill="none" stroke="#edfff2" stroke-width="5" opacity=".74"/>
+  <path d="M36 111Q58 105 84 111" fill="none" stroke="#c6ffe1" stroke-width="2" opacity=".68"/>
+  <path d="M40 12H80V25H40Z" fill="#d5f7e5" stroke="#9dd8cd" stroke-width="3"/>
+  <path d="M23 87Q60 80 97 87L94 104Q60 98 26 104Z" fill="url(#steel)" stroke="#203d4b" stroke-width="3"/>
+  <path d="M28 91Q60 86 94 91M29 100Q60 95 93 100" fill="none" stroke="#e4eee8" stroke-width="2" opacity=".78"/>
+  <circle cx="91" cy="95" r="5" fill="#203d4b" stroke="#d9e7df" stroke-width="2"/>
+</svg>

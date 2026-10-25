@@ -4,6 +4,7 @@ class_name SurfaceTapTarget
 signal tapped(target: SurfaceTapTarget)
 
 @export var target_name := ""
+@export_multiline var examine_description := ""
 @export_enum("Glass", "Metal", "Wood", "Plaster") var surface_material := "Metal"
 @export var tap_sound: AudioStream
 
