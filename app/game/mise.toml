@@ -7,7 +7,8 @@ uv = "0.12.15"
 
 [monorepo]
 config_roots = [
-  "assets"
+  "assets",
+  "tests/*"
 ]
 
 [tasks.play]

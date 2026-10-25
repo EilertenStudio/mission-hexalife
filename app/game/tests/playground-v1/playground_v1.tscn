@@ -1,9 +1,12 @@
-[gd_scene format=3 uid="uid://dvulvoe1d4iq4"]
+[gd_scene load_steps=3 format=3 uid="uid://dvulvoe1d4iq4"]
 
 [ext_resource type="Script" uid="uid://bqj8kbdq62qxh" path="res://tests/playground-v1/playground_v1.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://tests/playground-v1/assets/rooms/garage_room/garage_room.tscn" id="2_garage_room"]
 
 [node name="PlaygroundV1" type="Node2D" unique_id=1839781794]
 script = ExtResource("1_script")
+
+[node name="GarageRoom" parent="." instance=ExtResource("2_garage_room")]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1332886554]
 position = Vector2(640, 360)

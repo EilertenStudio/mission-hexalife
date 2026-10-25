@@ -1,0 +1,4 @@
+[tasks."garage-room:export"]
+description = "Esporta i sorgenti Pixelorama della garage room in PNG"
+dir = "{{ config_root }}"
+run = "python3 assets/rooms/garage_room/scripts/pixelorama/export.py"
