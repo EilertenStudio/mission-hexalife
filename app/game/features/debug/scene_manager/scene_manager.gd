@@ -1,11 +1,16 @@
 extends CanvasLayer
 
 const COPY_NOTICE_DURATION := 2.5
-const AVAILABLE_SCENES := [
+const PLAYGROUND_SCENES := [
 	{
-		"key": KEY_G,
-		"label": "PLAYGROUND: SURFACE TAPS",
-		"path": "res://tests/playground/playground.tscn",
+		"key": KEY_0,
+		"label": "PLAYGROUND CONCEPT",
+		"path": "res://tests/playground-concept/playground_concept.tscn",
+	},
+	{
+		"key": KEY_1,
+		"label": "PLAYGROUND V1",
+		"path": "res://tests/playground-v1/playground_v1.tscn",
 	}
 ]
 
@@ -82,7 +87,9 @@ func _matches_leader_shortcut(event: InputEventKey) -> bool:
 
 func _handle_menu_key(event: InputEventKey) -> void:
 	if _key_matches(event, KEY_ESCAPE):
-		if _active_menu == "scene_select":
+		if _active_menu == "playground_select":
+			_open_menu("scene_select")
+		elif _active_menu == "scene_select":
 			_open_menu("scene_manager")
 		else:
 			_close_menu()
@@ -97,11 +104,16 @@ func _handle_menu_key(event: InputEventKey) -> void:
 			KEY_C:
 				_copy_frame_to_clipboard()
 	elif _active_menu == "scene_select":
-		if event.keycode == KEY_0 or event.keycode == KEY_KP_0:
+		if _key_matches(event, KEY_0) or _key_matches(event, KEY_KP_0):
 			_load_scene(default_scene_path)
 			return
-		for scene_option in AVAILABLE_SCENES:
-			if event.keycode == scene_option["key"] or event.physical_keycode == scene_option["key"]:
+		if _key_matches(event, KEY_P):
+			_open_menu("playground_select")
+	elif _active_menu == "playground_select":
+		for scene_option in PLAYGROUND_SCENES:
+			var scene_key: Key = scene_option["key"]
+			var keypad_key: Key = KEY_KP_0 if scene_key == KEY_0 else KEY_KP_1
+			if _key_matches(event, scene_key) or _key_matches(event, keypad_key):
 				_load_scene(scene_option["path"])
 				return
 
@@ -132,8 +144,11 @@ func _refresh_menu() -> void:
 			_content.text = "R   RICARICA SCENA\nM   CAMBIA SCENA\nC   COPIA FRAME\nESC   CHIUDI"
 		"scene_select":
 			_title.text = "CAMBIA SCENA // ESC INDIETRO"
-			var lines := PackedStringArray(["0   TITLE SCREEN"])
-			for scene_option in AVAILABLE_SCENES:
+			_content.text = "0   TITLE SCREEN\nP   PLAYGROUND\nESC   INDIETRO"
+		"playground_select":
+			_title.text = "PLAYGROUND // ESC INDIETRO"
+			var lines := PackedStringArray()
+			for scene_option in PLAYGROUND_SCENES:
 				lines.append("%s   %s" % [OS.get_keycode_string(scene_option["key"]), scene_option["label"]])
 			lines.append("ESC   INDIETRO")
 			_content.text = "\n".join(lines)

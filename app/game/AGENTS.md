@@ -23,7 +23,9 @@ app/game/
   e definisce le impostazioni dell'engine proprie della composizione.
 - `tests/` contiene scene di prova e PoC autonome, con asset e script locali
   quando servono. Restano separate dagli asset riutilizzabili e dalle scene di
-  gioco.
+  gioco. Mantenere asset e feature specifiche di una PoC sotto la sua cartella
+  `tests/<test>/`; promuoverle in `assets/` o `features/` globali solo quando
+  vengono selezionate per il gioco principale.
 - `features/` contiene funzionalità coese che associano scene e script, per
   esempio `features/debug/scene_manager/`. Istanziare la scena della feature
   nel compositore che ne governa la durata; non renderla un autoload senza una
