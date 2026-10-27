@@ -4,19 +4,27 @@ signal ambient_level_changed(value: float)
 signal window_light_energy_changed(value: float)
 signal flashlight_energy_changed(value: float)
 signal bulblight_energy_changed(value: float)
+signal crt_strength_changed(value: float)
+signal crt_spacing_changed(value: float)
 signal flashlight_toggle_requested
 signal bulblight_toggle_requested
+signal crt_enabled_changed(is_enabled: bool)
 
 var _ambient_slider: HSlider
 var _window_light_slider: HSlider
 var _flashlight_slider: HSlider
 var _bulblight_slider: HSlider
+var _crt_strength_slider: HSlider
+var _crt_spacing_slider: HSlider
 var _ambient_value: Label
 var _window_light_value: Label
 var _flashlight_value: Label
 var _bulblight_value: Label
+var _crt_strength_value: Label
+var _crt_spacing_value: Label
 var _flashlight_toggle: Button
 var _bulblight_toggle: Button
+var _crt_toggle: Button
 var _last_slider: HSlider
 
 
@@ -40,6 +48,12 @@ func set_flashlight_enabled(is_enabled: bool) -> void:
 
 func set_bulblight_enabled(is_enabled: bool) -> void:
 	_set_toggle_button(_bulblight_toggle, is_enabled)
+
+
+func set_crt_control_values(is_enabled: bool, strength: float, spacing: float) -> void:
+	_set_toggle_button(_crt_toggle, is_enabled)
+	_set_slider_value(_crt_strength_slider, _crt_strength_value, strength)
+	_set_slider_value(_crt_spacing_slider, _crt_spacing_value, spacing)
 
 
 func _set_slider_value(slider: HSlider, value_label: Label, value: float) -> void:
@@ -88,6 +102,31 @@ func _build_menu() -> void:
 	_bulblight_value = _add_light_control(stack, "Bulblight", 2.0, 1.0, 0.05, true)
 	_bulblight_slider = _last_slider
 
+	var section_divider := HSeparator.new()
+	stack.add_child(section_divider)
+
+	var crt_title := Label.new()
+	crt_title.text = "CRT"
+	crt_title.add_theme_font_size_override("font_size", 14)
+	crt_title.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
+	stack.add_child(crt_title)
+
+	var crt_toggle_row := HBoxContainer.new()
+	crt_toggle_row.add_theme_constant_override("separation", 8)
+	stack.add_child(crt_toggle_row)
+	var crt_toggle_label := Label.new()
+	crt_toggle_label.text = "Vertical scanlines"
+	crt_toggle_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	crt_toggle_label.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78))
+	crt_toggle_row.add_child(crt_toggle_label)
+	_crt_toggle = _create_toggle_button(true)
+	crt_toggle_row.add_child(_crt_toggle)
+
+	_crt_strength_value = _add_light_control(stack, "Strength", 0.5, 0.2, 0.01)
+	_crt_strength_slider = _last_slider
+	_crt_spacing_value = _add_light_control(stack, "Line spacing", 8.0, 2.0, 1.0, false, 2.0)
+	_crt_spacing_slider = _last_slider
+
 	var shortcut_row := HBoxContainer.new()
 	shortcut_row.add_theme_constant_override("separation", 8)
 	stack.add_child(shortcut_row)
@@ -106,8 +145,25 @@ func _build_menu() -> void:
 	shortcut_description.add_theme_color_override("font_color", Color(0.62, 0.62, 0.62))
 	shortcut_row.add_child(shortcut_description)
 
+	var panel_shortcut_row := HBoxContainer.new()
+	panel_shortcut_row.add_theme_constant_override("separation", 8)
+	stack.add_child(panel_shortcut_row)
+	var panel_key_badge := PanelContainer.new()
+	panel_key_badge.add_theme_stylebox_override("panel", _make_key_style())
+	panel_shortcut_row.add_child(panel_key_badge)
+	var panel_shortcut := Label.new()
+	panel_shortcut.text = "CTRL + ="
+	panel_shortcut.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
+	panel_key_badge.add_child(panel_shortcut)
+	var panel_shortcut_description := Label.new()
+	panel_shortcut_description.text = "Show / hide panel"
+	panel_shortcut_description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel_shortcut_description.add_theme_color_override("font_color", Color(0.62, 0.62, 0.62))
+	panel_shortcut_row.add_child(panel_shortcut_description)
+
 	_flashlight_toggle.pressed.connect(func() -> void: flashlight_toggle_requested.emit())
 	_bulblight_toggle.pressed.connect(func() -> void: bulblight_toggle_requested.emit())
+	_crt_toggle.toggled.connect(func(is_enabled: bool) -> void: crt_enabled_changed.emit(is_enabled))
 
 
 func _add_light_control(
@@ -116,7 +172,8 @@ func _add_light_control(
 	maximum: float,
 	initial: float,
 	step: float,
-	with_toggle := false
+	with_toggle := false,
+	minimum := 0.0
 ) -> Label:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 8)
@@ -151,7 +208,7 @@ func _add_light_control(
 			_bulblight_toggle = toggle
 
 	var slider := HSlider.new()
-	slider.min_value = 0.0
+	slider.min_value = minimum
 	slider.max_value = maximum
 	slider.step = step
 	slider.value = initial
@@ -173,10 +230,24 @@ func _add_light_control(
 			"Window light": window_light_energy_changed.emit(changed_value)
 			"Flashlight": flashlight_energy_changed.emit(changed_value)
 			"Bulblight": bulblight_energy_changed.emit(changed_value)
+			"Strength": crt_strength_changed.emit(changed_value)
+			"Line spacing": crt_spacing_changed.emit(changed_value)
 	)
 	parent.add_child(slider)
 	_last_slider = slider
 	return value
+
+
+func _create_toggle_button(initially_enabled: bool) -> Button:
+	var toggle := Button.new()
+	toggle.toggle_mode = true
+	toggle.custom_minimum_size = Vector2(48.0, 24.0)
+	toggle.add_theme_font_size_override("font_size", 12)
+	toggle.add_theme_stylebox_override("normal", _make_toggle_style(false))
+	toggle.add_theme_stylebox_override("hover", _make_toggle_style(true))
+	toggle.add_theme_stylebox_override("pressed", _make_toggle_style(true))
+	_set_toggle_button(toggle, initially_enabled)
+	return toggle
 
 
 func _make_panel_style() -> StyleBoxFlat:

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Shader" path="res://tests/playground-v1/features/visual/crt_vertical/crt_vertical.gdshader" id="1_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crt_vertical"]
+resource_local_to_scene = true
+shader = ExtResource("1_shader")
+shader_parameter/strength = 0.2
+shader_parameter/period_px = 2.0
+shader_parameter/stripe_width_px = 1.0
+
+[node name="CRTVertical" type="CanvasLayer"]
+layer = 20
+
+[node name="ScreenFilter" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_crt_vertical")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
