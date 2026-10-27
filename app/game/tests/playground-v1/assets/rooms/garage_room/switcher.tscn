@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v006-switcher.png" id="1_switcher"]
+[ext_resource type="Script" path="res://tests/playground-v1/assets/rooms/garage_room/switcher.gd" id="2_script"]
+
+[node name="Switcher" type="Sprite2D"]
+texture_filter = 1
+z_index = -99
+texture = ExtResource("1_switcher")
+script = ExtResource("2_script")

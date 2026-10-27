@@ -1,68 +1,67 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://cn0ocvsnw727d"]
 
-[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v002-background.png" id="1_background"]
-[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v002-floor_details.png" id="2_floor_details"]
-[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v002-wall_shelf.png" id="3_wall_shelf"]
-[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v002-storage_rack.png" id="4_storage_rack"]
-[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v002-workbench_group.png" id="5_workbench"]
-[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v002-cleaning_tools.png" id="6_cleaning_tools"]
-[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v002-tire_group.png" id="7_tire_group"]
-[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v002-hand_truck.png" id="8_hand_truck"]
-[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v002-floor_crate.png" id="9_floor_crate"]
+[ext_resource type="Texture2D" uid="uid://djx17c4ejun7k" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v006-background.png" id="1_background"]
+[ext_resource type="PackedScene" path="res://tests/playground-v1/assets/rooms/garage_room/lamp.tscn" id="2_lamp"]
+[ext_resource type="PackedScene" path="res://tests/playground-v1/assets/rooms/garage_room/switcher.tscn" id="3_switcher"]
+[ext_resource type="Script" path="res://tests/playground-v1/assets/rooms/garage_room/garage_room.gd" id="4_lighting_script"]
+[ext_resource type="Script" path="res://tests/playground-v1/assets/rooms/garage_room/lighting_controls.gd" id="5_lighting_controls"]
 
-[node name="GarageRoom" type="Node2D"]
+[node name="GarageRoom" type="Node2D" unique_id=1308650380]
 texture_filter = 1
+script = ExtResource("4_lighting_script")
 
-[node name="Background" type="Sprite2D" parent="."]
+[node name="Background" type="Sprite2D" parent="." unique_id=1555601607]
 z_index = -100
 position = Vector2(640, 360)
 scale = Vector2(4, 4)
 texture = ExtResource("1_background")
 
-[node name="FloorDetails" type="Sprite2D" parent="."]
-z_index = -50
+[node name="Lamp" parent="." instance=ExtResource("2_lamp")]
 position = Vector2(640, 360)
 scale = Vector2(4, 4)
-texture = ExtResource("2_floor_details")
 
-[node name="WallShelfGroup" type="Sprite2D" parent="."]
-z_index = 0
+[node name="Switcher" parent="." instance=ExtResource("3_switcher")]
 position = Vector2(640, 360)
 scale = Vector2(4, 4)
-texture = ExtResource("3_wall_shelf")
 
-[node name="StorageRackGroup" type="Sprite2D" parent="."]
-z_index = 5
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("4_storage_rack")
+[node name="Lighting" type="Node2D" parent="."]
 
-[node name="WorkbenchGroup" type="Sprite2D" parent="."]
-z_index = 6
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("5_workbench")
+[node name="AmbientDarkness" type="CanvasModulate" parent="Lighting"]
+color = Color(0.0, 0.0, 0.0, 1.0)
 
-[node name="CleaningToolsGroup" type="Sprite2D" parent="."]
-z_index = 8
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("6_cleaning_tools")
+[node name="LeftWindowLight" type="PointLight2D" parent="Lighting"]
+texture_filter = 2
+position = Vector2(496, 194)
+energy = 0.32
+texture_scale = 1.25
 
-[node name="TireGroup" type="Sprite2D" parent="."]
-z_index = 10
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("7_tire_group")
+[node name="RightWindowLight" type="PointLight2D" parent="Lighting"]
+texture_filter = 2
+position = Vector2(778, 194)
+energy = 0.32
+texture_scale = 1.25
 
-[node name="HandTruck" type="Sprite2D" parent="."]
-z_index = 12
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("8_hand_truck")
+[node name="BulbGlow" type="PointLight2D" parent="Lighting"]
+texture_filter = 2
+position = Vector2(640, 76)
+enabled = false
+energy = 1.0
+texture_scale = 0.42
 
-[node name="FloorCrate" type="Sprite2D" parent="."]
-z_index = 13
+[node name="CeilingPool" type="PointLight2D" parent="Lighting"]
+texture_filter = 2
+position = Vector2(640, 116)
+enabled = false
+energy = 0.5
+texture_scale = 7.0
+
+[node name="Flashlight" type="PointLight2D" parent="Lighting"]
+texture_filter = 2
 position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("9_floor_crate")
+enabled = false
+energy = 2.0
+texture_scale = 3.0
+
+[node name="LightingControls" type="CanvasLayer" parent="."]
+layer = 10
+script = ExtResource("5_lighting_controls")
