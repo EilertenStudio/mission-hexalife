@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Export the garage room's simple Pixelorama PXO sources as PNG files.
 
-The source files are Pixelorama v7 projects with one RGBA raster layer and one
-frame. The exporter deliberately rejects other project layouts rather than
-silently producing an image that differs from what Pixelorama would render.
+The source files are Pixelorama v7 projects with one RGBA raster layer. Static
+projects export one PNG. Animated projects export the first frame to the
+asset's default PNG path and each tagged frame to a named PNG as well.
 """
 
 from __future__ import annotations
@@ -50,7 +50,7 @@ def write_png(path: Path, width: int, height: int, rgba: bytes) -> None:
     temporary_path.replace(path)
 
 
-def read_source(path: Path) -> tuple[int, int, bytes]:
+def read_source(path: Path) -> tuple[int, int, list[bytes], list[dict]]:
     try:
         with ZipFile(path) as project:
             metadata = json.loads(project.read("data.json"))
@@ -62,19 +62,16 @@ def read_source(path: Path) -> tuple[int, int, bytes]:
 
             layers = metadata.get("layers", [])
             frames = metadata.get("frames", [])
-            if len(layers) != 1 or len(frames) != 1:
-                raise ValueError("expected exactly one layer and one frame")
+            if len(layers) != 1 or not frames:
+                raise ValueError("expected exactly one layer and at least one frame")
 
             layer = layers[0]
-            cel_list = frames[0].get("cels", [])
             if (
                 layer.get("type") != 0
                 or not layer.get("visible", False)
                 or layer.get("opacity", 1.0) != 1.0
                 or layer.get("blend_mode", 0) != 0
                 or layer.get("effects", [])
-                or len(cel_list) != 1
-                or cel_list[0].get("opacity", 1.0) != 1.0
             ):
                 raise ValueError(
                     "expected one visible, full-opacity raster layer without effects"
@@ -82,13 +79,55 @@ def read_source(path: Path) -> tuple[int, int, bytes]:
 
             width = int(metadata["size_x"])
             height = int(metadata["size_y"])
-            pixels = project.read("image_data/frames/1/layer_1")
+            frame_pixels: list[bytes] = []
+            for frame_index, frame in enumerate(frames, start=1):
+                cel_list = frame.get("cels", [])
+                if len(cel_list) != 1 or cel_list[0].get("opacity", 1.0) != 1.0:
+                    raise ValueError(
+                        "expected one full-opacity raster cel in every frame"
+                    )
+                frame_pixels.append(
+                    project.read(f"image_data/frames/{frame_index}/layer_1")
+                )
+            tags = metadata.get("tags", [])
     except (BadZipFile, KeyError, json.JSONDecodeError) as error:
         raise ValueError(f"invalid or unsupported Pixelorama project: {error}") from error
 
-    if width <= 0 or height <= 0 or len(pixels) != width * height * 4:
-        raise ValueError("expected a full-canvas RGBA8 pixel layer")
-    return width, height, pixels
+    expected_size = width * height * 4
+    if (
+        width <= 0
+        or height <= 0
+        or any(len(pixels) != expected_size for pixels in frame_pixels)
+    ):
+        raise ValueError("expected full-canvas RGBA8 pixel layers")
+
+    for tag in tags:
+        if (
+            not isinstance(tag, dict)
+            or not isinstance(tag.get("name"), str)
+            or not tag["name"].strip()
+            or not isinstance(tag.get("from"), int)
+            or not isinstance(tag.get("to"), int)
+            or tag["from"] < 1
+            or tag["to"] < tag["from"]
+            or tag["to"] > len(frame_pixels)
+        ):
+            raise ValueError("expected valid frame tags within the project timeline")
+    return width, height, frame_pixels, tags
+
+
+def tagged_frame_name(source: Path, frame_number: int, tags: list[dict]) -> str:
+    for tag in tags:
+        if tag["from"] <= frame_number <= tag["to"]:
+            name = "".join(
+                character if character.isalnum() or character in "-_" else "_"
+                for character in tag["name"].strip()
+            )
+            suffix = f"-{name}"
+            if tag["from"] != tag["to"]:
+                suffix += f"-{frame_number:02d}"
+            return f"{source.stem}{suffix}.png"
+    return f"{source.stem}-frame-{frame_number:02d}.png"
 
 
 def main() -> int:
@@ -100,13 +139,24 @@ def main() -> int:
     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
     for source in sources:
         try:
-            width, height, pixels = read_source(source)
+            width, height, frames, tags = read_source(source)
             destination = EXPORT_DIR / f"{source.stem}.png"
-            write_png(destination, width, height, pixels)
+            write_png(destination, width, height, frames[0])
+            print(f"Esportato {source.name} -> {destination.name} ({width}x{height})")
+
+            if len(frames) > 1:
+                for frame_number, pixels in enumerate(frames, start=1):
+                    tagged_destination = EXPORT_DIR / tagged_frame_name(
+                        source, frame_number, tags
+                    )
+                    write_png(tagged_destination, width, height, pixels)
+                    print(
+                        f"Esportato frame {frame_number} -> "
+                        f"{tagged_destination.name} ({width}x{height})"
+                    )
         except (OSError, ValueError) as error:
             print(f"Errore nell'export di {source.name}: {error}", file=sys.stderr)
             return 1
-        print(f"Esportato {source.name} -> {destination.name} ({width}x{height})")
 
     return 0
 
