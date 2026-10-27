@@ -17,6 +17,7 @@ var generate_node_tree_action: Callable = func(): generate_node_tree()
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	_lighting_controls.visible = false
 	_lighting_controls.crt_enabled_changed.connect(_on_crt_enabled_changed)
 	_lighting_controls.crt_strength_changed.connect(_on_crt_strength_changed)
 	_lighting_controls.crt_spacing_changed.connect(_on_crt_spacing_changed)
@@ -35,7 +36,6 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		event is InputEventKey
 		and event.pressed
 		and not event.echo
-		and event.ctrl_pressed
 		and event.keycode == KEY_EQUAL
 	):
 		_lighting_controls.visible = not _lighting_controls.visible

@@ -3,11 +3,15 @@ extends Node2D
 @export_range(0.0, 0.3, 0.01) var ambient_level := 0.0
 @export_range(0.0, 2.0, 0.01) var window_light_energy := 0.32
 @export_range(0.0, 4.0, 0.05) var flashlight_energy := 2.0
-@export_range(0.0, 2.0, 0.05) var bulblight_energy := 1.0
+@export_range(0.0, 2.0, 0.05) var bulblight_energy := 2.0
+
+const LEFT_WINDOW_SOURCE_RECT := Rect2i(106, 41, 38, 14)
+const RIGHT_WINDOW_SOURCE_RECT := Rect2i(176, 41, 38, 14)
 
 @onready var _flashlight: PointLight2D = $Lighting/Flashlight
 @onready var _left_window_light: PointLight2D = $Lighting/LeftWindowLight
 @onready var _right_window_light: PointLight2D = $Lighting/RightWindowLight
+@onready var _background: Sprite2D = $Background
 @onready var _bulb_glow: PointLight2D = $Lighting/BulbGlow
 @onready var _ceiling_pool: PointLight2D = $Lighting/CeilingPool
 @onready var _ambient: CanvasModulate = $Lighting/AmbientDarkness
@@ -23,9 +27,18 @@ func _ready() -> void:
 	var soft_light := _create_soft_light_texture()
 	_bulb_glow.texture = soft_light
 	_ceiling_pool.texture = soft_light
-	_left_window_light.texture = soft_light
-	_right_window_light.texture = soft_light
 	_flashlight.texture = soft_light
+	var background_image := _background.texture.get_image()
+	_left_window_light.texture = _create_window_light_texture(
+		background_image, LEFT_WINDOW_SOURCE_RECT
+	)
+	_right_window_light.texture = _create_window_light_texture(
+		background_image, RIGHT_WINDOW_SOURCE_RECT
+	)
+	_left_window_light.position = _get_window_light_position(LEFT_WINDOW_SOURCE_RECT)
+	_right_window_light.position = _get_window_light_position(RIGHT_WINDOW_SOURCE_RECT)
+	_left_window_light.texture_scale = _background.scale.x
+	_right_window_light.texture_scale = _background.scale.x
 	_ambient.color = Color(ambient_level, ambient_level, ambient_level, 1.0)
 	_flashlight.texture_scale = 3.0
 	_flashlight.global_position = get_global_mouse_position()
@@ -45,7 +58,7 @@ func _ready() -> void:
 	_on_window_light_energy_changed(window_light_energy)
 	_on_flashlight_energy_changed(flashlight_energy)
 	_on_bulblight_energy_changed(bulblight_energy)
-	_switcher.call("set_is_on", true)
+	_switcher.call("set_is_on", false)
 
 
 func _process(delta: float) -> void:
@@ -84,6 +97,25 @@ func _create_soft_light_texture() -> GradientTexture2D:
 	light_texture.fill_from = Vector2(0.5, 0.5)
 	light_texture.fill_to = Vector2(1.0, 0.5)
 	return light_texture
+
+
+func _create_window_light_texture(source: Image, source_rect: Rect2i) -> ImageTexture:
+	var mask := Image.create(source_rect.size.x, source_rect.size.y, false, Image.FORMAT_RGBA8)
+	mask.fill(Color.TRANSPARENT)
+	for y in range(source_rect.size.y):
+		for x in range(source_rect.size.x):
+			var source_pixel := source.get_pixel(
+				source_rect.position.x + x, source_rect.position.y + y
+			)
+			if source_pixel.r > 0.0:
+				mask.set_pixel(x, y, Color.WHITE)
+	return ImageTexture.create_from_image(mask)
+
+
+func _get_window_light_position(source_rect: Rect2i) -> Vector2:
+	var source_size := Vector2(_background.texture.get_size())
+	var source_center := Vector2(source_rect.position) + Vector2(source_rect.size) * 0.5
+	return _background.position + (source_center - source_size * 0.5) * _background.scale
 
 
 func _on_flashlight_energy_changed(value: float) -> void:

@@ -152,7 +152,7 @@ func _build_menu() -> void:
 	panel_key_badge.add_theme_stylebox_override("panel", _make_key_style())
 	panel_shortcut_row.add_child(panel_key_badge)
 	var panel_shortcut := Label.new()
-	panel_shortcut.text = "CTRL + ="
+	panel_shortcut.text = "="
 	panel_shortcut.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
 	panel_key_badge.add_child(panel_shortcut)
 	var panel_shortcut_description := Label.new()

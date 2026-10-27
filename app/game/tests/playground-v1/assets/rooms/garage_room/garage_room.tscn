@@ -30,16 +30,16 @@ scale = Vector2(4, 4)
 color = Color(0.0, 0.0, 0.0, 1.0)
 
 [node name="LeftWindowLight" type="PointLight2D" parent="Lighting"]
-texture_filter = 2
-position = Vector2(496, 194)
+texture_filter = 1
+position = Vector2(500, 192)
 energy = 0.32
-texture_scale = 1.25
+texture_scale = 4.0
 
 [node name="RightWindowLight" type="PointLight2D" parent="Lighting"]
-texture_filter = 2
-position = Vector2(778, 194)
+texture_filter = 1
+position = Vector2(780, 192)
 energy = 0.32
-texture_scale = 1.25
+texture_scale = 4.0
 
 [node name="BulbGlow" type="PointLight2D" parent="Lighting"]
 texture_filter = 2
