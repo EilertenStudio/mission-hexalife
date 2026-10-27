@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://by842sj1clwss"
-path="res://.godot/imported/Screenshot_20261025_025657.png-051c1caf3f36861aa7391f41436d1dd4.ctex"
+uid="uid://dl1ay2mj4qeqb"
+path="res://.godot/imported/garage_room-v006-door.png-b6307af2e162d31700fe478fa49485d9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tests/playground-v1/references/Screenshot_20261025_025657.png"
-dest_files=["res://.godot/imported/Screenshot_20261025_025657.png-051c1caf3f36861aa7391f41436d1dd4.ctex"]
+source_file="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v006-door.png"
+dest_files=["res://.godot/imported/garage_room-v006-door.png-b6307af2e162d31700fe478fa49485d9.ctex"]
 
 [params]
 

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v006-door.png" id="1_door"]
+
+[node name="Door" type="Sprite2D"]
+texture_filter = 1
+texture = ExtResource("1_door")

@@ -4,8 +4,13 @@ signal ambient_level_changed(value: float)
 signal window_light_energy_changed(value: float)
 signal flashlight_energy_changed(value: float)
 signal bulblight_energy_changed(value: float)
+signal window_light_range_changed(width_px: float)
+signal flashlight_range_changed(radius_px: float)
+signal bulb_glow_range_changed(radius_px: float)
+signal ceiling_pool_range_changed(radius_px: float)
 signal crt_strength_changed(value: float)
 signal crt_spacing_changed(value: float)
+signal light_ranges_visibility_changed(is_visible: bool)
 signal flashlight_toggle_requested
 signal bulblight_toggle_requested
 signal crt_enabled_changed(is_enabled: bool)
@@ -16,15 +21,24 @@ var _flashlight_slider: HSlider
 var _bulblight_slider: HSlider
 var _crt_strength_slider: HSlider
 var _crt_spacing_slider: HSlider
+var _window_range_slider: HSlider
+var _flashlight_range_slider: HSlider
+var _bulb_glow_range_slider: HSlider
+var _ceiling_pool_range_slider: HSlider
 var _ambient_value: Label
 var _window_light_value: Label
 var _flashlight_value: Label
 var _bulblight_value: Label
 var _crt_strength_value: Label
 var _crt_spacing_value: Label
+var _window_range_value: Label
+var _flashlight_range_value: Label
+var _bulb_glow_range_value: Label
+var _ceiling_pool_range_value: Label
 var _flashlight_toggle: Button
 var _bulblight_toggle: Button
 var _crt_toggle: Button
+var _light_ranges_toggle: Button
 var _last_slider: HSlider
 
 
@@ -56,9 +70,28 @@ func set_crt_control_values(is_enabled: bool, strength: float, spacing: float) -
 	_set_slider_value(_crt_spacing_slider, _crt_spacing_value, spacing)
 
 
+func set_range_control_values(
+	show_ranges: bool,
+	window_width: float,
+	flashlight_radius: float,
+	bulb_glow_radius: float,
+	ceiling_pool_radius: float
+) -> void:
+	_set_toggle_button(_light_ranges_toggle, show_ranges)
+	_set_range_slider_value(_window_range_slider, _window_range_value, window_width)
+	_set_range_slider_value(_flashlight_range_slider, _flashlight_range_value, flashlight_radius)
+	_set_range_slider_value(_bulb_glow_range_slider, _bulb_glow_range_value, bulb_glow_radius)
+	_set_range_slider_value(_ceiling_pool_range_slider, _ceiling_pool_range_value, ceiling_pool_radius)
+
+
 func _set_slider_value(slider: HSlider, value_label: Label, value: float) -> void:
 	slider.set_value_no_signal(value)
 	value_label.text = "%.2f" % value
+
+
+func _set_range_slider_value(slider: HSlider, value_label: Label, value: float) -> void:
+	slider.set_value_no_signal(value)
+	value_label.text = "%.0f px" % value
 
 
 func _set_toggle_button(button: Button, is_enabled: bool) -> void:
@@ -83,9 +116,14 @@ func _build_menu() -> void:
 	panel.add_theme_stylebox_override("panel", _make_panel_style())
 	screen.add_child(panel)
 
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(318.0, 660.0)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	panel.add_child(scroll)
+
 	var stack := VBoxContainer.new()
 	stack.add_theme_constant_override("separation", 6)
-	panel.add_child(stack)
+	scroll.add_child(stack)
 
 	var title := Label.new()
 	title.text = "LIGHTING"
@@ -101,6 +139,33 @@ func _build_menu() -> void:
 	_flashlight_slider = _last_slider
 	_bulblight_value = _add_light_control(stack, "Bulblight", 2.0, 1.0, 0.05, true)
 	_bulblight_slider = _last_slider
+
+	var range_divider := HSeparator.new()
+	stack.add_child(range_divider)
+	var range_title := Label.new()
+	range_title.text = "LIGHT RANGES"
+	range_title.add_theme_font_size_override("font_size", 14)
+	range_title.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
+	stack.add_child(range_title)
+	var range_toggle_row := HBoxContainer.new()
+	range_toggle_row.add_theme_constant_override("separation", 8)
+	stack.add_child(range_toggle_row)
+	var range_toggle_label := Label.new()
+	range_toggle_label.text = "Show boundaries"
+	range_toggle_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	range_toggle_label.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78))
+	range_toggle_row.add_child(range_toggle_label)
+	_light_ranges_toggle = _create_toggle_button(false)
+	range_toggle_row.add_child(_light_ranges_toggle)
+
+	_window_range_value = _add_range_control(stack, "Window lights", 240.0, 152.0, 4.0)
+	_window_range_slider = _last_slider
+	_flashlight_range_value = _add_range_control(stack, "Flashlight radius", 640.0, 384.0, 8.0)
+	_flashlight_range_slider = _last_slider
+	_bulb_glow_range_value = _add_range_control(stack, "Bulb glow radius", 160.0, 54.0, 2.0)
+	_bulb_glow_range_slider = _last_slider
+	_ceiling_pool_range_value = _add_range_control(stack, "Ceiling spread", 1200.0, 1200.0, 16.0)
+	_ceiling_pool_range_slider = _last_slider
 
 	var section_divider := HSeparator.new()
 	stack.add_child(section_divider)
@@ -161,8 +226,27 @@ func _build_menu() -> void:
 	panel_shortcut_description.add_theme_color_override("font_color", Color(0.62, 0.62, 0.62))
 	panel_shortcut_row.add_child(panel_shortcut_description)
 
+	var pause_shortcut_row := HBoxContainer.new()
+	pause_shortcut_row.add_theme_constant_override("separation", 8)
+	stack.add_child(pause_shortcut_row)
+	var pause_key_badge := PanelContainer.new()
+	pause_key_badge.add_theme_stylebox_override("panel", _make_key_style())
+	pause_shortcut_row.add_child(pause_key_badge)
+	var pause_shortcut := Label.new()
+	pause_shortcut.text = "F5"
+	pause_shortcut.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
+	pause_key_badge.add_child(pause_shortcut)
+	var pause_shortcut_description := Label.new()
+	pause_shortcut_description.text = "Pause / resume"
+	pause_shortcut_description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pause_shortcut_description.add_theme_color_override("font_color", Color(0.62, 0.62, 0.62))
+	pause_shortcut_row.add_child(pause_shortcut_description)
+
 	_flashlight_toggle.pressed.connect(func() -> void: flashlight_toggle_requested.emit())
 	_bulblight_toggle.pressed.connect(func() -> void: bulblight_toggle_requested.emit())
+	_light_ranges_toggle.toggled.connect(
+		func(show_ranges: bool) -> void: light_ranges_visibility_changed.emit(show_ranges)
+	)
 	_crt_toggle.toggled.connect(func(is_enabled: bool) -> void: crt_enabled_changed.emit(is_enabled))
 
 
@@ -236,6 +320,64 @@ func _add_light_control(
 	parent.add_child(slider)
 	_last_slider = slider
 	return value
+
+
+func _add_range_control(
+	parent: VBoxContainer,
+	label_text: String,
+	maximum: float,
+	initial: float,
+	step: float
+) -> Label:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	parent.add_child(row)
+
+	var label := Label.new()
+	label.text = label_text
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78))
+	row.add_child(label)
+
+	var value := Label.new()
+	value.text = "%.0f px" % initial
+	value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	value.custom_minimum_size = Vector2(54.0, 0.0)
+	value.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
+	row.add_child(value)
+
+	var slider := _create_slider(0.0, maximum, initial, step)
+	slider.value_changed.connect(func(changed_value: float) -> void:
+		value.text = "%.0f px" % changed_value
+		match label_text:
+			"Window lights": window_light_range_changed.emit(changed_value)
+			"Flashlight radius": flashlight_range_changed.emit(changed_value)
+			"Bulb glow radius": bulb_glow_range_changed.emit(changed_value)
+			"Ceiling spread": ceiling_pool_range_changed.emit(changed_value)
+	)
+	parent.add_child(slider)
+	_last_slider = slider
+	return value
+
+
+func _create_slider(minimum: float, maximum: float, initial: float, step: float) -> HSlider:
+	var slider := HSlider.new()
+	slider.min_value = minimum
+	slider.max_value = maximum
+	slider.step = step
+	slider.value = initial
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slider.custom_minimum_size = Vector2(270.0, 18.0)
+	var track := _make_slider_style(Color(0.12, 0.12, 0.12))
+	var filled_track := _make_slider_style(Color(0.52, 0.52, 0.52))
+	var highlighted_track := _make_slider_style(Color(0.68, 0.68, 0.68))
+	slider.add_theme_stylebox_override("slider", track)
+	slider.add_theme_stylebox_override("grabber_area", filled_track)
+	slider.add_theme_stylebox_override("grabber_area_highlight", highlighted_track)
+	var grabber := _create_grabber_texture()
+	slider.add_theme_icon_override("grabber", grabber)
+	slider.add_theme_icon_override("grabber_highlight", grabber)
+	return slider
 
 
 func _create_toggle_button(initially_enabled: bool) -> Button:

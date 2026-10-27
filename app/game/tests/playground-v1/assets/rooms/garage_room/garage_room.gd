@@ -14,9 +14,12 @@ const RIGHT_WINDOW_SOURCE_RECT := Rect2i(176, 41, 38, 14)
 @onready var _background: Sprite2D = $Background
 @onready var _bulb_glow: PointLight2D = $Lighting/BulbGlow
 @onready var _ceiling_pool: PointLight2D = $Lighting/CeilingPool
+@onready var _bulb_light_origin: Marker2D = $Lamp/BulbLightOrigin
+@onready var _ceiling_pool_origin: Marker2D = $Lamp/CeilingPoolOrigin
 @onready var _ambient: CanvasModulate = $Lighting/AmbientDarkness
 @onready var _switcher: Sprite2D = $Switcher
 @onready var _lighting_controls: CanvasLayer = $LightingControls
+@onready var _light_range_overlay: Node2D = $LightRangeOverlay
 
 var _lamp_is_on := false
 var _flashlight_is_on := false
@@ -24,17 +27,6 @@ var _flicker_clock := 0.0
 
 
 func _ready() -> void:
-	var soft_light := _create_soft_light_texture()
-	_bulb_glow.texture = soft_light
-	_ceiling_pool.texture = soft_light
-	_flashlight.texture = soft_light
-	var background_image := _background.texture.get_image()
-	_left_window_light.texture = _create_window_light_texture(
-		background_image, LEFT_WINDOW_SOURCE_RECT
-	)
-	_right_window_light.texture = _create_window_light_texture(
-		background_image, RIGHT_WINDOW_SOURCE_RECT
-	)
 	_left_window_light.position = _get_window_light_position(LEFT_WINDOW_SOURCE_RECT)
 	_right_window_light.position = _get_window_light_position(RIGHT_WINDOW_SOURCE_RECT)
 	_left_window_light.texture_scale = _background.scale.x
@@ -42,18 +34,37 @@ func _ready() -> void:
 	_ambient.color = Color(ambient_level, ambient_level, ambient_level, 1.0)
 	_flashlight.texture_scale = 3.0
 	_flashlight.global_position = get_global_mouse_position()
+	_update_lamp_light_positions()
 	_flashlight.enabled = false
 	_switcher.connect("state_changed", _on_switcher_state_changed)
 	_lighting_controls.ambient_level_changed.connect(_on_ambient_level_changed)
 	_lighting_controls.window_light_energy_changed.connect(_on_window_light_energy_changed)
 	_lighting_controls.flashlight_energy_changed.connect(_on_flashlight_energy_changed)
 	_lighting_controls.bulblight_energy_changed.connect(_on_bulblight_energy_changed)
+	_lighting_controls.window_light_range_changed.connect(_on_window_light_range_changed)
+	_lighting_controls.flashlight_range_changed.connect(_on_flashlight_range_changed)
+	_lighting_controls.bulb_glow_range_changed.connect(_on_bulb_glow_range_changed)
+	_lighting_controls.ceiling_pool_range_changed.connect(_on_ceiling_pool_range_changed)
+	_lighting_controls.light_ranges_visibility_changed.connect(_on_light_ranges_visibility_changed)
 	_lighting_controls.flashlight_toggle_requested.connect(_toggle_flashlight)
 	_lighting_controls.bulblight_toggle_requested.connect(_toggle_bulblight)
 	_lighting_controls.set_control_values(
 		ambient_level, window_light_energy, flashlight_energy, bulblight_energy
 	)
 	_lighting_controls.set_flashlight_enabled(_flashlight_is_on)
+	_light_range_overlay.call(
+		"set_lights",
+		[_left_window_light, _right_window_light, _flashlight, _bulb_glow, _ceiling_pool]
+	)
+	_light_range_overlay.call("set_ranges_visible", false)
+	_lighting_controls.call(
+		"set_range_control_values",
+		false,
+		_left_window_light.texture.get_width() * _left_window_light.texture_scale,
+		_flashlight.texture.get_width() * _flashlight.texture_scale * 0.5,
+		_bulb_glow.texture.get_width() * _bulb_glow.texture_scale * 0.5,
+		_ceiling_pool.texture.get_width() * _ceiling_pool.texture_scale * 0.5
+	)
 	_on_ambient_level_changed(ambient_level)
 	_on_window_light_energy_changed(window_light_energy)
 	_on_flashlight_energy_changed(flashlight_energy)
@@ -65,6 +76,7 @@ func _process(delta: float) -> void:
 	_flicker_clock += delta
 	var mouse_position := get_global_mouse_position()
 	_flashlight.global_position = mouse_position
+	_update_lamp_light_positions()
 
 	if _lamp_is_on:
 		var small_flicker := (
@@ -76,40 +88,30 @@ func _process(delta: float) -> void:
 		_ceiling_pool.energy = bulblight_energy * 0.5 * (0.98 + sin(_flicker_clock * 7.1) * 0.02)
 
 
-func _unhandled_key_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_F:
+func _update_lamp_light_positions() -> void:
+	_bulb_glow.global_position = _bulb_light_origin.global_position
+	_ceiling_pool.global_position = _ceiling_pool_origin.global_position
+
+
+func _input(event: InputEvent) -> void:
+	if not event is InputEventKey:
+		return
+
+	var key_event := event as InputEventKey
+	if not key_event.pressed or key_event.echo:
+		return
+
+	var is_panel_toggle: bool = (
+		key_event.keycode == KEY_EQUAL
+		or key_event.physical_keycode == KEY_EQUAL
+		or key_event.unicode == 61
+	)
+	if is_panel_toggle:
+		_lighting_controls.visible = not _lighting_controls.visible
+		get_viewport().set_input_as_handled()
+	elif key_event.physical_keycode == KEY_F or key_event.keycode == KEY_F:
 		_toggle_flashlight()
 		get_viewport().set_input_as_handled()
-
-
-func _create_soft_light_texture() -> GradientTexture2D:
-	var gradient := Gradient.new()
-	gradient.set_color(0, Color(1.0, 1.0, 1.0, 1.0))
-	gradient.set_color(1, Color(1.0, 1.0, 1.0, 0.0))
-	gradient.add_point(0.12, Color(1.0, 1.0, 1.0, 0.88))
-	gradient.add_point(0.55, Color(1.0, 1.0, 1.0, 0.24))
-
-	var light_texture := GradientTexture2D.new()
-	light_texture.gradient = gradient
-	light_texture.width = 256
-	light_texture.height = 256
-	light_texture.fill = GradientTexture2D.FILL_RADIAL
-	light_texture.fill_from = Vector2(0.5, 0.5)
-	light_texture.fill_to = Vector2(1.0, 0.5)
-	return light_texture
-
-
-func _create_window_light_texture(source: Image, source_rect: Rect2i) -> ImageTexture:
-	var mask := Image.create(source_rect.size.x, source_rect.size.y, false, Image.FORMAT_RGBA8)
-	mask.fill(Color.TRANSPARENT)
-	for y in range(source_rect.size.y):
-		for x in range(source_rect.size.x):
-			var source_pixel := source.get_pixel(
-				source_rect.position.x + x, source_rect.position.y + y
-			)
-			if source_pixel.r > 0.0:
-				mask.set_pixel(x, y, Color.WHITE)
-	return ImageTexture.create_from_image(mask)
 
 
 func _get_window_light_position(source_rect: Rect2i) -> Vector2:
@@ -157,6 +159,33 @@ func _on_bulblight_energy_changed(value: float) -> void:
 	bulblight_energy = value
 	_bulb_glow.energy = value
 	_ceiling_pool.energy = value * 0.5
+
+
+func _on_window_light_range_changed(width_px: float) -> void:
+	var texture_width := float(_left_window_light.texture.get_width())
+	var texture_scale := width_px / texture_width
+	_left_window_light.texture_scale = texture_scale
+	_right_window_light.texture_scale = texture_scale
+	_light_range_overlay.queue_redraw()
+
+
+func _on_flashlight_range_changed(radius_px: float) -> void:
+	_flashlight.texture_scale = radius_px / (float(_flashlight.texture.get_width()) * 0.5)
+	_light_range_overlay.queue_redraw()
+
+
+func _on_bulb_glow_range_changed(radius_px: float) -> void:
+	_bulb_glow.texture_scale = radius_px / (float(_bulb_glow.texture.get_width()) * 0.5)
+	_light_range_overlay.queue_redraw()
+
+
+func _on_ceiling_pool_range_changed(radius_px: float) -> void:
+	_ceiling_pool.texture_scale = radius_px / (float(_ceiling_pool.texture.get_width()) * 0.5)
+	_light_range_overlay.queue_redraw()
+
+
+func _on_light_ranges_visibility_changed(show_ranges: bool) -> void:
+	_light_range_overlay.call("set_ranges_visible", show_ranges)
 
 
 func _on_switcher_state_changed(is_on: bool) -> void:

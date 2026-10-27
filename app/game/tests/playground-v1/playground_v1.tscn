@@ -3,16 +3,8 @@
 [ext_resource type="Script" uid="uid://bqj8kbdq62qxh" path="res://tests/playground-v1/playground_v1.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://cn0ocvsnw727d" path="res://tests/playground-v1/assets/rooms/garage_room/garage_room.tscn" id="2_garage_room"]
 [ext_resource type="PackedScene" path="res://tests/playground-v1/features/visual/crt_vertical/crt_vertical.tscn" id="3_crt_vertical"]
-[ext_resource type="Texture2D" uid="uid://djx17c4ejun7k" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v006-background.png" id="3_il03y"]
-[ext_resource type="Script" uid="uid://qdud3a7gvhmu" path="res://tests/playground-v1/assets/rooms/garage_room/garage_room.gd" id="4_bt8yo"]
-[ext_resource type="PackedScene" path="res://tests/playground-v1/assets/rooms/garage_room/lamp.tscn" id="6_7shmh"]
-[ext_resource type="Texture2D" uid="uid://ca5uohptj2dxq" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v006-lamp.png" id="7_eyedp"]
-[ext_resource type="PackedScene" path="res://tests/playground-v1/assets/rooms/garage_room/switcher.tscn" id="8_hjbmy"]
-[ext_resource type="Texture2D" uid="uid://wvkcd0atuxwe" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v006-switcher.png" id="9_y53pl"]
-[ext_resource type="Script" uid="uid://dal56yqu2dm5o" path="res://tests/playground-v1/assets/rooms/garage_room/lighting_controls.gd" id="10_okeu2"]
 
 [node name="PlaygroundV1" type="Node2D" unique_id=1839781794]
-position = Vector2(1, 0)
 script = ExtResource("1_script")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1332886554]
@@ -20,67 +12,4 @@ position = Vector2(640, 360)
 
 [node name="CRTVertical" parent="." unique_id=1474486082 instance=ExtResource("3_crt_vertical")]
 
-[node name="GarageRoom" type="Node2D" parent="." unique_id=1308650380 instance=ExtResource("2_garage_room")]
-texture_filter = 1
-script = ExtResource("4_bt8yo")
-
-[node name="Background" type="Sprite2D" parent="GarageRoom" unique_id=1555601607]
-z_index = -100
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("3_il03y")
-
-[node name="Lamp" type="Sprite2D" parent="GarageRoom" unique_id=1990577218 instance=ExtResource("6_7shmh")]
-z_index = -99
-texture_filter = 1
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("7_eyedp")
-
-[node name="Switcher" type="Sprite2D" parent="GarageRoom" unique_id=463397562 instance=ExtResource("8_hjbmy")]
-z_index = -99
-texture_filter = 1
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("9_y53pl")
-
-[node name="Lighting" type="Node2D" parent="GarageRoom" unique_id=2104550438]
-
-[node name="AmbientDarkness" type="CanvasModulate" parent="GarageRoom/Lighting" unique_id=29222213]
-color = Color(0, 0, 0, 1)
-
-[node name="LeftWindowLight" type="PointLight2D" parent="GarageRoom/Lighting" unique_id=102778042]
-texture_filter = 1
-position = Vector2(500, 192)
-energy = 0.32
-texture_scale = 4.0
-
-[node name="RightWindowLight" type="PointLight2D" parent="GarageRoom/Lighting" unique_id=382631448]
-texture_filter = 1
-position = Vector2(780, 192)
-energy = 0.32
-texture_scale = 4.0
-
-[node name="BulbGlow" type="PointLight2D" parent="GarageRoom/Lighting" unique_id=861868195]
-texture_filter = 2
-position = Vector2(640, 76)
-enabled = false
-texture_scale = 0.42
-
-[node name="CeilingPool" type="PointLight2D" parent="GarageRoom/Lighting" unique_id=1522936248]
-texture_filter = 2
-position = Vector2(640, 116)
-enabled = false
-energy = 0.5
-texture_scale = 7.0
-
-[node name="Flashlight" type="PointLight2D" parent="GarageRoom/Lighting" unique_id=218599965]
-texture_filter = 2
-position = Vector2(640, 360)
-enabled = false
-energy = 2.0
-texture_scale = 3.0
-
-[node name="LightingControls" type="CanvasLayer" parent="GarageRoom" unique_id=580974649]
-layer = 10
-script = ExtResource("10_okeu2")
+[node name="GarageRoom" parent="." unique_id=1308650380 instance=ExtResource("2_garage_room")]

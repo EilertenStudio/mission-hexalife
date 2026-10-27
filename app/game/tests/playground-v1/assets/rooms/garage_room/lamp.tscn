@@ -1,8 +1,16 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v006-lamp.png" id="1_lamp"]
+[ext_resource type="Script" path="res://tests/playground-v1/assets/rooms/garage_room/lamp.gd" id="2_script"]
 
 [node name="Lamp" type="Sprite2D"]
 texture_filter = 1
 z_index = -99
 texture = ExtResource("1_lamp")
+script = ExtResource("2_script")
+
+[node name="BulbLightOrigin" type="Marker2D" parent="."]
+position = Vector2(0, -71)
+
+[node name="CeilingPoolOrigin" type="Marker2D" parent="."]
+position = Vector2(0, -61)

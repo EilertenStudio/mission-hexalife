@@ -47,12 +47,12 @@ func set_is_on(value: bool, notify := true) -> void:
 		state_changed.emit(_is_on)
 
 
-func _contains_opaque_pixel(global_position: Vector2) -> bool:
+func _contains_opaque_pixel(world_point: Vector2) -> bool:
 	if _hit_mask == null or _hit_mask.is_empty():
 		return false
 
 	var texture_position := (
-		to_local(global_position) + Vector2(_hit_mask.get_size()) * 0.5
+		to_local(world_point) + Vector2(_hit_mask.get_size()) * 0.5
 	)
 	var pixel := Vector2i(floori(texture_position.x), floori(texture_position.y))
 	if (

@@ -16,4 +16,6 @@
 - Per `garage_room`, gli asset `V006` modificati dall'utente sono il riferimento
   visivo definitivo. Mantieni invariati i relativi sorgenti Pixelorama e gli
   export; implementa l'illuminazione e gli effetti nella scena Godot.
+- Comporre il Playground tramite scene Godot riusabili; non aggiungere un
+  pulsante `GENERATE` per materializzare il relativo node tree.
 - La scena resta una PoC sotto tests/ e non sostituisce la scena principale.
