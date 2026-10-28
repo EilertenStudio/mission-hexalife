@@ -1,8 +1,7 @@
-extends Sprite2D
+extends "res://tests/playground-v1/assets/rooms/garage_room/scripts/interactable_sprite.gd"
 
 const SWING_ANGLE_DEGREES := 7.0
 
-var _hit_mask: Image
 var _rest_rotation := 0.0
 var _pivot_offset := Vector2.ZERO
 var _anchor_position := Vector2.ZERO
@@ -12,41 +11,16 @@ var _swing_tween: Tween
 
 
 func _ready() -> void:
+	super._ready()
 	if texture == null:
 		return
-	_hit_mask = texture.get_image()
 	_rest_rotation = rotation
-	_pivot_offset = Vector2(0.0, -float(_hit_mask.get_height()) * 0.5) * scale
+	_pivot_offset = Vector2(0.0, -float(texture.get_height()) * 0.5) * scale
 	_anchor_position = position + _pivot_offset.rotated(_rest_rotation)
 
 
-func _input(event: InputEvent) -> void:
-	if (
-		event is InputEventMouseButton
-		and event.button_index == MOUSE_BUTTON_LEFT
-		and event.pressed
-		and _contains_opaque_pixel(get_global_mouse_position())
-	):
-		_swing()
-		get_viewport().set_input_as_handled()
-
-
-func _contains_opaque_pixel(world_point: Vector2) -> bool:
-	if _hit_mask == null or _hit_mask.is_empty():
-		return false
-
-	var texture_position := (
-		to_local(world_point) + Vector2(_hit_mask.get_size()) * 0.5 - offset
-	)
-	var pixel := Vector2i(floori(texture_position.x), floori(texture_position.y))
-	if (
-		pixel.x < 0
-		or pixel.y < 0
-		or pixel.x >= _hit_mask.get_width()
-		or pixel.y >= _hit_mask.get_height()
-	):
-		return false
-	return _hit_mask.get_pixelv(pixel).a > 0.0
+func _perform_interaction() -> void:
+	_swing()
 
 
 func _swing() -> void:

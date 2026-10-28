@@ -11,6 +11,10 @@
 [ext_resource type="Script" uid="uid://cyrrkbl7wf7x5" path="res://tests/playground-v1/assets/rooms/garage_room/scripts/light_range_overlay.gd" id="7_range_overlay"]
 [ext_resource type="Script" uid="uid://ddalayci26cv2" path="res://tests/playground-v1/features/debug/pause/pause_controller.gd" id="8_pause"]
 [ext_resource type="Texture2D" path="res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v006-light-soft.tres" id="8_xm1bg"]
+[ext_resource type="Script" uid="uid://4dej5eda67i6" path="res://tests/playground-v1/assets/rooms/garage_room/scripts/dust_motes.gd" id="9_dust"]
+[ext_resource type="PackedScene" path="res://tests/playground-v1/features/audio/exterior_rain/exterior_rain.tscn" id="10_rain"]
+[ext_resource type="Script" path="res://tests/playground-v1/assets/rooms/garage_room/scripts/window_rain_particles.gd" id="11_window_rain"]
+[ext_resource type="Script" path="res://tests/playground-v1/assets/rooms/garage_room/scripts/interaction_controller.gd" id="12_interaction_controller"]
 
 [node name="GarageRoom" type="Node2D" unique_id=1308650380]
 texture_filter = 1
@@ -23,7 +27,7 @@ scale = Vector2(4, 4)
 texture = ExtResource("1_background")
 
 [node name="Door" parent="." unique_id=1686641808 instance=ExtResource("6_door")]
-z_index = -99
+z_index = -98
 position = Vector2(640, 360)
 scale = Vector2(4, 4)
 
@@ -34,6 +38,9 @@ scale = Vector2(4, 4)
 [node name="Switcher" parent="." unique_id=119667328 instance=ExtResource("3_switcher")]
 position = Vector2(640, 360)
 scale = Vector2(4, 4)
+
+[node name="InteractionController" type="Node2D" parent="."]
+script = ExtResource("12_interaction_controller")
 
 [node name="Lighting" type="Node2D" parent="." unique_id=1480302569]
 
@@ -81,6 +88,16 @@ texture_scale = 3.0
 layer = 10
 visible = false
 script = ExtResource("5_lighting_controls")
+
+[node name="DustMotes" type="Node2D" parent="."]
+z_index = 1
+script = ExtResource("9_dust")
+
+[node name="ExteriorRain" parent="." instance=ExtResource("10_rain")]
+
+[node name="WindowRainParticles" type="Node2D" parent="."]
+z_index = -98
+script = ExtResource("11_window_rain")
 
 [node name="LightRangeOverlay" type="Node2D" parent="." unique_id=1885989542]
 visible = false

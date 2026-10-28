@@ -5,6 +5,29 @@ Keep it current when bundled dependencies or shipped assets change. The license
 for each item applies to that item; the repository's root license does not
 replace third-party licenses.
 
+## Playground V1 prototypes
+
+### Rain on Window Loop
+
+- **Use:** Ambient rain sample for the Playground V1 garage audio comparison.
+- **Creator:** alxl.
+- **License:** CC0 1.0 Universal. The source page says attribution is appreciated
+  but not required; this project records it for provenance.
+- **Bundled file:**
+  `tests/playground-v1/features/audio/exterior_rain/samples/rain_on_window_loop.wav`.
+- **Source:** [OpenGameArt: Rain on Window Loop](https://opengameart.org/content/rain-on-window-loop).
+
+### Wooden Door Open and Close
+
+- **Use:** Open and close sounds for the Playground V1 garage room door.
+- **Creator:** Iwan Gabovitch; submitted to OpenGameArt by qubodup.
+- **License:** CC0 1.0 Universal. Attribution is not required; this entry records
+  the source and provenance.
+- **Bundled files:**
+  `tests/playground-v1/assets/rooms/garage_room/audio/door_open.wav` and
+  `tests/playground-v1/assets/rooms/garage_room/audio/door_close.wav`.
+- **Source:** [OpenGameArt: Door open, door close](https://opengameart.org/content/door-open-door-close).
+
 ## Included in the game
 
 ### Pixelify Sans

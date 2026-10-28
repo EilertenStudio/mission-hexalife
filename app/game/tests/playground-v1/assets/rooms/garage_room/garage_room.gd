@@ -19,14 +19,23 @@ const RIGHT_WINDOW_SOURCE_RECT := Rect2i(176, 41, 38, 14)
 @onready var _ambient: CanvasModulate = $Lighting/AmbientDarkness
 @onready var _switcher: Sprite2D = $Switcher
 @onready var _lighting_controls: CanvasLayer = $LightingControls
+@onready var _interaction_controller: Node = $InteractionController
 @onready var _light_range_overlay: Node2D = $LightRangeOverlay
+@onready var _exterior_rain: Node = $ExteriorRain
 
 var _lamp_is_on := false
 var _flashlight_is_on := false
-var _flicker_clock := 0.0
+var _flicker_random := RandomNumberGenerator.new()
+var _flicker_time_until_next := 0.0
+var _flicker_steps := PackedFloat32Array()
+var _flicker_step_index := 0
+var _flicker_step_time_left := 0.0
+var _flicker_multiplier := 1.0
 
 
 func _ready() -> void:
+	_flicker_random.randomize()
+	_schedule_next_bulb_flicker()
 	_left_window_light.position = _get_window_light_position(LEFT_WINDOW_SOURCE_RECT)
 	_right_window_light.position = _get_window_light_position(RIGHT_WINDOW_SOURCE_RECT)
 	_left_window_light.texture_scale = _background.scale.x
@@ -48,6 +57,26 @@ func _ready() -> void:
 	_lighting_controls.light_ranges_visibility_changed.connect(_on_light_ranges_visibility_changed)
 	_lighting_controls.flashlight_toggle_requested.connect(_toggle_flashlight)
 	_lighting_controls.bulblight_toggle_requested.connect(_toggle_bulblight)
+	_lighting_controls.rain_source_changed.connect(_on_rain_source_changed)
+	_lighting_controls.rain_volume_changed.connect(_on_rain_volume_changed)
+	_lighting_controls.interaction_visibility_threshold_changed.connect(
+		_on_interaction_visibility_threshold_changed
+	)
+	_lighting_controls.interaction_highlight_intensity_changed.connect(
+		_on_interaction_highlight_intensity_changed
+	)
+	_lighting_controls.set_rain_sample_enabled(
+		_exterior_rain.get("source_mode") == 0
+	)
+	_lighting_controls.set_rain_volume(
+		db_to_linear(float(_exterior_rain.get("volume_db")))
+	)
+	_lighting_controls.set_interaction_visibility_threshold(
+		float(_interaction_controller.get("visibility_threshold"))
+	)
+	_lighting_controls.set_interaction_highlight_intensity(
+		float(_interaction_controller.get("highlight_intensity"))
+	)
 	_lighting_controls.set_control_values(
 		ambient_level, window_light_energy, flashlight_energy, bulblight_energy
 	)
@@ -73,19 +102,13 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	_flicker_clock += delta
 	var mouse_position := get_global_mouse_position()
 	_flashlight.global_position = mouse_position
 	_update_lamp_light_positions()
 
 	if _lamp_is_on:
-		var small_flicker := (
-			0.97
-			+ sin(_flicker_clock * 17.0) * 0.018
-			+ sin(_flicker_clock * 5.3) * 0.012
-		)
-		_bulb_glow.energy = bulblight_energy * small_flicker
-		_ceiling_pool.energy = bulblight_energy * 0.5 * (0.98 + sin(_flicker_clock * 7.1) * 0.02)
+		_update_bulb_flicker(delta)
+		_apply_bulblight_energy()
 
 
 func _update_lamp_light_positions() -> void:
@@ -101,12 +124,11 @@ func _input(event: InputEvent) -> void:
 	if not key_event.pressed or key_event.echo:
 		return
 
-	var is_panel_toggle: bool = (
+	if (
 		key_event.keycode == KEY_EQUAL
 		or key_event.physical_keycode == KEY_EQUAL
 		or key_event.unicode == 61
-	)
-	if is_panel_toggle:
+	):
 		_lighting_controls.visible = not _lighting_controls.visible
 		get_viewport().set_input_as_handled()
 	elif key_event.physical_keycode == KEY_F or key_event.keycode == KEY_F:
@@ -157,8 +179,7 @@ func _update_flashlight_state() -> void:
 
 func _on_bulblight_energy_changed(value: float) -> void:
 	bulblight_energy = value
-	_bulb_glow.energy = value
-	_ceiling_pool.energy = value * 0.5
+	_apply_bulblight_energy()
 
 
 func _on_window_light_range_changed(width_px: float) -> void:
@@ -188,8 +209,74 @@ func _on_light_ranges_visibility_changed(show_ranges: bool) -> void:
 	_light_range_overlay.call("set_ranges_visible", show_ranges)
 
 
+func _on_rain_source_changed(use_sample: bool) -> void:
+	_exterior_rain.call("set_sample_enabled", use_sample)
+
+
+func _on_rain_volume_changed(value: float) -> void:
+	_exterior_rain.call("set_volume_linear", value)
+
+
+func _on_interaction_visibility_threshold_changed(value: float) -> void:
+	_interaction_controller.call("set_visibility_threshold", value)
+
+
+func _on_interaction_highlight_intensity_changed(value: float) -> void:
+	_interaction_controller.call("set_highlight_intensity", value)
+
+
 func _on_switcher_state_changed(is_on: bool) -> void:
 	_lamp_is_on = is_on
 	_bulb_glow.enabled = is_on
 	_ceiling_pool.enabled = is_on
+	_flicker_steps.clear()
+	_flicker_step_index = 0
+	_flicker_step_time_left = 0.0
+	_flicker_multiplier = 1.0
+	if is_on:
+		_schedule_next_bulb_flicker()
+	_apply_bulblight_energy()
 	_lighting_controls.set_bulblight_enabled(is_on)
+
+
+func _schedule_next_bulb_flicker() -> void:
+	_flicker_time_until_next = _flicker_random.randf_range(2.8, 7.0)
+
+
+func _update_bulb_flicker(delta: float) -> void:
+	if _flicker_steps.is_empty():
+		_flicker_time_until_next -= delta
+		if _flicker_time_until_next <= 0.0:
+			_flicker_steps = PackedFloat32Array([
+				_flicker_random.randf_range(0.84, 0.95),
+				_flicker_random.randf_range(0.60, 0.78),
+				_flicker_random.randf_range(0.86, 0.97),
+				1.0
+			])
+			_flicker_step_index = 0
+			_flicker_step_time_left = 0.0
+		return
+
+	_flicker_step_time_left -= delta
+	if _flicker_step_time_left > 0.0:
+		return
+
+	if _flicker_step_index >= _flicker_steps.size():
+		_flicker_steps.clear()
+		_flicker_multiplier = 1.0
+		_schedule_next_bulb_flicker()
+		return
+
+	_flicker_multiplier = _flicker_steps[_flicker_step_index]
+	_flicker_step_index += 1
+	_flicker_step_time_left = (
+		_flicker_random.randf_range(0.08, 0.14)
+		if _flicker_step_index == _flicker_steps.size()
+		else _flicker_random.randf_range(0.035, 0.075)
+	)
+
+
+func _apply_bulblight_energy() -> void:
+	var flicker := _flicker_multiplier if _lamp_is_on else 1.0
+	_bulb_glow.energy = bulblight_energy * flicker
+	_ceiling_pool.energy = bulblight_energy * 0.5 * flicker

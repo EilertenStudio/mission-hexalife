@@ -31,9 +31,9 @@ automaticamente il lavoro su una feature.
 
 Lo stato iniziale deriva dalla lettura del codice attuale, non da una nuova
 verifica runtime. Il Playground Concept conserva gli esperimenti già realizzati
-e non li rende disponibili nella scena di gioco. Playground V1 è uno scaffold
-vuoto da cui partire per le prove visuali e le meccaniche reali. Il codice del
-plugin Ink è presente, ma non è integrato nella scena di gioco attuale.
+e non li rende disponibili nella scena di gioco. Playground V1 raccoglie prove
+visuali e meccaniche locali, ancora separate dal gioco principale. Il codice
+del plugin Ink è presente, ma non è integrato nella scena di gioco attuale.
 Aggiornare stati, limiti e riferimenti quando cambia concretamente
 un'implementazione, specificando cosa è stato verificato.
 
@@ -88,16 +88,22 @@ Combinare oggetti (`EXP-10`) e collegare informazioni (`INV-05`) sono due
 esperimenti diversi. Un indizio può essere un'informazione senza essere un
 oggetto fisico trasportato nell'inventario.
 
+## Audio e atmosfera
+
+| ID | Feature | Esperienza da offrire | Priorità | Stato tecnico |
+| --- | --- | --- | --- | --- |
+| AUD-01 | Ambiente sonoro esterno | Percepire condizioni atmosferiche fuori dalla stanza, attenuate dall'ambiente interno. | P1 | Parziale: nel Playground V1 il garage alterna via pannello o Inspector un sample loop CC0 di pioggia alla finestra e una pioggia procedurale filtrata. Riproduzione e selettore verificati a runtime; il bilanciamento percettivo va ancora valutato all'ascolto. Provenienza in [CREDITS.md](CREDITS.md). |
+
 ## Playground e strumenti di sviluppo
 
 | ID | Feature | Capacità | Priorità | Stato tecnico |
 | --- | --- | --- | --- | --- |
-| DEV-01 | Playground indipendenti | Provare meccaniche e direzioni visuali fuori dalla storia e dal canone. | P0 | Disponibile: [Playground Concept](tests/playground-concept/playground_concept.tscn) conserva le meccaniche sperimentate; [Playground V1](tests/playground-v1/playground_v1.tscn) è lo scaffold vuoto per la prossima prova. Entrambi sono raggiungibili dal SceneManager. |
+| DEV-01 | Playground indipendenti | Provare meccaniche e direzioni visuali fuori dalla storia e dal canone. | P0 | Disponibile: [Playground Concept](tests/playground-concept/playground_concept.tscn) conserva le meccaniche sperimentate; [Playground V1](tests/playground-v1/playground_v1.tscn) contiene prove visive, di illuminazione e audio per il garage. Entrambi sono raggiungibili dal SceneManager. |
 | DEV-02 | SceneManager debug | Aprire il menu con il leader configurabile, ricaricare, scegliere una scena e copiare un frame. | P0 | Parziale: [scena e script presenti](features/debug/scene_manager/scene_manager.tscn); il selettore include Title Screen e i due playground in un sottomenu; la copia immagine dipende da `wl-copy` o `xclip`. |
 
 Le scene dei playground sono PoC in tests/, secondo le regole di
 [AGENTS.md](AGENTS.md). Il Playground Concept conserva gli esperimenti di
-meccaniche; Playground V1 è la base per le prossime prove visuali e di gioco.
+meccaniche; Playground V1 ospita prove visuali e di gioco indipendenti.
 Entrambi restano indipendenti dalle scene narrative e dal canone.
 
 ## Base di progetto disponibile

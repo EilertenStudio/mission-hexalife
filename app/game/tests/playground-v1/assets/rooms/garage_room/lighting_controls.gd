@@ -14,6 +14,10 @@ signal light_ranges_visibility_changed(is_visible: bool)
 signal flashlight_toggle_requested
 signal bulblight_toggle_requested
 signal crt_enabled_changed(is_enabled: bool)
+signal rain_source_changed(use_sample: bool)
+signal rain_volume_changed(value: float)
+signal interaction_visibility_threshold_changed(value: float)
+signal interaction_highlight_intensity_changed(value: float)
 
 var _ambient_slider: HSlider
 var _window_light_slider: HSlider
@@ -25,6 +29,9 @@ var _window_range_slider: HSlider
 var _flashlight_range_slider: HSlider
 var _bulb_glow_range_slider: HSlider
 var _ceiling_pool_range_slider: HSlider
+var _rain_volume_slider: HSlider
+var _interaction_threshold_slider: HSlider
+var _interaction_highlight_slider: HSlider
 var _ambient_value: Label
 var _window_light_value: Label
 var _flashlight_value: Label
@@ -35,10 +42,14 @@ var _window_range_value: Label
 var _flashlight_range_value: Label
 var _bulb_glow_range_value: Label
 var _ceiling_pool_range_value: Label
+var _rain_volume_value: Label
+var _interaction_threshold_value: Label
+var _interaction_highlight_value: Label
 var _flashlight_toggle: Button
 var _bulblight_toggle: Button
 var _crt_toggle: Button
 var _light_ranges_toggle: Button
+var _rain_source_toggle: Button
 var _last_slider: HSlider
 
 
@@ -62,6 +73,25 @@ func set_flashlight_enabled(is_enabled: bool) -> void:
 
 func set_bulblight_enabled(is_enabled: bool) -> void:
 	_set_toggle_button(_bulblight_toggle, is_enabled)
+
+
+func set_rain_sample_enabled(is_enabled: bool) -> void:
+	if not is_instance_valid(_rain_source_toggle):
+		return
+	_rain_source_toggle.set_pressed_no_signal(is_enabled)
+	_rain_source_toggle.text = "SAMPLE" if is_enabled else "PROC"
+
+
+func set_rain_volume(value: float) -> void:
+	_set_percent_slider_value(_rain_volume_slider, _rain_volume_value, value)
+
+
+func set_interaction_visibility_threshold(value: float) -> void:
+	_set_percent_slider_value(_interaction_threshold_slider, _interaction_threshold_value, value)
+
+
+func set_interaction_highlight_intensity(value: float) -> void:
+	_set_percent_slider_value(_interaction_highlight_slider, _interaction_highlight_value, value)
 
 
 func set_crt_control_values(is_enabled: bool, strength: float, spacing: float) -> void:
@@ -92,6 +122,13 @@ func _set_slider_value(slider: HSlider, value_label: Label, value: float) -> voi
 func _set_range_slider_value(slider: HSlider, value_label: Label, value: float) -> void:
 	slider.set_value_no_signal(value)
 	value_label.text = "%.0f px" % value
+
+
+func _set_percent_slider_value(slider: HSlider, value_label: Label, value: float) -> void:
+	if not is_instance_valid(slider):
+		return
+	slider.set_value_no_signal(value)
+	value_label.text = "%d%%" % roundi(value * 100.0)
 
 
 func _set_toggle_button(button: Button, is_enabled: bool) -> void:
@@ -139,6 +176,44 @@ func _build_menu() -> void:
 	_flashlight_slider = _last_slider
 	_bulblight_value = _add_light_control(stack, "Bulblight", 2.0, 1.0, 0.05, true)
 	_bulblight_slider = _last_slider
+
+	var audio_divider := HSeparator.new()
+	stack.add_child(audio_divider)
+	var audio_title := Label.new()
+	audio_title.text = "AMBIENT AUDIO"
+	audio_title.add_theme_font_size_override("font_size", 14)
+	audio_title.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
+	stack.add_child(audio_title)
+	var rain_source_row := HBoxContainer.new()
+	rain_source_row.add_theme_constant_override("separation", 8)
+	stack.add_child(rain_source_row)
+	var rain_source_label := Label.new()
+	rain_source_label.text = "Rain source"
+	rain_source_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	rain_source_label.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78))
+	rain_source_row.add_child(rain_source_label)
+	_rain_source_toggle = _create_toggle_button(true)
+	_rain_source_toggle.custom_minimum_size = Vector2(72.0, 24.0)
+	_rain_source_toggle.text = "SAMPLE"
+	rain_source_row.add_child(_rain_source_toggle)
+	_rain_source_toggle.toggled.connect(func(use_sample: bool) -> void:
+		_rain_source_toggle.text = "SAMPLE" if use_sample else "PROC"
+		rain_source_changed.emit(use_sample)
+	)
+	_rain_volume_value = _add_audio_control(stack, "Rain volume", 1.0, 0.25, 0.01)
+	_rain_volume_slider = _last_slider
+
+	var interaction_divider := HSeparator.new()
+	stack.add_child(interaction_divider)
+	var interaction_title := Label.new()
+	interaction_title.text = "INTERACTION"
+	interaction_title.add_theme_font_size_override("font_size", 14)
+	interaction_title.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
+	stack.add_child(interaction_title)
+	_interaction_threshold_value = _add_interaction_threshold_control(stack)
+	_interaction_threshold_slider = _last_slider
+	_interaction_highlight_value = _add_interaction_highlight_control(stack)
+	_interaction_highlight_slider = _last_slider
 
 	var range_divider := HSeparator.new()
 	stack.add_child(range_divider)
@@ -354,6 +429,96 @@ func _add_range_control(
 			"Flashlight radius": flashlight_range_changed.emit(changed_value)
 			"Bulb glow radius": bulb_glow_range_changed.emit(changed_value)
 			"Ceiling spread": ceiling_pool_range_changed.emit(changed_value)
+	)
+	parent.add_child(slider)
+	_last_slider = slider
+	return value
+
+
+func _add_audio_control(
+	parent: VBoxContainer,
+	label_text: String,
+	maximum: float,
+	initial: float,
+	step: float
+) -> Label:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	parent.add_child(row)
+
+	var label := Label.new()
+	label.text = label_text
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78))
+	row.add_child(label)
+
+	var value := Label.new()
+	value.text = "%d%%" % roundi(initial * 100.0)
+	value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	value.custom_minimum_size = Vector2(44.0, 0.0)
+	value.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
+	row.add_child(value)
+
+	var slider := _create_slider(0.0, maximum, initial, step)
+	slider.value_changed.connect(func(changed_value: float) -> void:
+		value.text = "%d%%" % roundi(changed_value * 100.0)
+		rain_volume_changed.emit(changed_value)
+	)
+	parent.add_child(slider)
+	_last_slider = slider
+	return value
+
+
+func _add_interaction_threshold_control(parent: VBoxContainer) -> Label:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	parent.add_child(row)
+
+	var label := Label.new()
+	label.text = "Visibility threshold"
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78))
+	row.add_child(label)
+
+	var value := Label.new()
+	value.text = "8%"
+	value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	value.custom_minimum_size = Vector2(44.0, 0.0)
+	value.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
+	row.add_child(value)
+
+	var slider := _create_slider(0.0, 1.0, 0.08, 0.01)
+	slider.value_changed.connect(func(changed_value: float) -> void:
+		value.text = "%d%%" % roundi(changed_value * 100.0)
+		interaction_visibility_threshold_changed.emit(changed_value)
+	)
+	parent.add_child(slider)
+	_last_slider = slider
+	return value
+
+
+func _add_interaction_highlight_control(parent: VBoxContainer) -> Label:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	parent.add_child(row)
+
+	var label := Label.new()
+	label.text = "Sprite highlight"
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78))
+	row.add_child(label)
+
+	var value := Label.new()
+	value.text = "18%"
+	value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	value.custom_minimum_size = Vector2(44.0, 0.0)
+	value.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
+	row.add_child(value)
+
+	var slider := _create_slider(0.0, 1.0, 0.18, 0.01)
+	slider.value_changed.connect(func(changed_value: float) -> void:
+		value.text = "%d%%" % roundi(changed_value * 100.0)
+		interaction_highlight_intensity_changed.emit(changed_value)
 	)
 	parent.add_child(slider)
 	_last_slider = slider

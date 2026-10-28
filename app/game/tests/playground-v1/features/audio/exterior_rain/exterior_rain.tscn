@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://tests/playground-v1/features/audio/exterior_rain/exterior_rain.gd" id="1_rain"]
+[ext_resource type="AudioStreamWAV" uid="uid://dnkwmcuv3nw5u" path="res://tests/playground-v1/features/audio/exterior_rain/samples/rain_on_window_loop.wav" id="2_sample"]
+
+[node name="ExteriorRain" type="Node"]
+script = ExtResource("1_rain")
+sample_stream = ExtResource("2_sample")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
