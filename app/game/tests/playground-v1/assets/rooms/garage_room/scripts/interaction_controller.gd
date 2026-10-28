@@ -2,6 +2,11 @@ extends Node2D
 
 const INTERACTABLE_GROUP := "garage_interactable"
 
+@export_group("Material Surface Regions")
+@export var glass_regions: Array[Rect2] = []
+@export var floor_region := PackedVector2Array()
+@export var ceiling_region := PackedVector2Array()
+
 @export_range(0.0, 1.0, 0.01) var visibility_threshold := 0.08:
 	set(value):
 		visibility_threshold = clampf(value, 0.0, 1.0)
@@ -17,10 +22,14 @@ const INTERACTABLE_GROUP := "garage_interactable"
 
 @onready var _ambient_light: CanvasModulate = $"../Lighting/AmbientDarkness"
 @onready var _lighting: Node2D = $"../Lighting"
+@onready var _background: Sprite2D = $"../Background"
+@onready var _sound_mapping_controls: CanvasLayer = $"../SoundMappingControls"
 
 var _point_lights: Array[PointLight2D] = []
 var _light_images: Dictionary[int, Image] = {}
 var _hovered_target: CanvasItem
+var _hovered_material_id: StringName = &""
+var _interaction_blocked := false
 var _highlight_layer: CanvasLayer
 var _highlight_sprite: Sprite2D
 
@@ -63,6 +72,9 @@ func _input(event: InputEvent) -> void:
 	if is_instance_valid(_hovered_target):
 		_hovered_target.call("activate_interaction")
 		get_viewport().set_input_as_handled()
+	elif not _hovered_material_id.is_empty():
+		_sound_mapping_controls.call("play_material_contact", _hovered_material_id)
+		get_viewport().set_input_as_handled()
 
 
 func set_visibility_threshold(value: float) -> void:
@@ -74,25 +86,36 @@ func set_highlight_intensity(value: float) -> void:
 
 
 func _refresh_hover_target() -> void:
-	var target := _find_target_at(get_global_mouse_position())
-	if target == _hovered_target:
+	var mouse_position := get_global_mouse_position()
+	var target := _find_target_at(mouse_position)
+	var material_id: StringName = &""
+	if target == null and not _interaction_blocked:
+		material_id = _get_background_material_at(mouse_position)
+	if target == _hovered_target and material_id == _hovered_material_id:
 		_update_highlight_transform()
 		Input.set_default_cursor_shape(
-			Input.CURSOR_POINTING_HAND if is_instance_valid(target) else Input.CURSOR_ARROW
+			Input.CURSOR_POINTING_HAND
+			if is_instance_valid(target) or not material_id.is_empty()
+			else Input.CURSOR_ARROW
 		)
 		return
 
 	_hovered_target = target
+	_hovered_material_id = material_id
 	_highlight_sprite.visible = is_instance_valid(_hovered_target)
 	_update_highlight_transform()
 	Input.set_default_cursor_shape(
-		Input.CURSOR_POINTING_HAND if is_instance_valid(_hovered_target) else Input.CURSOR_ARROW
+		Input.CURSOR_POINTING_HAND
+		if is_instance_valid(_hovered_target) or not _hovered_material_id.is_empty()
+		else Input.CURSOR_ARROW
 	)
 
 
 func _find_target_at(world_point: Vector2) -> CanvasItem:
+	_interaction_blocked = false
 	var hovered_control := get_viewport().gui_get_hovered_control()
 	if is_instance_valid(hovered_control):
+		_interaction_blocked = true
 		return null
 
 	var candidates := get_tree().get_nodes_in_group(INTERACTABLE_GROUP)
@@ -111,9 +134,37 @@ func _find_target_at(world_point: Vector2) -> CanvasItem:
 		# An opaque object in front still blocks targets behind it when too dark.
 		var estimated_visibility := pixel_color.a * _estimate_illumination(world_point)
 		if estimated_visibility <= 0.0 or estimated_visibility < visibility_threshold:
+			_interaction_blocked = true
 			return null
 		return candidate
 	return null
+
+
+func _get_background_material_at(world_point: Vector2) -> StringName:
+	if not _background.is_visible_in_tree() or _background.texture == null:
+		return &""
+
+	var image_size := Vector2(_background.texture.get_size())
+	var image_position := (
+		_background.to_local(world_point) + image_size * 0.5 - _background.offset
+	)
+	if _background.flip_h:
+		image_position.x = image_size.x - image_position.x
+	if _background.flip_v:
+		image_position.y = image_size.y - image_position.y
+	if not Rect2(Vector2.ZERO, image_size).has_point(image_position):
+		return &""
+	if not _is_illuminated_by_point_light(world_point):
+		return &""
+
+	for glass_region in glass_regions:
+		if glass_region.has_point(image_position):
+			return &"glass"
+	if Geometry2D.is_point_in_polygon(image_position, floor_region):
+		return &"concrete"
+	if Geometry2D.is_point_in_polygon(image_position, ceiling_region):
+		return &"ceiling"
+	return &"plaster"
 
 
 func _is_drawn_before(first: Node, second: Node) -> bool:
@@ -129,24 +180,45 @@ func _estimate_illumination(world_point: Vector2) -> float:
 	if _ambient_light.is_visible_in_tree():
 		illumination = _ambient_light.color.get_luminance() * _ambient_light.color.a
 	for point_light in _point_lights:
-		if not point_light.enabled or not point_light.is_visible_in_tree() or point_light.energy <= 0.0:
-			continue
-		var light_image := _light_images.get(point_light.get_instance_id()) as Image
-		if light_image == null or light_image.is_empty() or point_light.texture_scale <= 0.0:
-			continue
-		var texture_position := (
-			point_light.to_local(world_point) / point_light.texture_scale
-			+ Vector2(light_image.get_size()) * 0.5
-		)
-		var light_sample := _sample_light_texture(point_light, light_image, texture_position)
-		illumination += (
-			light_sample.a
-			* light_sample.get_luminance()
-			* point_light.color.get_luminance()
-			* point_light.color.a
-			* point_light.energy
-		)
+		illumination += _estimate_point_light_illumination(point_light, world_point)
 	return clampf(illumination, 0.0, 1.0)
+
+
+func _is_illuminated_by_point_light(world_point: Vector2) -> bool:
+	for point_light in _point_lights:
+		var illumination := _estimate_point_light_illumination(point_light, world_point)
+		if illumination > 0.0 and illumination >= visibility_threshold:
+			return true
+	return false
+
+
+func _estimate_point_light_illumination(
+	point_light: PointLight2D,
+	world_point: Vector2
+) -> float:
+	if (
+		not point_light.enabled
+		or not point_light.is_visible_in_tree()
+		or point_light.energy <= 0.0
+	):
+		return 0.0
+	var light_image := _light_images.get(point_light.get_instance_id()) as Image
+	if light_image == null or light_image.is_empty() or point_light.texture_scale <= 0.0:
+		return 0.0
+	var texture_position := (
+		point_light.to_local(world_point) / point_light.texture_scale
+		+ Vector2(light_image.get_size()) * 0.5
+	)
+	var light_sample := _sample_light_texture(point_light, light_image, texture_position)
+	return clampf(
+		light_sample.a
+		* light_sample.get_luminance()
+		* point_light.color.get_luminance()
+		* point_light.color.a
+		* point_light.energy,
+		0.0,
+		1.0
+	)
 
 
 func _sample_light_texture(

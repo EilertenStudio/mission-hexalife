@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/playground-v1/features/audio/storm_sfx/storm_sfx.gd" id="1_script"]
+
+[node name="StormSfx" type="Node"]
+script = ExtResource("1_script")
+
+[node name="ThunderTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="WindTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ThunderPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="WindPlayer" type="AudioStreamPlayer" parent="."]

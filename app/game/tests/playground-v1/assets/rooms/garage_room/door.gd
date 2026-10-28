@@ -26,6 +26,8 @@ const ANIMATION_FRAME_DURATION := 0.16
 
 var _is_open := false
 var _door_animation: Tween
+var _open_sound: AudioStream = OPEN_SOUND
+var _close_sound: AudioStream = CLOSE_SOUND
 
 
 func _ready() -> void:
@@ -50,9 +52,17 @@ func set_open(value: bool, notify := true) -> void:
 		set_interaction_texture(next_texture)
 
 	if notify:
-		_door_audio.stream = OPEN_SOUND if _is_open else CLOSE_SOUND
+		_door_audio.stream = _open_sound if _is_open else _close_sound
 		_door_audio.play()
 		state_changed.emit(_is_open)
+
+
+func set_open_sound(sample: AudioStream) -> void:
+	_open_sound = sample
+
+
+func set_close_sound(sample: AudioStream) -> void:
+	_close_sound = sample
 
 
 func is_open() -> bool:

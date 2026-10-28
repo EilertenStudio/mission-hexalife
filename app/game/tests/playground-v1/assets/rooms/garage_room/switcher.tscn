@@ -8,3 +8,6 @@ texture_filter = 1
 z_index = -99
 texture = ExtResource("1_switcher")
 script = ExtResource("2_script")
+
+[node name="ClickAudio" type="AudioStreamPlayer" parent="."]
+volume_db = -6.0

@@ -9,6 +9,15 @@ const TURN_ON_TEXTURE: Texture2D = preload(
 	"res://tests/playground-v1/assets/rooms/garage_room/exports/garage_room-v006-switcher-TURN-ON.png"
 )
 
+@export var turn_on_sound: AudioStream = preload(
+	"res://tests/playground-v1/assets/rooms/garage_room/audio/light_switch_turn_on.mp3"
+)
+@export var turn_off_sound: AudioStream = preload(
+	"res://tests/playground-v1/assets/rooms/garage_room/audio/light_switch_turn_off.mp3"
+)
+
+@onready var _click_audio: AudioStreamPlayer = $ClickAudio
+
 var _is_on := false
 
 
@@ -29,4 +38,14 @@ func set_is_on(value: bool, notify := true) -> void:
 	_is_on = value
 	set_interaction_texture(next_texture)
 	if notify:
+		_click_audio.stream = turn_on_sound if _is_on else turn_off_sound
+		_click_audio.play()
 		state_changed.emit(_is_on)
+
+
+func set_turn_on_sound(sample: AudioStream) -> void:
+	turn_on_sound = sample
+
+
+func set_turn_off_sound(sample: AudioStream) -> void:
+	turn_off_sound = sample

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bqj8kbdq62qxh" path="res://tests/playground-v1/playground_v1.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://cn0ocvsnw727d" path="res://tests/playground-v1/assets/rooms/garage_room/garage_room.tscn" id="2_garage_room"]
 [ext_resource type="PackedScene" path="res://tests/playground-v1/features/visual/crt_vertical/crt_vertical.tscn" id="3_crt_vertical"]
+[ext_resource type="PackedScene" path="res://tests/playground-v1/features/input/custom_cursor/custom_cursor.tscn" id="4_custom_cursor"]
 
 [node name="PlaygroundV1" type="Node2D" unique_id=1839781794]
 script = ExtResource("1_script")
@@ -11,5 +12,7 @@ script = ExtResource("1_script")
 position = Vector2(640, 360)
 
 [node name="CRTVertical" parent="." unique_id=1474486082 instance=ExtResource("3_crt_vertical")]
+
+[node name="CustomCursor" parent="." unique_id=788965941 instance=ExtResource("4_custom_cursor")]
 
 [node name="GarageRoom" parent="." unique_id=1308650380 instance=ExtResource("2_garage_room")]

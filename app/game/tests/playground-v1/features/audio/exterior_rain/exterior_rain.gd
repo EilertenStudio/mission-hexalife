@@ -11,7 +11,7 @@ enum SourceMode { SAMPLE, PROCEDURAL }
 			_configure_audio_source()
 
 @export var sample_stream: AudioStream
-@export_range(-30.0, 0.0, 1.0) var volume_db := -12.0
+@export_range(-30.0, 0.0, 1.0) var volume_db := -8.0
 @export_range(0.1, 1.5, 0.05) var rain_intensity := 0.85
 @export_range(700.0, 3000.0, 50.0) var muffled_cutoff_hz := 1700.0
 

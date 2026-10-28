@@ -15,6 +15,9 @@
 [ext_resource type="PackedScene" path="res://tests/playground-v1/features/audio/exterior_rain/exterior_rain.tscn" id="10_rain"]
 [ext_resource type="Script" path="res://tests/playground-v1/assets/rooms/garage_room/scripts/window_rain_particles.gd" id="11_window_rain"]
 [ext_resource type="Script" path="res://tests/playground-v1/assets/rooms/garage_room/scripts/interaction_controller.gd" id="12_interaction_controller"]
+[ext_resource type="PackedScene" path="res://tests/playground-v1/assets/rooms/garage_room/sound_mapping_controls.tscn" id="13_sound_controls"]
+[ext_resource type="PackedScene" path="res://tests/playground-v1/features/audio/storm_sfx/storm_sfx.tscn" id="14_storm_sfx"]
+[ext_resource type="PackedScene" path="res://tests/playground-v1/assets/rooms/garage_room/audio_controls.tscn" id="15_audio_controls"]
 
 [node name="GarageRoom" type="Node2D" unique_id=1308650380]
 texture_filter = 1
@@ -41,6 +44,9 @@ scale = Vector2(4, 4)
 
 [node name="InteractionController" type="Node2D" parent="."]
 script = ExtResource("12_interaction_controller")
+glass_regions = Array[Rect2]([Rect2(106, 41, 38, 14), Rect2(176, 41, 38, 14)])
+floor_region = PackedVector2Array(69, 120, 251, 120, 312, 180, 8, 180)
+ceiling_region = PackedVector2Array(0, 0, 320, 0, 251, 22, 69, 22)
 
 [node name="Lighting" type="Node2D" parent="." unique_id=1480302569]
 
@@ -84,16 +90,25 @@ energy = 2.0
 texture = ExtResource("8_xm1bg")
 texture_scale = 3.0
 
+[node name="FlashlightAudio" type="AudioStreamPlayer" parent="."]
+volume_db = -4.0
+
 [node name="LightingControls" type="CanvasLayer" parent="." unique_id=887468941]
 layer = 10
 visible = false
 script = ExtResource("5_lighting_controls")
+
+[node name="AudioControls" parent="." instance=ExtResource("15_audio_controls")]
+
+[node name="SoundMappingControls" parent="." instance=ExtResource("13_sound_controls")]
 
 [node name="DustMotes" type="Node2D" parent="."]
 z_index = 1
 script = ExtResource("9_dust")
 
 [node name="ExteriorRain" parent="." instance=ExtResource("10_rain")]
+
+[node name="StormSfx" parent="." instance=ExtResource("14_storm_sfx")]
 
 [node name="WindowRainParticles" type="Node2D" parent="."]
 z_index = -98
